@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "codex-desktop-workflow"
+version = "0.1.0"
+description = "Build and verify an experimental Codex desktop workflow mod from a user-supplied official package"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{name = "catte"}]
+dependencies = [
+  "electron-update-safety @ git+https://github.com/catterhu1207-ux/electron-update-safety.git@25b32744cd6d4af7eae797010bbae655d9b9417c",
+  "desktop-adaptation-lab @ git+https://github.com/catterhu1207-ux/desktop-adaptation-lab.git@439e14c1889053a57090deb88b516e475493d9ca",
+]
+
+[project.scripts]
+codex-desktop-workflow = "codex_desktop_workflow.cli:main"
+
+[tool.setuptools]
+py-modules = [
+  "hotfix_builder",
+  "hotfix_profile_26730",
+  "hotfix_profile_26810",
+  "hotfix_profile_26818",
+  "hotfix_profile_26818_5229",
+  "hotfix_profile_26818_8289",
+  "hotfix_profile_26820",
+  "hotfix_profile_26825_5331",
+  "hotfix_profile_26825_6671",
+  "hotfix_profile_26831_2377",
+  "hotfix_profile_26901_6511",
+  "hotfix_profile_26903_9818",
+  "hotfix_profile_26908_4834",
+  "hotfix_profile_26908_9136",
+  "composer_selector_contract",
+  "frontend_feature_contracts",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+codex_desktop_workflow = ["policies/*.json"]
