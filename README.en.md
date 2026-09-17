@@ -19,18 +19,29 @@ When several Codex tasks are active at once, the hard part is often not executio
 | Remote projects expose internal IDs | Sidebar, search, Work picker, prompts, and accessibility text show a recognizable project name while preserving routing identity |
 | A global model default can disturb parallel-task context | Existing tasks keep valid model and reasoning settings; the global default applies only to new tasks |
 
-### Before / After (conceptual)
+### Before / After: ordering and attention states
+
+**Start times determine ordering; colors communicate attention states.** The sort does not use AI to rank task importance, nor does it place every task of one color ahead of all others.
+
+The following three fictional tasks belong to the same sorting group. They illustrate the difference between update-time and actual-start-time ordering, not a claim about the default behavior of every official release.
+
+| Example task | Actual start | Last update |
+|---|---|---|
+| Edit docs | 09:10 | 10:05 |
+| Update API | 09:50 | 09:55 |
+| Fix tests | 10:00 | 10:01 |
 
 ```text
-Official                     Modified
-────────────────────         ────────────────────
-🔵 Task A                    🟡 Task A  pending implementation
-🔵 Task B                    🔴 Task B  pinned attention
-🔵 Task C                    🔵 Task C  ordinary unread
-workspace_01H...             Client-A / Project-X
-global default overrides      existing task keeps its model;
-existing task context          default applies to new tasks
+By latest update                 Modified: by actual start
+────────────────────────         ─────────────────────────
+Edit docs   updated 10:05         Fix tests   started 10:00
+Fix tests   updated 10:01         Update API  started 09:50
+Update API  updated 09:55         Edit docs   started 09:10
 ```
+
+Initial loading and live updates use the same ordering rule. Separately, **yellow means pending implementation, red means pinned attention, and blue means ordinary unread**. Yellow takes precedence when planned and pinned states coexist; loading keeps its spinner.
+
+Remote projects also show recognizable names rather than internal IDs. Existing tasks retain valid model and reasoning settings, while the global default applies only to new tasks. Preserving settings does not itself add model support or task-history migration.
 
 If you normally keep only one or two tasks open, you probably do not need this project.
 
