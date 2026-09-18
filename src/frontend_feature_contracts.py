@@ -1271,7 +1271,10 @@ def _validate_renderer_probe(
     )
     _, protocol_entry = builder.read_entry(portable_asar, header_size, protocol_meta)
     latest = builder.is_split_frontend_profile(profile)
-    if profile.get("package_version") == "26.903.9818.0":
+    if profile.get("profile_spec_id") == "26915_3509":
+        from hotfix_profile_26915_3509 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile.get("package_version") == "26.903.9818.0":
         resolver_old = builder.FRONTEND_ATTESTATION_PROTOCOL_26903_OLD
         resolver_new = builder.FRONTEND_ATTESTATION_PROTOCOL_26903_NEW
         handler_old = builder.FRONTEND_ATTESTATION_PROTOCOL_HANDLER_26903_OLD
@@ -1335,7 +1338,7 @@ def _validate_renderer_probe(
             )
         ],
         "marker": builder.FRONTEND_ATTESTATION_MARKER,
-        "artifact_id": builder.FRONTEND_ATTESTATION_ARTIFACT_ID,
+        "artifact_id": builder.frontend_attestation_artifact_id(profile),
         "feature_ids": list(builder.FRONTEND_ATTESTATION_FEATURES),
         "script_sha256": _sha256(script),
         "module_relative_path": builder.FRONTEND_ATTESTATION_MODULE_NAME,
@@ -1898,6 +1901,10 @@ def validate(source_asar: Path, portable_asar: Path, node: str = "node") -> dict
 
     source_hash = builder.sha256_path(source_asar)
     profile = builder.profile_for_asar(source_hash)
+    if profile and profile.get("profile_spec_id") == "26915_3509":
+        from frontend_contract_26915 import validate as validate_26915
+        return validate_26915(source_asar, portable_asar, node)
+
     if profile is None or profile.get("package_version") not in {
         "26.825.6671.0", "26.831.2377.0", "26.901.6511.0", "26.903.9818.0",
         "26.908.4834.0",

@@ -1,93 +1,95 @@
 # codex-desktop-workflow
 
-**让 Codex Desktop 在多任务并行时更容易看懂、排序和继续工作。**
+**Make Codex Desktop easier to scan, prioritize, and resume when you run many tasks in parallel.**
 
-当你同时跑很多 Codex 任务时，真正的问题往往不是“任务能不能执行”，而是：**下一步该看哪个？哪个在等你确认计划？哪个只是普通未读？远程项目到底是哪一个？切换全局模型会不会把已有任务的上下文弄乱？**
+When several Codex tasks are active at once, the hard part is often not execution. It is knowing **what needs attention next, which task is waiting for implementation, which one you pinned, which remote project you are looking at, and whether changing a global model default will disturb an existing task.**
 
-`codex-desktop-workflow` 是一个面向 Windows 的本地生成工具。它读取你自己已经取得的、受支持的官方 Codex 应用目录，在新目录中生成独立的实验性修改版，并对版本、完整性、关键界面入口和真实启动结果进行校验。
+`codex-desktop-workflow` is a Windows-focused local build tool. You supply your own supported official Codex application directory. It creates an independent modified copy, validates the exact supported build and key UI entry points, then performs isolated launch verification against the generated artifact.
 
-> 不提供、不下载、不重新分发官方二进制。你必须自行提供受支持的官方 Codex 安装目录。
+> It does not provide, download, or redistribute official binaries. You must supply your own supported official Codex installation.
 
-[English README](README.en.md)
+[中文说明](README.zh-CN.md)
 
-## 30 秒看懂它解决什么
+## The problem in 30 seconds
 
-| Codex Desktop 中的痛点 | 生成后的行为 |
+| Codex Desktop pain point | Modified behavior |
 |---|---|
-| Priority 顺序不等于“我现在最该看什么” | 按任务或进程实际开始时间排序，初次加载和实时更新使用同一规则 |
-| 所有提示点看起来差不多 | **黄色** = 待实施计划，**红色** = 置顶关注，**蓝色** = 普通未读；计划与置顶同时存在时黄色优先 |
-| Remote 项目显示内部 ID，不容易识别 | 侧栏、搜索、Work 选择器、提示与辅助文本显示可识别名称，同时保留原路由身份 |
-| 修改全局默认模型会影响正在并行处理的任务 | 已有任务保留其有效模型和推理设置；全局默认只用于新任务 |
+| Priority order does not match what you should look at next | Sort by actual task or process start-time recency, with the same rule for initial loading and live updates |
+| Status dots do not communicate the next action | **Yellow** = pending implementation, **red** = pinned attention, **blue** = ordinary unread; yellow wins when planned and pinned |
+| Remote projects expose internal IDs | Sidebar, search, Work picker, prompts, and accessibility text show a recognizable project name while preserving routing identity |
+| A global model default can disturb parallel-task context | Existing tasks keep valid model and reasoning settings; the global default applies only to new tasks |
 
-### Before / After：排序与状态分别解决什么？
+### Before / After: ordering and attention states
 
-**排序看开始时间，状态看提示颜色。** 这里的排序不是 AI 判断任务重要性，也不是把某一种颜色的任务一律排到最前。
+**Start times determine ordering; colors communicate attention states.** The sort does not use AI to rank task importance, nor does it place every task of one color ahead of all others.
 
-下面用同一排序分组内的三个虚构任务，说明“按更新时间”和“按实际开始时间”的区别。它不是对所有官方版本默认排序的断言。
+The following three fictional tasks belong to the same sorting group. They illustrate the difference between update-time and actual-start-time ordering, not a claim about the default behavior of every official release.
 
-| 示例任务 | 实际开始时间 | 最近更新时间 |
+| Example task | Actual start | Last update |
 |---|---|---|
-| 整理文档 | 09:10 | 10:05 |
-| 完善接口 | 09:50 | 09:55 |
-| 修复测试 | 10:00 | 10:01 |
+| Edit docs | 09:10 | 10:05 |
+| Update API | 09:50 | 09:55 |
+| Fix tests | 10:00 | 10:01 |
 
 ```text
-按最近更新时间                 修改后：按实际开始时间
-──────────────────             ──────────────────────
-整理文档  更新于 10:05          修复测试  开始于 10:00
-修复测试  更新于 10:01          完善接口  开始于 09:50
-完善接口  更新于 09:55          整理文档  开始于 09:10
+By latest update                 Modified: by actual start
+────────────────────────         ─────────────────────────
+Edit docs   updated 10:05         Fix tests   started 10:00
+Fix tests   updated 10:01         Update API  started 09:50
+Update API  updated 09:55         Edit docs   started 09:10
 ```
 
-初次加载与实时更新使用同一排序规则。颜色则用于区分下一步动作：**黄色表示待实施计划，红色表示置顶关注，蓝色表示普通未读**；计划与置顶同时存在时黄色优先，加载状态继续显示转圈。
+Initial loading and live updates use the same ordering rule. Separately, **yellow means pending implementation, red means pinned attention, and blue means ordinary unread**. Yellow takes precedence when planned and pinned states coexist; loading keeps its spinner.
 
-另外，远程项目显示可识别名称而不是内部 ID；已有任务保留有效的模型和推理设置，全局默认只用于新任务。这里的“保留设置”不等于新增模型支持或任务历史迁移功能。
+Remote projects also show recognizable names rather than internal IDs. Existing tasks retain valid model and reasoning settings, while the global default applies only to new tasks. Preserving settings does not itself add model support or task-history migration.
 
-如果你通常只开 1–2 个任务，这个项目可能没有必要。
+If you normally keep only one or two tasks open, you probably do not need this project.
 
-如果你经常同时处理很多 Codex 任务，并且已经开始靠“记忆”“反复点开”“猜哪个更重要”来管理注意力，这个项目就是为这个场景做的。
+If you routinely manage many Codex tasks and already rely on memory, repeated opening, or guesswork to decide where to look next, this is the workflow this project is designed around.
 
-## 它不是简单的手工改包脚本
+## More than a one-off patch script
 
-项目把“每次官方更新后重新适配”做成了一套可核验流程：
+The project turns post-update adaptation into a repeatable, verifiable process:
 
-1. **inspect**：核对支持版本、完整 ASAR、后端和关键入口摘要。
-2. **build**：只从干净官方目录生成一个全新副本，不覆盖源目录。
-3. **verify**：运行真实组件检查，并执行两次隔离启动验证。
-4. **import-data / launch / status / stop**：在独立数据副本中继续自己的任务，并对运行实例进行显式管理。
+1. **inspect** — validate the supported version, full ASAR, backend, and key entry-point hashes.
+2. **build** — generate a fresh modified copy from a clean official directory without overwriting the source.
+3. **verify** — run real component checks and two isolated launch validations.
+4. **import-data / launch / status / stop** — continue your own task data in a separate copy and manage that run explicitly.
 
-未知版本、摘要不符、补丁匹配不唯一、功能契约失败或运行证明缺失都会停止，而不是“尽量改完再说”。
+Unknown versions, hash mismatches, ambiguous patch matches, failed contracts, or missing runtime evidence stop the workflow instead of silently producing a best-effort build.
 
-## 当前支持范围
+## Current support
 
-首发版本目前只支持：
+Version `v0.2.0` supports Windows x64 with the official bundled `codex.exe`:
 
-- Windows x64
+- Codex Desktop `26.915.3509.0`
+  - Official `app.asar` SHA-256: `8227f6234cf2cc418ec8bbdeedec03f8d777f85520929ff2d9d38e774f681dfd`
+  - Official `codex.exe` SHA-256: `ff9bc3ddc08fa52b43ea170be5f628ffad1c1d9c80c5770b8e2a2f817a9ee3c9`
 - Codex Desktop `26.908.9136.0`
-- 官方 `app.asar` SHA-256：`7a46bd6fe162050afbac27d7d5271d19524e887fa0cdd06c0f2d3fa9b606a31d`
-- 默认保留官方包内的 `codex.exe`
+  - Official `app.asar` SHA-256: `7a46bd6fe162050afbac27d7d5271d19524e887fa0cdd06c0f2d3fa9b606a31d`
+  - Existing `v0.1.0` isolated-renderer acceptance evidence remains applicable
 
-版本号相同但文件不匹配也会拒绝。
+A matching version number with different bytes is rejected.
 
-完整支持矩阵见 [COMPATIBILITY.md](COMPATIBILITY.md)。
+See [COMPATIBILITY.md](COMPATIBILITY.md) for the full support matrix.
 
-第三方 Responses 兼容服务的后端修复在 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat) 中公开，但尚未作为本版本桌面组合完成独立验收，因此 `v0.1.0` 不把它标为可用组合。
+The cross-provider Responses compatibility patch is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat), but that desktop combination has not completed independent qualification in this repository and is therefore not marked as supported in `v0.2.0`.
 
-## 最短使用路径
+## Shortest path
 
-需要：
+Requirements:
 
 - Python 3.10+
 - Git
-- 你自己取得的受支持官方 Codex 应用目录
+- Your own supported official Codex application directory
 
-下面假设官方包根目录为：
+Assume the official package is located at:
 
 ```text
-C:\official\OpenAI.Codex_26.908.9136.0_x64__2p2nqsd0c76g0
+C:\official\OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0
 ```
 
-安装：
+Install:
 
 ```powershell
 git clone https://github.com/catterhu1207-ux/codex-desktop-workflow.git
@@ -96,115 +98,115 @@ py -3 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e .
 ```
 
-### 1. 检查官方包是否为支持版本
+### 1. Inspect the official package
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe inspect `
-  --source C:\official\OpenAI.Codex_26.908.9136.0_x64__2p2nqsd0c76g0
+  --source C:\official\OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0
 ```
 
-### 2. 生成独立修改版
+### 2. Build an independent modified copy
 
-目标目录必须不存在：
+The target directory must not already exist:
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe build `
-  --source C:\official\OpenAI.Codex_26.908.9136.0_x64__2p2nqsd0c76g0 `
+  --source C:\official\OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0 `
   --target C:\codex-workflow\app
 ```
 
-### 3. 验证真实组件和启动结果
+### 3. Verify real components and startup behavior
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe verify `
-  --source C:\official\OpenAI.Codex_26.908.9136.0_x64__2p2nqsd0c76g0 `
+  --source C:\official\OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0 `
   --portable C:\codex-workflow\app `
   --runs-root C:\codex-workflow\verification
 ```
 
-`verify` 要求两次启动分别出现匹配的 `codex.exe` 后端、真实 renderer 证明和正常退出。任意一次超时、后台残留或证明不匹配都会失败。它不会强行终止用户进程。
+The same commands work with the retained `26.908.9136.0` profile when that exact package is supplied.
 
-隔离验收不复制认证。工具会在未登录的独立环境中短暂挂载真实任务界面以生成与本次产物绑定的 renderer 证明，随后界面可能回到登录页。
+`verify` requires two launches with the matching packaged `codex.exe` backend, a fresh renderer proof, at least 60 seconds of observation, and a clean normal exit. It never force-terminates user processes.
 
-公开的两轮脱敏结果见 [ACCEPTANCE.md](ACCEPTANCE.md)。
+Isolated acceptance does not copy authentication. In the signed-out environment, the tool briefly mounts the real task renderer to produce proof bound to the current artifact; the UI may then return to sign-in.
 
-## 导入自己的任务副本
+See the redacted two-run result in [ACCEPTANCE.md](ACCEPTANCE.md).
 
-隔离验收使用全新数据。
+## Import an independent copy of existing tasks
 
-如果需要在修改版中继续自己的任务，请先完全退出所有 Codex / ChatGPT 桌面进程和后端，再显式创建独立数据副本：
+Exit every Codex / ChatGPT desktop and backend process first, then create a separate task-data copy:
 
 ```powershell
-.\.venv\Scripts\codex-desktop-workflow.exe import-data `
+codex-desktop-workflow import-data `
   --source C:\Users\you\.codex `
   --target C:\codex-workflow\data
 
-.\.venv\Scripts\codex-desktop-workflow.exe launch `
+codex-desktop-workflow launch `
   --portable C:\codex-workflow\app `
   --data C:\codex-workflow\data `
   --runs-root C:\codex-workflow\daily-runs
 ```
 
-导入使用 SQLite 一致性备份并复制任务记录目录。
+The import uses SQLite-consistent backups and copies task-record directories.
 
-它**不会复制**：
+It excludes:
 
 - `auth.json`
 - `config.toml`
-- 插件
-- 技能
-- 认证信息
+- plugins
+- skills
+- authentication material
 
-首次启动后请在独立环境重新登录或配置服务。官方数据与修改版数据之后各自保存，不自动同步或合并。
+Sign in or configure services again inside the independent environment. The official and modified data sets are not automatically synchronized or merged.
 
-`launch` 会输出运行目录。用同一个目录查看状态或正常关闭：
+Use the returned run directory with `status` and `stop`:
 
 ```powershell
 codex-desktop-workflow status --run C:\codex-workflow\daily-runs\run-<id>
 codex-desktop-workflow stop --run C:\codex-workflow\daily-runs\run-<id>
 ```
 
-`stop` 通过本地调试端口调用该版本应用自身的退出动作，并再次核对主进程与已登记后端。身份不符或超时会报告阻塞，不会强制结束进程。
+`stop` uses the supported app's own quit action through its local debugging port, then checks the registered main and backend processes again. Identity mismatches and timeouts are reported as blocked; processes are not force-terminated.
 
-## 安全边界
+## Safety boundaries
 
-- 所有构建都写入不存在的新目录，拒绝源目标嵌套和重复补丁。
-- 未知版本、摘要不符、补丁匹配不唯一、功能契约失败或运行证明缺失都会停止。
-- 生成报告包含用户选择的本地路径；分享前请自行检查。
-- 报告不记录任务正文、凭据或令牌。
-- 项目不提供、不下载、不重新分发官方 Codex 二进制。
-- 本项目是非官方实验性社区工具，不代表 OpenAI，也不替代官方更新和支持。
+- Every build writes to a new target directory; source/target nesting and repeat patching are rejected.
+- Unknown versions, hash mismatches, ambiguous transformations, failed contracts, or missing runtime evidence stop the workflow.
+- Generated reports contain user-selected local paths; inspect them before sharing.
+- Reports do not record task bodies, credentials, or tokens.
+- The project does not provide, download, or redistribute official Codex binaries.
+- This is an unofficial experimental community project. It is not endorsed by OpenAI and does not replace official updates or support.
 
-## 项目组成
+## Project family
 
-这个仓库是实际使用入口。
+This repository is the practical entry point.
 
-通用来源暂存与进程管理固定使用 [electron-update-safety v0.1.3](https://github.com/catterhu1207-ux/electron-update-safety/releases/tag/v0.1.3)。
+Generic source staging and process management are pinned to [electron-update-safety v0.1.3](https://github.com/catterhu1207-ux/electron-update-safety/releases/tag/v0.1.3).
 
-证据阶段来自 [desktop-adaptation-lab v0.1.0](https://github.com/catterhu1207-ux/desktop-adaptation-lab/releases/tag/v0.1.0)。
+Lifecycle evidence stages come from [desktop-adaptation-lab v0.1.0](https://github.com/catterhu1207-ux/desktop-adaptation-lab/releases/tag/v0.1.0).
 
-第三方 Responses 历史兼容相关实验位于 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat)。
+Cross-provider Responses history compatibility experiments live in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat).
 
-## 文档
+## Documentation
 
-- [ACCEPTANCE.md](ACCEPTANCE.md) — 脱敏验收结果
-- [COMPATIBILITY.md](COMPATIBILITY.md) — 支持版本和摘要矩阵
-- [RELEASE_NOTES.md](RELEASE_NOTES.md) — 版本说明
-- [SOURCE_INVENTORY.md](SOURCE_INVENTORY.md) — 来源清单
-- [SECURITY.md](SECURITY.md) — 安全说明
-- [CONTRIBUTING.md](CONTRIBUTING.md) — 贡献说明
+- [ACCEPTANCE.md](ACCEPTANCE.md) — redacted acceptance evidence
+- [COMPATIBILITY.md](COMPATIBILITY.md) — supported versions and hashes
+- [RELEASE_NOTES.md](RELEASE_NOTES.md) — release notes
+- [SOURCE_INVENTORY.md](SOURCE_INVENTORY.md) — source inventory
+- [SECURITY.md](SECURITY.md) — security notes
+- [CONTRIBUTING.md](CONTRIBUTING.md) — contribution guide
 
-## 适合提交什么 Issue？
+## Good issues to file
 
-欢迎提交可复现的问题，尤其是：
+Reproducible reports are especially useful for:
 
-- 新 Codex Desktop 版本需要重新适配
-- 某个界面入口没有应用预期行为
-- `inspect` / `build` / `verify` 在支持版本上出现异常
-- 多任务工作流中还有明确、可复现的注意力管理痛点
+- a new Codex Desktop release that needs re-adaptation
+- a UI entry point that does not receive the expected behavior
+- `inspect`, `build`, or `verify` failures on an otherwise supported build
+- additional concrete attention-management pain points in multi-task Codex workflows
 
-请不要在 Issue 中上传认证文件、任务正文、访问令牌或未经授权分发的官方二进制。
+Please do not upload authentication files, task content, access tokens, or unauthorized copies of official binaries to Issues.
 
 ---
 
-**一句话定位：** 这不是另一个 Codex 客户端，而是一套把官方 Codex Desktop 的多任务工作流改成“更容易判断下一步做什么”的本地、可验证适配工具。
+**One-line positioning:** this is not another Codex client. It is a local, verifiable adaptation layer that makes the official Codex Desktop workflow easier to prioritize when many tasks are running at once.

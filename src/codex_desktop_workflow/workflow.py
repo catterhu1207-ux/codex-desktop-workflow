@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 import base64
+from dataclasses import dataclass
 import hashlib
 import json
 import os
@@ -22,18 +23,51 @@ import hotfix_builder
 from electron_update_safety.lifecycle import IsolatedRun
 
 
-SUPPORTED_VERSION = "26.908.9136.0"
-PACKAGE_FULL_NAME = "OpenAI.Codex_26.908.9136.0_x64__2p2nqsd0c76g0"
-OFFICIAL_ASAR_SHA256 = "7a46bd6fe162050afbac27d7d5271d19524e887fa0cdd06c0f2d3fa9b606a31d"
-OFFICIAL_BACKEND_SHA256 = "960c111d47afd61669954b9df9e56083e302edbfa3ef6962d81dcc14a30051dc"
-OFFICIAL_BACKEND_POLICY_SHA256 = "7d1c29cdb6dc0f89b9e2966e776f9e7b47502f55e6ad35cf9c7bdb3fd57a93fb"
-OFFICIAL_BACKEND_POLICY = Path(__file__).parent / "policies" / "official-26.908.9136.0.json"
-OFFICIAL_ENTRIES = {
-    "webview/assets/app-initial-bcc2ff475eb6.js": "3c15444f96a8d48844258618fe0d4278409e626f0ee563a77d2c669ec669c510",
-    "webview/assets/app-primary-b36a719dba75.js": "255287957d4cf9a21d386948c997114bf039d5c15fc73258d3df5095114a047a",
-    ".vite/build/main-D8abTQQE.js": "b55be874a9b5a262c09a7945df38cec9b0ce8f14bd584ef73d6feca301ed90b4",
-    ".vite/build/window-all-closed-BxbCP6YG.js": "8939f42fd89899a649b8062699b386e9ff933c241155b611c3b5ec7a738673ed",
+@dataclass(frozen=True)
+class PackageSupport:
+    version: str
+    package_full_name: str
+    asar_sha256: str
+    backend_sha256: str
+    backend_policy: Path
+    backend_policy_sha256: str
+    entries: dict[str, str]
+
+
+_POLICY_ROOT = Path(__file__).parent / "policies"
+SUPPORTED_PACKAGES = {
+    "26.908.9136.0": PackageSupport(
+        version="26.908.9136.0",
+        package_full_name="OpenAI.Codex_26.908.9136.0_x64__2p2nqsd0c76g0",
+        asar_sha256="7a46bd6fe162050afbac27d7d5271d19524e887fa0cdd06c0f2d3fa9b606a31d",
+        backend_sha256="960c111d47afd61669954b9df9e56083e302edbfa3ef6962d81dcc14a30051dc",
+        backend_policy=_POLICY_ROOT / "official-26.908.9136.0.json",
+        backend_policy_sha256="7d1c29cdb6dc0f89b9e2966e776f9e7b47502f55e6ad35cf9c7bdb3fd57a93fb",
+        entries={
+            "webview/assets/app-initial-bcc2ff475eb6.js": "3c15444f96a8d48844258618fe0d4278409e626f0ee563a77d2c669ec669c510",
+            "webview/assets/app-primary-b36a719dba75.js": "255287957d4cf9a21d386948c997114bf039d5c15fc73258d3df5095114a047a",
+            ".vite/build/main-D8abTQQE.js": "b55be874a9b5a262c09a7945df38cec9b0ce8f14bd584ef73d6feca301ed90b4",
+            ".vite/build/window-all-closed-BxbCP6YG.js": "8939f42fd89899a649b8062699b386e9ff933c241155b611c3b5ec7a738673ed",
+        },
+    ),
+    "26.915.3509.0": PackageSupport(
+        version="26.915.3509.0",
+        package_full_name="OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0",
+        asar_sha256="8227f6234cf2cc418ec8bbdeedec03f8d777f85520929ff2d9d38e774f681dfd",
+        backend_sha256="ff9bc3ddc08fa52b43ea170be5f628ffad1c1d9c80c5770b8e2a2f817a9ee3c9",
+        backend_policy=_POLICY_ROOT / "official-26.915.3509.0.json",
+        backend_policy_sha256="eaec7e5f32dae86546b642caf14764c56b9d4baacc27766d71dd6e4dadb192ce",
+        entries={
+            "webview/assets/app-initial-f61fcec072b5.js": "ba7fe9c3b375d7766f9b8e9b686d1bc1987b6a45d5f42aeab9368d81f374dbf0",
+            "webview/assets/app-primary-d11a781a17a9.js": "e92faca60efea1673d1f02c0ba1f839741e3b48fa17a800031cc3b695fbb4568",
+            "webview/assets/composer-project-picker-content-21970821f4a5.js": "cdbabad8aa78f2584815da5ddfed151523c4a0f3ea02ab0a1728e148dbed8452",
+            ".vite/build/main-CIvjSspu.js": "c85af4d37bc53b49fab69f4b48cd941d25b58cafb1b1e5eaa39b18e2497019ff",
+            ".vite/build/bootstrap-CqlvPvwP.js": "5df70ea62a9c1689c4bd7e178900ccdcf67c695a2af8b0cc33e39739b1a3a5b2",
+        },
+    ),
 }
+SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES))
+SUPPORTED_VERSION = max(SUPPORTED_VERSIONS)
 DATA_FILES = (
     ".codex-global-state.json",
     "state_5.sqlite",
@@ -109,22 +143,23 @@ def inspect(source: Path) -> dict[str, Any]:
     backend = app / "resources" / "codex.exe"
     executable = app / "ChatGPT.exe"
     version = _package_version(app, appx)
+    support = SUPPORTED_PACKAGES.get(version or "")
     problems: list[str] = []
     if os.name != "nt":
         problems.append("windows_required")
-    if version != SUPPORTED_VERSION:
+    if support is None:
         problems.append(f"unsupported_version:{version or 'unknown'}")
     asar_digest = _sha256(asar)
-    if asar_digest != OFFICIAL_ASAR_SHA256:
+    if support is not None and asar_digest != support.asar_sha256:
         problems.append("official_asar_sha256_mismatch")
-    if not backend.is_file() or _sha256(backend) != OFFICIAL_BACKEND_SHA256:
+    if support is None or not backend.is_file() or _sha256(backend) != support.backend_sha256:
         problems.append("official_backend_sha256_mismatch")
     if not executable.is_file():
         problems.append("desktop_executable_missing")
     entry_results: dict[str, str] = {}
-    if not problems or problems == ["windows_required"]:
+    if support is not None and (not problems or problems == ["windows_required"]):
         header_size, _, header = hotfix_builder.read_asar(asar)
-        for name, expected in OFFICIAL_ENTRIES.items():
+        for name, expected in support.entries.items():
             _, data = hotfix_builder.read_entry(asar, header_size, hotfix_builder.get_entry_meta(header, name))
             actual = hashlib.sha256(data).hexdigest()
             entry_results[name] = actual
@@ -132,9 +167,10 @@ def inspect(source: Path) -> dict[str, Any]:
                 problems.append(f"official_entry_sha256_mismatch:{name}")
     return {
         "status": "passed" if not problems else "blocked",
-        "supported_version": SUPPORTED_VERSION,
+        "supported_version": version if support is not None else None,
+        "supported_versions": list(SUPPORTED_VERSIONS),
         "detected_version": version,
-        "package_full_name": PACKAGE_FULL_NAME if version == SUPPORTED_VERSION else None,
+        "package_full_name": support.package_full_name if support is not None else None,
         "app_directory": str(app),
         "asar_sha256": asar_digest,
         "backend_sha256": _sha256(backend) if backend.is_file() else None,
@@ -148,6 +184,7 @@ def build(source: Path, target: Path) -> dict[str, Any]:
     result = inspect(source)
     if result["status"] != "passed":
         raise WorkflowError("source_inspection_blocked:" + ",".join(result["problems"]))
+    support = SUPPORTED_PACKAGES[str(result["supported_version"])]
     app = Path(result["app_directory"])
     target = target.resolve()
     if target.exists():
@@ -158,27 +195,27 @@ def build(source: Path, target: Path) -> dict[str, Any]:
     shutil.copytree(_extended(app), _extended(target), symlinks=False)
     source_asar = app / "resources" / "app.asar"
     target_asar = target / "resources" / "app.asar"
-    if _sha256(target_asar) != OFFICIAL_ASAR_SHA256:
+    if _sha256(target_asar) != support.asar_sha256:
         raise WorkflowError("staged_source_copy_mismatch")
     manifest = target / "codex-desktop-workflow-manifest.json"
     built = hotfix_builder.build_archive(
         source_asar,
         target_asar,
         manifest,
-        PACKAGE_FULL_NAME,
-        SUPPORTED_VERSION,
+        support.package_full_name,
+        support.version,
         target,
-        OFFICIAL_BACKEND_POLICY,
-        OFFICIAL_BACKEND_POLICY_SHA256,
+        support.backend_policy,
+        support.backend_policy_sha256,
     )
     public = {
         "schema_version": 1,
         "status": "bundle_qualified",
         "created_at": _now(),
-        "package_version": SUPPORTED_VERSION,
+        "package_version": support.version,
         "source_app": str(app),
         "portable_app": str(target),
-        "official_asar_sha256": OFFICIAL_ASAR_SHA256,
+        "official_asar_sha256": support.asar_sha256,
         "portable_asar_sha256": built.get("portable_asar_sha256"),
         "builder_manifest": str(manifest),
         "backend_mode": "official",
@@ -238,6 +275,32 @@ def _available_loopback_port() -> int:
     with socket.socket() as probe:
         probe.bind(("127.0.0.1", 0))
         return int(probe.getsockname()[1])
+
+
+def _portable_environment(portable: Path, data_home: Path) -> dict[str, str]:
+    return {
+        "CODEX_HOME": str(data_home),
+        "CODEX_CLI_PATH": str((portable / "resources" / "codex.exe").resolve()),
+    }
+
+
+def _registered_backend_match(
+    value: dict[str, Any], portable: Path, expected_sha256: str
+) -> bool:
+    expected = (portable / "resources" / "codex.exe").resolve()
+    for item in value.get("registered_backends") or []:
+        executable = item.get("executable") if isinstance(item, dict) else None
+        if not isinstance(executable, str):
+            continue
+        try:
+            actual = Path(executable).resolve()
+        except OSError:
+            continue
+        if os.path.normcase(str(actual)) != os.path.normcase(str(expected)):
+            continue
+        if actual.is_file() and _sha256(actual) == expected_sha256:
+            return True
+    return False
 
 
 def _websocket_frame(payload: bytes) -> bytes:
@@ -317,20 +380,42 @@ def verify(source: Path, portable: Path, runs_root: Path, observe_seconds: float
     manifest_path = portable / "codex-desktop-workflow-manifest.json"
     if not manifest_path.is_file():
         raise WorkflowError("builder_manifest_missing")
+    manifest_data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    support = SUPPORTED_PACKAGES.get(str(manifest_data.get("package_version") or ""))
+    if support is None:
+        raise WorkflowError("verified_portable_version_unsupported")
+    if source_result["supported_version"] != support.version:
+        raise WorkflowError("source_and_portable_version_mismatch")
     bundle = hotfix_builder.verify_manifest(
         manifest_path,
-        OFFICIAL_BACKEND_POLICY_SHA256,
-        OFFICIAL_BACKEND_POLICY,
+        support.backend_policy_sha256,
+        support.backend_policy,
     )
     contracts = frontend_feature_contracts.validate(Path(source_result["app_directory"]) / "resources" / "app.asar", portable / "resources" / "app.asar")
     runs_root.mkdir(parents=True, exist_ok=True)
+    expected_backend = (portable / "resources" / "codex.exe").resolve()
+    if not expected_backend.is_file():
+        raise WorkflowError("portable_backend_missing")
+    expected_backend_sha256 = _sha256(expected_backend)
+    if expected_backend_sha256 != support.backend_sha256:
+        raise WorkflowError("portable_backend_identity_mismatch")
     runtime: list[dict[str, Any]] = []
-    artifact_id = str(bundle.get("artifact_id") or hotfix_builder.FRONTEND_ATTESTATION_ARTIFACT_ID)
+    artifact_id = str(
+        bundle.get("artifact_id")
+        or hotfix_builder.frontend_attestation_artifact_id(
+            hotfix_builder.profile_for_asar(support.asar_sha256)
+        )
+    )
     for _ in range(launches):
         home = (runs_root / ("home-" + os.urandom(8).hex())).resolve()
         home.mkdir(parents=True, exist_ok=False)
         debug_port = _available_loopback_port()
-        run = IsolatedRun.start(portable / "ChatGPT.exe", runs_root, environment={"CODEX_HOME": str(home)}, debug_port=debug_port)
+        run = IsolatedRun.start(
+            portable / "ChatGPT.exe",
+            runs_root,
+            environment=_portable_environment(portable, home),
+            debug_port=debug_port,
+        )
         deadline = time.monotonic() + observe_seconds
         latest: dict[str, Any] = {}
         attestation_requested = False
@@ -342,10 +427,13 @@ def verify(source: Path, portable: Path, runs_root: Path, observe_seconds: float
                 attestation_requested = _request_renderer_attestation(debug_port)
             time.sleep(1)
         latest = run.status("codex.exe")
+        backend_match = _registered_backend_match(
+            latest, portable, expected_backend_sha256
+        )
         attestation = _attestations(home, artifact_id, (run.run_directory / "stdout.log", run.run_directory / "stderr.log"))
         close = _normal_codex_stop(run, 30)
-        runtime.append({"run_directory": str(run.run_directory), "codex_home": str(home), "observed_seconds": observe_seconds, "attestation_requested": attestation_requested, "pre_close": latest, "close": close, "attestation": attestation})
-        if latest.get("status") != "running" or not latest.get("registered_backends") or close.get("close_status") != "closed" or attestation.get("status") != "passed":
+        runtime.append({"run_directory": str(run.run_directory), "codex_home": str(home), "observed_seconds": observe_seconds, "attestation_requested": attestation_requested, "pre_close": latest, "close": close, "attestation": attestation, "backend_expected_sha256": expected_backend_sha256, "backend_match": backend_match})
+        if latest.get("status") != "running" or not backend_match or close.get("close_status") != "closed" or attestation.get("status") != "passed":
             failure = {"status": "blocked", "stage": "isolated_renderer_qualification", "bundle": bundle, "feature_contracts": contracts, "runtime": runtime, "content_logged": False}
             (portable / "codex-desktop-workflow-verification-failed.json").write_text(json.dumps(failure, ensure_ascii=False, indent=2), encoding="utf-8")
             raise WorkflowError("two_run_lifecycle_validation_failed")
@@ -409,7 +497,12 @@ def launch(portable: Path, data: Path, runs_root: Path) -> dict[str, Any]:
         raise WorkflowError("verified_portable_manifest_missing")
     if not data.is_dir():
         raise WorkflowError("independent_data_directory_missing")
-    return IsolatedRun.start(portable / "ChatGPT.exe", runs_root, environment={"CODEX_HOME": str(data)}, debug_port=_available_loopback_port())._load()
+    return IsolatedRun.start(
+        portable / "ChatGPT.exe",
+        runs_root,
+        environment=_portable_environment(portable, data),
+        debug_port=_available_loopback_port(),
+    )._load()
 
 
 def status(run: Path) -> dict[str, Any]:

@@ -1,0 +1,100 @@
+from __future__ import annotations
+
+import hashlib
+from pathlib import Path
+import re
+import unittest
+
+import frontend_contract_26915
+import hotfix_builder
+from codex_desktop_workflow import workflow
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+CHINESE_LABEL = "\u4e2d\u6587\u8bf4\u660e"
+NEW_26915_FILES = (
+    SRC / "hotfix_profile_26915_3509.py",
+    SRC / "frontend_contract_26915.py",
+    SRC / "frontend_work_contract_26915.py",
+    SRC / "codex_desktop_workflow" / "data" / "frontend_scenarios_26915.js",
+)
+
+
+class ReleaseSurfaceTests(unittest.TestCase):
+    def test_profile_registry_contains_both_supported_versions(self):
+        profiles = {
+            profile["package_version"]: profile
+            for profile in hotfix_builder.FRONTEND_PROFILES
+        }
+        self.assertTrue(set(workflow.SUPPORTED_VERSIONS).issubset(profiles))
+        for version, support in workflow.SUPPORTED_PACKAGES.items():
+            profile = hotfix_builder.profile_for_asar(support.asar_sha256)
+            self.assertIsNotNone(profile)
+            self.assertEqual(profile["package_version"], version)
+
+    def test_profile_scoped_release_identities_are_stable(self):
+        legacy = hotfix_builder.profile_for_asar(
+            workflow.SUPPORTED_PACKAGES["26.908.9136.0"].asar_sha256
+        )
+        current = hotfix_builder.profile_for_asar(
+            workflow.SUPPORTED_PACKAGES["26.915.3509.0"].asar_sha256
+        )
+        self.assertEqual(
+            hotfix_builder.frontend_attestation_artifact_id(legacy),
+            "2.6.9-7a46bd6fe162",
+        )
+        self.assertEqual(
+            hotfix_builder.frontend_attestation_artifact_id(current),
+            "2.6.10-8227f6234cf2",
+        )
+        self.assertEqual(hotfix_builder.frontend_validator_version(legacy), "2.4.6")
+        self.assertEqual(hotfix_builder.frontend_validator_version(current), "2.4.7")
+
+    def test_backend_policy_hashes_match_committed_bytes(self):
+        for support in workflow.SUPPORTED_PACKAGES.values():
+            digest = hashlib.sha256(support.backend_policy.read_bytes()).hexdigest()
+            self.assertEqual(digest, support.backend_policy_sha256)
+
+    def test_source_and_tests_use_an_english_baseline(self):
+        cjk = re.compile(r"[\u4e00-\u9fff]")
+        for path in list(SRC.rglob("*.py")) + list(SRC.rglob("*.js")) + list((ROOT / "tests").rglob("*.py")):
+            self.assertIsNone(cjk.search(path.read_text(encoding="utf-8")), str(path))
+
+    def test_readme_is_english_by_default(self):
+        english = (ROOT / "README.md").read_text(encoding="utf-8")
+        chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+        self.assertIn(f"[{CHINESE_LABEL}](README.zh-CN.md)", english)
+        self.assertIn("[English README](README.md)", chinese)
+        self.assertFalse((ROOT / "README.en.md").exists())
+        cjk = re.compile(r"[\u4e00-\u9fff]")
+        self.assertEqual(
+            [line for line in english.splitlines() if cjk.search(line)],
+            [f"[{CHINESE_LABEL}](README.zh-CN.md)"],
+        )
+        self.assertIsNotNone(cjk.search(chinese))
+
+    def test_26915_fixtures_do_not_carry_private_project_names(self):
+        forbidden = (
+            "mailassistant",
+            "report-generator",
+            "ensolventia",
+            "automatic-score",
+            "c87575b4-dba0-471e-a647-31ce8575c46b",
+            "423dd422-a9ef-4fc4-8c97-583483a49850",
+        )
+        for path in NEW_26915_FILES:
+            text = path.read_text(encoding="utf-8")
+            for value in forbidden:
+                self.assertNotIn(value, text, str(path))
+        self.assertIn(
+            "project-alpha",
+            (SRC / "codex_desktop_workflow" / "data" / "frontend_scenarios_26915.js").read_text(
+                encoding="utf-8"
+            ),
+        )
+        self.assertTrue(frontend_contract_26915._scenario_source())
+
+
+if __name__ == "__main__":
+    unittest.main()

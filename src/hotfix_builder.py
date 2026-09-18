@@ -14,9 +14,10 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
+import hotfix_profile_26915_3509 as _profile_3509
 
 
-BUILDER_VERSION = "2.6.9"
+BUILDER_VERSION = "2.6.10"
 FRONTEND_CONTRACT_VALIDATOR_VERSION = "2.4.6"
 
 # This probe is part of the hash-gated renderer entry.  It runs in the real
@@ -114,11 +115,32 @@ FRONTEND_ATTESTATION_FEATURES = (
 )
 
 
+def frontend_builder_version(profile: dict[str, Any] | None = None) -> str:
+    """Keep released profile identities stable across later builder upgrades."""
+    if profile and profile.get("profile_spec_id") == "26915_3509":
+        return "2.6.10"
+    return "2.6.9"
+
+
+def frontend_validator_version(profile: dict[str, Any] | None = None) -> str:
+    if profile and profile.get("profile_spec_id") == "26915_3509":
+        return "2.4.7"
+    return FRONTEND_CONTRACT_VALIDATOR_VERSION
+
+
+def frontend_attestation_artifact_id(profile: dict[str, Any] | None = None) -> str:
+    if profile and profile.get("asar_source_sha256"):
+        return f"{frontend_builder_version(profile)}-{str(profile['asar_source_sha256'])[:12]}"
+    return FRONTEND_ATTESTATION_ARTIFACT_ID
+
+
 def is_split_frontend_profile(profile: dict[str, Any] | None) -> bool:
     return bool(profile and profile.get("secondary_entry_path"))
 
 
 def renderer_attestation_script(profile: dict[str, Any] | None = None) -> bytes:
+    if profile and profile.get("profile_spec_id") == "26915_3509":
+        return _profile_3509.ATTESTATION_SCRIPT
     # The exact entry has a deliberately tiny source-map padding budget.  The
     # full semantic suite remains in frontend_feature_contracts.py; this live
     # probe proves that the same hash-gated entry is executing in Electron and
@@ -139,6 +161,10 @@ def renderer_attestation_script(profile: dict[str, Any] | None = None) -> bytes:
 
 
 def renderer_attestation_module(profile: dict[str, Any] | None = None) -> bytes:
+    if profile and profile.get("profile_spec_id") == "26915_3509":
+        return _profile_3509.ATTESTATION_MODULE
+    artifact_id = frontend_attestation_artifact_id(profile)
+    validator_version = frontend_validator_version(profile)
     features = json.dumps(FRONTEND_ATTESTATION_FEATURES, separators=(",", ":"))
     # 26.831 split the row-state constructor into app-primary.  The signed
     # module executes the actual app-initial functions in the live renderer;
@@ -173,10 +199,10 @@ const x={mW:_W,iCi:EAi,TJo:U3o,pIo:oKo,_wi:zji,dCi:NAi,jvi:eEi,remoteName:qZx,rJ
         newest_import = newest_import.replace("app-initial-d9bed9d614d8.js", "app-initial-bcc2ff475eb6.js")
     newest_run = "\nr(x);delete self.x;\n" if newest else ""
     latest = f'''{newest_import}const F={features};
-const M="{FRONTEND_ATTESTATION_MARKER}",A="{FRONTEND_ATTESTATION_ARTIFACT_ID}",R=crypto.randomUUID();
+const M="{FRONTEND_ATTESTATION_MARKER}",A="{artifact_id}",R=crypto.randomUUID();
 const ok=(v,m)=>{{if(!v)throw Error(m)}},pass=(p,ids,e)=>ids.forEach(id=>p[id]={{passed:true,evidence:e}});
 export function r(x){{
- const emit=(status,extra={{}})=>x.ay.dispatchMessage("log-message",{{level:status==="failed"?"error":"info",message:M+JSON.stringify({{schema_version:6,validator_version:"{FRONTEND_CONTRACT_VALIDATOR_VERSION}",artifact_id:A,run_id:R,status,content_logged:false,transport:"renderer_log_message_v1",...extra}})}});
+ const emit=(status,extra={{}})=>x.ay.dispatchMessage("log-message",{{level:status==="failed"?"error":"info",message:M+JSON.stringify({{schema_version:6,validator_version:"{validator_version}",artifact_id:A,run_id:R,status,content_logged:false,transport:"renderer_log_message_v1",...extra}})}});
  emit("module_loaded");
  let p=Object.fromEntries(F.map(id=>[id,{{passed:false,evidence:"unexecuted"}}])),failures=[],colors={{}},computed={{}},ssh=null;
  let run=(code,fn)=>{{try{{fn()}}catch(e){{failures.push(code+":"+String(e?.message??e).slice(0,160))}}}};
@@ -224,7 +250,7 @@ export function r(x){{
     # entry proves it loaded the signed module.
     script = f'''const F={features};
 const M="{FRONTEND_ATTESTATION_MARKER}";
-const A="{FRONTEND_ATTESTATION_ARTIFACT_ID}";
+const A="{artifact_id}";
 const R=crypto.randomUUID();
 const ok=(v,m)=>{{if(!v)throw Error(m)}};
 export function r(x){{
@@ -315,7 +341,7 @@ def validate_renderer_attestation_log_bridge(
         profile.get("attestation_log_bridge_identifier", "ay")
         if profile else "ay"
     )
-    if identifier not in {"ay", "U", "H", "h"}:
+    if identifier not in {"ay", "U", "H", "h", "Er"}:
         raise HotfixError("Frontend attestation log-bridge identifier is unsupported")
     signatures = tuple(
         profile.get("attestation_log_bridge_signatures", ())
@@ -378,6 +404,8 @@ def automation_priority_membership_functions(
     profile: dict[str, Any] | None,
 ) -> list[str]:
     """Return the real membership chain for the exact frontend generation."""
+    if profile and profile.get("profile_spec_id") == "26915_3509":
+        return ["b3", "CZs"]
     if profile is not None and profile.get("package_version") in {"26.908.4834.0", "26.908.9136.0"}:
         return ["m6", "iLo"]
     if profile is not None and profile.get("package_version") == "26.903.9818.0":
@@ -1178,6 +1206,7 @@ PROCESS_REGISTRY_REMOVED_MAIN_26908_4834_PORTABLE_SHA256 = (
     "79a4d9a07eea4489ad55e9722fefdc9e8af3be0d32ee9b1d05b5847cceab7c92"
 )
 PROCESS_REGISTRY_REMOVED_MAIN_SOURCE_SHA256S = {
+    "c85af4d37bc53b49fab69f4b48cd941d25b58cafb1b1e5eaa39b18e2497019ff",
     PROCESS_REGISTRY_REMOVED_MAIN_SHA256,
     PROCESS_REGISTRY_REMOVED_MAIN_26825_6671_SHA256,
     PROCESS_REGISTRY_REMOVED_MAIN_26831_2377_SHA256,
@@ -1187,6 +1216,7 @@ PROCESS_REGISTRY_REMOVED_MAIN_SOURCE_SHA256S = {
 }
 PROCESS_REGISTRY_REMOVED_MAIN_ALL_SHA256S = {
     *PROCESS_REGISTRY_REMOVED_MAIN_SOURCE_SHA256S,
+    "d8264931feba03450be5645b7e0cb0fd8c15190c875162a082f2df6fe3f3a132",
     PROCESS_REGISTRY_REMOVED_MAIN_PORTABLE_SHA256,
     PROCESS_REGISTRY_REMOVED_MAIN_26825_6671_PORTABLE_SHA256,
     PROCESS_REGISTRY_REMOVED_MAIN_26831_2377_PORTABLE_SHA256,
@@ -2345,6 +2375,9 @@ def run_frontend_contract_validator(source_asar: Path, portable_asar: Path) -> d
     validator = Path(__file__).with_name("frontend_feature_contracts.py")
     if not validator.is_file():
         raise HotfixError("Frontend feature-contract validator is missing")
+    expected_validator_version = frontend_validator_version(
+        profile_for_asar(sha256_path(source_asar))
+    )
     completed = subprocess.run(
         [
             sys.executable,
@@ -2365,7 +2398,7 @@ def run_frontend_contract_validator(source_asar: Path, portable_asar: Path) -> d
     if (
         completed.returncode != 0
         or result.get("schema_version") != 2
-        or result.get("validator_version") != FRONTEND_CONTRACT_VALIDATOR_VERSION
+        or result.get("validator_version") != expected_validator_version
         or result.get("status") != "bundle_qualified_only"
         or result.get("blocked_feature_ids")
     ):
@@ -2784,7 +2817,17 @@ _SPEC_26908_9136 = _FrontendProfileSpec(
     official_feature_signatures=_profile_9136.OFFICIAL_FEATURE_SIGNATURES,
 )
 
+FRONTEND_PROFILES = FRONTEND_PROFILES + (_profile_3509.PROFILE,)
+_SPEC_26915_3509 = _FrontendProfileSpec(
+    pairs=_profile_3509.PAIRS,
+    official_features=frozenset(_profile_3509.OFFICIAL_FEATURE_SIGNATURES),
+    injected_global_identifier_counts={}, protected_official_signatures=tuple(),
+    official_feature_signatures=_profile_3509.OFFICIAL_FEATURE_SIGNATURES,
+)
+
 def spec_for_profile(profile: dict[str, Any] | None) -> _FrontendProfileSpec:
+    if profile and profile.get("asar_source_sha256") == _profile_3509.PROFILE["asar_source_sha256"]:
+        return _SPEC_26915_3509
     if profile is not None and profile.get("asar_source_sha256") == "7a46bd6fe162050afbac27d7d5271d19524e887fa0cdd06c0f2d3fa9b606a31d":
         return _SPEC_26908_9136
     if (
@@ -2843,6 +2886,8 @@ def spec_for_profile(profile: dict[str, Any] | None) -> _FrontendProfileSpec:
 def secondary_pairs_for_profile(
     profile: dict[str, Any] | None,
 ) -> dict[str, tuple[tuple[bytes, bytes], ...]]:
+    if profile and profile.get("profile_spec_id") == "26915_3509":
+        return _profile_3509.SECONDARY_PAIRS
     if profile and profile.get("package_version") in {"26.908.4834.0", "26.908.9136.0"}:
         return _PROFILE_26908_4834_SECONDARY_PAIRS
     if profile and profile.get("package_version") == "26.903.9818.0":
@@ -2857,6 +2902,8 @@ def secondary_pairs_for_profile(
 def secondary_official_signatures_for_profile(
     profile: dict[str, Any] | None,
 ) -> dict[str, tuple[bytes, ...]]:
+    if profile and profile.get("profile_spec_id") == "26915_3509":
+        return _profile_3509.SECONDARY_OFFICIAL_FEATURE_SIGNATURES
     if profile and profile.get("package_version") in {"26.908.4834.0", "26.908.9136.0"}:
         return _PROFILE_26908_4834_SECONDARY_OFFICIAL_FEATURE_SIGNATURES
     if profile and profile.get("package_version") == "26.903.9818.0":
@@ -3015,7 +3062,7 @@ def patch_current_frontend_entry(
             "status": "patched",
             "reason": None,
             "marker": FRONTEND_ATTESTATION_MARKER,
-            "artifact_id": FRONTEND_ATTESTATION_ARTIFACT_ID,
+            "artifact_id": frontend_attestation_artifact_id(profile),
             "feature_count": len(FRONTEND_ATTESTATION_FEATURES),
         }
     patched = equalize_current_entry_length(entry, patched)
@@ -3128,7 +3175,9 @@ def patch_portable_update_status_entry(entry: bytes, profile: dict[str, Any]) ->
     expected = profile.get("main_entry_source_sha256")
     if not expected or sha256_bytes(entry) != expected:
         raise HotfixError("Portable update-menu source hash differs from its exact profile")
-    if profile.get("package_version") in {"26.903.9818.0", "26.908.4834.0", "26.908.9136.0"}:
+    if profile.get("profile_spec_id") == "26915_3509":
+        old, fixed = UPDATE_MENU_26903_OLD.replace(b"_7()", b"h7()"), UPDATE_MENU_26903_NEW.replace(b"_7()", b"h7()")
+    elif profile.get("package_version") in {"26.903.9818.0", "26.908.4834.0", "26.908.9136.0"}:
         old, fixed = UPDATE_MENU_26903_OLD, UPDATE_MENU_26903_NEW
     elif is_split_frontend_profile(profile):
         old, fixed = UPDATE_MENU_26831_OLD, UPDATE_MENU_26831_NEW
@@ -3184,6 +3233,10 @@ def patch_frontend_attestation_protocol_entry(
             FRONTEND_ATTESTATION_PROTOCOL_HANDLER_26831_NEW
             if latest else FRONTEND_ATTESTATION_PROTOCOL_HANDLER_NEW
         )
+    if profile.get("profile_spec_id") == "26915_3509":
+        resolver_old, resolver_new = _profile_3509.PROTOCOL_OLD, _profile_3509.PROTOCOL_NEW
+        handler_old, handler_fixed = _profile_3509.HANDLER_OLD, _profile_3509.HANDLER_NEW
+        old_count, new_count = entry.count(resolver_old), entry.count(resolver_new)
     handler_old_count = entry.count(handler_old)
     handler_new_count = entry.count(handler_fixed)
     compaction_old_count = entry.count(FRONTEND_ATTESTATION_PROTOCOL_COMPACTION_OLD)
@@ -3196,6 +3249,10 @@ def patch_frontend_attestation_protocol_entry(
             f", compaction_old={compaction_old_count}, compaction_new={compaction_new_count}"
         )
     patched = entry.replace(resolver_old, resolver_new, 1)
+    if profile.get("profile_spec_id") == "26915_3509":
+        if patched.count(_profile_3509.PROTOCOL_COMPACTION_OLD) != 1:
+            raise HotfixError("Protocol pathname expression differs from the signed source")
+        patched = patched.replace(_profile_3509.PROTOCOL_COMPACTION_OLD, _profile_3509.PROTOCOL_COMPACTION_NEW, 1)
     patched = patched.replace(
         handler_old,
         handler_fixed,
@@ -4422,7 +4479,9 @@ def inspect_archive(
         }
 
     public = {
-        "builder_version": BUILDER_VERSION,
+        "builder_version": frontend_builder_version(
+            frontend_profile if current_profile else None
+        ),
         "frontend_profile_id": frontend_profile_id(frontend_profile)
         if current_profile
         else "signature-detected",
@@ -5025,7 +5084,7 @@ def build_archive(
             "26.901.6511.0",
             "26.903.9818.0",
             "26.908.4834.0",
-            "26.908.9136.0",
+            "26.908.9136.0", "26.915.3509.0",
         }:
             if not protocol_entry_path:
                 raise HotfixError("Frontend attestation protocol entry is missing from the profile")
@@ -5040,15 +5099,15 @@ def build_archive(
                 "entry_path": str(protocol_entry_path),
                 "source_sha256": sha256_bytes(protocol_plan["source"]),
                 "patched_sha256": sha256_bytes(protocol_plan["data"]),
-                "old_signature_count": protocol_plan["data"].count(
-                    FRONTEND_ATTESTATION_PROTOCOL_26908_OLD
+                "old_signature_count": 0 if frontend_profile.get("profile_spec_id") == "26915_3509" else protocol_plan["data"].count(
+                    _profile_3509.PROTOCOL_OLD if frontend_profile.get("profile_spec_id") == "26915_3509" else FRONTEND_ATTESTATION_PROTOCOL_26908_OLD
                     if frontend_profile.get("package_version") in {"26.908.4834.0", "26.908.9136.0"}
                     else FRONTEND_ATTESTATION_PROTOCOL_26903_OLD
                     if frontend_profile.get("package_version") == "26.903.9818.0"
                     else FRONTEND_ATTESTATION_PROTOCOL_OLD
                 ),
-                "new_signature_count": protocol_plan["data"].count(
-                    FRONTEND_ATTESTATION_PROTOCOL_26908_NEW
+                "new_signature_count": protocol_plan["data"].count(_profile_3509.PROTOCOL_NEW) if frontend_profile.get("profile_spec_id") == "26915_3509" else protocol_plan["data"].count(
+                    _profile_3509.PROTOCOL_NEW if frontend_profile.get("profile_spec_id") == "26915_3509" else FRONTEND_ATTESTATION_PROTOCOL_26908_NEW
                     if frontend_profile.get("package_version") in {"26.908.4834.0", "26.908.9136.0"}
                     else FRONTEND_ATTESTATION_PROTOCOL_26903_NEW
                     if frontend_profile.get("package_version") == "26.903.9818.0"
@@ -5606,7 +5665,7 @@ def build_archive(
     )
     manifest = {
         "schema_version": 2,
-        "builder_version": BUILDER_VERSION,
+        "builder_version": frontend_builder_version(frontend_profile),
         "frontend_profile_id": inspection["frontend_profile_id"],
         "frontend_profile": {
             "package_version": frontend_profile["package_version"],
@@ -5716,14 +5775,14 @@ def verify_manifest(
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if manifest.get("schema_version") != 2:
         raise HotfixError("Unsupported manifest schema")
-    if manifest.get("builder_version") != BUILDER_VERSION:
+    source_profile = profile_for_asar(str(manifest.get("official_source_sha256") or ""))
+    if manifest.get("builder_version") != frontend_builder_version(source_profile):
         raise HotfixError("Manifest builder version differs")
     if not isinstance(manifest.get("frontend_profile_id"), str) or not manifest[
         "frontend_profile_id"
     ]:
         raise HotfixError("Manifest frontend profile is invalid")
     declared_profile = manifest.get("frontend_profile")
-    source_profile = profile_for_asar(str(manifest.get("official_source_sha256") or ""))
     spec = spec_for_profile(source_profile)
     contracts_required = is_split_frontend_profile(source_profile)
     if source_profile is not None:
@@ -5803,7 +5862,8 @@ def verify_manifest(
         if (
             not isinstance(runtime_attestation, dict)
             or runtime_attestation.get("schema_version") != 2
-            or runtime_attestation.get("validator_version") != FRONTEND_CONTRACT_VALIDATOR_VERSION
+            or runtime_attestation.get("validator_version")
+            != frontend_validator_version(source_profile)
             or runtime_attestation.get("status") != "bundle_qualified_only"
             or runtime_attestation.get("content_logged") is not False
             or not isinstance(runtime_attestation.get("live_renderer_probe"), dict)
@@ -5817,7 +5877,8 @@ def verify_manifest(
         # module bytes) it was released with; only the current release must
         # reproduce the live module text exactly.
         current_artifact = (
-            manifest.get("artifact_id") == FRONTEND_ATTESTATION_ARTIFACT_ID
+            manifest.get("artifact_id")
+            == frontend_attestation_artifact_id(source_profile)
         )
         if current_artifact and (
             not isinstance(module, dict)
@@ -5852,7 +5913,7 @@ def verify_manifest(
                 if source_profile.get("package_version") in {
                     "26.903.9818.0",
                     "26.908.4834.0",
-            "26.908.9136.0",
+            "26.908.9136.0", "26.915.3509.0",
                 }
                 else 2
             ),
@@ -5910,6 +5971,9 @@ def verify_manifest(
             if is_26908_route
             else FRONTEND_ATTESTATION_PROTOCOL_HANDLER_26903_OLD if is_26903_route else protocol_handler_old
         )
+        if source_profile.get("profile_spec_id") == "26915_3509":
+            resolver_old, resolver_new = _profile_3509.PROTOCOL_OLD, _profile_3509.PROTOCOL_NEW
+            handler_old_value, handler_new = _profile_3509.HANDLER_OLD, _profile_3509.HANDLER_NEW
         if (
             sha256_bytes(protocol_data) != route["patched_sha256"]
             or protocol_data.count(resolver_new) != 1

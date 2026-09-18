@@ -15,7 +15,7 @@ class WorkflowTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as raw:
             source = Path(raw) / "official"
             source.mkdir()
-            with mock.patch.object(workflow, "inspect", return_value={"status": "passed", "app_directory": str(source), "problems": []}):
+            with mock.patch.object(workflow, "inspect", return_value={"status": "passed", "app_directory": str(source), "problems": [], "supported_version": "26.915.3509.0"}):
                 with self.assertRaisesRegex(workflow.WorkflowError, "nested"):
                     workflow.build(source, source / "portable")
 
@@ -45,9 +45,17 @@ class WorkflowTests(unittest.TestCase):
             (app / "resources" / "codex.exe").write_bytes(b"wrong-backend")
             (app / "ChatGPT.exe").write_bytes(b"desktop")
             result = workflow.inspect(package)
-            self.assertEqual(result["detected_version"], workflow.SUPPORTED_VERSION)
+            self.assertEqual(result["detected_version"], "26.908.9136.0")
+            self.assertEqual(result["supported_version"], "26.908.9136.0")
             self.assertIn("official_asar_sha256_mismatch", result["problems"])
             self.assertIn("official_backend_sha256_mismatch", result["problems"])
+
+    def test_both_supported_versions_are_declared(self):
+        self.assertEqual(
+            workflow.SUPPORTED_VERSIONS,
+            ("26.908.9136.0", "26.915.3509.0"),
+        )
+        self.assertEqual(workflow.SUPPORTED_VERSION, "26.915.3509.0")
 
     def test_import_excludes_credentials_and_uses_sqlite_backup(self):
         with tempfile.TemporaryDirectory() as raw:
@@ -87,7 +95,7 @@ class WorkflowTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as raw:
             source, target = Path(raw) / "official", Path(raw) / "portable"
             source.mkdir(); target.mkdir()
-            with mock.patch.object(workflow, "inspect", return_value={"status": "passed", "app_directory": str(source), "problems": []}):
+            with mock.patch.object(workflow, "inspect", return_value={"status": "passed", "app_directory": str(source), "problems": [], "supported_version": "26.915.3509.0"}):
                 with self.assertRaisesRegex(workflow.WorkflowError, "target_must_not_exist"):
                     workflow.build(source, target)
 
@@ -130,6 +138,32 @@ class WorkflowTests(unittest.TestCase):
             frame = workflow._websocket_frame(b"quit")
         self.assertEqual(frame[:6], bytes((0x81, 0x84)) + b"abcd")
         self.assertEqual(bytes(value ^ b"abcd"[index % 4] for index, value in enumerate(frame[6:])), b"quit")
+
+    def test_portable_environment_pins_the_packaged_backend(self):
+        with tempfile.TemporaryDirectory() as raw:
+            portable = Path(raw) / "portable"
+            (portable / "resources").mkdir(parents=True)
+            backend = portable / "resources" / "codex.exe"
+            backend.write_bytes(b"official-backend")
+            home = Path(raw) / "home"
+            home.mkdir()
+            environment = workflow._portable_environment(portable, home)
+            self.assertEqual(environment["CODEX_HOME"], str(home))
+            self.assertEqual(environment["CODEX_CLI_PATH"], str(backend.resolve()))
+            value = {
+                "registered_backends": [
+                    {
+                        "executable": str(backend),
+                    }
+                ]
+            }
+            digest = workflow._sha256(backend)
+            self.assertTrue(
+                workflow._registered_backend_match(value, portable, digest)
+            )
+            self.assertFalse(
+                workflow._registered_backend_match(value, portable, "0" * 64)
+            )
 
 
 if __name__ == "__main__":
