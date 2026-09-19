@@ -3,6 +3,7 @@
 [![tests](https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/workflows/tests.yml/badge.svg)](https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/workflows/tests.yml)
 [![release](https://img.shields.io/github/v/release/catterhu1207-ux/codex-desktop-workflow)](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[项目主页](https://catterhu1207-ux.github.io/codex-desktop-workflow/)
 
 **让 Codex Desktop 在多任务并行时更容易看懂、排序和继续工作。**
 

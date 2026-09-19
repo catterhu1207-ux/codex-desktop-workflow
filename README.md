@@ -3,6 +3,7 @@
 [![tests](https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/workflows/tests.yml/badge.svg)](https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/workflows/tests.yml)
 [![release](https://img.shields.io/github/v/release/catterhu1207-ux/codex-desktop-workflow)](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[Landing page](https://catterhu1207-ux.github.io/codex-desktop-workflow/)
 
 **Make Codex Desktop easier to scan, prioritize, and resume when you run many tasks in parallel.**
 

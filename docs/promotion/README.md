@@ -4,7 +4,7 @@ This folder contains the public launch drafts for `v0.2.1`. Nothing in this fold
 
 | Day | Channel | Asset | Status |
 |---|---|---|---|
-| 1–3 | Repository, release, Pages | README, landing page, demo GIF, release bundle | Ready to publish |
+| 1–3 | Repository, release, Pages | README, landing page, demo GIF, release bundle | Published as `v0.2.1` |
 | 4 | V2EX 分享创造 | `chinese-posts.md` — V2EX | Ready for approval |
 | 4 | 知乎 | `chinese-posts.md` — Zhihu | Ready for approval |
 | 5 | Show HN | `english-posts.md` — Show HN | Ready for approval |
@@ -15,6 +15,10 @@ This folder contains the public launch drafts for `v0.2.1`. Nothing in this fold
 | 14 | awesome-codex-workflows | `awesome-list.md` | Ready for approval |
 | 21 | Product Hunt | `english-posts.md` — Product Hunt | Wait for 20 installs |
 | 30 | Retrospective | `measurement.md` | Pending data |
+
+## Manual repository setting
+
+Upload `docs/assets/social-preview.png` in repository Settings → General → Social preview. GitHub does not expose this upload through its public REST API.
 
 ## Message hierarchy
 
