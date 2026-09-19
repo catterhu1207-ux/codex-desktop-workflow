@@ -1271,7 +1271,10 @@ def _validate_renderer_probe(
     )
     _, protocol_entry = builder.read_entry(portable_asar, header_size, protocol_meta)
     latest = builder.is_split_frontend_profile(profile)
-    if profile.get("profile_spec_id") == "26915_3509":
+    if profile.get("profile_spec_id") == "26915_4065":
+        from hotfix_profile_26915_4065 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile.get("profile_spec_id") == "26915_3509":
         from hotfix_profile_26915_3509 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
         resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
     elif profile.get("package_version") == "26.903.9818.0":
@@ -1901,6 +1904,9 @@ def validate(source_asar: Path, portable_asar: Path, node: str = "node") -> dict
 
     source_hash = builder.sha256_path(source_asar)
     profile = builder.profile_for_asar(source_hash)
+    if profile and profile.get("profile_spec_id") == "26915_4065":
+        from frontend_contract_26915_4065 import validate as validate_4065
+        return validate_4065(source_asar, portable_asar, node)
     if profile and profile.get("profile_spec_id") == "26915_3509":
         from frontend_contract_26915 import validate as validate_26915
         return validate_26915(source_asar, portable_asar, node)

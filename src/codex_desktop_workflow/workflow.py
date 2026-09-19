@@ -65,6 +65,15 @@ SUPPORTED_PACKAGES = {
             ".vite/build/bootstrap-CqlvPvwP.js": "5df70ea62a9c1689c4bd7e178900ccdcf67c695a2af8b0cc33e39739b1a3a5b2",
         },
     ),
+    "26.915.4065.0": PackageSupport(
+        version='26.915.4065.0',
+        package_full_name='OpenAI.Codex_26.915.4065.0_x64__2p2nqsd0c76g0',
+        asar_sha256='b8aeb817cd1ee6ef50efe8a97985d3be41de89688a5addfe0a444e1e52348096',
+        backend_sha256='bc45017e8239dc150258f69309ced9df6bbcdf5b8e4f346decf780ac0999e226',
+        backend_policy=_POLICY_ROOT / "official-26.915.4065.0.json",
+        backend_policy_sha256='c81e789a31869f221730ade3cf901a9664cda843381da3d1cc3d3f2038b1f631',
+        entries={'webview/assets/app-initial-6c4523b43a11.js': '146b5204b30bd1766f19c0dd5b76f23515a77708ae80bb66ded6469e11431374', 'webview/assets/app-primary-355549b35da9.js': 'b2ba870a12454be5134b17f538b8caa3314ce5d7b9f0412b637168d3aa682a24', '.vite/build/main-LM8MUIFp.js': 'c71bf3ffecef5fd390b4cd16d120d39dce30d30bffe3c563c8c74c1b691da018', '.vite/build/bootstrap-DK4EfNwt.js': 'dbdbdd3ef5dde93dd196a59846edf244dc653341213e0fd45eebb133b5df10ba', 'webview/assets/composer-project-picker-content-cee23446c3c9.js': '4c284006857748142df2855f486ba4c5724b9e71688736ff4fae6a586d98e1ec'},
+    ),
 }
 SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES))
 SUPPORTED_VERSION = max(SUPPORTED_VERSIONS)
@@ -314,6 +323,29 @@ def _websocket_frame(payload: bytes) -> bytes:
     return header + mask + bytes(value ^ mask[index % 4] for index, value in enumerate(payload))
 
 
+def _websocket_message(connection: Any) -> dict[str, Any]:
+    def read_exact(size: int) -> bytes:
+        result = bytearray()
+        while len(result) < size:
+            block = connection.recv(size - len(result))
+            if not block:
+                raise OSError("websocket_closed")
+            result.extend(block)
+        return bytes(result)
+
+    first, second = read_exact(2)
+    if first != 0x81 or second & 0x80:
+        raise ValueError("unsupported_websocket_frame")
+    size = second & 0x7F
+    if size == 126:
+        size = struct.unpack("!H", read_exact(2))[0]
+    elif size == 127:
+        size = struct.unpack("!Q", read_exact(8))[0]
+    if size > 1024 * 1024:
+        raise ValueError("websocket_response_too_large")
+    return json.loads(read_exact(size))
+
+
 def _cdp_evaluate(port: int, expression: str, timeout: float = 3) -> bool:
     try:
         with urllib.request.urlopen(f"http://127.0.0.1:{port}/json/list", timeout=timeout) as response:
@@ -336,7 +368,7 @@ def _cdp_evaluate(port: int, expression: str, timeout: float = 3) -> bool:
             connection.sendall(handshake)
             response = b""
             while b"\r\n\r\n" not in response and len(response) < 16384:
-                block = connection.recv(4096)
+                block = connection.recv(1)
                 if not block:
                     break
                 response += block
@@ -344,18 +376,31 @@ def _cdp_evaluate(port: int, expression: str, timeout: float = 3) -> bool:
                 return False
             command = {"id": 1, "method": "Runtime.evaluate", "params": {"expression": expression, "returnByValue": True}}
             connection.sendall(_websocket_frame(json.dumps(command, separators=(",", ":")).encode("utf-8")))
-        return True
+            deadline = time.monotonic() + timeout
+            while time.monotonic() < deadline:
+                reply = _websocket_message(connection)
+                if reply.get("id") != 1:
+                    continue
+                result = reply.get("result", {})
+                return not reply.get("error") and not result.get("exceptionDetails") and result.get("result", {}).get("value") is True
+        return False
     except (OSError, ValueError, StopIteration, json.JSONDecodeError, TimeoutError):
         return False
 
 
 def _request_codex_quit(port: int, timeout: float = 3) -> bool:
     """Invoke the same quit-app action exposed to the supported renderer."""
-    return _cdp_evaluate(port, "electronBridge.sendMessageFromView({type:'quit-app'})", timeout)
+    return _cdp_evaluate(port, "(electronBridge.sendMessageFromView({type:'quit-app'}),true)", timeout)
 
 
 def _request_renderer_attestation(port: int, timeout: float = 3) -> bool:
-    return _cdp_evaluate(port, "location.href='app://-/local/codex-desktop-workflow-acceptance'", timeout)
+    # Navigating while Electron is still awaiting its first load aborts bootstrap.
+    expression = """(() => {
+        if (document.readyState !== 'complete' || !globalThis.electronBridge) return false;
+        setTimeout(() => { location.href = 'app://-/local/codex-desktop-workflow-acceptance'; }, 500);
+        return true;
+    })()"""
+    return _cdp_evaluate(port, expression, timeout)
 
 
 def _normal_codex_stop(run: IsolatedRun, timeout: float, backend_name: str = "codex.exe") -> dict[str, Any]:

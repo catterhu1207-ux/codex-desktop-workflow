@@ -53,9 +53,9 @@ class WorkflowTests(unittest.TestCase):
     def test_both_supported_versions_are_declared(self):
         self.assertEqual(
             workflow.SUPPORTED_VERSIONS,
-            ("26.908.9136.0", "26.915.3509.0"),
+            ("26.908.9136.0", "26.915.3509.0", "26.915.4065.0"),
         )
-        self.assertEqual(workflow.SUPPORTED_VERSION, "26.915.3509.0")
+        self.assertEqual(workflow.SUPPORTED_VERSION, "26.915.4065.0")
 
     def test_import_excludes_credentials_and_uses_sqlite_backup(self):
         with tempfile.TemporaryDirectory() as raw:

@@ -230,7 +230,7 @@ try {
     }
     $versionInfo = Get-Content -LiteralPath $versionFile -Raw | ConvertFrom-Json
     $packageName = if ($versionInfo.package) { [string]$versionInfo.package } else { "codex-desktop-workflow" }
-    $packageVersion = if ($versionInfo.version) { [string]$versionInfo.version } else { "0.2.1" }
+    $packageVersion = if ($versionInfo.version) { [string]$versionInfo.version } else { "0.2.2" }
     Write-Ok "Bundle prepared for $packageName $packageVersion"
 
     $officialSource = Get-OfficialSource $Source

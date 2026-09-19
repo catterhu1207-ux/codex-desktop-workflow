@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.2.2 - 2026-09-19
+
+- Add exact Windows desktop 26.915.4065.0 support and its unchanged official backend policy.
+- Adapt renderer routes, attention states, remote project labels, live ordering, file drop and exact attestation route.
+- Preserve prior profile identities and add 12 opt-in real-bundle regression checks.
+- Wait for initial page completion and a successful renderer response before navigating to the acceptance route, avoiding a startup-abort race.
+- Record supplemental task-resume evidence separately from the public official-backend release.
+
 ## v0.2.1
 
 - Added a one-command Windows installer and verified release bundle.

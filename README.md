@@ -84,8 +84,11 @@ Unknown versions, hash mismatches, ambiguous patch matches, failed contracts, or
 
 ## Current support
 
-Version `v0.2.1` supports Windows x64 with the official bundled `codex.exe`:
+Version `v0.2.2` supports Windows x64 with the official bundled `codex.exe`:
 
+- Codex Desktop `26.915.4065.0`
+  - Official `app.asar`: `b8aeb817cd1ee6ef50efe8a97985d3be41de89688a5addfe0a444e1e52348096`
+  - Official `codex.exe`: `bc45017e8239dc150258f69309ced9df6bbcdf5b8e4f346decf780ac0999e226`
 - Codex Desktop `26.915.3509.0`
   - Official `app.asar` identity: `8227f6234cf2cc418ec8bbdeedec03f8d777f85520929ff2d9d38e774f681dfd`
   - Official `codex.exe` identity: `ff9bc3ddc08fa52b43ea170be5f628ffad1c1d9c80c5770b8e2a2f817a9ee3c9`
@@ -97,7 +100,7 @@ A matching version number with different bytes is rejected.
 
 See [COMPATIBILITY.md](COMPATIBILITY.md) for the full support matrix.
 
-The cross-provider Responses compatibility patch is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat), but that desktop combination has not completed independent qualification in this repository and is therefore not marked as supported in `v0.2.1`.
+The cross-provider Responses compatibility patch is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat), but that desktop combination has not completed independent qualification in this repository and is therefore not marked as supported in `v0.2.2`.
 
 ## Manual install and development
 
@@ -110,7 +113,7 @@ Requirements:
 Assume the official package is located at:
 
 ```text
-C:\official\OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0
+C:\official\OpenAI.Codex_26.915.4065.0_x64__2p2nqsd0c76g0
 ```
 
 Install:
@@ -126,7 +129,7 @@ py -3 -m venv .venv
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe inspect `
-  --source C:\official\OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0
+  --source C:\official\OpenAI.Codex_26.915.4065.0_x64__2p2nqsd0c76g0
 ```
 
 ### 2. Build an independent modified copy
@@ -135,7 +138,7 @@ The target directory must not already exist:
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe build `
-  --source C:\official\OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0 `
+  --source C:\official\OpenAI.Codex_26.915.4065.0_x64__2p2nqsd0c76g0 `
   --target C:\codex-workflow\app
 ```
 
@@ -143,7 +146,7 @@ The target directory must not already exist:
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe verify `
-  --source C:\official\OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0 `
+  --source C:\official\OpenAI.Codex_26.915.4065.0_x64__2p2nqsd0c76g0 `
   --portable C:\codex-workflow\app `
   --runs-root C:\codex-workflow\verification
 ```

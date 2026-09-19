@@ -16,6 +16,10 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 CHINESE_LABEL = "\u4e2d\u6587\u8bf4\u660e"
 NEW_26915_FILES = (
+    SRC / "hotfix_profile_26915_4065.py",
+    SRC / "frontend_contract_26915_4065.py",
+    SRC / "frontend_work_contract_26915_4065.py",
+    SRC / "codex_desktop_workflow/data/frontend_scenarios_26915_4065.js",
     SRC / "hotfix_profile_26915_3509.py",
     SRC / "frontend_contract_26915.py",
     SRC / "frontend_work_contract_26915.py",
@@ -59,6 +63,13 @@ class ReleaseSurfaceTests(unittest.TestCase):
         )
         self.assertEqual(hotfix_builder.frontend_validator_version(legacy), "2.4.6")
         self.assertEqual(hotfix_builder.frontend_validator_version(current), "2.4.7")
+
+    def test_new_profile_identity_and_packaged_scenarios(self):
+        import frontend_contract_26915_4065 as contract
+        profile = hotfix_builder.profile_for_asar(workflow.SUPPORTED_PACKAGES["26.915.4065.0"].asar_sha256)
+        self.assertEqual(hotfix_builder.frontend_attestation_artifact_id(profile), "2.6.11-b8aeb817cd1e")
+        self.assertEqual(hotfix_builder.frontend_validator_version(profile), "2.4.8")
+        self.assertIn("project-alpha", contract._scenario_source())
 
     def test_backend_policy_hashes_match_committed_bytes(self):
         for support in workflow.SUPPORTED_PACKAGES.values():

@@ -84,8 +84,11 @@ irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/do
 
 ## 当前支持范围
 
-`v0.2.1` 支持 Windows x64，并使用官方包内的 `codex.exe`：
+`v0.2.2` 支持 Windows x64，并使用官方包内的 `codex.exe`：
 
+- Codex Desktop `26.915.4065.0`
+  - 官方 `app.asar`：`b8aeb817cd1ee6ef50efe8a97985d3be41de89688a5addfe0a444e1e52348096`
+  - 官方 `codex.exe`：`bc45017e8239dc150258f69309ced9df6bbcdf5b8e4f346decf780ac0999e226`
 - Codex Desktop `26.915.3509.0`
   - 官方 `app.asar` 标识：`8227f6234cf2cc418ec8bbdeedec03f8d777f85520929ff2d9d38e774f681dfd`
   - 官方 `codex.exe` 标识：`ff9bc3ddc08fa52b43ea170be5f628ffad1c1d9c80c5770b8e2a2f817a9ee3c9`
@@ -97,7 +100,7 @@ irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/do
 
 完整支持矩阵见 [COMPATIBILITY.md](COMPATIBILITY.md)。
 
-第三方 Responses 兼容服务的后端修复在 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat) 中公开，但尚未作为本仓库的桌面组合完成独立验收，因此 `v0.2.1` 不把它标为可用组合。
+第三方 Responses 兼容服务的后端修复在 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat) 中公开，但尚未作为本仓库的桌面组合完成独立验收，因此 `v0.2.2` 不把它标为可用组合。
 
 ## 手动安装与开发
 
@@ -110,7 +113,7 @@ irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/do
 下面假设官方包根目录为：
 
 ```text
-C:\official\OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0
+C:\official\OpenAI.Codex_26.915.4065.0_x64__2p2nqsd0c76g0
 ```
 
 安装：
@@ -126,7 +129,7 @@ py -3 -m venv .venv
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe inspect `
-  --source C:\official\OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0
+  --source C:\official\OpenAI.Codex_26.915.4065.0_x64__2p2nqsd0c76g0
 ```
 
 ### 2. 生成独立修改版
@@ -135,7 +138,7 @@ py -3 -m venv .venv
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe build `
-  --source C:\official\OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0 `
+  --source C:\official\OpenAI.Codex_26.915.4065.0_x64__2p2nqsd0c76g0 `
   --target C:\codex-workflow\app
 ```
 
@@ -143,7 +146,7 @@ py -3 -m venv .venv
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe verify `
-  --source C:\official\OpenAI.Codex_26.915.3509.0_x64__2p2nqsd0c76g0 `
+  --source C:\official\OpenAI.Codex_26.915.4065.0_x64__2p2nqsd0c76g0 `
   --portable C:\codex-workflow\app `
   --runs-root C:\codex-workflow\verification
 ```
