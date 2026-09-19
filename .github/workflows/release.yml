@@ -1,0 +1,62 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: |
+          python -m pip install -e .
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+      - name: Build all wheels
+        run: python -m pip wheel . --wheel-dir dist\wheels
+      - name: Assemble bundle
+        shell: pwsh
+        run: |
+          $version = "$env:GITHUB_REF_NAME" -replace '^v', ''
+          if (-not $version) { throw "Release version is empty" }
+          $bundle = Join-Path "dist" "bundle"
+          New-Item -ItemType Directory -Path $bundle -Force | Out-Null
+          Copy-Item "dist\wheels\*.whl" $bundle
+          Copy-Item "install.ps1" $bundle
+          Copy-Item "README.md" $bundle
+          Copy-Item "LICENSE" $bundle
+          @{ package = "codex-desktop-workflow"; version = $version } |
+            ConvertTo-Json |
+            Set-Content -LiteralPath (Join-Path $bundle "version.json") -Encoding utf8NoBOM
+          $zip = Join-Path "dist" "codex-desktop-workflow-bundle.zip"
+          Compress-Archive -Path "$bundle\*" -DestinationPath $zip -Force
+          $hash = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          $installHash = (Get-FileHash -LiteralPath "install.ps1" -Algorithm SHA256).Hash.ToLowerInvariant()
+          @(
+            "$hash  codex-desktop-workflow-bundle.zip",
+            "$installHash  install.ps1"
+          ) | Set-Content -LiteralPath "dist\SHA256SUMS.txt" -Encoding utf8NoBOM
+      - name: Publish release assets
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = $env:GITHUB_REF_NAME
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag "dist\codex-desktop-workflow-bundle.zip" "install.ps1" "dist\SHA256SUMS.txt" --clobber
+          }
+          else {
+            gh release create $tag "dist\codex-desktop-workflow-bundle.zip" "install.ps1" "dist\SHA256SUMS.txt" --title $tag --notes-file RELEASE_NOTES.md
+          }

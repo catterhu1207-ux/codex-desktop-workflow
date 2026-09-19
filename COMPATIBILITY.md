@@ -1,6 +1,6 @@
 # Compatibility
 
-| Component | Status in v0.2.0 |
+| Component | Status in v0.2.1 |
 |---|---|
 | Windows x64 | Supported |
 | Codex desktop `26.915.3509.0`, official ASAR `8227f6234cf2cc418ec8bbdeedec03f8d777f85520929ff2d9d38e774f681dfd` | Supported; independently verified by two isolated launches |

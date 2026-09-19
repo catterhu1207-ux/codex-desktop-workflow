@@ -1,14 +1,37 @@
 # codex-desktop-workflow
 
+[![tests](https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/workflows/tests.yml/badge.svg)](https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/workflows/tests.yml)
+[![release](https://img.shields.io/github/v/release/catterhu1207-ux/codex-desktop-workflow)](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **让 Codex Desktop 在多任务并行时更容易看懂、排序和继续工作。**
 
-当你同时跑很多 Codex 任务时，真正的问题往往不是“任务能不能执行”，而是：**下一步该看哪个？哪个在等你确认计划？哪个只是普通未读？远程项目到底是哪一个？切换全局模型会不会把已有任务的上下文弄乱？**
+![合成任务 before/after 演示](docs/assets/demo-zh.gif)
+
+## 一条命令安装
+
+```powershell
+irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/download/install.ps1 | iex
+```
+
+安装器会找到你自己的官方 Codex Desktop 包，生成独立副本，执行两轮隔离启动验证，并保持官方应用不变。
+
+- **按实际开始时间排序**：初次加载和实时更新使用同一任务/进程时间规则。
+- **状态颜色**：黄色表示真实待实施计划，红色表示置顶关注，蓝色表示普通未读。
+- **远程项目可读名称**：侧栏、搜索、Work 选择器、悬浮提示和无障碍文本不再直接暴露项目 UUID。
+- **保留每个任务的设置**：已有任务保留有效的模型和推理设置；全局默认只用于新任务。
+
+> 非官方项目，与 OpenAI 无隶属关系。不提供、不下载、不重新分发官方二进制，也不替换官方应用。
+
+当你同时跑很多 Codex 任务时，真正的问题往往在于排序和提示是否清楚，而不是执行本身：**下一步该看哪个？哪个在等你确认计划？哪个只是普通未读？远程项目到底是哪一个？切换全局模型会不会把已有任务的上下文弄乱？**
 
 `codex-desktop-workflow` 是一个面向 Windows 的本地生成工具。它读取你自己已经取得的、受支持的官方 Codex 应用目录，在新目录中生成独立的实验性修改版，并对版本、完整性、关键界面入口和真实启动结果进行校验。
 
 > 不提供、不下载、不重新分发官方二进制。你必须自行提供受支持的官方 Codex 安装目录。
 
 [English README](README.md)
+
+安装细节、失败处理和验收证据见 [FAQ](docs/FAQ.zh-CN.md)、[故障排查](docs/TROUBLESHOOTING.md) 和脱敏的 [验收记录](ACCEPTANCE.md)。
 
 ## 30 秒看懂它解决什么
 
@@ -60,22 +83,22 @@
 
 ## 当前支持范围
 
-`v0.2.0` 支持 Windows x64，并使用官方包内的 `codex.exe`：
+`v0.2.1` 支持 Windows x64，并使用官方包内的 `codex.exe`：
 
 - Codex Desktop `26.915.3509.0`
-  - 官方 `app.asar` SHA-256：`8227f6234cf2cc418ec8bbdeedec03f8d777f85520929ff2d9d38e774f681dfd`
-  - 官方 `codex.exe` SHA-256：`ff9bc3ddc08fa52b43ea170be5f628ffad1c1d9c80c5770b8e2a2f817a9ee3c9`
+  - 官方 `app.asar` 标识：`8227f6234cf2cc418ec8bbdeedec03f8d777f85520929ff2d9d38e774f681dfd`
+  - 官方 `codex.exe` 标识：`ff9bc3ddc08fa52b43ea170be5f628ffad1c1d9c80c5770b8e2a2f817a9ee3c9`
 - Codex Desktop `26.908.9136.0`
-  - 官方 `app.asar` SHA-256：`7a46bd6fe162050afbac27d7d5271d19524e887fa0cdd06c0f2d3fa9b606a31d`
+  - 官方 `app.asar` 标识：`7a46bd6fe162050afbac27d7d5271d19524e887fa0cdd06c0f2d3fa9b606a31d`
   - 既有 `v0.1.0` 隔离启动验收记录继续适用
 
 版本号相同但文件不匹配也会拒绝。
 
 完整支持矩阵见 [COMPATIBILITY.md](COMPATIBILITY.md)。
 
-第三方 Responses 兼容服务的后端修复在 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat) 中公开，但尚未作为本仓库的桌面组合完成独立验收，因此 `v0.2.0` 不把它标为可用组合。
+第三方 Responses 兼容服务的后端修复在 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat) 中公开，但尚未作为本仓库的桌面组合完成独立验收，因此 `v0.2.1` 不把它标为可用组合。
 
-## 最短使用路径
+## 手动安装与开发
 
 需要：
 
@@ -172,7 +195,7 @@ codex-desktop-workflow stop --run C:\codex-workflow\daily-runs\run-<id>
 
 - 所有构建都写入不存在的新目录，拒绝源目标嵌套和重复补丁。
 - 未知版本、摘要不符、补丁匹配不唯一、功能契约失败或运行证明缺失都会停止。
-- 生成报告包含用户选择的本地路径；分享前请自行检查。
+- 生成报告会记录你选择的位置；分享前请自行检查。
 - 报告不记录任务正文、凭据或令牌。
 - 项目不提供、不下载、不重新分发官方 Codex 二进制。
 - 本项目是非官方实验性社区工具，不代表 OpenAI，也不替代官方更新和支持。

@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import hashlib
+import os
 from pathlib import Path
 import re
+import subprocess
 import unittest
 
 import frontend_contract_26915
@@ -18,6 +20,13 @@ NEW_26915_FILES = (
     SRC / "frontend_contract_26915.py",
     SRC / "frontend_work_contract_26915.py",
     SRC / "codex_desktop_workflow" / "data" / "frontend_scenarios_26915.js",
+)
+ASSETS = (
+    ROOT / "docs" / "assets" / "demo-en.gif",
+    ROOT / "docs" / "assets" / "demo-zh.gif",
+    ROOT / "docs" / "assets" / "before-after-en.png",
+    ROOT / "docs" / "assets" / "before-after-zh.png",
+    ROOT / "docs" / "assets" / "social-preview.png",
 )
 
 
@@ -73,6 +82,42 @@ class ReleaseSurfaceTests(unittest.TestCase):
             [f"[{CHINESE_LABEL}](README.zh-CN.md)"],
         )
         self.assertIsNotNone(cjk.search(chinese))
+
+    def test_release_assets_and_pages_are_declared(self):
+        for path in ASSETS:
+            self.assertTrue(path.is_file(), str(path))
+            self.assertGreater(path.stat().st_size, 1000, str(path))
+        release = (ROOT / ".github" / "workflows" / "release.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("codex-desktop-workflow-bundle.zip", release)
+        self.assertIn("SHA256SUMS.txt", release)
+        pages = (ROOT / ".github" / "workflows" / "pages.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("actions/deploy-pages", pages)
+
+    def test_installer_script_parses(self):
+        installer = ROOT / "install.ps1"
+        self.assertIn(
+            "install.ps1 | iex",
+            (ROOT / "README.md").read_text(encoding="utf-8"),
+        )
+        if os.name != "nt":
+            self.skipTest("Windows PowerShell is required for parser validation")
+        command = (
+            "$errors=$null; "
+            f"[System.Management.Automation.Language.Parser]::ParseFile('{installer}',"
+            "[ref]$null,[ref]$errors)|Out-Null; "
+            "if($errors){$errors|ForEach-Object{$_.Message};exit 1}"
+        )
+        completed = subprocess.run(
+            ["powershell", "-NoProfile", "-NonInteractive", "-Command", command],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
 
     def test_26915_fixtures_do_not_carry_private_project_names(self):
         forbidden = (

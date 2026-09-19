@@ -1,0 +1,25 @@
+title: "[show and tell] "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share what worked, the Codex Desktop version, and which workflow feature helped. Use synthetic task names and remove private paths.
+  - type: input
+    id: version
+    attributes:
+      label: Codex Desktop version
+    validations:
+      required: true
+  - type: textarea
+    id: workflow
+    attributes:
+      label: What changed in your workflow?
+    validations:
+      required: true
+  - type: textarea
+    id: friction
+    attributes:
+      label: What was still confusing?
+    validations:
+      required: false

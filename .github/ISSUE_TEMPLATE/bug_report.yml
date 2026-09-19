@@ -1,0 +1,41 @@
+name: Verified behavior bug
+description: Report a reproducible problem after a supported build completes
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Workflow version and Codex Desktop version
+      placeholder: codex-desktop-workflow v0.2.1; Codex Desktop 26.915.3509.0
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Use synthetic task names where possible.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      render: text
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed credentials, task bodies, local usernames, and private paths.
+          required: true

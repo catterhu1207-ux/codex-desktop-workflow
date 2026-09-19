@@ -1,3 +1,12 @@
+# v0.2.1
+
+Distribution and onboarding release for the `26.915.3509.0` workflow, retaining `26.908.9136.0`.
+
+- Adds a one-command Windows installer with a verified release bundle and checksum.
+- Pins installs to the packaged official backend, keeps the official app untouched, and verifies two isolated launches by default.
+- Adds a bilingual landing page, README demo, FAQ, troubleshooting, roadmap, issue templates, and community feedback surfaces.
+- Keeps official binaries, patched backends, user data, and credentials out of release assets.
+
 # v0.2.0
 
 Experimental source release for Windows x64 Codex desktop `26.915.3509.0`, retaining the `26.908.9136.0` profile.

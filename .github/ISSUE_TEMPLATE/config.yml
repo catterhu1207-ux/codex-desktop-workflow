@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Installation and compatibility questions
+    url: https://github.com/catterhu1207-ux/codex-desktop-workflow/discussions
+    about: Ask setup questions or share what worked without opening a bug report.
+  - name: Security concern
+    url: https://github.com/catterhu1207-ux/codex-desktop-workflow/security/policy
+    about: Read the security policy before sharing sensitive details.

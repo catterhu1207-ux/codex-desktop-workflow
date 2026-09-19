@@ -1,0 +1,52 @@
+name: Installation problem
+description: Report a failure before or during build and verification
+title: "[install] "
+labels: ["installation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Remove task titles, paths, usernames, tokens, and screenshots that contain personal data before submitting.
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 24H2 x64
+    validations:
+      required: true
+  - type: input
+    id: codex
+    attributes:
+      label: Detected Codex Desktop version
+      description: The version printed by `inspect`, or "unknown" if detection failed.
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Failing stage
+      options:
+        - install.ps1 download or checksum
+        - inspect
+        - build
+        - verify
+        - -MigrateData
+        - launcher or shortcut
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: Redacted error
+      description: Paste the command and the complete redacted error code or message.
+      render: text
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed credentials, task bodies, local usernames, and private paths.
+          required: true

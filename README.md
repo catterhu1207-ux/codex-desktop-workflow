@@ -1,6 +1,27 @@
 # codex-desktop-workflow
 
+[![tests](https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/workflows/tests.yml/badge.svg)](https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/workflows/tests.yml)
+[![release](https://img.shields.io/github/v/release/catterhu1207-ux/codex-desktop-workflow)](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **Make Codex Desktop easier to scan, prioritize, and resume when you run many tasks in parallel.**
+
+![Illustrative before/after demo built from synthetic tasks](docs/assets/demo-en.gif)
+
+## Install in one command
+
+```powershell
+irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/download/install.ps1 | iex
+```
+
+The installer finds your official Codex Desktop package, builds an independent copy, verifies two isolated launches, and leaves the official app untouched.
+
+- **Start-time ordering** — initial loading and live updates use the same task/process recency rule.
+- **Attention colors** — yellow means a real pending plan, red means pinned attention, and blue means ordinary unread.
+- **Readable remote names** — sidebar, search, Work picker, tooltips, and accessibility text stop exposing project UUIDs.
+- **Per-task settings preserved** — existing tasks keep valid model and reasoning settings; the global default applies to new tasks.
+
+> Unofficial project. Not affiliated with OpenAI. It does not provide, download, or redistribute official binaries, and it does not replace the official app.
 
 When several Codex tasks are active at once, the hard part is often not execution. It is knowing **what needs attention next, which task is waiting for implementation, which one you pinned, which remote project you are looking at, and whether changing a global model default will disturb an existing task.**
 
@@ -9,6 +30,8 @@ When several Codex tasks are active at once, the hard part is often not executio
 > It does not provide, download, or redistribute official binaries. You must supply your own supported official Codex installation.
 
 [中文说明](README.zh-CN.md)
+
+See [FAQ](docs/FAQ.md), [Troubleshooting](docs/TROUBLESHOOTING.md), and the redacted [acceptance report](ACCEPTANCE.md) for install details, failure handling, and verification evidence.
 
 ## The problem in 30 seconds
 
@@ -60,22 +83,22 @@ Unknown versions, hash mismatches, ambiguous patch matches, failed contracts, or
 
 ## Current support
 
-Version `v0.2.0` supports Windows x64 with the official bundled `codex.exe`:
+Version `v0.2.1` supports Windows x64 with the official bundled `codex.exe`:
 
 - Codex Desktop `26.915.3509.0`
-  - Official `app.asar` SHA-256: `8227f6234cf2cc418ec8bbdeedec03f8d777f85520929ff2d9d38e774f681dfd`
-  - Official `codex.exe` SHA-256: `ff9bc3ddc08fa52b43ea170be5f628ffad1c1d9c80c5770b8e2a2f817a9ee3c9`
+  - Official `app.asar` identity: `8227f6234cf2cc418ec8bbdeedec03f8d777f85520929ff2d9d38e774f681dfd`
+  - Official `codex.exe` identity: `ff9bc3ddc08fa52b43ea170be5f628ffad1c1d9c80c5770b8e2a2f817a9ee3c9`
 - Codex Desktop `26.908.9136.0`
-  - Official `app.asar` SHA-256: `7a46bd6fe162050afbac27d7d5271d19524e887fa0cdd06c0f2d3fa9b606a31d`
+  - Official `app.asar` identity: `7a46bd6fe162050afbac27d7d5271d19524e887fa0cdd06c0f2d3fa9b606a31d`
   - Existing `v0.1.0` isolated-renderer acceptance evidence remains applicable
 
 A matching version number with different bytes is rejected.
 
 See [COMPATIBILITY.md](COMPATIBILITY.md) for the full support matrix.
 
-The cross-provider Responses compatibility patch is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat), but that desktop combination has not completed independent qualification in this repository and is therefore not marked as supported in `v0.2.0`.
+The cross-provider Responses compatibility patch is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat), but that desktop combination has not completed independent qualification in this repository and is therefore not marked as supported in `v0.2.1`.
 
-## Shortest path
+## Manual install and development
 
 Requirements:
 

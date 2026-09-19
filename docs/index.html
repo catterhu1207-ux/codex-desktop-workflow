@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Codex Desktop Workflow — priority-aware multitasking</title>
+  <meta name="description" content="An unofficial local workflow mod for Codex Desktop: start-time ordering, plan-waiting yellow, pinned red, unread blue, and readable remote project names.">
+  <meta property="og:title" content="Codex Desktop Workflow">
+  <meta property="og:description" content="Make Codex Desktop easier to scan, prioritize, and resume when many tasks run in parallel.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://catterhu1207-ux.github.io/codex-desktop-workflow/">
+  <meta property="og:image" content="https://catterhu1207-ux.github.io/codex-desktop-workflow/assets/social-preview.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav">
+      <a class="brand" href="https://github.com/catterhu1207-ux/codex-desktop-workflow">codex-desktop-workflow</a>
+      <div class="nav-links">
+        <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow">GitHub</a>
+        <button id="language-toggle" type="button" aria-label="Switch language">中文</button>
+      </div>
+    </nav>
+    <div class="hero-copy">
+      <p class="eyebrow" data-en="Unofficial Codex Desktop workflow mod" data-zh="非官方 Codex Desktop 工作流增强补丁">Unofficial Codex Desktop workflow mod</p>
+      <h1 data-en="Know which Codex task needs you next." data-zh="一眼看出下一个该处理哪个 Codex 任务。">Know which Codex task needs you next.</h1>
+      <p class="lede" data-en="Start-time ordering, plan-waiting yellow, pinned red, ordinary unread blue, and human-readable remote project names — built as a verified local copy." data-zh="按实际开始时间排序；黄色表示计划待实施，红色表示置顶关注，蓝色表示普通未读；远程项目显示人类可读名称。所有改动都在独立本地副本中完成。">Start-time ordering, plan-waiting yellow, pinned red, ordinary unread blue, and human-readable remote project names — built as a verified local copy.</p>
+      <div class="install">
+        <code id="install-command">irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/download/install.ps1 | iex</code>
+        <button id="copy-command" type="button" data-en="Copy" data-zh="复制">Copy</button>
+      </div>
+      <p class="fine-print" data-en="Windows x64 · You supply your own official Codex package · No official binaries are redistributed" data-zh="Windows x64 · 使用你自己的官方 Codex 包 · 不重新分发官方二进制">Windows x64 · You supply your own official Codex package · No official binaries are redistributed</p>
+    </div>
+    <img class="demo" src="assets/demo-en.gif" data-en-src="assets/demo-en.gif" data-zh-src="assets/demo-zh.gif" alt="Illustrative before and after view of synthetic Codex tasks">
+  </header>
+
+  <main>
+    <section class="strip">
+      <div><strong data-en="Plan waiting" data-zh="等待计划">Plan waiting</strong><span class="dot yellow"></span></div>
+      <div><strong data-en="Pinned attention" data-zh="置顶关注">Pinned attention</strong><span class="dot red"></span></div>
+      <div><strong data-en="Ordinary unread" data-zh="普通未读">Ordinary unread</strong><span class="dot blue"></span></div>
+    </section>
+
+    <section class="features">
+      <article>
+        <h2 data-en="Start time, not last noise" data-zh="按实际开始时间，而不是最后一条消息">Start time, not last noise</h2>
+        <p data-en="Initial loading and live updates use the same recency comparator: the task or process start time." data-zh="初次加载和实时更新使用同一规则：按任务或进程实际开始时间排序。">Initial loading and live updates use the same recency comparator: the task or process start time.</p>
+      </article>
+      <article>
+        <h2 data-en="Readable remote projects" data-zh="远程项目显示可读名称">Readable remote projects</h2>
+        <p data-en="Sidebar, search, Work picker, prompt, tooltip, and accessibility text show a recognizable name while routing identity stays unchanged." data-zh="侧栏、搜索、Work 选择器、提示、悬浮提示和无障碍文本显示可识别名称，同时保留原路由身份。">Sidebar, search, Work picker, prompt, tooltip, and accessibility text show a recognizable name while routing identity stays unchanged.</p>
+      </article>
+      <article>
+        <h2 data-en="Preserve parallel context" data-zh="并行任务上下文不被打乱">Preserve parallel context</h2>
+        <p data-en="Existing tasks keep their valid model and reasoning settings; the global default applies to new tasks." data-zh="已有任务保留有效的模型和推理设置；全局默认只作用于新任务。">Existing tasks keep their valid model and reasoning settings; the global default applies to new tasks.</p>
+      </article>
+    </section>
+
+    <section class="proof">
+      <div>
+        <p class="eyebrow" data-en="Why trust it" data-zh="为什么可以验证">Why trust it</p>
+        <h2 data-en="Built as a copy, not an override." data-zh="生成独立副本，不覆盖官方安装。">Built as a copy, not an override.</h2>
+        <p data-en="The installer validates the exact official package, keeps the official bundled backend, runs two isolated 60-second launches, and compares the official app.asar before and after." data-zh="安装器会核对精确的官方包，保留官方自带后端，执行两轮各 60 秒的隔离启动验证，并在安装前后比较官方 app.asar 是否保持不变。">The installer validates the exact official package, keeps the official bundled backend, runs two isolated 60-second launches, and compares the official app.asar before and after.</p>
+        <ul>
+          <li data-en="No account takeover, proxy, or telemetry." data-zh="不接管账号，不做代理，不加入遥测。">No account takeover, proxy, or telemetry.</li>
+          <li data-en="No official app.asar, codex.exe, or patched backend in the release bundle." data-zh="Release bundle 不包含官方 app.asar、codex.exe 或补丁后端。">No official app.asar, codex.exe, or patched backend in the release bundle.</li>
+          <li data-en="Unknown versions or mismatched package identities stop instead of guessing." data-zh="未知版本或包标识不一致时会停止，而不是猜测继续。">Unknown versions or mismatched package identities stop instead of guessing.</li>
+        </ul>
+      </div>
+      <a class="proof-link" href="https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/ACCEPTANCE.md">
+        <span data-en="Read the redacted two-run acceptance report" data-zh="查看脱敏的两轮验收记录">Read the redacted two-run acceptance report</span>
+        <strong>ACCEPTANCE.md →</strong>
+      </a>
+    </section>
+
+    <section class="faq">
+      <p class="eyebrow" data-en="Questions before you install" data-zh="安装前常见问题">Questions before you install</p>
+      <details>
+        <summary data-en="Do I need a Codex account?" data-zh="需要 Codex 账号吗？">Do I need a Codex account?</summary>
+        <p data-en="Yes. The tool builds a local copy; it does not provide or share an account. Sign in inside the copy after it launches." data-zh="需要。工具只生成本地副本，不提供或共享账号。启动副本后请在其中登录。">Yes. The tool builds a local copy; it does not provide or share an account. Sign in inside the copy after it launches.</p>
+      </details>
+      <details>
+        <summary data-en="Will it replace my official app?" data-zh="会替换我的官方应用吗？">Will it replace my official app?</summary>
+        <p data-en="No. The source app is not modified, and the installer verifies that its app.asar stays unchanged." data-zh="不会。源应用不会被修改，安装器会核对 app.asar 前后一致。">No. The source app is not modified, and the installer verifies that its app.asar stays unchanged.</p>
+      </details>
+      <details>
+        <summary data-en="Can I keep my existing tasks?" data-zh="原有任务还能保留吗？">Can I keep my existing tasks?</summary>
+        <p data-en="Yes. Close Codex, then run the installer with -MigrateData. It creates an independent snapshot and excludes authentication and configuration." data-zh="可以。关闭 Codex 后使用 -MigrateData 再运行安装器；它会创建独立数据快照，并排除认证和配置。">Yes. Close Codex, then run the installer with -MigrateData. It creates an independent snapshot and excludes authentication and configuration.</p>
+      </details>
+      <details>
+        <summary data-en="Is it affiliated with OpenAI?" data-zh="和 OpenAI 官方有关系吗？">Is it affiliated with OpenAI?</summary>
+        <p data-en="No. It is an unofficial community project. It does not distribute official binaries or replace official support." data-zh="没有。这是非官方社区项目，不重新分发官方二进制，也不替代官方支持。">No. It is an unofficial community project. It does not distribute official binaries or replace official support.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow">GitHub</a>
+    <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/README.md" data-en="README" data-zh="英文 README">README</a>
+    <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/README.zh-CN.md" data-en="中文 README" data-zh="中文 README">中文 README</a>
+    <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/issues">Issues</a>
+    <span data-en="Unofficial project. Not affiliated with OpenAI." data-zh="非官方项目，与 OpenAI 无隶属关系。">Unofficial project. Not affiliated with OpenAI.</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

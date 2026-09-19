@@ -1,0 +1,34 @@
+name: New Codex Desktop adaptation
+description: Request support for a new exact Codex Desktop build
+title: "[adaptation] "
+labels: ["needs-triage"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Codex Desktop version
+      placeholder: 26.xxx.yyyy.0
+    validations:
+      required: true
+  - type: input
+    id: asar
+    attributes:
+      label: Official app.asar SHA-256
+      description: Run `inspect` and copy only the hash if you can.
+    validations:
+      required: false
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Behavior that changed
+      description: Describe visible workflow differences, not task content.
+      render: text
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I am not asking for official binaries or credentials to be uploaded.
+          required: true
