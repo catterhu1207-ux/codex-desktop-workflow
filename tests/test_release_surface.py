@@ -16,6 +16,11 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 CHINESE_LABEL = "\u4e2d\u6587\u8bf4\u660e"
 NEW_26915_FILES = (
+    SRC / "hotfix_profile_26917_6896.py",
+    SRC / "frontend_contract_26917_6896.py",
+    SRC / "frontend_work_contract_26917_6896.py",
+    SRC / "frontend_row_contract_26917_6896.py",
+    SRC / "codex_desktop_workflow/data/frontend_scenarios_26917_6896.js",
     SRC / "hotfix_profile_26915_4065.py",
     SRC / "frontend_contract_26915_4065.py",
     SRC / "frontend_work_contract_26915_4065.py",
@@ -69,6 +74,13 @@ class ReleaseSurfaceTests(unittest.TestCase):
         profile = hotfix_builder.profile_for_asar(workflow.SUPPORTED_PACKAGES["26.915.4065.0"].asar_sha256)
         self.assertEqual(hotfix_builder.frontend_attestation_artifact_id(profile), "2.6.11-b8aeb817cd1e")
         self.assertEqual(hotfix_builder.frontend_validator_version(profile), "2.4.8")
+        self.assertIn("project-alpha", contract._scenario_source())
+
+    def test_6896_profile_identity_and_packaged_scenarios(self):
+        import frontend_contract_26917_6896 as contract
+        profile = hotfix_builder.profile_for_asar(workflow.SUPPORTED_PACKAGES["26.917.6896.0"].asar_sha256)
+        self.assertEqual(hotfix_builder.frontend_attestation_artifact_id(profile), "2.6.12-00b7936388d1")
+        self.assertEqual(hotfix_builder.frontend_validator_version(profile), "2.4.9")
         self.assertIn("project-alpha", contract._scenario_source())
 
     def test_backend_policy_hashes_match_committed_bytes(self):
@@ -130,14 +142,13 @@ class ReleaseSurfaceTests(unittest.TestCase):
         )
         self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
 
-    def test_26915_fixtures_do_not_carry_private_project_names(self):
+    def test_profile_fixtures_do_not_carry_private_paths_or_tokens(self):
         forbidden = (
-            "mailassistant",
-            "report-generator",
-            "ensolventia",
-            "automatic-score",
-            "c87575b4-dba0-471e-a647-31ce8575c46b",
-            "423dd422-a9ef-4fc4-8c97-583483a49850",
+            "C:/Users/",
+            "C:\\Users\\",
+            "D:/Documents/",
+            "gho_",
+            "sk-",
         )
         for path in NEW_26915_FILES:
             text = path.read_text(encoding="utf-8")

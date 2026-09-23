@@ -2,6 +2,22 @@
 
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
+## v0.2.3 qualification
+
+The 26.917.6896.0 public workflow was built from the exact official Windows package and independently checked with its unchanged bundled backend on 2026-09-23.
+
+| Item | Result |
+|---|---|
+| Official ASAR | `00b7936388d11a3faede5fc736a8c6264eb66e1907bac4ef72c39b7399175d68` |
+| Generated ASAR | `a6ee404ee47a92244d5c2581a792fe9739400c342d7d9690e979f5ebc01e0ab0` |
+| Unchanged official backend | `97d4d67419d0ac2f71342f9a5e850f9468aa622618de8ea823223edb9a91926a` |
+| Desktop executable | Copied byte-identically; the official executable contained no matching embedded ASAR-header digest record |
+| Public tests with explicit current artifact | 31 run, 30 passed, one older-version artifact test skipped because its local artifact was unavailable |
+| Two isolated renderer launches | Both passed; 90 seconds observed each; matching official backend; fresh renderer proof; both closed normally |
+| Qualification stage | `isolated_renderer_qualified`; daily-user validation remains separate |
+
+The current renderer checks exercised plan and pinned indicator precedence, task and project ordering, remote project labels and routes, the Work picker, file drop, and history behavior with synthetic data. The initial public acceptance attempt exposed an inconsistent synthetic project name in the renderer probe. That fixture was corrected and a new artifact was built before the two passing launches; the failed attempt is not counted as a pass.
+
 ## v0.2.2 qualification
 
 The 26.915.4065.0 public workflow was independently built and checked with the unchanged official backend on 2026-09-19.

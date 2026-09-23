@@ -74,6 +74,21 @@ SUPPORTED_PACKAGES = {
         backend_policy_sha256='c81e789a31869f221730ade3cf901a9664cda843381da3d1cc3d3f2038b1f631',
         entries={'webview/assets/app-initial-6c4523b43a11.js': '146b5204b30bd1766f19c0dd5b76f23515a77708ae80bb66ded6469e11431374', 'webview/assets/app-primary-355549b35da9.js': 'b2ba870a12454be5134b17f538b8caa3314ce5d7b9f0412b637168d3aa682a24', '.vite/build/main-LM8MUIFp.js': 'c71bf3ffecef5fd390b4cd16d120d39dce30d30bffe3c563c8c74c1b691da018', '.vite/build/bootstrap-DK4EfNwt.js': 'dbdbdd3ef5dde93dd196a59846edf244dc653341213e0fd45eebb133b5df10ba', 'webview/assets/composer-project-picker-content-cee23446c3c9.js': '4c284006857748142df2855f486ba4c5724b9e71688736ff4fae6a586d98e1ec'},
     ),
+    "26.917.6896.0": PackageSupport(
+        version="26.917.6896.0",
+        package_full_name="OpenAI.Codex_26.917.6896.0_x64__2p2nqsd0c76g0",
+        asar_sha256="00b7936388d11a3faede5fc736a8c6264eb66e1907bac4ef72c39b7399175d68",
+        backend_sha256="97d4d67419d0ac2f71342f9a5e850f9468aa622618de8ea823223edb9a91926a",
+        backend_policy=_POLICY_ROOT / "official-26.917.6896.0.json",
+        backend_policy_sha256="b3d6aef7dc952d1c87e09606b20c0177c8c322fb85e4131bde3bb4faa1861b52",
+        entries={
+            "webview/assets/app-initial-78d977413c37.js": "e363fe7a0b31317c74b814de63f57ab85ad85128e9af67ff3195da16238d35b5",
+            "webview/assets/app-primary-923a2b3e8cd1.js": "f0add13e80656997dab54686d7e8fd0c69fae85a9d364433d77dda351fdfe4ed",
+            "webview/assets/composer-project-picker-content-531ef99549e8.js": "6e436c6eee1f234ae9626f0434205dff0f9a2c400285bb02ee6119f29c2e5996",
+            ".vite/build/main-Bx5zswAj.js": "610ea8b045f207360ac50fcccfe43ca896c6298fa75562f323f1a45ed2364a1b",
+            ".vite/build/bootstrap-DwqRMhlU.js": "79ad86bda1f6171d43bab09b1b4a5d379afefc07a13d6f4f58470a823f6f575f",
+        },
+    ),
 }
 SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES))
 SUPPORTED_VERSION = max(SUPPORTED_VERSIONS)

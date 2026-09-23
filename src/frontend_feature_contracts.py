@@ -200,15 +200,15 @@ assert(DDt({turns:[{itemsPagination:{hasLoadedOldest:false}}]})===false,`DDt inc
 let idle=bAt({conversationId:`id`,hostId:`local`,createdAt:1,updatedAt:2,title:`t`});
 assert(idle.resumeState===`needs_resume`&&idle.turns.length===0,`bAt idle resume shape failed`);
 
-const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
-let remote=smr([{id:uuid,hostId:`remote-ssh-discovered:Insolvency`,label:uuid,remotePath:`/root/mailassistant`}],[{hostId:`remote-ssh-discovered:Insolvency`,displayName:`Insolvency`}],{} )[0];
-assert(remote.label===`mailassistant`&&remote.projectId===uuid&&remote.hostId===`remote-ssh-discovered:Insolvency`,`smr route identity failed`);
-remote=smr([{id:uuid,hostId:`remote`,label:`Saved name`,remotePath:`/root/mailassistant`}],[],{})[0];
+const uuid=`11111111-1111-4111-8111-111111111111`;
+let remote=smr([{id:uuid,hostId:`remote-ssh-discovered:Host`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote-ssh-discovered:Host`,displayName:`Insolvency`}],{} )[0];
+assert(remote.label===`project-alpha`&&remote.projectId===uuid&&remote.hostId===`remote-ssh-discovered:Host`,`smr route identity failed`);
+remote=smr([{id:uuid,hostId:`remote`,label:`Saved name`,remotePath:`/root/project-alpha`}],[],{})[0];
 assert(remote.label===`Saved name`,`smr saved label failed`);
 let liveRemote={...remote,label:uuid,threadKeys:[`remote-thread`]};
 let mergedRemote=VCr([remote],[liveRemote],new Map())[0];
 assert(mergedRemote.label===`Saved name`&&mergedRemote.projectId===uuid&&mergedRemote.threadKeys.join()===`remote-thread`,`VCr same-id late UUID overwrite failed`);
-let changedId=`423dd422-a9ef-4fc4-8c97-583483a49850`;
+let changedId=`22222222-2222-4222-8222-222222222222`;
 mergedRemote=VCr([remote],[{...liveRemote,projectId:changedId,groupId:changedId}],new Map())[0];
 assert(mergedRemote.label===`Saved name`&&mergedRemote.projectId===uuid&&mergedRemote.threadKeys.join()===`remote-thread`,`VCr host-path fallback failed`);
 
@@ -224,7 +224,7 @@ assert(Rwr(projectEntries,{...projectOptions,projectSortMode:`priority`}).projec
 assert(Rwr(projectEntries,{...projectOptions,projectSortMode:`manual`}).projectKeys.join(`,`)===`p2,p1`,`Rwr manual project sort failed`);
 const pinnedProjects=projectEntries.map(value=>value.kind===`project`?{...value,pinned:true}:value);
 assert(Rwr(pinnedProjects,{...projectOptions,projectSortMode:`updated_at`,pinnedSortMode:`updated_at`}).pinnedKeys.join(`,`)===`p2,p1`,`Rwr pinned project recency sort failed`);
-assert(GCr({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`mailassistant`}).label===`mailassistant`,`GCr project subtitle failed`);
+assert(GCr({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`project-alpha`}).label===`project-alpha`,`GCr project subtitle failed`);
 
 const color=value=>value?.props?.style?.backgroundColor??value?.style?.backgroundColor??null;
 assert(p8({statusState:{type:`loading`}}).kind===`spinner`,`loading spinner failed`);
@@ -411,14 +411,14 @@ assert(color(pIo({statusState:{i:false,p:true,unread:false,unreadCount:0}}))===`
 assert(color(pIo({statusState:{i:false,p:false,unread:true,unreadCount:0}}))===`var(--color-text-info)`,`blue indicator failed`);
 assert(pIo({statusState:{}})===null,`empty indicator failed`);
 
-const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
-let saved=k_i([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/mailassistant`}],[{hostId:`remote`,displayName:`Host`}],{})[0];
-assert(saved.label===`mailassistant`&&saved.projectId===uuid,`SSH path fallback failed`);
+const uuid=`11111111-1111-4111-8111-111111111111`;
+let saved=k_i([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote`,displayName:`Host`}],{})[0];
+assert(saved.label===`project-alpha`&&saved.projectId===uuid,`SSH path fallback failed`);
 let merged=dCi([saved],[{...saved,label:uuid,threadKeys:[`thread`]}],new Map())[0];
-assert(merged.label===`mailassistant`&&merged.projectId===uuid&&merged.threadKeys[0]===`thread`,`SSH same-id merge failed`);
-let moved=dCi([saved],[{...saved,projectId:`423dd422-a9ef-4fc4-8c97-583483a49850`,groupId:`423dd422-a9ef-4fc4-8c97-583483a49850`,label:uuid,threadKeys:[`thread`]}],new Map())[0];
-assert(moved.label===`mailassistant`&&moved.projectId===uuid&&moved.threadKeys[0]===`thread`,`SSH host/path merge failed`);
-assert(hCi({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`mailassistant`}).label===`mailassistant`,`project subtitle failed`);
+assert(merged.label===`project-alpha`&&merged.projectId===uuid&&merged.threadKeys[0]===`thread`,`SSH same-id merge failed`);
+let moved=dCi([saved],[{...saved,projectId:`22222222-2222-4222-8222-222222222222`,groupId:`22222222-2222-4222-8222-222222222222`,label:uuid,threadKeys:[`thread`]}],new Map())[0];
+assert(moved.label===`project-alpha`&&moved.projectId===uuid&&moved.threadKeys[0]===`thread`,`SSH host/path merge failed`);
+assert(hCi({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`project-alpha`}).label===`project-alpha`,`project subtitle failed`);
 
 let items=[
  {key:`p1`,kind:`project`,pinned:false,source:`codex`},{key:`p2`,kind:`project`,pinned:false,source:`codex`},
@@ -686,23 +686,23 @@ assert(color(oKo({statusState:planState}))===`#eab308`,`yellow must not inherit 
 assert(color(oKo({statusState:unreadState}))===`var(--color-text-info)`,`blue`);
 assert(scalarOnlyState.p===false&&oKo({statusState:scalarOnlyState})===null,`display scalar bypass`);
 assert(oKo({statusState:emptyState})===null,`empty`);
-const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
-let raw={id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/mailassistant`};
+const uuid=`11111111-1111-4111-8111-111111111111`;
+let raw={id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`};
 let picker={...raw,label:qZx(raw)};
-assert(picker.label===`mailassistant`&&picker.id===uuid&&picker.hostId===raw.hostId&&picker.remotePath===raw.remotePath,`new chat picker label`);
-let saved=Qwi([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/mailassistant`}],[{hostId:`remote`,displayName:`Host`}],{})[0];
-assert(saved.label===`mailassistant`&&saved.projectId===uuid,`ssh path`);
-let merged=NAi([saved],[{...saved,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(merged.label===`mailassistant`&&merged.threadKeys[0]===`thread`,`ssh merge`);
-let moved=NAi([saved],[{...saved,projectId:`423dd422-a9ef-4fc4-8c97-583483a49850`,groupId:`423dd422-a9ef-4fc4-8c97-583483a49850`,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(moved.projectId===uuid&&moved.label===`mailassistant`,`ssh moved id`);
-assert(LAi({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`mailassistant`}).label===`mailassistant`,`subtitle`);
+assert(picker.label===`project-alpha`&&picker.id===uuid&&picker.hostId===raw.hostId&&picker.remotePath===raw.remotePath,`new chat picker label`);
+let saved=Qwi([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote`,displayName:`Host`}],{})[0];
+assert(saved.label===`project-alpha`&&saved.projectId===uuid,`ssh path`);
+let merged=NAi([saved],[{...saved,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(merged.label===`project-alpha`&&merged.threadKeys[0]===`thread`,`ssh merge`);
+let moved=NAi([saved],[{...saved,projectId:`22222222-2222-4222-8222-222222222222`,groupId:`22222222-2222-4222-8222-222222222222`,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(moved.projectId===uuid&&moved.label===`project-alpha`,`ssh moved id`);
+assert(LAi({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`project-alpha`}).label===`project-alpha`,`subtitle`);
 let items=[{key:`p1`,kind:`project`,pinned:false,source:`codex`},{key:`p2`,kind:`project`,pinned:false,source:`codex`},{key:`c1`,kind:`conversation`,pinned:false,projectKey:`p1`,attentionState:`unread`,recencyAt:10,source:`codex`},{key:`c2`,kind:`conversation`,pinned:false,projectKey:`p2`,attentionState:`idle`,recencyAt:20,source:`codex`}];
 let opts={chatSortMode:`updated_at`,mode:`project`,pinnedOrder:[],pinnedSortMode:`manual`,projectOrder:[`p1`,`p2`],source:`codex`};
 assert(zji(items,{...opts,projectSortMode:`updated_at`}).projectKeys.join()===`p2,p1`,`project updated`);assert(zji(items,{...opts,projectSortMode:`priority`}).projectKeys.join()===`p1,p2`,`project priority`);
 let rows=items.filter(e=>e.kind===`conversation`).map(e=>({task:{key:e.key},recencyAt:e.recencyAt})),states=new Map([[`c1`,`unread`],[`c2`,`idle`]]);assert(lLi({items:rows,attentionStateByThreadKey:states}).join()===`c2,c1`,`active priority recency`);assert(uLi({items:rows,attentionStateByThreadKey:states,manualOrder:null,sortMode:`updated_at`}).join()===`c2,c1`,`active updated`);
-let assignment=eEi({isExistingThread:false,executionHostId:`remote`,activeLocalProjectId:null,existingAssignment:null,homeRemoteProject:null,selectedRemoteProject:picker});assert(assignment.projectKind===`remote`&&assignment.projectId===uuid&&picker.label===`mailassistant`,`work`);
+let assignment=eEi({isExistingThread:false,executionHostId:`remote`,activeLocalProjectId:null,existingAssignment:null,homeRemoteProject:null,selectedRemoteProject:picker});assert(assignment.projectKind===`remote`&&assignment.projectId===uuid&&picker.label===`project-alpha`,`work`);
 assert(a4t({resumeState:`resumed`,turnHistory:{kind:`legacy`},turnsPagination:{hasLoadedOldest:true}}),`resume`);assert(i4t({turns:[{itemsPagination:{hasLoadedOldest:true}}]}),`tail`);
 let idle=a9t({thread:{createdAt:1,updatedAt:2,source:null,historyMode:`paginated`,status:null},hostId:`local`,conversationId:`id`,turns:[],threadTitle:`Idle`,resumeState:`needs_resume`,latestCollaborationMode:{mode:`default`,settings:{}}});assert(idle.resumeState===`needs_resume`&&idle.turns.length===0,`idle`);
-process.stdout.write(JSON.stringify({status:`passed`,executed:[`_W`,`EAi`,`U3o`,`N8`,`a4t`,`i4t`,`oKo`,`cKo`,`qZx`,`Qwi`,`NAi`,`zji`,`lLi`,`uLi`,`LAi`,`eEi`,`XU`,`a9t`,`iki`,`ojn`,`_H`,`$Yt`],priority:{normal:true,pinned:true,live_refresh:true,reminder_membership:true,dormant_excluded:true,process_start_source:true,output_write_stable:true},attention:{loading:`spinner`,pinned:`red`,plan:`yellow`,unread:`blue`,none:null,plan_source:`pending_request_object`,display_scalar_rejected:true,pinned_source:`isPinned`},sorting:{project_updated:true,project_priority:true},ssh:{saved_name_precedence:true,uuid_fallback:true,host_path_fallback:true,thread_keys_preserved:true,route_identity_unchanged:true,new_chat_picker_label:`mailassistant`,new_chat_picker_visible_uuid_count:0,raw_route_identity_unchanged:true},history:{resume:true,paginated_tail:true},work:{remote_project:true,visible_label:`mailassistant`,route_project_id:uuid}}));
+process.stdout.write(JSON.stringify({status:`passed`,executed:[`_W`,`EAi`,`U3o`,`N8`,`a4t`,`i4t`,`oKo`,`cKo`,`qZx`,`Qwi`,`NAi`,`zji`,`lLi`,`uLi`,`LAi`,`eEi`,`XU`,`a9t`,`iki`,`ojn`,`_H`,`$Yt`],priority:{normal:true,pinned:true,live_refresh:true,reminder_membership:true,dormant_excluded:true,process_start_source:true,output_write_stable:true},attention:{loading:`spinner`,pinned:`red`,plan:`yellow`,unread:`blue`,none:null,plan_source:`pending_request_object`,display_scalar_rejected:true,pinned_source:`isPinned`},sorting:{project_updated:true,project_priority:true},ssh:{saved_name_precedence:true,uuid_fallback:true,host_path_fallback:true,thread_keys_preserved:true,route_identity_unchanged:true,new_chat_picker_label:`project-alpha`,new_chat_picker_visible_uuid_count:0,raw_route_identity_unchanged:true},history:{resume:true,paginated_tail:true},work:{remote_project:true,visible_label:`project-alpha`,route_project_id:uuid}}));
 '''
     )
     completed = subprocess.run(
@@ -968,23 +968,23 @@ assert(color(b$o({statusState:planState}))===`#eab308`,`yellow must not inherit 
 assert(color(b$o({statusState:unreadState}))===`var(--color-text-info)`,`blue`);
 assert(scalarOnlyState.p===false&&b$o({statusState:scalarOnlyState})===null,`display scalar bypass`);
 assert(b$o({statusState:emptyState})===null,`empty`);
-const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
-let raw={id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/mailassistant`};
+const uuid=`11111111-1111-4111-8111-111111111111`;
+let raw={id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`};
 let picker={...raw,label:qZx(raw)};
-assert(picker.label===`mailassistant`&&picker.id===uuid&&picker.hostId===raw.hostId&&picker.remotePath===raw.remotePath,`new chat picker label`);
-let saved=Jki([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/mailassistant`}],[{hostId:`remote`,displayName:`Host`}],{})[0];
-assert(saved.label===`mailassistant`&&saved.projectId===uuid,`ssh path`);
-let merged=WFi([saved],[{...saved,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(merged.label===`mailassistant`&&merged.threadKeys[0]===`thread`,`ssh merge`);
-let moved=WFi([saved],[{...saved,projectId:`423dd422-a9ef-4fc4-8c97-583483a49850`,groupId:`423dd422-a9ef-4fc4-8c97-583483a49850`,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(moved.projectId===uuid&&moved.label===`mailassistant`,`ssh moved id`);
-assert(JFi({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`mailassistant`}).label===`mailassistant`,`subtitle`);
+assert(picker.label===`project-alpha`&&picker.id===uuid&&picker.hostId===raw.hostId&&picker.remotePath===raw.remotePath,`new chat picker label`);
+let saved=Jki([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote`,displayName:`Host`}],{})[0];
+assert(saved.label===`project-alpha`&&saved.projectId===uuid,`ssh path`);
+let merged=WFi([saved],[{...saved,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(merged.label===`project-alpha`&&merged.threadKeys[0]===`thread`,`ssh merge`);
+let moved=WFi([saved],[{...saved,projectId:`22222222-2222-4222-8222-222222222222`,groupId:`22222222-2222-4222-8222-222222222222`,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(moved.projectId===uuid&&moved.label===`project-alpha`,`ssh moved id`);
+assert(JFi({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`project-alpha`}).label===`project-alpha`,`subtitle`);
 let items=[{key:`p1`,kind:`project`,pinned:false,source:`codex`},{key:`p2`,kind:`project`,pinned:false,source:`codex`},{key:`c1`,kind:`conversation`,pinned:false,projectKey:`p1`,attentionState:`unread`,recencyAt:10,source:`codex`},{key:`c2`,kind:`conversation`,pinned:false,projectKey:`p2`,attentionState:`idle`,recencyAt:20,source:`codex`}];
 let opts={chatSortMode:`updated_at`,mode:`project`,pinnedOrder:[],pinnedSortMode:`manual`,projectOrder:[`p1`,`p2`],source:`codex`};
 assert(JIi(items,{...opts,projectSortMode:`updated_at`}).projectKeys.join()===`p2,p1`,`project updated`);assert(JIi(items,{...opts,projectSortMode:`priority`}).projectKeys.join()===`p1,p2`,`project priority`);
 let rows=items.filter(e=>e.kind===`conversation`).map(e=>({task:{key:e.key},recencyAt:e.recencyAt})),states=new Map([[`c1`,`unread`],[`c2`,`idle`]]);assert(hHi({items:rows,attentionStateByThreadKey:states}).join()===`c2,c1`,`active priority recency`);assert(gHi({items:rows,attentionStateByThreadKey:states,manualOrder:null,sortMode:`updated_at`}).join()===`c2,c1`,`active updated`);
-let assignment=ZAi({isExistingThread:false,executionHostId:`remote`,activeLocalProjectId:null,existingAssignment:null,homeRemoteProject:null,selectedRemoteProject:picker});assert(assignment.projectKind===`remote`&&assignment.projectId===uuid&&picker.label===`mailassistant`,`work`);
+let assignment=ZAi({isExistingThread:false,executionHostId:`remote`,activeLocalProjectId:null,existingAssignment:null,homeRemoteProject:null,selectedRemoteProject:picker});assert(assignment.projectKind===`remote`&&assignment.projectId===uuid&&picker.label===`project-alpha`,`work`);
 assert(Y4t({resumeState:`resumed`,turnHistory:{kind:`legacy`},turnsPagination:{hasLoadedOldest:true}}),`resume`);assert(J4t({turns:[{itemsPagination:{hasLoadedOldest:true}}]}),`tail`);
 let idle=Y9t({thread:{createdAt:1,updatedAt:2,source:null,historyMode:`paginated`,status:null},hostId:`local`,conversationId:`id`,turns:[],threadTitle:`Idle`,resumeState:`needs_resume`,latestCollaborationMode:{mode:`default`,settings:{}}});assert(idle.resumeState===`needs_resume`&&idle.turns.length===0,`idle`);
-process.stdout.write(JSON.stringify({status:`passed`,executed:[`RW`,`LFi`,`qns`,`$8`,`Y4t`,`J4t`,`b$o`,`S$o`,`qZx`,`Jki`,`WFi`,`JIi`,`hHi`,`gHi`,`JFi`,`ZAi`,`mW`,`Y9t`,`hPi`,`oIn`,`HB`,`j$t`],priority:{normal:true,pinned:true,live_refresh:true,reminder_membership:true,dormant_excluded:true,process_start_source:true,output_write_stable:true},attention:{loading:`spinner`,pinned:`red`,plan:`yellow`,unread:`blue`,none:null,plan_source:`pending_request_object`,display_scalar_rejected:true,pinned_source:`isPinned`},sorting:{project_updated:true,project_priority:true},ssh:{saved_name_precedence:true,uuid_fallback:true,host_path_fallback:true,thread_keys_preserved:true,route_identity_unchanged:true,new_chat_picker_label:`mailassistant`,new_chat_picker_visible_uuid_count:0,raw_route_identity_unchanged:true},history:{resume:true,paginated_tail:true},work:{remote_project:true,visible_label:`mailassistant`,route_project_id:uuid}}));
+process.stdout.write(JSON.stringify({status:`passed`,executed:[`RW`,`LFi`,`qns`,`$8`,`Y4t`,`J4t`,`b$o`,`S$o`,`qZx`,`Jki`,`WFi`,`JIi`,`hHi`,`gHi`,`JFi`,`ZAi`,`mW`,`Y9t`,`hPi`,`oIn`,`HB`,`j$t`],priority:{normal:true,pinned:true,live_refresh:true,reminder_membership:true,dormant_excluded:true,process_start_source:true,output_write_stable:true},attention:{loading:`spinner`,pinned:`red`,plan:`yellow`,unread:`blue`,none:null,plan_source:`pending_request_object`,display_scalar_rejected:true,pinned_source:`isPinned`},sorting:{project_updated:true,project_priority:true},ssh:{saved_name_precedence:true,uuid_fallback:true,host_path_fallback:true,thread_keys_preserved:true,route_identity_unchanged:true,new_chat_picker_label:`project-alpha`,new_chat_picker_visible_uuid_count:0,raw_route_identity_unchanged:true},history:{resume:true,paginated_tail:true},work:{remote_project:true,visible_label:`project-alpha`,route_project_id:uuid}}));
 '''
     )
     completed = subprocess.run(
@@ -1169,17 +1169,17 @@ assert(color(xCo({statusState:pinnedPlanState}))===`var(--color-text-danger)`,`r
 assert(color(xCo({statusState:planState}))===`#eab308`,`yellow must not inherit the warning token`);
 assert(color(xCo({statusState:unreadState}))===`var(--color-text-info)`,`blue`);
 assert(scalarOnlyState.p===false&&xCo({statusState:scalarOnlyState})===null,`display scalar bypass`);
-const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
-let raw={id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/mailassistant`};
+const uuid=`11111111-1111-4111-8111-111111111111`;
+let raw={id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`};
 let picker={...raw,label:qZx(raw)};
-assert(picker.label===`mailassistant`&&picker.id===uuid&&picker.hostId===raw.hostId&&picker.remotePath===raw.remotePath,`new chat picker label`);
-let saved=s2r([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/mailassistant`}],[{hostId:`remote`,displayName:`Host`}],{})[0];
-assert(saved.label===`mailassistant`&&saved.projectId===uuid,`ssh path`);
+assert(picker.label===`project-alpha`&&picker.id===uuid&&picker.hostId===raw.hostId&&picker.remotePath===raw.remotePath,`new chat picker label`);
+let saved=s2r([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote`,displayName:`Host`}],{})[0];
+assert(saved.label===`project-alpha`&&saved.projectId===uuid,`ssh path`);
 let merged=c9r([saved],[{...saved,label:uuid,threadKeys:[`thread`]}],new Map())[0];
-assert(merged.label===`mailassistant`&&merged.threadKeys[0]===`thread`,`ssh merge`);
-let moved=c9r([saved],[{...saved,projectId:`423dd422-a9ef-4fc4-8c97-583483a49850`,groupId:`423dd422-a9ef-4fc4-8c97-583483a49850`,label:uuid,threadKeys:[`thread`]}],new Map())[0];
-assert(moved.projectId===uuid&&moved.label===`mailassistant`,`ssh moved id`);
-assert(f9r({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`mailassistant`}).label===`mailassistant`,`subtitle`);
+assert(merged.label===`project-alpha`&&merged.threadKeys[0]===`thread`,`ssh merge`);
+let moved=c9r([saved],[{...saved,projectId:`22222222-2222-4222-8222-222222222222`,groupId:`22222222-2222-4222-8222-222222222222`,label:uuid,threadKeys:[`thread`]}],new Map())[0];
+assert(moved.projectId===uuid&&moved.label===`project-alpha`,`ssh moved id`);
+assert(f9r({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`project-alpha`}).label===`project-alpha`,`subtitle`);
 let items=[{key:`p1`,kind:`project`,pinned:false,source:`codex`},{key:`p2`,kind:`project`,pinned:false,source:`codex`},{key:`c1`,kind:`conversation`,pinned:false,projectKey:`p1`,attentionState:`unread`,recencyAt:10,source:`codex`},{key:`c2`,kind:`conversation`,pinned:false,projectKey:`p2`,attentionState:`idle`,recencyAt:20,source:`codex`}];
 let opts={chatOrder:[],chatSortMode:`priority`,mode:`project`,pinnedOrder:[],pinnedSortMode:`manual`,projectOrder:[`p1`,`p2`],source:`codex`};
 assert(hei(items,{...opts,projectSortMode:`updated_at`}).projectKeys.join()===`p2,p1`,`project updated`);
@@ -1189,7 +1189,7 @@ assert(Qmi({items:rows,attentionStateByThreadKey:states}).join()===`c2,c1`,`acti
 assert($mi({items:rows,attentionStateByThreadKey:states,manualOrder:null,sortMode:`updated_at`}).join()===`c2,c1`,`active updated`);
 assert($mi({items:rows,attentionStateByThreadKey:states,manualOrder:null,sortMode:`priority`}).join()===`c2,c1`,`active priority route`);
 let assignment=F3r({isExistingThread:false,executionHostId:`remote`,activeLocalProjectId:null,existingAssignment:null,homeRemoteProject:null,selectedRemoteProject:picker});
-assert(assignment.projectKind===`remote`&&assignment.projectId===uuid&&picker.label===`mailassistant`,`work`);
+assert(assignment.projectKind===`remote`&&assignment.projectId===uuid&&picker.label===`project-alpha`,`work`);
 assert(Iwn({resumeState:`resumed`,turnHistory:{kind:`canonical`},turnsPagination:{hasLoadedOldest:true}}),`resume`);
 assert(Fwn({turns:[{itemsPagination:{hasLoadedOldest:true}}]}),`tail`);
 let idle=zHt({thread:{createdAt:1,updatedAt:2,source:null,status:null},hostId:`local`,conversationId:`id`,turns:[],threadTitle:`Idle`,resumeState:`needs_resume`,latestCollaborationMode:{mode:`default`,settings:{}}});
@@ -1206,7 +1206,7 @@ assert(L5r(recencyGet,{kind:`local`,threadId:`active`})===11,`active process-sta
 recencyGet.live.get(`active`).updatedAt=999;
 assert(L5r(recencyGet,{kind:`local`,threadId:`active`})===11,`output writes changed process-start source`);
 assert(L5r(recencyGet,{kind:`local`,threadId:`catalog`})===7,`catalog fallback recency`);
-process.stdout.write(JSON.stringify({status:`passed`,executed:[`iV`,`t9r`,`iLo`,`m6`,`Iwn`,`Fwn`,`xCo`,`CCo`,`qZx`,`s2r`,`c9r`,`hei`,`Qmi`,`$mi`,`f9r`,`F3r`,`_B`,`vei`,`yei`,`L5r`,`B5r`,`zHt`,`ixs`,`j6t`,`TTn`],priority:{normal:true,pinned:true,live_refresh:true,reminder_membership:true,dormant_excluded:true,process_start_source:true,output_write_stable:true},attention:{loading:`spinner`,pinned:`red`,plan:`yellow`,unread:`blue`,none:null,plan_source:`pending_request_object`,display_scalar_rejected:true,pinned_source:`isPinned`},sorting:{project_updated:true,project_priority:true},ssh:{saved_name_precedence:true,uuid_fallback:true,host_path_fallback:true,thread_keys_preserved:true,route_identity_unchanged:true,new_chat_picker_label:`mailassistant`,new_chat_picker_visible_uuid_count:0,raw_route_identity_unchanged:true},history:{resume:true,paginated_tail:true},work:{remote_project:true,visible_label:`mailassistant`,route_project_id:uuid}}));
+process.stdout.write(JSON.stringify({status:`passed`,executed:[`iV`,`t9r`,`iLo`,`m6`,`Iwn`,`Fwn`,`xCo`,`CCo`,`qZx`,`s2r`,`c9r`,`hei`,`Qmi`,`$mi`,`f9r`,`F3r`,`_B`,`vei`,`yei`,`L5r`,`B5r`,`zHt`,`ixs`,`j6t`,`TTn`],priority:{normal:true,pinned:true,live_refresh:true,reminder_membership:true,dormant_excluded:true,process_start_source:true,output_write_stable:true},attention:{loading:`spinner`,pinned:`red`,plan:`yellow`,unread:`blue`,none:null,plan_source:`pending_request_object`,display_scalar_rejected:true,pinned_source:`isPinned`},sorting:{project_updated:true,project_priority:true},ssh:{saved_name_precedence:true,uuid_fallback:true,host_path_fallback:true,thread_keys_preserved:true,route_identity_unchanged:true,new_chat_picker_label:`project-alpha`,new_chat_picker_visible_uuid_count:0,raw_route_identity_unchanged:true},history:{resume:true,paginated_tail:true},work:{remote_project:true,visible_label:`project-alpha`,route_project_id:uuid}}));
 '''
     )
     if plan_first:
@@ -1271,7 +1271,10 @@ def _validate_renderer_probe(
     )
     _, protocol_entry = builder.read_entry(portable_asar, header_size, protocol_meta)
     latest = builder.is_split_frontend_profile(profile)
-    if profile.get("profile_spec_id") == "26915_4065":
+    if profile.get("profile_spec_id") == "26917_6896":
+        from hotfix_profile_26917_6896 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile.get("profile_spec_id") == "26915_4065":
         from hotfix_profile_26915_4065 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
         resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
     elif profile.get("profile_spec_id") == "26915_3509":
@@ -1904,6 +1907,9 @@ def validate(source_asar: Path, portable_asar: Path, node: str = "node") -> dict
 
     source_hash = builder.sha256_path(source_asar)
     profile = builder.profile_for_asar(source_hash)
+    if profile and profile.get("profile_spec_id") == "26917_6896":
+        from frontend_contract_26917_6896 import validate as validate_6896
+        return validate_6896(source_asar, portable_asar, node)
     if profile and profile.get("profile_spec_id") == "26915_4065":
         from frontend_contract_26915_4065 import validate as validate_4065
         return validate_4065(source_asar, portable_asar, node)

@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.2.3 - 2026-09-23
+
+- Add exact Windows desktop 26.917.6896.0 support with the unchanged official backend.
+- Rebase renderer contracts for Priority ordering, plan and pinned indicators, remote project names, Work picker, file drop, and history display.
+- Check the exact official executable for an embedded ASAR integrity record; this release's executable has no matching record and remains byte-identical in the independent copy.
+- Retain all previously supported profile identities and versions.
+
 ## v0.2.2 - 2026-09-19
 
 - Add exact Windows desktop 26.915.4065.0 support and its unchanged official backend policy.

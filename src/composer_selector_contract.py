@@ -400,8 +400,8 @@ const SSr={default:(a,f)=>a.sort((x,y)=>f(x)-f(y))},ht=(s,q)=>String(s).toLowerC
         "chatSortMode:'updated_at',projectSortMode:'updated_at'});\n"
         "const localProjectOptions={get projects(){return [local,...remotes]}};\n"
     ) if modern else "") + module_stubs + shared + "\n" + "const fixtureRoute=(()=>{const yv=v=>v;" + route + ";return mJa;})();" + r'''
-const ids=['c87575b4-dba0-471e-a647-31ce8575c46b','423dd422-a9ef-4fc4-8c97-583483a49850','050ce269-9b40-44e3-ac49-b67bb85d0c42','48d6231d-156e-493a-a7e3-d3610a38a080'],names=['mailassistant','report-generator','ensolventia','automatic-score'];
-const remotes=ids.map((id,i)=>({projectId:id,groupId:id,projectKind:'remote',hostId:'remote-ssh-discovered:Insolvency',hostDisplayName:'Insolvency',path:'/root/'+names[i],label:names[i],gitRepos:[],threadKeys:['t'+i]})),local={projectId:'local-1',projectKind:'local',label:'Local project',name:'Local project',displayName:'Local project',path:'C:/example',gitRepos:[]};
+const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222','050ce269-9b40-44e3-ac49-b67bb85d0c42','48d6231d-156e-493a-a7e3-d3610a38a080'],names=['project-alpha','project-beta','project-gamma','project-delta'];
+const remotes=ids.map((id,i)=>({projectId:id,groupId:id,projectKind:'remote',hostId:'remote-ssh-discovered:Host',hostDisplayName:'Insolvency',path:'/root/'+names[i],label:names[i],gitRepos:[],threadKeys:['t'+i]})),local={projectId:'local-1',projectKind:'local',label:'Local project',name:'Local project',displayName:'Local project',path:'C:/example',gitRepos:[]};
 const originals=JSON.stringify(remotes);
 const wrapper=(()=>{
 ''' + wrapper_stubs + wrappers + r'''
@@ -418,8 +418,8 @@ assert(out.props.value===names[i],'button label '+names[i]+' actual='+String(out
 const selected=walk(wSr(filtered.props),'item');selected.props.onSelect();assert(selection.route.type==='remote'&&selection.route.projectId===ids[i],'SSH selection route sel='+JSON.stringify(selection.route)+' desc='+JSON.stringify(selection.descriptor)+' itemType='+String(typeof selected.props.onSelect));assert(selection.descriptor.hostId===remotes[i].hostId&&selection.descriptor.path===remotes[i].path,'SSH identity');
  results.push({label:out.props.value,aria_label:out.props['aria-label'],project_id:ids[i],route:selection.route});
 }
-search='';localEnabled=false;let mid=wrapper({projectId:ids[2]}),out=DSr(mid.props);assert(mid.props.localProjectOptions.projects.length===4&&out.props.value==='ensolventia','remote without local capability');
-out=DSr(wrapper({}).props);assert(out.props.value==='ensolventia','inherited remote selection got='+String(out.props.value?.__stub??out.props.value)+' keys='+Object.keys(out.props).join(','));
+search='';localEnabled=false;let mid=wrapper({projectId:ids[2]}),out=DSr(mid.props);assert(mid.props.localProjectOptions.projects.length===4&&out.props.value==='project-gamma','remote without local capability');
+out=DSr(wrapper({}).props);assert(out.props.value==='project-gamma','inherited remote selection got='+String(out.props.value?.__stub??out.props.value)+' keys='+Object.keys(out.props).join(','));
 localEnabled=true;out=DSr(wrapper({projectId:local.projectId}).props);assert(out.props.value==='Local project','local preservation got='+String(out.props.value?.__stub??out.props.value)+' list='+localProjectOptions.projects.map(e=>String(e.projectId)+':'+String(e.label??e.projectName)).join('|'));walk(out,wSr).props.onSelectProject(local);assert(selection.route.type==='local','local route');
 cloud=[{gizmo:{id:'g-p-example',display:{name:'Cloud project'}}}];out=DSr(wrapper({projectId:'g-p-example'}).props);assert(out.props.value==='Cloud project','cloud preservation');
 out.props.onClearProject();assert(cloudSelection===null,'clear route');
