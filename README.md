@@ -105,6 +105,8 @@ See [COMPATIBILITY.md](COMPATIBILITY.md) for the full support matrix.
 
 The cross-provider Responses compatibility patch is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat), but that desktop combination has not completed independent qualification in this repository and is therefore not marked as supported in `v0.2.3`.
 
+An optional [read-only channel preview and Responses diagnostic example](examples/channel-preview/README.md) is available for checking a provider before changing any settings. It does not install a channel switcher or migrate existing tasks.
+
 ## Manual install and development
 
 Requirements:

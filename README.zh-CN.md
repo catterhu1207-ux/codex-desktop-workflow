@@ -105,6 +105,8 @@ irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/do
 
 第三方 Responses 兼容服务的后端修复在 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat) 中公开，但尚未作为本仓库的桌面组合完成独立验收，因此 `v0.2.3` 不把它标为可用组合。
 
+另有可选的[渠道只读预览与 Responses 接入诊断示例](examples/channel-preview/README.zh-CN.md)，可在修改设置前检查目标渠道。它不安装渠道切换器，也不迁移旧任务。
+
 ## 手动安装与开发
 
 需要：
