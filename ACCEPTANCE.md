@@ -2,6 +2,25 @@
 
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
+## v0.2.4 qualification
+
+The 26.917.9434.0 public workflow was built from the exact official Windows package with its unchanged bundled backend and independently qualified on 2026-09-25.
+
+| Item | Result |
+|---|---|
+| Official ASAR | `d4234b03eb532fe0f3e9a7d90caad51edb68af45f771cc786d966377e7446f5a` |
+| Generated ASAR | `3d49514032ec8ffa9e39566082a5b691ffb1f4595f335811828e18fafc749a58` |
+| Unchanged official backend | `9015c47d1714294ecd9033c4b5aefc3076797d867d1c36aa37749fcb76c8942f` |
+| Desktop executable | Copied byte-identically; no matching embedded ASAR-header digest record in the official executable |
+| Exact frontend contracts | 24 passed; validator `2.4.10` |
+| Real renderer feature inventory | 21 passed per isolated launch; artifact `2.6.13-d4234b03eb53` |
+| Public tests with the exact current artifact | 32 run, 30 passed, two older-version artifact tests skipped because their local artifacts were unavailable |
+| Wheel and installer | Version `0.2.4` wheel contains the profile, scenarios, and official-backend policy; installed-wheel resource loading and local-bundle installer dry-run passed |
+| Two isolated renderer launches | Both passed; 90 seconds observed each; matching official backend, fresh renderer proof, and normal close |
+| Qualification stage | `isolated_renderer_qualified`; daily-user validation is separate |
+
+The renderer checks covered plan and pinned indicator precedence through the mounted row, task and project ordering, remote project labels and routing, the Work picker, file drop, and history behavior with synthetic data. Existing version profiles and their release identities remain registered.
+
 ## v0.2.3 qualification
 
 The 26.917.6896.0 public workflow was built from the exact official Windows package and independently checked with its unchanged bundled backend on 2026-09-23.

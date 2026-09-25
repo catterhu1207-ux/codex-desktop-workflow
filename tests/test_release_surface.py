@@ -16,6 +16,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 CHINESE_LABEL = "\u4e2d\u6587\u8bf4\u660e"
 NEW_26915_FILES = (
+    SRC / "hotfix_profile_26917_9434.py",
+    SRC / "frontend_contract_26917_9434.py",
+    SRC / "frontend_work_contract_26917_9434.py",
+    SRC / "frontend_row_contract_26917_9434.py",
+    SRC / "codex_desktop_workflow/data/frontend_scenarios_26917_9434.js",
+    SRC / "codex_desktop_workflow/data/frontend_row_scenarios_26917_9434.js",
     SRC / "hotfix_profile_26917_6896.py",
     SRC / "frontend_contract_26917_6896.py",
     SRC / "frontend_work_contract_26917_6896.py",
@@ -82,6 +88,16 @@ class ReleaseSurfaceTests(unittest.TestCase):
         self.assertEqual(hotfix_builder.frontend_attestation_artifact_id(profile), "2.6.12-00b7936388d1")
         self.assertEqual(hotfix_builder.frontend_validator_version(profile), "2.4.9")
         self.assertIn("project-alpha", contract._scenario_source())
+
+    def test_9434_profile_identity_and_packaged_scenarios(self):
+        import frontend_contract_26917_9434 as contract
+        import frontend_row_contract_26917_9434 as row
+
+        profile = hotfix_builder.profile_for_asar(workflow.SUPPORTED_PACKAGES["26.917.9434.0"].asar_sha256)
+        self.assertEqual(hotfix_builder.frontend_attestation_artifact_id(profile), "2.6.13-d4234b03eb53")
+        self.assertEqual(hotfix_builder.frontend_validator_version(profile), "2.4.10")
+        self.assertIn("project-alpha", contract._scenario_source())
+        self.assertIn("pending_recompute", row._scenario_source())
 
     def test_backend_policy_hashes_match_committed_bytes(self):
         for support in workflow.SUPPORTED_PACKAGES.values():

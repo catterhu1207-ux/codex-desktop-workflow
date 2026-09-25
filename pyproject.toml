@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "codex-desktop-workflow"
-version = "0.2.3"
+version = "0.2.4"
 description = "Build and verify an experimental Codex desktop workflow mod from a user-supplied official package"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -28,6 +28,10 @@ py-modules = [
   "frontend_contract_26917_6896",
   "frontend_work_contract_26917_6896",
   "frontend_row_contract_26917_6896",
+  "hotfix_profile_26917_9434",
+  "frontend_contract_26917_9434",
+  "frontend_work_contract_26917_9434",
+  "frontend_row_contract_26917_9434",
   "hotfix_profile_26730",
   "hotfix_profile_26810",
   "hotfix_profile_26818",

@@ -1,7 +1,7 @@
-# v0.2.3
+# v0.2.4
 
-Adds exact Codex Desktop 26.917.6896.0 support. The public workflow builds an independent copy with the unchanged official backend and retains 26.915.4065.0, 26.915.3509.0, and 26.908.9136.0 profiles.
+Adds exact Codex Desktop 26.917.9434.0 support while retaining the 26.917.6896.0, 26.915.4065.0, 26.915.3509.0, and 26.908.9136.0 profiles. The public workflow builds an independent copy from a user-supplied official installation with its bundled `codex.exe` unchanged.
 
-Updated contracts cover attention colors and pinned precedence, start-time ordering and live refresh, readable remote project labels and routing, the Work picker, history rendering, file drop and the exact renderer-proof route. The 26.917 executable has no embedded ASAR-header digest record and is copied unchanged. Unknown or changed package bytes remain rejected.
+The new version's contracts cover Priority ordering and live refresh, plan and pinned indicator precedence, readable remote project names and routing, the Work picker, file drop, and history behavior. The public build passed 24 frontend contracts and two isolated renderer launches, each observing 21 feature proofs for 90 seconds with the official backend and a normal close.
 
-See ACCEPTANCE.md for public build and isolated-launch evidence. Private-maintenance supplemental resume checks are reported separately; they do not qualify a patched backend for this public installer. User data, authentication, official binaries and raw runtime logs are excluded from the release.
+See the [acceptance report](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/v0.2.4/ACCEPTANCE.md) for the version-bound evidence. Release assets contain the installer, source wheel, and checksums; they exclude official application binaries and user data.

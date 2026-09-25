@@ -89,6 +89,20 @@ SUPPORTED_PACKAGES = {
             ".vite/build/bootstrap-DwqRMhlU.js": "79ad86bda1f6171d43bab09b1b4a5d379afefc07a13d6f4f58470a823f6f575f",
         },
     ),
+    "26.917.9434.0": PackageSupport(
+        version="26.917.9434.0",
+        package_full_name="OpenAI.Codex_26.917.9434.0_x64__2p2nqsd0c76g0",
+        asar_sha256="d4234b03eb532fe0f3e9a7d90caad51edb68af45f771cc786d966377e7446f5a",
+        backend_sha256="9015c47d1714294ecd9033c4b5aefc3076797d867d1c36aa37749fcb76c8942f",
+        backend_policy=_POLICY_ROOT / "official-26.917.9434.0.json",
+        backend_policy_sha256="8856225104326a7a33dd3da278236e758b8506d77435683081221422724e0e48",
+        entries={
+            "webview/assets/app-initial-fc9a33fdda88.js": "34a60939a5f44634a65c956b7904d63236178e6d45a049717358fc163ecffe88",
+            "webview/assets/app-primary-a7ff54c980af.js": "e8ac507e0a621099a2b82b9ae17b1d1930ab971b1d088fe4fb81f5437648d043",
+            ".vite/build/main-BR_2NHW6.js": "1f2b91cf92fc023fb2fa41e1c1d03698fa6e37354ecd07dd0cebd21337607b08",
+            ".vite/build/bootstrap-CiIGnI3y.js": "119bb54ee12ed5d2b0d3b98dd068a4322232a4aa342323eb9cb5dfa6575ca158",
+        },
+    ),
 }
 SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES))
 SUPPORTED_VERSION = max(SUPPORTED_VERSIONS)

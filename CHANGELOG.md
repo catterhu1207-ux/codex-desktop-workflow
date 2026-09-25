@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.2.4 - 2026-09-25
+
+- Add exact Windows desktop 26.917.9434.0 support with the unchanged official backend.
+- Rebase the full frontend contracts, including mounted plan and pinned row behavior, Priority ordering, remote project names, Work picker, file drop, and history.
+- Keep all previously supported package profiles and their release identities unchanged.
+- Bind the new official ASAR, backend, and critical entry hashes; ship only the source workflow and installer.
+
+
 ## v0.2.3 - 2026-09-23
 
 - Add exact Windows desktop 26.917.6896.0 support with the unchanged official backend.
