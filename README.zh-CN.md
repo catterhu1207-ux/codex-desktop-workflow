@@ -125,6 +125,8 @@ irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/do
 
 第三方 Responses 请求兼容配置见 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat)。桌面版 `26.924.1866.0` 可显式选择源码构建模式，较早的桌面配置继续使用其既有官方后端。
 
+另有可选的[渠道只读预览与 Responses 接入诊断示例](examples/channel-preview/README.zh-CN.md)，可在修改设置前检查目标渠道。它不安装渠道切换器，也不迁移旧任务。
+
 ## 手动安装与开发
 
 需要：

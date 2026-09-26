@@ -123,6 +123,8 @@ See [COMPATIBILITY.md](COMPATIBILITY.md) for the full support matrix.
 
 The cross-provider Responses compatibility profile is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat). Desktop `26.924.1866.0` supports it through the explicit source-build mode described above. Earlier desktop profiles continue to use their existing official backends.
 
+An optional [read-only channel preview and Responses diagnostic example](examples/channel-preview/README.md) is available for checking a provider before changing any settings. It does not install a channel switcher or migrate existing tasks.
+
 ## Manual install and development
 
 Requirements:

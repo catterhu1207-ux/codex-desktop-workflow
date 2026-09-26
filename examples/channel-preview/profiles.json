@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "profiles": [
+    {"id": "openai", "label": "OpenAI subscription", "provider": "openai", "model": "gpt-5.6-sol", "effort": "medium", "catalog": null, "env_key": null, "route_type": "subscription"},
+    {"id": "deepseek", "label": "DeepSeek", "provider": "deepseek", "model": "deepseek-flash", "effort": "max", "catalog": "models.json", "env_key": "DEEPSEEK_API_KEY", "route_type": "direct"},
+    {"id": "glm", "label": "GLM", "provider": "ZAI", "model": "glm-5.3-flash", "effort": "max", "catalog": "glm-models.json", "env_key": "GLM_API_KEY", "route_type": "direct"},
+    {"id": "minimax", "label": "MiniMax", "provider": "minimax", "model": "MiniMax-M3", "effort": "high", "catalog": "minimax-models.json", "env_key": "MINIMAX_API_KEY", "route_type": "direct"},
+    {"id": "mimo", "label": "MiMo", "provider": "mimo", "model": "mimo-v2.6-pro", "effort": "high", "catalog": "mimo-models.json", "env_key": "MIMO_API_KEY", "route_type": "direct"},
+    {"id": "kimi", "label": "Kimi", "provider": "custom", "model": "kimi-k3", "effort": "high", "catalog": "cc-switch-model-catalog.json", "env_key": null, "route_type": "proxy"}
+  ]
+}
