@@ -9,7 +9,7 @@
 
 ![合成任务 before/after 演示](docs/assets/demo-zh.gif)
 
-## v0.3.0：适配桌面版 26.924.1866.0
+## v0.3.1：适配桌面版 26.924.2738.0
 
 本版适配更新后的界面，保留任务排序、注意状态、远程项目名称、Work 选择器、文件拖放和任务设置。历史导入及启动前检查同时核对逻辑父任务和物理祖先，历史关系校验未通过时停止启动。
 
@@ -98,8 +98,9 @@ irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/do
 
 ## 当前支持范围
 
-`v0.3.0` 支持 Windows x64，并使用官方包内的 `codex.exe`：
+`v0.3.1` 支持 Windows x64，并使用官方包内的 `codex.exe`：
 
+- Codex Desktop `26.924.2738.0`
 - Codex Desktop `26.924.1866.0`
   - `app.asar`: `96b6aa6e1ea46dd8a30b3fa5166be12284ba66bd3901241a81a60684f150189d`
   - Official `codex.exe`: `0122378c15dc0c3c0af0d6addf2dd278125c19676b41fadaa520f89d2c9e0079`
@@ -123,7 +124,7 @@ irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/do
 
 完整支持矩阵见 [COMPATIBILITY.md](COMPATIBILITY.md)。
 
-第三方 Responses 请求兼容配置见 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat)。桌面版 `26.924.1866.0` 可显式选择源码构建模式，较早的桌面配置继续使用其既有官方后端。
+第三方 Responses 请求兼容配置见 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat)。桌面版 `26.924.2738.0` 和 `26.924.1866.0` 可显式选择源码构建模式，较早的桌面配置继续使用其既有官方后端。
 
 ## 手动安装与开发
 
@@ -136,7 +137,7 @@ irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/do
 下面假设官方包根目录为：
 
 ```text
-C:\official\OpenAI.Codex_26.917.9434.0_x64__2p2nqsd0c76g0
+C:\official\OpenAI.Codex_26.924.2738.0_x64__2p2nqsd0c76g0
 ```
 
 安装：
@@ -152,7 +153,7 @@ py -3 -m venv .venv
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe inspect `
-  --source C:\official\OpenAI.Codex_26.917.9434.0_x64__2p2nqsd0c76g0
+  --source C:\official\OpenAI.Codex_26.924.2738.0_x64__2p2nqsd0c76g0
 ```
 
 ### 2. 生成独立修改版
@@ -161,7 +162,7 @@ py -3 -m venv .venv
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe build `
-  --source C:\official\OpenAI.Codex_26.917.9434.0_x64__2p2nqsd0c76g0 `
+  --source C:\official\OpenAI.Codex_26.924.2738.0_x64__2p2nqsd0c76g0 `
   --target C:\codex-workflow\app
 ```
 
@@ -169,7 +170,7 @@ py -3 -m venv .venv
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe verify `
-  --source C:\official\OpenAI.Codex_26.917.9434.0_x64__2p2nqsd0c76g0 `
+  --source C:\official\OpenAI.Codex_26.924.2738.0_x64__2p2nqsd0c76g0 `
   --portable C:\codex-workflow\app `
   --runs-root C:\codex-workflow\verification
 ```

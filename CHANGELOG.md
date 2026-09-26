@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.3.1 - 2026-09-27
+
+- Add exact Desktop 26.924.2738.0 support with an independent frontend profile and build identity.
+- Rebase sorting, attention indicators, remote names, Work selection, file drop, history and renderer proof to the new interface entries.
+- Pin the matching optional compatibility backend to its own immutable public source reference, while retaining the official backend default.
+- Preserve earlier profile identities and qualification records; recheck the 26.924.1866.0 contracts against its exact sample.
+- Isolate Windows user folders and runtime caches during verification so a test launch cannot replace the daily application's cached runtime.
+
+## v0.3.0 - 2026-09-26
+
+- Add Desktop 26.924.1866.0 support and the optional source-built compatibility backend.
+- Verify logical-parent and physical-ancestor history chains during import and before launch.
+
 ## v0.2.4 - 2026-09-25
 
 - Add exact Windows desktop 26.917.9434.0 support with the unchanged official backend.

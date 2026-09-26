@@ -99,6 +99,19 @@ class ReleaseSurfaceTests(unittest.TestCase):
         self.assertIn("project-alpha", contract._scenario_source())
         self.assertIn("pending_recompute", row._scenario_source())
 
+    def test_924_profiles_have_independent_identities_and_resources(self):
+        import frontend_contract_26924_1866 as previous
+        import frontend_contract_26924_2738 as current
+        for version, artifact, validator, module in (
+            ('26.924.1866.0', '2.7.0-96b6aa6e1ea4', '2.5.0', previous),
+            ('26.924.2738.0', '2.7.1-89fba67324ff', '2.5.1', current),
+        ):
+            profile = hotfix_builder.profile_for_asar(workflow.SUPPORTED_PACKAGES[version].asar_sha256)
+            self.assertEqual(hotfix_builder.frontend_attestation_artifact_id(profile), artifact)
+            self.assertEqual(hotfix_builder.frontend_validator_version(profile), validator)
+            resource = Path(module.__file__).parent / 'codex_desktop_workflow/data' / ('frontend_scenarios_' + profile['profile_spec_id'] + '.js')
+            self.assertIn('project-alpha', resource.read_text(encoding='utf8'))
+
     def test_backend_policy_hashes_match_committed_bytes(self):
         for support in workflow.SUPPORTED_PACKAGES.values():
             digest = hashlib.sha256(support.backend_policy.read_bytes()).hexdigest()

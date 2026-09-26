@@ -10,11 +10,18 @@ def sha(path):
         for block in iter(lambda: stream.read(1024*1024),b''):digest.update(block)
     return digest.hexdigest()
 
-def pin():
-    return json.loads(PIN_PATH.read_text())
+def pin(version=None):
+    path = PIN_PATH.with_name('backend-source-26.924.2738.0.json') if version == '26.924.2738.0' else PIN_PATH
+    return json.loads(path.read_text())
 
-def validate_manifest(path):
-    data=json.loads(path.read_text());p=pin();provenance=data.get('provenance',{})
+def validate_manifest(path, version=None):
+    data=json.loads(path.read_text())
+    packages=data.get('compatibility',{}).get('packages',[])
+    versions={item.get('package_version') for item in packages}
+    if version is not None and version not in versions:
+        raise ValueError('compat_backend_desktop_version_mismatch')
+    selected=version or ('26.924.2738.0' if versions=={'26.924.2738.0'} else None)
+    p=pin(selected);provenance=data.get('provenance',{})
     required={'source_commit':p['upstream_commit'],'profile_sha256':p['profile_sha256'],'compat_commit':p['commit'],'compat_repository':p['repository'],'build_recipe_sha256':p['build_recipe_sha256']}
     if data.get('mode')!='patched' or any(provenance.get(k)!=v for k,v in required.items()):
         raise ValueError('compat_backend_provenance_mismatch')
@@ -30,8 +37,8 @@ def validate_manifest(path):
         raise ValueError('compat_backend_migration_identity_mismatch')
     return data
 
-def build(source_app,target):
-    p=pin();target=target.resolve()
+def build(source_app,target,version=None):
+    p=pin(version);target=target.resolve()
     if sys.version_info < (3,11):raise ValueError('python_3_11_required_for_source_build')
     if target.exists():raise ValueError('backend_target_must_not_exist')
     target.mkdir(parents=True)
@@ -51,10 +58,10 @@ def build(source_app,target):
     log.write_text(result.stdout+'\n'+result.stderr,encoding='utf8')
     if result.returncode:raise ValueError('compat_source_build_failed: '+str(log))
     if cache:
-        validate_manifest(build_target/'manifest.json')
+        validate_manifest(build_target/'manifest.json',version)
         destination.mkdir()
         shutil.copy2(build_target/'codex.exe',destination/'codex.exe')
         shutil.copy2(build_target/'manifest.json',destination/'manifest.json')
     manifest=destination/'manifest.json'
-    validate_manifest(manifest)
+    validate_manifest(manifest,version)
     return {'status':'built','manifest':str(manifest),'content_logged':False}

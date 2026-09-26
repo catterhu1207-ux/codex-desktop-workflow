@@ -2,6 +2,29 @@
 
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
+## v0.3.1 qualification
+
+The 26.924.2738.0 workflow was independently built from the complete signed official Windows x64 package and qualified with both backend modes on 2026-09-27.
+
+| Item | Result |
+|---|---|
+| Official ASAR | `89fba67324ffb8dd54ccf13b6f097172e697549eeb1f26396f86f972c10c5b0c` |
+| Official backend | `8f0554ede25bbc5450921897c468b2e84635aa513c5017457997af0954581f49` |
+| Compatibility source | Profile `desktop-26.924.2738.0`, upstream `0d9c7cbfa6cf1489f55a8a9542b75ddd2c061807`; immutable public source reference in `backend-source-26.924.2738.0.json` |
+| Frontend contracts | All 24 passed in each mode |
+| Real renderer proof | All 21 features passed in all four independent launches |
+| Official mode | Empty data and 400 synthetic tasks; 66.36 and 66.00 seconds after proof; matching current app-server; normal exit |
+| Compatibility mode | Empty data and 400 synthetic tasks; 66.22 and 63.50 seconds after proof; matching current app-server; normal exit |
+| Test isolation | Windows user folders and the primary-runtime cache were isolated in all four runs; the actual runtime-selection logs confirmed each cache path |
+| Desktop executable | Unique embedded ASAR digest synchronized in the copy; every other executable byte unchanged |
+| Public tests | 74 tests passed; two additional older-artifact test classes skipped because their exact samples were unavailable |
+| Previous-version regression | Exact 26.924.1866.0 contracts and protocol patch output passed; old profiles and source pins unchanged |
+| Historical data | Logical-parent and physical-ancestor chains, ownership, byte boundaries, dependency changes and path escape checks passed; source preservation and independent imported copy passed |
+| Wheel and installer | Resource loading, bundle checksums, official dry-run, compatibility-manifest dry-run and compatibility-source dry-run passed |
+| Publication scan | Public source, wheel, release notes and bundle passed sensitive-content checks |
+
+New-version checks were not skipped. `qualification-26.924.2738.0.json` binds the current shipped source to these runtime results. Earlier qualification records remain attached to their original releases. The backend acceptance report covers 15 module tests, ordinary HTTP and real WebSocket replay, local compaction, remote compaction V2, cold task restoration and all 57 migration checksums.
+
 ## v0.3.0 qualification
 
 The 26.924.1866.0 public workflow was built from the exact official Windows package and qualified with both backend modes on 2026-09-26.

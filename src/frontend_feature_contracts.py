@@ -1271,7 +1271,10 @@ def _validate_renderer_probe(
     )
     _, protocol_entry = builder.read_entry(portable_asar, header_size, protocol_meta)
     latest = builder.is_split_frontend_profile(profile)
-    if profile.get("profile_spec_id") == "26924_1866":
+    if profile.get("profile_spec_id") == "26924_2738":
+        from hotfix_profile_26924_2738 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile.get("profile_spec_id") == "26924_1866":
         from hotfix_profile_26924_1866 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
         resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
     elif profile.get("profile_spec_id") == "26917_9434":
@@ -1913,7 +1916,10 @@ def validate(source_asar: Path, portable_asar: Path, node: str = "node") -> dict
 
     source_hash = builder.sha256_path(source_asar)
     profile = builder.profile_for_asar(source_hash)
-    if profile and profile.get("profile_spec_id") == "26924_1866":
+    if profile and profile.get("profile_spec_id") == "26924_2738":
+        from frontend_contract_26924_2738 import validate as validate_2738
+        return validate_2738(source_asar, portable_asar, node)
+    elif profile and profile.get("profile_spec_id") == "26924_1866":
         from frontend_contract_26924_1866 import validate as validate_1866
         return validate_1866(source_asar, portable_asar, node)
     elif profile and profile.get("profile_spec_id") == "26917_9434":

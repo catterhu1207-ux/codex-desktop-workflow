@@ -1,3 +1,11 @@
+# v0.3.1
+
+Adapt Codex Desktop `26.924.2738.0` with independent frontend contracts and build identity. Preserve task ordering, attention states, remote project names and routing, the Work picker, file drop, paginated history and task settings.
+
+The official backend is the default. Explicit compatibility mode builds the matching `desktop-26.924.2738.0` profile from pinned public source. Earlier desktop profiles and their backend references remain available. The installer builds from your own official installation.
+
+Verification uses independent Windows user folders and runtime caches for each test launch.
+
 # v0.3.0
 
 

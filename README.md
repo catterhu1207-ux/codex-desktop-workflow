@@ -9,7 +9,7 @@
 
 ![Illustrative before/after demo built from synthetic tasks](docs/assets/demo-en.gif)
 
-## v0.3.0 — Desktop 26.924.1866.0
+## v0.3.1 — Desktop 26.924.2738.0
 
 This release adapts the refreshed desktop interface and keeps task ordering, attention states, remote project names, the Work picker, file drops and per-task settings. History import checks both logical parents and physical ancestors before launch.
 
@@ -96,8 +96,9 @@ Unknown versions, hash mismatches, ambiguous patch matches, failed contracts, or
 
 ## Current support
 
-Version `v0.3.0` supports Windows x64 with the official bundled `codex.exe`:
+Version `v0.3.1` supports Windows x64 with the official bundled `codex.exe`:
 
+- Codex Desktop `26.924.2738.0`
 - Codex Desktop `26.924.1866.0`
   - `app.asar`: `96b6aa6e1ea46dd8a30b3fa5166be12284ba66bd3901241a81a60684f150189d`
   - Official `codex.exe`: `0122378c15dc0c3c0af0d6addf2dd278125c19676b41fadaa520f89d2c9e0079`
@@ -121,7 +122,7 @@ A matching version number with different bytes is rejected.
 
 See [COMPATIBILITY.md](COMPATIBILITY.md) for the full support matrix.
 
-The cross-provider Responses compatibility profile is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat). Desktop `26.924.1866.0` supports it through the explicit source-build mode described above. Earlier desktop profiles continue to use their existing official backends.
+The cross-provider Responses compatibility profile is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat). Desktop `26.924.2738.0` and `26.924.1866.0` support it through the explicit source-build mode described above. Earlier desktop profiles continue to use their existing official backends.
 
 ## Manual install and development
 
@@ -134,7 +135,7 @@ Requirements:
 Assume the official package is located at:
 
 ```text
-C:\official\OpenAI.Codex_26.917.9434.0_x64__2p2nqsd0c76g0
+C:\official\OpenAI.Codex_26.924.2738.0_x64__2p2nqsd0c76g0
 ```
 
 Install:
@@ -150,7 +151,7 @@ py -3 -m venv .venv
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe inspect `
-  --source C:\official\OpenAI.Codex_26.917.9434.0_x64__2p2nqsd0c76g0
+  --source C:\official\OpenAI.Codex_26.924.2738.0_x64__2p2nqsd0c76g0
 ```
 
 ### 2. Build an independent modified copy
@@ -159,7 +160,7 @@ The target directory must not already exist:
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe build `
-  --source C:\official\OpenAI.Codex_26.917.9434.0_x64__2p2nqsd0c76g0 `
+  --source C:\official\OpenAI.Codex_26.924.2738.0_x64__2p2nqsd0c76g0 `
   --target C:\codex-workflow\app
 ```
 
@@ -167,7 +168,7 @@ The target directory must not already exist:
 
 ```powershell
 .\.venv\Scripts\codex-desktop-workflow.exe verify `
-  --source C:\official\OpenAI.Codex_26.917.9434.0_x64__2p2nqsd0c76g0 `
+  --source C:\official\OpenAI.Codex_26.924.2738.0_x64__2p2nqsd0c76g0 `
   --portable C:\codex-workflow\app `
   --runs-root C:\codex-workflow\verification
 ```

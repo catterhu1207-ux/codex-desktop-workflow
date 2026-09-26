@@ -4,6 +4,13 @@ from unittest import mock
 from codex_desktop_workflow import backend,cli,workflow
 
 class OptionalBackend(unittest.TestCase):
+    def test_new_desktop_rejects_previous_backend_manifest(self):
+        with tempfile.TemporaryDirectory() as raw:
+            path=Path(raw)/'manifest.json'
+            path.write_text(json.dumps({'mode':'patched','compatibility':{'packages':[{'package_version':'26.924.1866.0'}]}}))
+            with self.assertRaisesRegex(ValueError,'desktop_version_mismatch'):
+                backend.validate_manifest(path,'26.924.2738.0')
+
     def test_old_cli_defaults_to_official(self):
         args=cli.parser().parse_args(['build','--source','source','--target','target'])
         self.assertEqual(args.backend_mode,'official')

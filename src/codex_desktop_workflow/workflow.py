@@ -109,6 +109,8 @@ SUPPORTED_PACKAGES = {
 SUPPORTED_PACKAGES['26.924.1866.0'] = PackageSupport(version='26.924.1866.0', package_full_name='OpenAI.Codex_26.924.1866.0_x64__2p2nqsd0c76g0', asar_sha256='96b6aa6e1ea46dd8a30b3fa5166be12284ba66bd3901241a81a60684f150189d', backend_sha256='0122378c15dc0c3c0af0d6addf2dd278125c19676b41fadaa520f89d2c9e0079', backend_policy=_POLICY_ROOT / 'official-26.924.1866.0.json', backend_policy_sha256='b81928584a72f20fb18de747cab179554cd7c34745d1be450a9278415448ae17', entries={'webview/assets/app-primary-d6f740bc7e54.js': '615347d3d2b0bde27085a3531780a077e3f65dd477e52b1a0e8139109f1c70e9', '.vite/build/main-DhsWCh3w.js': 'fe0ba5e84514b894e2b6e8a282bd981b2b86db735ed4a719cc93d3fdb8063544', 'webview/assets/app-shared-d93bebbb48ab.js': 'c47c36ac7af90884e27d2439b8b577e260831d1819e56b4dd45e09ba89f854e9', 'webview/assets/app-initial-58e226417aae.js': '0389028e89d8ec1ff8bc169a88988b3af82965236cc0a515c7fd678ecfd7d6f5'})
 SUPPORTED_PACKAGES['26.924.1866.0'].entries['.vite/build/app-protocol-IjFomtpu.js'] = '56566de85770635d1596d8078a6fb798c5d7e80088689165305454bf8fa25f4d'
 
+SUPPORTED_PACKAGES['26.924.2738.0'] = PackageSupport(version='26.924.2738.0', package_full_name='OpenAI.Codex_26.924.2738.0_x64__2p2nqsd0c76g0', asar_sha256='89fba67324ffb8dd54ccf13b6f097172e697549eeb1f26396f86f972c10c5b0c', backend_sha256='8f0554ede25bbc5450921897c468b2e84635aa513c5017457997af0954581f49', backend_policy=_POLICY_ROOT / 'official-26.924.2738.0.json', backend_policy_sha256='32f07f74f57866cbe3f03aa244d23fed5611810eda1081f3b264514f5d9e41a4', entries={'webview/assets/app-initial-ff48311587c5.js': '41d8d711bb87cb6941bcca253b913b521d008d0ef077b1b4b3f75a82113b0579', 'webview/assets/app-primary-2a3f3664ac09.js': 'f94dda2d2248b276da6a1772d969775d3ea7a17329e2cd93f335eb131eed73d2', 'webview/assets/app-shared-c568b0b98683.js': 'f2e66afbe63473bd10f6480b47c4c5c9c321144bf36bf9ceaeb75d7242770d5b', '.vite/build/main-DAwJoFgo.js': '18beea7d7e46866168528ff5dab5108ffe6d39fc13433367ce8dee7b187044f8', '.vite/build/app-protocol-IjFomtpu.js': '56566de85770635d1596d8078a6fb798c5d7e80088689165305454bf8fa25f4d'})
+
 SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES))
 SUPPORTED_VERSION = max(SUPPORTED_VERSIONS)
 DATA_FILES = (
@@ -199,6 +201,8 @@ def inspect(source: Path) -> dict[str, Any]:
         problems.append("official_backend_sha256_mismatch")
     if not executable.is_file():
         problems.append("desktop_executable_missing")
+    elif version == '26.924.2738.0' and _sha256(executable) != '3c440d9004ef5195a93b5b934623bf02032f74d40b9a9fbe33934e57e5f1f117':
+        problems.append('official_desktop_executable_sha256_mismatch')
     elif version == '26.924.1866.0' and _sha256(executable) != '5263bb43c717fc317655ae3aa8dfb7bb5d2b344832fa6ec449fa55dbe77d56b8':
         problems.append('official_desktop_executable_sha256_mismatch')
     entry_results: dict[str, str] = {}
@@ -227,9 +231,9 @@ def inspect(source: Path) -> dict[str, Any]:
 
 def build_backend(source: Path, target: Path) -> dict[str, Any]:
     inspected = inspect(source)
-    if inspected['status'] != 'passed' or inspected['supported_version'] != '26.924.1866.0':
+    if inspected['status'] != 'passed' or inspected['supported_version'] not in ('26.924.1866.0','26.924.2738.0'):
         raise WorkflowError('compat_backend_source_unsupported')
-    return backend.build(Path(inspected['app_directory']), target)
+    return backend.build(Path(inspected['app_directory']), target, inspected['supported_version'])
 
 
 def build(source: Path, target: Path, backend_mode: str = 'official', backend_manifest: Path | None = None) -> dict[str, Any]:
@@ -240,9 +244,9 @@ def build(source: Path, target: Path, backend_mode: str = 'official', backend_ma
     if backend_mode not in ('official', 'compat'):
         raise WorkflowError('unsupported_backend_mode')
     if backend_mode == 'compat':
-        if support.version != '26.924.1866.0' or backend_manifest is None:
+        if support.version not in ('26.924.1866.0','26.924.2738.0') or backend_manifest is None:
             raise WorkflowError('compatible_backend_manifest_required_for_supported_version')
-        backend.validate_manifest(backend_manifest)
+        backend.validate_manifest(backend_manifest, support.version)
         selected_policy = backend_manifest
         selected_policy_sha256 = _sha256(backend_manifest)
     else:
@@ -578,6 +582,7 @@ def verify(source: Path, portable: Path, runs_root: Path, observe_seconds: float
             runs_root,
             environment=_portable_environment(portable, home),
             debug_port=debug_port,
+            isolate_shell_folders=True,
         )
         proof_deadline = time.monotonic() + 240
         deadline = proof_deadline
