@@ -53,10 +53,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           $tag = $env:GITHUB_REF_NAME
-          gh release view $tag *> $null
-          if ($LASTEXITCODE -eq 0) {
-            gh release upload $tag "dist\codex-desktop-workflow-bundle.zip" "install.ps1" "dist\SHA256SUMS.txt" --clobber
-          }
-          else {
-            gh release create $tag "dist\codex-desktop-workflow-bundle.zip" "install.ps1" "dist\SHA256SUMS.txt" --title $tag --notes-file RELEASE_NOTES.md
-          }
+          gh api "repos/$env:GITHUB_REPOSITORY/releases" --jq '.[].tag_name' > dist/existing-tags.txt
+          if ($LASTEXITCODE -ne 0) { throw "Release inventory could not be read." }
+          if ((Get-Content dist/existing-tags.txt) -contains $tag) { throw "Release already exists; assets will not be overwritten." }
+          gh release create $tag "dist\codex-desktop-workflow-bundle.zip" "install.ps1" "dist\SHA256SUMS.txt" --draft --verify-tag --title $tag --notes-file RELEASE_NOTES.md
+          if ($LASTEXITCODE -ne 0) { throw "Draft release creation failed." }

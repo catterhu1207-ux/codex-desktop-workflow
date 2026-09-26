@@ -9,6 +9,20 @@
 
 ![Illustrative before/after demo built from synthetic tasks](docs/assets/demo-en.gif)
 
+## v0.3.0 — Desktop 26.924.1866.0
+
+This release adapts the refreshed desktop interface and keeps task ordering, attention states, remote project names, the Work picker, file drops and per-task settings. History import checks both logical parents and physical ancestors before launch.
+
+The official backend remains the default. To opt into the separately published compatibility source profile, download `install.ps1` and run:
+
+```powershell
+.\install.ps1 -BackendMode compat
+```
+
+Source builds require Python 3.11+, Git, Rust 1.95.0, x64 MSVC and Windows SDK. Run from the x64 developer environment. Missing tools stop the build. A previously built, matching manifest can be supplied with `-BackendManifest`. `-DryRun` reports the selection and prerequisites without compiling or launching.
+
+The command-line equivalents are `build-backend --source <official-app> --target <new-directory>` and `build --source <official-app> --target <new-app> --backend-mode compat --backend-manifest <manifest.json>`. Compatibility builds use the immutable source reference recorded in the installed package.
+
 ## Install in one command
 
 ```powershell
@@ -27,8 +41,6 @@ The installer finds your official Codex Desktop package, builds an independent c
 When several Codex tasks are active at once, the hard part is often not execution. It is knowing **what needs attention next, which task is waiting for implementation, which one you pinned, which remote project you are looking at, and whether changing a global model default will disturb an existing task.**
 
 `codex-desktop-workflow` is a Windows-focused local build tool. You supply your own supported official Codex application directory. It creates an independent modified copy, validates the exact supported build and key UI entry points, then performs isolated launch verification against the generated artifact.
-
-> It does not provide, download, or redistribute official binaries. You must supply your own supported official Codex installation.
 
 [中文说明](README.zh-CN.md)
 
@@ -84,8 +96,11 @@ Unknown versions, hash mismatches, ambiguous patch matches, failed contracts, or
 
 ## Current support
 
-Version `v0.2.4` supports Windows x64 with the official bundled `codex.exe`:
+Version `v0.3.0` supports Windows x64 with the official bundled `codex.exe`:
 
+- Codex Desktop `26.924.1866.0`
+  - `app.asar`: `96b6aa6e1ea46dd8a30b3fa5166be12284ba66bd3901241a81a60684f150189d`
+  - Official `codex.exe`: `0122378c15dc0c3c0af0d6addf2dd278125c19676b41fadaa520f89d2c9e0079`
 - Codex Desktop `26.917.9434.0`
   - Official `app.asar`: `d4234b03eb532fe0f3e9a7d90caad51edb68af45f771cc786d966377e7446f5a`
   - Official `codex.exe`: `9015c47d1714294ecd9033c4b5aefc3076797d867d1c36aa37749fcb76c8942f`
@@ -106,7 +121,7 @@ A matching version number with different bytes is rejected.
 
 See [COMPATIBILITY.md](COMPATIBILITY.md) for the full support matrix.
 
-The cross-provider Responses compatibility patch is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat), but that desktop combination has not completed independent qualification in this repository and is therefore not marked as supported in `v0.2.4`.
+The cross-provider Responses compatibility profile is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat). Desktop `26.924.1866.0` supports it through the explicit source-build mode described above. Earlier desktop profiles continue to use their existing official backends.
 
 ## Manual install and development
 
@@ -243,3 +258,5 @@ Please do not upload authentication files, task content, access tokens, or unaut
 ---
 
 **One-line positioning:** this is not another Codex client. It is a local, verifiable adaptation layer that makes the official Codex Desktop workflow easier to prioritize when many tasks are running at once.
+
+For repeated source builds, `CODEX_COMPAT_BUILD_CACHE` can name an existing build target. The pinned recipe rechecks its source, workspace lock and migrations, reruns tests, and rebuilds through Cargo before copying the result. Tool prerequisites remain required.

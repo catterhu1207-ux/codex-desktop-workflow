@@ -9,6 +9,20 @@
 
 ![合成任务 before/after 演示](docs/assets/demo-zh.gif)
 
+## v0.3.0：适配桌面版 26.924.1866.0
+
+本版适配更新后的界面，保留任务排序、注意状态、远程项目名称、Work 选择器、文件拖放和任务设置。历史导入及启动前检查同时核对逻辑父任务和物理祖先，历史关系校验未通过时停止启动。
+
+默认继续使用官方后端。需要历史请求兼容功能时，下载 `install.ps1` 后显式运行：
+
+```powershell
+.\install.ps1 -BackendMode compat
+```
+
+源码构建需要 Python 3.11 以上、Git、Rust 1.95.0、x64 MSVC 和 Windows SDK，请从 x64 开发者环境运行。缺少工具时停止构建。已有匹配的构建产物可通过 `-BackendManifest` 指定；`-DryRun` 只显示选择及前置条件。
+
+兼容后端源码及旧版入口见 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat)。
+
 ## 一条命令安装
 
 ```powershell
@@ -84,8 +98,11 @@ irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/do
 
 ## 当前支持范围
 
-`v0.2.4` 支持 Windows x64，并使用官方包内的 `codex.exe`：
+`v0.3.0` 支持 Windows x64，并使用官方包内的 `codex.exe`：
 
+- Codex Desktop `26.924.1866.0`
+  - `app.asar`: `96b6aa6e1ea46dd8a30b3fa5166be12284ba66bd3901241a81a60684f150189d`
+  - Official `codex.exe`: `0122378c15dc0c3c0af0d6addf2dd278125c19676b41fadaa520f89d2c9e0079`
 - Codex Desktop `26.917.9434.0`
   - 官方 `app.asar`：`d4234b03eb532fe0f3e9a7d90caad51edb68af45f771cc786d966377e7446f5a`
   - 官方 `codex.exe`：`9015c47d1714294ecd9033c4b5aefc3076797d867d1c36aa37749fcb76c8942f`
@@ -106,7 +123,7 @@ irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/do
 
 完整支持矩阵见 [COMPATIBILITY.md](COMPATIBILITY.md)。
 
-第三方 Responses 兼容服务的后端修复在 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat) 中公开，但尚未作为本仓库的桌面组合完成独立验收，因此 `v0.2.4` 不把它标为可用组合。
+第三方 Responses 请求兼容配置见 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat)。桌面版 `26.924.1866.0` 可显式选择源码构建模式，较早的桌面配置继续使用其既有官方后端。
 
 ## 手动安装与开发
 
@@ -243,3 +260,5 @@ codex-desktop-workflow stop --run C:\codex-workflow\daily-runs\run-<id>
 ---
 
 **一句话定位：** 这不是另一个 Codex 客户端，而是一套把官方 Codex Desktop 的多任务工作流改成“更容易判断下一步做什么”的本地、可验证适配工具。
+
+重复构建时，可用 `CODEX_COMPAT_BUILD_CACHE` 指定已有源码构建目录。固定版本的构建入口会重新校验源码、依赖锁定文件和迁移文件，再运行测试及 Cargo 构建。工具链前置条件仍须满足。

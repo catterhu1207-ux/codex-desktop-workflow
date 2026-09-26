@@ -27,3 +27,11 @@ Close every ChatGPT and codex process first. The migration uses a separate targe
 ## I need a clean reinstall
 
 Keep the official app untouched. Choose a new `-InstallRoot` and run the installer again; the old independent copy remains available for inspection until you remove it deliberately.
+
+## Compatibility source builds
+
+Use the x64 MSVC developer environment with Windows SDK, Git, Python 3.11+ and Rust 1.95.0. Source compilation uses one worker to reduce peak memory. The build stops if the source, patch, migration bytes or backend provenance differ from the pinned profile. Supply a matching `-BackendManifest` to reuse an existing local build.
+
+## Imported history
+
+History import checks the complete physical ancestor chain even when the logical parent differs. Keep the source snapshot if import fails. The importer changes only copied path fields; it preserves history bytes and task settings. It does not repair damaged records automatically.

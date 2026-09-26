@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 import argparse
 import json
 from pathlib import Path
@@ -19,6 +20,8 @@ def parser() -> argparse.ArgumentParser:
     sub = root.add_subparsers(dest="command", required=True)
     inspect = sub.add_parser("inspect"); inspect.add_argument("--source", type=_path, required=True)
     build = sub.add_parser("build"); build.add_argument("--source", type=_path, required=True); build.add_argument("--target", type=_path, required=True)
+    build.add_argument('--backend-mode', choices=('official','compat'), default='official'); build.add_argument('--backend-manifest', type=_path)
+    backend = sub.add_parser('build-backend'); backend.add_argument('--source', type=_path, required=True); backend.add_argument('--target', type=_path, required=True)
     verify = sub.add_parser("verify"); verify.add_argument("--source", type=_path, required=True); verify.add_argument("--portable", type=_path, required=True); verify.add_argument("--runs-root", type=_path, required=True); verify.add_argument("--observe-seconds", type=float, default=60); verify.add_argument("--launches", type=int, default=2)
     copy = sub.add_parser("import-data"); copy.add_argument("--source", type=_path, required=True); copy.add_argument("--target", type=_path, required=True)
     launch = sub.add_parser("launch"); launch.add_argument("--portable", type=_path, required=True); launch.add_argument("--data", type=_path, required=True); launch.add_argument("--runs-root", type=_path, required=True)
@@ -32,7 +35,8 @@ def main() -> int:
     args = parser().parse_args()
     try:
         if args.command == "inspect": result = workflow.inspect(args.source)
-        elif args.command == "build": result = workflow.build(args.source, args.target)
+        elif args.command == "build": result = workflow.build(args.source, args.target, args.backend_mode, args.backend_manifest)
+        elif args.command == 'build-backend': result = workflow.build_backend(args.source, args.target)
         elif args.command == "verify": result = workflow.verify(args.source, args.portable, args.runs_root, args.observe_seconds, args.launches)
         elif args.command == "import-data": result = workflow.import_data(args.source, args.target)
         elif args.command == "launch": result = workflow.launch(args.portable, args.data, args.runs_root)
@@ -40,7 +44,7 @@ def main() -> int:
         else: result = workflow.stop(args.run, args.timeout)
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))
         return 0 if result.get("status") not in {"blocked", "backend_orphaned"} and result.get("close_status") != "timeout" else 2
-    except (workflow.WorkflowError, hotfix_builder.HotfixError, OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+    except (subprocess.CalledProcessError, workflow.WorkflowError, hotfix_builder.HotfixError, OSError, ValueError, KeyError, json.JSONDecodeError) as error:
         print(json.dumps({"status": "blocked", "reason": str(error), "content_logged": False}, ensure_ascii=False), file=sys.stderr)
         return 2
 

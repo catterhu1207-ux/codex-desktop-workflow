@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from contextlib import closing
 import base64
 from dataclasses import dataclass
 import hashlib
@@ -21,6 +22,7 @@ import xml.etree.ElementTree as ET
 import frontend_feature_contracts
 import hotfix_builder
 from electron_update_safety.lifecycle import IsolatedRun
+from . import backend, history
 
 
 @dataclass(frozen=True)
@@ -104,6 +106,9 @@ SUPPORTED_PACKAGES = {
         },
     ),
 }
+SUPPORTED_PACKAGES['26.924.1866.0'] = PackageSupport(version='26.924.1866.0', package_full_name='OpenAI.Codex_26.924.1866.0_x64__2p2nqsd0c76g0', asar_sha256='96b6aa6e1ea46dd8a30b3fa5166be12284ba66bd3901241a81a60684f150189d', backend_sha256='0122378c15dc0c3c0af0d6addf2dd278125c19676b41fadaa520f89d2c9e0079', backend_policy=_POLICY_ROOT / 'official-26.924.1866.0.json', backend_policy_sha256='b81928584a72f20fb18de747cab179554cd7c34745d1be450a9278415448ae17', entries={'webview/assets/app-primary-d6f740bc7e54.js': '615347d3d2b0bde27085a3531780a077e3f65dd477e52b1a0e8139109f1c70e9', '.vite/build/main-DhsWCh3w.js': 'fe0ba5e84514b894e2b6e8a282bd981b2b86db735ed4a719cc93d3fdb8063544', 'webview/assets/app-shared-d93bebbb48ab.js': 'c47c36ac7af90884e27d2439b8b577e260831d1819e56b4dd45e09ba89f854e9', 'webview/assets/app-initial-58e226417aae.js': '0389028e89d8ec1ff8bc169a88988b3af82965236cc0a515c7fd678ecfd7d6f5'})
+SUPPORTED_PACKAGES['26.924.1866.0'].entries['.vite/build/app-protocol-IjFomtpu.js'] = '56566de85770635d1596d8078a6fb798c5d7e80088689165305454bf8fa25f4d'
+
 SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES))
 SUPPORTED_VERSION = max(SUPPORTED_VERSIONS)
 DATA_FILES = (
@@ -194,6 +199,8 @@ def inspect(source: Path) -> dict[str, Any]:
         problems.append("official_backend_sha256_mismatch")
     if not executable.is_file():
         problems.append("desktop_executable_missing")
+    elif version == '26.924.1866.0' and _sha256(executable) != '5263bb43c717fc317655ae3aa8dfb7bb5d2b344832fa6ec449fa55dbe77d56b8':
+        problems.append('official_desktop_executable_sha256_mismatch')
     entry_results: dict[str, str] = {}
     if support is not None and (not problems or problems == ["windows_required"]):
         header_size, _, header = hotfix_builder.read_asar(asar)
@@ -218,11 +225,31 @@ def inspect(source: Path) -> dict[str, Any]:
     }
 
 
-def build(source: Path, target: Path) -> dict[str, Any]:
+def build_backend(source: Path, target: Path) -> dict[str, Any]:
+    inspected = inspect(source)
+    if inspected['status'] != 'passed' or inspected['supported_version'] != '26.924.1866.0':
+        raise WorkflowError('compat_backend_source_unsupported')
+    return backend.build(Path(inspected['app_directory']), target)
+
+
+def build(source: Path, target: Path, backend_mode: str = 'official', backend_manifest: Path | None = None) -> dict[str, Any]:
     result = inspect(source)
     if result["status"] != "passed":
         raise WorkflowError("source_inspection_blocked:" + ",".join(result["problems"]))
     support = SUPPORTED_PACKAGES[str(result["supported_version"])]
+    if backend_mode not in ('official', 'compat'):
+        raise WorkflowError('unsupported_backend_mode')
+    if backend_mode == 'compat':
+        if support.version != '26.924.1866.0' or backend_manifest is None:
+            raise WorkflowError('compatible_backend_manifest_required_for_supported_version')
+        backend.validate_manifest(backend_manifest)
+        selected_policy = backend_manifest
+        selected_policy_sha256 = _sha256(backend_manifest)
+    else:
+        if backend_manifest is not None:
+            raise WorkflowError('backend_manifest_requires_compat_mode')
+        selected_policy = support.backend_policy
+        selected_policy_sha256 = support.backend_policy_sha256
     app = Path(result["app_directory"])
     target = target.resolve()
     if target.exists():
@@ -243,9 +270,13 @@ def build(source: Path, target: Path) -> dict[str, Any]:
         support.package_full_name,
         support.version,
         target,
-        support.backend_policy,
-        support.backend_policy_sha256,
+        selected_policy,
+        selected_policy_sha256,
     )
+    if backend_mode == 'compat':
+        copied_policy = target / 'resources/backend-build-manifest.json'
+        shutil.copy2(selected_policy, copied_policy)
+        selected_policy = copied_policy
     public = {
         "schema_version": 1,
         "status": "bundle_qualified",
@@ -256,7 +287,10 @@ def build(source: Path, target: Path) -> dict[str, Any]:
         "official_asar_sha256": support.asar_sha256,
         "portable_asar_sha256": built.get("portable_asar_sha256"),
         "builder_manifest": str(manifest),
-        "backend_mode": "official",
+        "backend_mode": backend_mode,
+        "backend_manifest_sha256": selected_policy_sha256,
+        "backend_manifest": str(selected_policy.resolve()),
+        "artifact_id": hotfix_builder.frontend_attestation_artifact_id(hotfix_builder.profile_for_asar(support.asar_sha256)) + '-' + backend_mode + '-' + _sha256(target / 'resources/codex.exe')[:12],
         "backend_sha256": _sha256(target / "resources" / "codex.exe"),
         "content_logged": False,
     }
@@ -304,9 +338,15 @@ def _attestations(home: Path, artifact_id: str, log_path: Path | tuple[Path, ...
                                 values.append(value)
         except sqlite3.DatabaseError:
             continue
-    passed = [item for item in values if item.get("status") == "passed"]
+    required = set(hotfix_builder.FRONTEND_ATTESTATION_FEATURES)
+    passed = [item for item in values if item.get('status') == 'passed'
+              and item.get('transport') == 'renderer_log_message_v1'
+              and set(item.get('features', {})) == required
+              and all(isinstance(feature, dict) and feature.get('passed') is True for feature in item['features'].values())]
     loaded = [item for item in values if item.get("status") == "module_loaded"]
-    return {"status": "passed" if passed and loaded else "blocked", "module_loaded": len(loaded), "passed": len(passed), "run_ids": sorted({str(item.get('run_id')) for item in values if item.get('run_id')})}
+    valid_runs = {item.get('run_id') for item in passed} & {item.get('run_id') for item in loaded}
+    valid_runs.discard(None)
+    return {"status": "passed" if valid_runs else "blocked", "feature_count": len(required) if valid_runs else 0, "module_loaded": len(loaded), "passed": len(passed), "run_ids": sorted(valid_runs)}
 
 
 def _available_loopback_port() -> int:
@@ -326,7 +366,7 @@ def _registered_backend_match(
     value: dict[str, Any], portable: Path, expected_sha256: str
 ) -> bool:
     expected = (portable / "resources" / "codex.exe").resolve()
-    for item in value.get("registered_backends") or []:
+    for item in value.get("alive_backends") or []:
         executable = item.get("executable") if isinstance(item, dict) else None
         if not isinstance(executable, str):
             continue
@@ -339,6 +379,23 @@ def _registered_backend_match(
         if actual.is_file() and _sha256(actual) == expected_sha256:
             return True
     return False
+
+
+def _current_app_server_match(value: dict[str, Any], portable: Path, expected_sha256: str) -> bool:
+    if not _registered_backend_match(value, portable, expected_sha256):
+        return False
+    main_pid = value.get('main', {}).get('pid')
+    if type(main_pid) is not int:
+        return False
+    expected = (portable / 'resources/codex.exe').resolve()
+    candidates = [item['pid'] for item in value.get('alive_backends', [])
+                  if type(item.get('pid')) is int and Path(item.get('executable', '')).resolve() == expected]
+    if not candidates:
+        return False
+    # Commands are read only for the identity-checked backends of this isolated run.
+    expression = "$rows=Get-CimInstance Win32_Process; $parents=@{}; foreach($row in $rows){$parents[[int]$row.ProcessId]=[int]$row.ParentProcessId}; $ok=$false; foreach($candidate in @(" + ','.join(map(str,candidates)) + ")){$row=$rows|Where-Object{$_.ProcessId -eq $candidate}; if($row.CommandLine -notmatch '(?:^|\\s)app-server(?:\\s|$)'){continue}; $ancestor=[int]$candidate; for($step=0;$step -lt 256;$step++){if($ancestor -eq " + str(main_pid) + "){$ok=$true;break}; if(-not $parents.ContainsKey($ancestor)){break}; $ancestor=$parents[$ancestor]}}; $ok|ConvertTo-Json -Compress"
+    result = subprocess.run(['powershell.exe','-NoProfile','-NonInteractive','-Command',expression],capture_output=True,text=True,timeout=15)
+    return result.returncode == 0 and result.stdout.strip().lower() == 'true'
 
 
 def _websocket_frame(payload: bytes) -> bytes:
@@ -442,6 +499,26 @@ def _normal_codex_stop(run: IsolatedRun, timeout: float, backend_name: str = "co
     return {**result, "close_status": "closed" if result.get("status") == "exited" else "timeout", "codex_quit_sent": sent}
 
 
+def _seed_synthetic_tasks(home: Path, empty_home: Path) -> None:
+    import uuid
+    with closing(sqlite3.connect((empty_home / 'state_5.sqlite').as_uri() + '?mode=ro', uri=True)) as source, closing(sqlite3.connect(home / 'state_5.sqlite')) as target:
+        if source.execute('SELECT COUNT(*) FROM threads').fetchone()[0] != 0:
+            raise WorkflowError('acceptance_seed_must_be_empty')
+        source.backup(target)
+        now = int(time.time())
+        for index in range(400):
+            tid = str(uuid.uuid4())
+            project = home / 'synthetic-workspaces' / str(index % 12)
+            project.mkdir(parents=True, exist_ok=True)
+            rollout = home / 'sessions' / ('synthetic-' + tid + '.jsonl')
+            rollout.parent.mkdir(exist_ok=True)
+            metadata = {'timestamp': _now(), 'type': 'session_meta', 'payload': {'id': tid, 'cwd': str(project), 'source': 'vscode', 'model_provider': 'openai', 'cli_version': '0.158.0-alpha.2'}}
+            rollout.write_text(json.dumps(metadata) + '\n', encoding='utf8')
+            row = (tid, str(rollout), now-index, now-index, 'vscode', 'openai', str(project), 'Synthetic acceptance task '+str(index), '{"type":"read-only"}', 'never', 1, 0, '0.158.0-alpha.2', 'Synthetic acceptance task '+str(index), now-index, (now-index)*1000, int(index<10))
+            target.execute('INSERT INTO threads(id,rollout_path,created_at,updated_at,source,model_provider,cwd,title,sandbox_policy,approval_mode,has_user_event,archived,cli_version,first_user_message,recency_at,recency_at_ms,is_pinned) VALUES('+','.join('?'*17)+')', row)
+        target.commit()
+
+
 def verify(source: Path, portable: Path, runs_root: Path, observe_seconds: float = 60.0, launches: int = 2) -> dict[str, Any]:
     if launches < 2:
         raise WorkflowError("verification_requires_two_launches")
@@ -455,23 +532,32 @@ def verify(source: Path, portable: Path, runs_root: Path, observe_seconds: float
     if not manifest_path.is_file():
         raise WorkflowError("builder_manifest_missing")
     manifest_data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    public_path = portable / 'codex-desktop-workflow.json'
+    public = json.loads(public_path.read_text()) if public_path.is_file() else {'backend_mode': 'official'}
     support = SUPPORTED_PACKAGES.get(str(manifest_data.get("package_version") or ""))
     if support is None:
         raise WorkflowError("verified_portable_version_unsupported")
     if source_result["supported_version"] != support.version:
         raise WorkflowError("source_and_portable_version_mismatch")
-    bundle = hotfix_builder.verify_manifest(
-        manifest_path,
-        support.backend_policy_sha256,
-        support.backend_policy,
-    )
+    selected_policy = support.backend_policy
+    selected_digest = support.backend_policy_sha256
+    if public.get('backend_mode') == 'compat':
+        selected_policy = Path(public['backend_manifest'])
+        backend.validate_manifest(selected_policy)
+        selected_digest = _sha256(selected_policy)
+        if public.get('backend_manifest_sha256') != selected_digest:
+            raise WorkflowError('backend_manifest_changed_after_build')
+    elif public.get('backend_mode') != 'official':
+        raise WorkflowError('unsupported_backend_mode')
+    bundle = hotfix_builder.verify_manifest(manifest_path, selected_digest, selected_policy)
     contracts = frontend_feature_contracts.validate(Path(source_result["app_directory"]) / "resources" / "app.asar", portable / "resources" / "app.asar")
     runs_root.mkdir(parents=True, exist_ok=True)
     expected_backend = (portable / "resources" / "codex.exe").resolve()
     if not expected_backend.is_file():
         raise WorkflowError("portable_backend_missing")
     expected_backend_sha256 = _sha256(expected_backend)
-    if expected_backend_sha256 != support.backend_sha256:
+    selected_hash = backend.validate_manifest(selected_policy)['patched']['sha256'] if public.get('backend_mode') == 'compat' else support.backend_sha256
+    if expected_backend_sha256 != selected_hash:
         raise WorkflowError("portable_backend_identity_mismatch")
     runtime: list[dict[str, Any]] = []
     artifact_id = str(
@@ -480,9 +566,12 @@ def verify(source: Path, portable: Path, runs_root: Path, observe_seconds: float
             hotfix_builder.profile_for_asar(support.asar_sha256)
         )
     )
-    for _ in range(launches):
+    for index in range(launches):
         home = (runs_root / ("home-" + os.urandom(8).hex())).resolve()
         home.mkdir(parents=True, exist_ok=False)
+        if index % 2 == 1:
+            _seed_synthetic_tasks(home, Path(runtime[-1]['codex_home']))
+        history.inspect(home)
         debug_port = _available_loopback_port()
         run = IsolatedRun.start(
             portable / "ChatGPT.exe",
@@ -490,7 +579,9 @@ def verify(source: Path, portable: Path, runs_root: Path, observe_seconds: float
             environment=_portable_environment(portable, home),
             debug_port=debug_port,
         )
-        deadline = time.monotonic() + observe_seconds
+        proof_deadline = time.monotonic() + 240
+        deadline = proof_deadline
+        proof_at = None
         latest: dict[str, Any] = {}
         attestation_requested = False
         while time.monotonic() < deadline:
@@ -499,15 +590,20 @@ def verify(source: Path, portable: Path, runs_root: Path, observe_seconds: float
                 break
             if not attestation_requested:
                 attestation_requested = _request_renderer_attestation(debug_port)
+            fresh = _attestations(home, artifact_id, (run.run_directory / 'stdout.log', run.run_directory / 'stderr.log'))
+            if fresh.get('status') == 'passed' and proof_at is None:
+                proof_at = time.monotonic()
+                deadline = proof_at + observe_seconds
             time.sleep(1)
         latest = run.status("codex.exe")
-        backend_match = _registered_backend_match(
+        backend_match = _current_app_server_match(
             latest, portable, expected_backend_sha256
         )
         attestation = _attestations(home, artifact_id, (run.run_directory / "stdout.log", run.run_directory / "stderr.log"))
+        observed = time.monotonic() - proof_at if proof_at is not None else 0
         close = _normal_codex_stop(run, 30)
-        runtime.append({"run_directory": str(run.run_directory), "codex_home": str(home), "observed_seconds": observe_seconds, "attestation_requested": attestation_requested, "pre_close": latest, "close": close, "attestation": attestation, "backend_expected_sha256": expected_backend_sha256, "backend_match": backend_match})
-        if latest.get("status") != "running" or not backend_match or close.get("close_status") != "closed" or attestation.get("status") != "passed":
+        runtime.append({"run_directory": str(run.run_directory), "codex_home": str(home), "profile": 'empty' if index % 2 == 0 else 'synthetic_tasks', "observed_seconds": observed, "attestation_requested": attestation_requested, "pre_close": latest, "close": close, "attestation": attestation, "backend_expected_sha256": expected_backend_sha256, "backend_match": backend_match})
+        if proof_at is None or observed < observe_seconds or latest.get("status") != "running" or not backend_match or close.get("close_status") != "closed" or attestation.get("status") != "passed":
             failure = {"status": "blocked", "stage": "isolated_renderer_qualification", "bundle": bundle, "feature_contracts": contracts, "runtime": runtime, "content_logged": False}
             (portable / "codex-desktop-workflow-verification-failed.json").write_text(json.dumps(failure, ensure_ascii=False, indent=2), encoding="utf-8")
             raise WorkflowError("two_run_lifecycle_validation_failed")
@@ -537,6 +633,12 @@ def import_data(source: Path, target: Path) -> dict[str, Any]:
     active = _running_codex_processes()
     if active:
         raise WorkflowError("codex_processes_must_exit_before_import")
+    for name in (*DATA_FILES, *DATA_DIRECTORIES):
+        candidate = source / name
+        if candidate.exists():
+            candidates = [candidate, *candidate.rglob('*')] if candidate.is_dir() else [candidate]
+            if any(not _inside(item.resolve(), source) for item in candidates):
+                raise WorkflowError('data_import_path_escape')
     target.mkdir(parents=True)
     copied: list[dict[str, Any]] = []
     for name in DATA_FILES:
@@ -560,8 +662,16 @@ def import_data(source: Path, target: Path) -> dict[str, Any]:
         original = source / name
         if original.is_dir():
             shutil.copytree(original, target / name)
+    remapped = history.remap_copy(source, target)
+    history_result = history.inspect(target)
+    for item in copied:
+        destination = target / item['path']
+        item.update(sha256=_sha256(destination), size=destination.stat().st_size)
     report = {"schema_version": 1, "status": "passed", "created_at": _now(), "source": str(source), "target": str(target), "copied_files": copied, "excluded": ["auth.json", "config.toml", "plugins", "skills"], "content_logged": False}
     (target / "codex-desktop-workflow-import.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    report['remapped_rollout_paths'] = remapped
+    report['history'] = history_result
+    (target / 'codex-desktop-workflow-import.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf8')
     return report
 
 
@@ -571,6 +681,16 @@ def launch(portable: Path, data: Path, runs_root: Path) -> dict[str, Any]:
         raise WorkflowError("verified_portable_manifest_missing")
     if not data.is_dir():
         raise WorkflowError("independent_data_directory_missing")
+    public_path = portable / 'codex-desktop-workflow.json'
+    if public_path.is_file():
+        public = json.loads(public_path.read_text(encoding='utf8'))
+        if public.get('backend_mode') == 'compat':
+            backend.validate_manifest(Path(public['backend_manifest']))
+        if public.get('backend_sha256') != _sha256(portable / 'resources/codex.exe'):
+            raise WorkflowError('portable_backend_changed_before_launch')
+        if public.get('portable_asar_sha256') != _sha256(portable / 'resources/app.asar'):
+            raise WorkflowError('portable_frontend_changed_before_launch')
+    history.inspect(data)
     return IsolatedRun.start(
         portable / "ChatGPT.exe",
         runs_root,

@@ -1,3 +1,18 @@
+# v0.3.0
+
+
+This release adapts the refreshed desktop interface and keeps task ordering, attention states, remote project names, the Work picker, file drops and per-task settings. History import checks both logical parents and physical ancestors before launch.
+
+The official backend remains the default. To opt into the separately published compatibility source profile, download `install.ps1` and run:
+
+```powershell
+.\install.ps1 -BackendMode compat
+```
+
+Source builds require Python 3.11+, Git, Rust 1.95.0, x64 MSVC and Windows SDK. Run from the x64 developer environment. Missing tools stop the build. A previously built, matching manifest can be supplied with `-BackendManifest`. `-DryRun` reports the selection and prerequisites without compiling or launching.
+
+The command-line equivalents are `build-backend --source <official-app> --target <new-directory>` and `build --source <official-app> --target <new-app> --backend-mode compat --backend-manifest <manifest.json>`. Compatibility builds use the immutable source reference recorded in the installed package.
+
 # v0.2.4
 
 Adds exact Codex Desktop 26.917.9434.0 support while retaining the 26.917.6896.0, 26.915.4065.0, 26.915.3509.0, and 26.908.9136.0 profiles. The public workflow builds an independent copy from a user-supplied official installation with its bundled `codex.exe` unchanged.

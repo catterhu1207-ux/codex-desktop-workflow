@@ -5,6 +5,8 @@ param(
     [string]$InstallRoot = (Join-Path $env:LOCALAPPDATA "CodexDesktopWorkflow"),
     [string]$BundlePath,
     [string]$Version,
+    [ValidateSet('official','compat')][string]$BackendMode = 'official',
+    [string]$BackendManifest,
     [switch]$NoVerify,
     [switch]$Launch,
     [switch]$MigrateData,
@@ -230,7 +232,7 @@ try {
     }
     $versionInfo = Get-Content -LiteralPath $versionFile -Raw | ConvertFrom-Json
     $packageName = if ($versionInfo.package) { [string]$versionInfo.package } else { "codex-desktop-workflow" }
-    $packageVersion = if ($versionInfo.version) { [string]$versionInfo.version } else { "0.2.4" }
+    $packageVersion = if ($versionInfo.version) { [string]$versionInfo.version } else { "0.3.0" }
     Write-Ok "Bundle prepared for $packageName $packageVersion"
 
     $officialSource = Get-OfficialSource $Source
@@ -238,7 +240,22 @@ try {
     $sourceHashBefore = Get-Sha256 $sourceAsar
     Write-Ok "Official source detected: $officialSource"
 
+    if ($BackendMode -eq 'official' -and $BackendManifest) { throw 'BackendManifest requires BackendMode compat.' }
     if ($DryRun) {
+        Write-Host "Backend mode: $BackendMode"
+        if ($BackendMode -eq 'compat') {
+            if ($BackendManifest) {
+                if (-not (Test-Path -LiteralPath $BackendManifest)) { throw 'Backend manifest does not exist.' }
+                Write-Host "Compatibility backend manifest: $BackendManifest (validated during build)"
+            }
+            else {
+                foreach ($tool in @('git','cargo','rustc','rustup','cl')) {
+                    $available = [bool](Get-Command $tool -ErrorAction SilentlyContinue)
+                    Write-Host "Source-build prerequisite $tool available: $available"
+                }
+                Write-Host 'Compatibility backend will be built from the pinned source profile. Rust 1.95.0, x64 MSVC and Windows SDK are required.'
+            }
+        }
         Write-Ok "Dry run complete. No files were built or installed."
         exit 0
     }
@@ -275,7 +292,7 @@ try {
     )
 
     $artifactRoot = Join-Path $InstallRoot "artifacts\$packageVersion"
-    $resolvedTarget = if ($Target) { $Target } else { Join-Path $artifactRoot "app" }
+    $resolvedTarget = if ($Target) { $Target } else { Join-Path $artifactRoot $(if ($BackendMode -eq 'compat') {'app-compat'} else {'app'}) }
     if (Test-Path -LiteralPath $resolvedTarget) {
         Stop-WithCode "Target already exists: $resolvedTarget. Choose a new -Target or remove it explicitly." $ExitBuild
     }
@@ -285,12 +302,22 @@ try {
         "-m", "codex_desktop_workflow.cli", "inspect",
         "--source", $officialSource
     )
+    if ($BackendMode -eq 'official' -and $BackendManifest) { throw 'BackendManifest requires BackendMode compat.' }
+    if ($BackendMode -eq 'compat' -and -not $BackendManifest) {
+        $backendRoot = Join-Path $artifactRoot 'source-built-backend'
+        Write-Step 'Building the optional backend from pinned public source'
+        Invoke-Checked $venvPython @('-m','codex_desktop_workflow.cli','build-backend','--source',$officialSource,'--target',$backendRoot)
+        $BackendManifest = Join-Path $backendRoot 'backend\manifest.json'
+    }
     Write-Step "Building an independent copy"
-    Invoke-Checked $venvPython @(
+    $buildArguments = @(
         "-m", "codex_desktop_workflow.cli", "build",
         "--source", $officialSource,
-        "--target", $resolvedTarget
+        "--target", $resolvedTarget,
+        '--backend-mode', $BackendMode
     )
+    if ($BackendManifest) { $buildArguments += @('--backend-manifest', $BackendManifest) }
+    Invoke-Checked $venvPython $buildArguments
 
     if (-not $NoVerify) {
         Write-Step "Verifying two isolated launches (about two minutes)"

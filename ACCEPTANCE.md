@@ -2,6 +2,28 @@
 
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
+## v0.3.0 qualification
+
+The 26.924.1866.0 public workflow was built from the exact official Windows package and qualified with both backend modes on 2026-09-26.
+
+| Item | Result |
+|---|---|
+| Official ASAR | `96b6aa6e1ea46dd8a30b3fa5166be12284ba66bd3901241a81a60684f150189d` |
+| Official backend | `0122378c15dc0c3c0af0d6addf2dd278125c19676b41fadaa520f89d2c9e0079` |
+| Public-source compatibility backend | Profile `0.158.0-alpha.2`, upstream `10382da79a2a2d6e8ae221fa63077215389c1ad2`; immutable compatibility source reference recorded in `backend-source.json` |
+| Exact frontend contracts | 24 passed for each backend mode |
+| Real renderer feature inventory | All 21 features passed in all four independent launches |
+| Official backend launches | Empty data and 400 synthetic tasks; 64.84 and 65.52 seconds observed after proof; matching current app-server; normal exit |
+| Compatibility backend launches | Empty data and 400 synthetic tasks; 66.38 and 67.80 seconds observed after proof; matching current app-server; normal exit |
+| Desktop executable | Unique embedded ASAR digest updated in the independent copy; all other bytes unchanged |
+| Public tests | 68 run, 66 passed; two older official-artifact tests skipped because their exact samples were unavailable |
+| Wheel and installer | Installed wheel resources, bundle contents and checksums passed; official, compatibility-manifest and compatibility-source dry-runs passed |
+| Publication scan | Source, wheels and bundle passed the sensitive-file and identifier scan |
+| History import | Indirect logical parent and physical ancestor chain verified; original bytes and source database preserved; imported copy remained usable after the source directory was moved |
+| History rejection tests | Cycles, missing segments, wrong ownership, boundaries, changed dependencies and escaping paths rejected |
+
+The required new-version checks were not skipped. The source-bound qualification record is packaged as `qualification-26.924.1866.0.json`. The compatibility backend's separate acceptance report covers 15 module tests, HTTP and WebSocket image-tool replay, local and remote V2 compaction, cold restoration and all 57 database migration checksums.
+
 ## v0.2.4 qualification
 
 The 26.917.9434.0 public workflow was built from the exact official Windows package with its unchanged bundled backend and independently qualified on 2026-09-25.

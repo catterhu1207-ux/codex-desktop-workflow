@@ -53,9 +53,9 @@ class WorkflowTests(unittest.TestCase):
     def test_both_supported_versions_are_declared(self):
         self.assertEqual(
             workflow.SUPPORTED_VERSIONS,
-            ("26.908.9136.0", "26.915.3509.0", "26.915.4065.0", "26.917.6896.0", "26.917.9434.0"),
+            ("26.908.9136.0", "26.915.3509.0", "26.915.4065.0", "26.917.6896.0", "26.917.9434.0", "26.924.1866.0"),
         )
-        self.assertEqual(workflow.SUPPORTED_VERSION, "26.917.9434.0")
+        self.assertEqual(workflow.SUPPORTED_VERSION, "26.924.1866.0")
 
     def test_import_excludes_credentials_and_uses_sqlite_backup(self):
         with tempfile.TemporaryDirectory() as raw:
@@ -118,7 +118,7 @@ class WorkflowTests(unittest.TestCase):
             log = root / "stderr.log"
             values = [
                 {"artifact_id": artifact, "status": "module_loaded", "run_id": "one", "content_logged": False},
-                {"artifact_id": artifact, "status": "passed", "run_id": "one", "content_logged": False},
+                {"artifact_id": artifact, "status": "passed", "run_id": "one", "content_logged": False, "transport": "renderer_log_message_v1", "features": {name: {"passed": True} for name in __import__("hotfix_builder").FRONTEND_ATTESTATION_FEATURES}},
             ]
             log.write_text("\n".join("prefix [CF9]" + json.dumps(value) + " rendererWindowId=1" for value in values), encoding="utf-8")
             result = workflow._attestations(root, artifact, log)
@@ -151,7 +151,7 @@ class WorkflowTests(unittest.TestCase):
             self.assertEqual(environment["CODEX_HOME"], str(home))
             self.assertEqual(environment["CODEX_CLI_PATH"], str(backend.resolve()))
             value = {
-                "registered_backends": [
+                "alive_backends": [
                     {
                         "executable": str(backend),
                     }
