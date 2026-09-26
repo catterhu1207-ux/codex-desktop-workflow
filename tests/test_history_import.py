@@ -23,7 +23,7 @@ class HistoryImport(unittest.TestCase):
         fixture=self.fixture();source=fixture.root
         before={p:hashlib.sha256(p.read_bytes()).hexdigest() for p in source.rglob('*') if p.is_file()}
         with tempfile.TemporaryDirectory() as raw:
-            target=Path(raw)/'independent'
+            target=Path(raw).resolve()/'independent'
             with mock.patch.object(workflow,'_running_codex_processes',return_value=[]):report=workflow.import_data(source,target)
             self.assertEqual(report['history']['status'],'passed')
             self.assertEqual(report['history']['kinds']['fork'],2)

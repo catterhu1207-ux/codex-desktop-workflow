@@ -17,7 +17,8 @@ class InheritedForkHistoryBaseTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
+        # Windows runners may expose TEMP through an 8.3 path alias.
+        self.root = Path(self.temp.name).resolve()
         self.sessions = self.root / "sessions"
         self.archived = self.root / "archived_sessions"
         self.sessions.mkdir()
