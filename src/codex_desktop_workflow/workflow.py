@@ -118,6 +118,7 @@ DATA_FILES = (
     "state_5.sqlite",
     "logs_2.sqlite",
     "goals_1.sqlite",
+    "memories_1.sqlite",
     "queue_1.sqlite",
     "thread_history_1.sqlite",
 )
@@ -505,21 +506,52 @@ def _normal_codex_stop(run: IsolatedRun, timeout: float, backend_name: str = "co
 
 def _seed_synthetic_tasks(home: Path, empty_home: Path) -> None:
     import uuid
+    fixture = os.environ.get('CODEX_WORKFLOW_TEST_DATABASE_FIXTURE')
+    if fixture:
+        inventory = _POLICY_ROOT / 'sqlite-migrations-26.924.2738.0.json'
+        if _sha256(inventory) != backend.pin('26.924.2738.0')['patch_files']['sqlite-migrations.json']:
+            raise WorkflowError('acceptance_fixture_inventory_mismatch')
+        rows = json.loads(inventory.read_text())['migrations']
+        for name in set(row['database'] for row in rows):
+            original = Path(fixture).resolve() / name
+            with closing(sqlite3.connect(original.as_uri() + '?mode=ro', uri=True)) as read:
+                actual = {version: bytes(checksum).hex() for version, success, checksum in read.execute('SELECT version,success,checksum FROM _sqlx_migrations') if success == 1}
+                expected = {row['version']: row['sqlx_sha384'] for row in rows if row['database'] == name}
+                if actual != expected:
+                    raise WorkflowError('acceptance_fixture_migration_mismatch')
+                if name != 'state_5.sqlite':
+                    with closing(sqlite3.connect(home / name)) as write:
+                        read.backup(write)
+                        write.commit()
+    # Preserve native migration identities for every auxiliary database fixture.
+    for name in DATA_FILES:
+        original = empty_home / name
+        if not (home / name).exists() and name != 'state_5.sqlite' and original.suffix == '.sqlite' and original.is_file():
+            with closing(sqlite3.connect(original.as_uri() + '?mode=ro', uri=True)) as read, closing(sqlite3.connect(home / name)) as write:
+                read.backup(write)
+                write.commit()
     with closing(sqlite3.connect((empty_home / 'state_5.sqlite').as_uri() + '?mode=ro', uri=True)) as source, closing(sqlite3.connect(home / 'state_5.sqlite')) as target:
         if source.execute('SELECT COUNT(*) FROM threads').fetchone()[0] != 0:
             raise WorkflowError('acceptance_seed_must_be_empty')
         source.backup(target)
         now = int(time.time())
+        has_preview = any(row[1] == 'preview' for row in target.execute('PRAGMA table_info(threads)'))
         for index in range(400):
             tid = str(uuid.uuid4())
             project = home / 'synthetic-workspaces' / str(index % 12)
             project.mkdir(parents=True, exist_ok=True)
             rollout = home / 'sessions' / ('synthetic-' + tid + '.jsonl')
             rollout.parent.mkdir(exist_ok=True)
-            metadata = {'timestamp': _now(), 'type': 'session_meta', 'payload': {'id': tid, 'cwd': str(project), 'source': 'vscode', 'model_provider': 'openai', 'cli_version': '0.158.0-alpha.2'}}
+            timestamp = _now()
+            metadata = {'timestamp': timestamp, 'type': 'session_meta', 'payload': {'id': tid, 'session_id': tid, 'timestamp': timestamp, 'originator': 'synthetic-acceptance', 'cwd': str(project), 'source': 'vscode', 'model_provider': 'openai', 'cli_version': '0.158.0-alpha.2'}}
             rollout.write_text(json.dumps(metadata) + '\n', encoding='utf8')
-            row = (tid, str(rollout), now-index, now-index, 'vscode', 'openai', str(project), 'Synthetic acceptance task '+str(index), '{"type":"read-only"}', 'never', 1, 0, '0.158.0-alpha.2', 'Synthetic acceptance task '+str(index), now-index, (now-index)*1000, int(index<10))
-            target.execute('INSERT INTO threads(id,rollout_path,created_at,updated_at,source,model_provider,cwd,title,sandbox_policy,approval_mode,has_user_event,archived,cli_version,first_user_message,recency_at,recency_at_ms,is_pinned) VALUES('+','.join('?'*17)+')', row)
+            row = (tid, str(rollout), now-index, now-index, 'vscode', 'openai', str(project), 'Synthetic acceptance task '+str(index), '{"type":"read-only"}', 'never', 1, 0, '0.158.0-alpha.2', 'Synthetic acceptance task '+str(index), now-index, (now-index)*1000, int(index<10), 'Synthetic acceptance task '+str(index))
+            columns = 'id,rollout_path,created_at,updated_at,source,model_provider,cwd,title,sandbox_policy,approval_mode,has_user_event,archived,cli_version,first_user_message,recency_at,recency_at_ms,is_pinned'
+            if has_preview:
+                columns += ',preview'
+            else:
+                row = row[:-1]
+            target.execute('INSERT INTO threads('+columns+') VALUES('+','.join('?'*len(row))+')', row)
         target.commit()
 
 

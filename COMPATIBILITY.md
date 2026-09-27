@@ -1,6 +1,6 @@
 # Compatibility
 
-| Component | Status in v0.3.1 |
+| Component | Status in v0.3.2 |
 |---|---|
 | Windows x64 | Supported |
 | Desktop `26.924.2738.0` | Official and opt-in source-built compatibility backend; independent profile and build identity |
@@ -12,7 +12,7 @@
 | Codex desktop `26.908.9136.0`, official ASAR `7a46bd6fe162050afbac27d7d5271d19524e887fa0cdd06c0f2d3fa9b606a31d` | Supported; retained v0.1.0 isolated-renderer acceptance evidence |
 | Any other desktop version or ASAR | Rejected |
 | Official bundled `codex.exe` | Default for all supported releases |
-| `codex-history-compat` backend | Opt-in profiles `desktop-26.924.2738.0` and `0.158.0-alpha.2` for their respective desktop versions; older desktop profiles remain official-only |
+| `codex-history-compat` backend | Opt-in profiles `desktop-26.924.2738.0-sqlite-v2` (72 migrations across six databases) and `0.158.0-alpha.2` for their respective desktop versions; older desktop profiles remain official-only |
 | Existing task data | Explicit snapshot import into a new independent directory |
 | Automatic task-data synchronization | Unsupported |
 

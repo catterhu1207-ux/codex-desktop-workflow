@@ -21,11 +21,17 @@ class HistoryImport(unittest.TestCase):
 
     def test_indirect_fork_import_uses_only_target_paths_and_preserves_bytes(self):
         fixture=self.fixture();source=fixture.root
+        with closing(sqlite3.connect(source/'memories_1.sqlite')) as memory:
+            memory.execute('CREATE TABLE fixture_memory(value TEXT)')
+            memory.execute("INSERT INTO fixture_memory VALUES('synthetic preserved memory')")
+            memory.commit()
         before={p:hashlib.sha256(p.read_bytes()).hexdigest() for p in source.rglob('*') if p.is_file()}
         with tempfile.TemporaryDirectory() as raw:
             target=Path(raw).resolve()/'independent'
             with mock.patch.object(workflow,'_running_codex_processes',return_value=[]):report=workflow.import_data(source,target)
             self.assertEqual(report['history']['status'],'passed')
+            with closing(sqlite3.connect(target/'memories_1.sqlite')) as memory:
+                self.assertEqual(memory.execute('SELECT value FROM fixture_memory').fetchone()[0], 'synthetic preserved memory')
             self.assertEqual(report['history']['kinds']['fork'],2)
             for item in report['copied_files']:
                 self.assertEqual(item['sha256'],hashlib.sha256((target/item['path']).read_bytes()).hexdigest())

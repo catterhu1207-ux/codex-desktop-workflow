@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.2 - 2026-09-27
+
+- Bind Desktop 26.924.2738.0 compatibility builds to the immutable sqlite-v2 source profile and all 72 migrations across six databases.
+- Preserve memories_1.sqlite during independent import.
+- Use frontend build identity 2.7.2 while retaining previous desktop identities.
+- Exercise all six synthetic databases and visible, native-readable task metadata during acceptance.
+- Replace drawn demo rows with reproducible real-renderer screenshots, bilingual comparisons, animations and a Pages preview.
+
 ## v0.3.1 - 2026-09-27
 
 - Add exact Desktop 26.924.2738.0 support with an independent frontend profile and build identity.

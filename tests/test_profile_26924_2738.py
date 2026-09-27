@@ -42,7 +42,7 @@ class ExactNewProfile(unittest.TestCase):
                 require_feature_signatures(broken,self.entries['secondary_entry_path'],self.entries['shared_entry_path'])
 
     def test_source_and_artifact_identities_remain_version_scoped(self):
-        self.assertEqual(builder.frontend_attestation_artifact_id(profile.PROFILE),'2.7.1-89fba67324ff')
+        self.assertEqual(builder.frontend_attestation_artifact_id(profile.PROFILE),'2.7.2-89fba67324ff')
         self.assertEqual(builder.sha256_path(self.source),profile.PROFILE['asar_source_sha256'])
 
 if __name__=='__main__':unittest.main()

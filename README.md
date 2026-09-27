@@ -7,11 +7,11 @@
 
 **Make Codex Desktop easier to scan, prioritize, and resume when you run many tasks in parallel.**
 
-![Illustrative before/after demo built from synthetic tasks](docs/assets/demo-en.gif)
+![Real desktop interface with fictional tasks](docs/assets/demo-en.gif)
 
-## v0.3.1 — Desktop 26.924.2738.0
+## v0.3.2 — Desktop 26.924.2738.0
 
-This release adapts the refreshed desktop interface and keeps task ordering, attention states, remote project names, the Work picker, file drops and per-task settings. History import checks both logical parents and physical ancestors before launch.
+This repair release binds compatibility builds to all 72 official migrations across six SQLite databases. Independent import preserves the memories database and task settings. The refreshed interface retains sorting, attention states, remote project names, the Work picker and file drops.
 
 The official backend remains the default. To opt into the separately published compatibility source profile, download `install.ps1` and run:
 
@@ -61,6 +61,10 @@ See [FAQ](docs/FAQ.md), [Troubleshooting](docs/TROUBLESHOOTING.md), and the reda
 
 The following three fictional tasks belong to the same sorting group. They illustrate the difference between update-time and actual-start-time ordering, not a claim about the default behavior of every official release.
 
+![Real interface: latest-update example and modified start-time ordering](docs/assets/before-after-en.png)
+
+The screenshots use controlled recency inputs for the two time rules. Task titles stay English in both UI languages. [Capture inputs and reproduction](docs/assets/CAPTURE.md) explain the real protocol events, native pinned actions and preserved raw screenshots.
+
 | Example task | Actual start | Last update |
 |---|---|---|
 | Edit docs | 09:10 | 10:05 |
@@ -96,7 +100,7 @@ Unknown versions, hash mismatches, ambiguous patch matches, failed contracts, or
 
 ## Current support
 
-Version `v0.3.1` supports Windows x64 with the official bundled `codex.exe`:
+Version `v0.3.2` supports Windows x64 with the official bundled `codex.exe`:
 
 - Codex Desktop `26.924.2738.0`
 - Codex Desktop `26.924.1866.0`

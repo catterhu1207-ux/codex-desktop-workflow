@@ -8,7 +8,7 @@
 | `src/codex_desktop_workflow/data/frontend_scenarios_*.js` | Synthetic renderer scenarios for version-specific contracts; no task content or user identifiers | MIT, author-owned |
 | `src/codex_desktop_workflow/policies/*.json` | Author-generated official-backend allowlists and an immutable optional compatibility-source reference | MIT, metadata only |
 | `install.ps1`, release and Pages workflows | Original distribution tooling for the public workflow | MIT |
-| `docs/assets/demo-*.gif`, `docs/assets/before-after-*.png`, `docs/assets/social-preview.png` | Generated illustrative UI with synthetic task labels | MIT |
+| `docs/assets/demo-*.gif`, `docs/assets/before-after-*.png`, `docs/assets/social-preview.png` | Real desktop screenshots with fictional tasks, plus original external captions and composition tooling | Captured application UI belongs to its respective rights holders; original tooling and captions MIT |
 | `docs/`, `docs/promotion/` | Original public documentation and launch copy | MIT |
 | Tests, examples and documentation | Original synthetic material | MIT |
 

@@ -26,7 +26,7 @@ def _profile_26915(profile):
 
 
 
-BUILDER_VERSION = "2.7.1"
+BUILDER_VERSION = "2.7.2"
 FRONTEND_CONTRACT_VALIDATOR_VERSION = "2.5.1"
 
 # This probe is part of the hash-gated renderer entry.  It runs in the real
@@ -127,7 +127,7 @@ FRONTEND_ATTESTATION_FEATURES = (
 def frontend_builder_version(profile: dict[str, Any] | None = None) -> str:
     """Keep previously released artifact identities stable."""
     if profile and profile.get("profile_spec_id") == "26924_2738":
-        return "2.7.1"
+        return "2.7.2"
     elif profile and profile.get("profile_spec_id") == "26924_1866":
         return "2.7.0"
     if profile and profile.get("profile_spec_id") == "26915_3509":

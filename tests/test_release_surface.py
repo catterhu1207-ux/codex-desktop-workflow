@@ -104,7 +104,7 @@ class ReleaseSurfaceTests(unittest.TestCase):
         import frontend_contract_26924_2738 as current
         for version, artifact, validator, module in (
             ('26.924.1866.0', '2.7.0-96b6aa6e1ea4', '2.5.0', previous),
-            ('26.924.2738.0', '2.7.1-89fba67324ff', '2.5.1', current),
+            ('26.924.2738.0', '2.7.2-89fba67324ff', '2.5.1', current),
         ):
             profile = hotfix_builder.profile_for_asar(workflow.SUPPORTED_PACKAGES[version].asar_sha256)
             self.assertEqual(hotfix_builder.frontend_attestation_artifact_id(profile), artifact)

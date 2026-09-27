@@ -1,0 +1,13 @@
+{
+  "after-en.png": "2e9fc8582a16a5feb5f26b61a810dce9a3c97566c1126b3324092b29e765dcd2",
+  "after-zh.png": "6642e044b6d5ea0bc8ad7c95761ab38d2cdf920469200fc7390f82bd734e0d60",
+  "before-en.png": "d94504e81e96f10af2055c59e731eeea556ec1fe9208d23369eb17158fdf45da",
+  "before-zh.png": "0cb559ea14593aab70fea0e8848c5c71a7887da3ec074c4a0ed1794bf65168a2",
+  "cleared-en.png": "43533bd5f7ea85160b008fda48ec3abe799f9a351b36769b882ed772b3a98f65",
+  "cleared-zh.png": "bf68981bb958c78658bff5d3152c993463d6938b6825238686e8154fe7b05cc2",
+  "pinned-en.png": "f735dedfbad9901e9ab1dfa2783f3896a4281d1a3add03d9ddf2505dca09e6b4",
+  "pinned-zh.png": "95b1c38152111b89be9b43e876cfdc6cda04b2f6d62abe13448a6d316d9a6f99",
+  "read-yellow-en.png": "f6d9ca38cd01f32cbc22a12f3aa3f10f2c2e6de4bd77fcfb9ef449f821d944e0",
+  "running-en.png": "c9c64a4149baf2adc80cb76a510040ce08be752ad7be2fe738579149dd5c3b04",
+  "running-zh.png": "8faa325d1357cda4de16e2d5297f8bc59cb9bc2c32e1d34ecc3f5740e78b8f90"
+}

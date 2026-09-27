@@ -10,6 +10,7 @@ function setLanguage(language) {
   });
   if (demo) {
     demo.src = language === "zh" ? demo.dataset.zhSrc : demo.dataset.enSrc;
+    demo.alt = language === "zh" ? demo.dataset.zhAlt : demo.dataset.enAlt;
   }
   toggle.textContent = language === "zh" ? "English" : "中文";
   localStorage.setItem("codex-workflow-language", language);
