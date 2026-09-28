@@ -14,7 +14,7 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
  await new Promise((resolve,reject)=>{ws.onopen=resolve;ws.onerror=reject});
  const call=(method,params={})=>new Promise((resolve,reject)=>{const n=++id;const timer=setTimeout(()=>{pending.delete(n);reject(Error('CDP timeout'))},15000);pending.set(n,{resolve:r=>{clearTimeout(timer);resolve(r)},reject:e=>{clearTimeout(timer);reject(e)}});ws.send(JSON.stringify({id:n,method,params}))});
  const evaluate=async expression=>{const r=await call('Runtime.evaluate',{expression,returnByValue:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.text);return r.result?.value};
- const crypto=require('node:crypto');const asar=process.env.CAPTURE_ASAR_PATH;if(!asar)throw Error('CAPTURE_ASAR_PATH is required');const hash=crypto.createHash('sha256').update(fs.readFileSync(asar)).digest('hex');const expected=mode==='start'?'0253e77e0d735dc314341157dd213476f6ced29e8a12ccb6d48a7dcc3a2e2781':'89fba67324ffb8dd54ccf13b6f097172e697549eeb1f26396f86f972c10c5b0c';if(hash!==expected)throw Error('Unexpected source/build ASAR');await call('Page.bringToFront');
+ const crypto=require('node:crypto');const asar=process.env.CAPTURE_ASAR_PATH;if(!asar)throw Error('CAPTURE_ASAR_PATH is required');const hash=crypto.createHash('sha256').update(fs.readFileSync(asar)).digest('hex');const expected=mode==='start'?'0253e77e0d735dc314341157dd213476f6ced29e8a12ccb6d48a7dcc3a2e2781':'89fba67324ffb8dd54ccf13b6f097172e697549eeb1f26396f86f972c10c5b0c';if(hash!==expected&&!(mode==='start'&&hash==='b1f960d58c554b868681e4e35957ac81a3d2a8c6b1b180eef4d4a75233830e42'))throw Error('Unexpected source/build ASAR');await call('Page.bringToFront');
  const w=path.resolve(process.argv[3]);fs.mkdirSync(w,{recursive:true});const input=JSON.parse(fs.readFileSync(process.argv[2],'utf8'));
  const rows=Array.isArray(input)?input:input.data||input.result?.data;
  const threads={};for(const original of rows){const t=structuredClone(original);if(t.modelProvider!=='fixture'||!['Edit docs','Update API','Fix tests'].includes(t.preview))throw Error('Only the three approved synthetic tasks are allowed');t.recencyAt=mode==='updated'?t.updatedAt:t.createdAt;threads[t.preview]=t;}
@@ -25,6 +25,7 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
  const ui=await evaluate('document.body.innerText');
  if(lang==='zh'&&!ui.includes('新聊天')||lang==='en'&&!ui.includes('New chat'))throw Error('Select the requested UI language before capture');
  const emit=async(method,params,time)=>{
+  if(method==='turn/started')params={...params,turn:{...params.turn,startedAt:Math.floor(Date.parse('2026-09-27T'+time+':00+08:00')/1000)}};
   // A controlled clock is restricted to this synthetic renderer and restored after dispatch.
   await evaluate(`window.__captureClockOriginal ??= Date.now;Date.now=()=>Date.parse(${JSON.stringify('2026-09-27T'+time+':00+08:00')});window.postMessage(${JSON.stringify({type:'mcp-notification',hostId:'local',method,params})},'*');true`);
   await pause(600);await evaluate('Date.now=window.__captureClockOriginal;true');

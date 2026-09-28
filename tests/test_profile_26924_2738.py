@@ -41,8 +41,21 @@ class ExactNewProfile(unittest.TestCase):
             with self.assertRaises(ContractError):
                 require_feature_signatures(broken,self.entries['secondary_entry_path'],self.entries['shared_entry_path'])
 
+    def test_real_start_reducer_selector_and_project_chain(self):
+        from frontend_recency_contract_26924_2738 import run
+        result=run(self.entries['entry_path'],self.entries['shared_entry_path'])
+        self.assertEqual(result['status'],'passed')
+        self.assertTrue(result['official_start_event'])
+        for index in (4,):
+            old,new=profile.SHARED_PAIRS['priority_filter_live_resort'][index]
+            broken=self.entries['shared_entry_path'].replace(new,old,1)
+            with self.assertRaises(ContractError):run(self.entries['entry_path'],broken)
+        old,new=profile.PAIRS['project_sorting'][0]
+        with self.assertRaises(ContractError):
+            run(self.entries['entry_path'].replace(new,old,1),self.entries['shared_entry_path'])
+
     def test_source_and_artifact_identities_remain_version_scoped(self):
-        self.assertEqual(builder.frontend_attestation_artifact_id(profile.PROFILE),'2.7.2-89fba67324ff')
+        self.assertEqual(builder.frontend_attestation_artifact_id(profile.PROFILE),'2.7.3-89fba67324ff')
         self.assertEqual(builder.sha256_path(self.source),profile.PROFILE['asar_source_sha256'])
 
 if __name__=='__main__':unittest.main()

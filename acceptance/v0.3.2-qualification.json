@@ -2,16 +2,14 @@
   "schema_version": 1,
   "status": "passed",
   "desktop_version": "26.924.2738.0",
-  "frontend_build": "2.7.3",
   "feature_contract_count": 24,
   "compat_commit": "7b4c9b7bf00225f47706e8e282257d7ef2a46640",
   "source_inputs": {
-    "codex_desktop_workflow/__init__.py": "a1a7ef32999850e7e1a763179abbd7e16221db08c70fc727392f30a46d965004",
+    "codex_desktop_workflow/__init__.py": "98c588d119e636864db8e53e19c7bc8b9b9ca40a83e1d77e365dfc889be78fc8",
     "codex_desktop_workflow/backend.py": "af11dba438369148131ceff34d9af43b9ab2b985c3e86e96b780863a9a6e10cd",
     "codex_desktop_workflow/cli.py": "b4757a5d0fd859f902eac670b65a9393321e3c8abae48e9dafa2f26951fb2928",
     "codex_desktop_workflow/data/frontend_drop_scenarios_26924_1866.js": "e5362d719ec0ccf27d54e4b2715e003c271087031915103f91e2a70f4e7896ae",
     "codex_desktop_workflow/data/frontend_drop_scenarios_26924_2738.js": "872f79694357f9694c552b11566978a5fb6011e7a514369568537a9e2f5f035c",
-    "codex_desktop_workflow/data/frontend_recency_contract_26924_2738.js": "4ccf19313ee15ebb0a0dbf3a4804919e350ee9f80e439df2f1b0028e11e7571e",
     "codex_desktop_workflow/data/frontend_row_scenarios_26917_9434.js": "e98b741394caa869b3ec01ba4511f705bf46c916271026765c5456e7eca84f5b",
     "codex_desktop_workflow/data/frontend_row_scenarios_26924_1866.js": "2cc92577de68e3233e6f955eac4b793d4e5d22839c130aabaf2068305bf00bcd",
     "codex_desktop_workflow/data/frontend_row_scenarios_26924_2738.js": "e21b0a4e7f43d139faaa100da6bdc602278a786354900baad797b48f9be81be5",
@@ -20,7 +18,7 @@
     "codex_desktop_workflow/data/frontend_scenarios_26917_6896.js": "d22b60360f3963b2e63579ba9f465eca0efdc496f588821bcbc4b15d495496ce",
     "codex_desktop_workflow/data/frontend_scenarios_26917_9434.js": "6217d5612a66521f516a5192d580bb4b1377cd47b6c77f56d518c5f72297fdaf",
     "codex_desktop_workflow/data/frontend_scenarios_26924_1866.js": "5237ba77da1ddebc63332f24a80d323e041d849fa47819a4e08a229a85b97d2e",
-    "codex_desktop_workflow/data/frontend_scenarios_26924_2738.js": "dffa18e4b8f016b0f6e308637bd7e1a331f0fe1949663ef92a9dcb68022e5734",
+    "codex_desktop_workflow/data/frontend_scenarios_26924_2738.js": "8a31a7cc8675bb7d585f80a5f0740576768c4595f591cb49a5b53578b90e4557",
     "codex_desktop_workflow/data/frontend_work_scenarios_26924_1866.js": "240e326a965b8767ad7b7a2c35472c787076a3a05eb26cd7c5c753480c2febd9",
     "codex_desktop_workflow/data/frontend_work_scenarios_26924_2738.js": "fc2547f77c2cc96769669e25369cd7a6006137cc62f7dac71ac08413ba30a91d",
     "codex_desktop_workflow/history.py": "6abc492c13243e35954f6bb72ed242ece064f191fda84af2ec39469efaa3b42b",
@@ -43,9 +41,8 @@
     "frontend_contract_26917_6896.py": "4f12f9d0d2f2be0811dfc614c1948f9b87d21f1386ab1587575c23a5865e3780",
     "frontend_contract_26917_9434.py": "d4d2ef0f33de326a241cff1f23f96f84f00b747c43be122e37ed8f8d4dd2e04f",
     "frontend_contract_26924_1866.py": "5f863186fc04360a8b4d6944373166355d9410c2efada0eb1ab7ad454a8a24df",
-    "frontend_contract_26924_2738.py": "0939e5a05405aae22a90d4af643ddf703a816ee8aa93efcab103b10c42fe123d",
+    "frontend_contract_26924_2738.py": "5b411850d29f0f77d16c2b4e889b0af81ada9a35ac82ae84c243779cc9286c59",
     "frontend_feature_contracts.py": "d66542c21be44165f72af52adf95800dbf111075a7f689f1e44550c22c2dea98",
-    "frontend_recency_contract_26924_2738.py": "284fcfbb61497471996c2ac7f79668fea918b3d88711ac4bacc7f4102e9944a6",
     "frontend_row_contract_26917_6896.py": "a2279edebbd4fe4b06a88fb494383b2d0f1246241e84cabbaa225c12accf74c9",
     "frontend_row_contract_26917_9434.py": "1dc2e0173925d97034b7a2e62cca5d2e1ba7ee040eadc5bd971c518361af190f",
     "frontend_work_contract_26915.py": "d0ba284fab196c650495a21dfefb577f637cf71411d5cfc806bd84647ce69ac2",
@@ -54,7 +51,7 @@
     "frontend_work_contract_26917_9434.py": "dd02d2879c379d6181535fcaff04158f55b34aa1460b7dfb724140bc52a4fc07",
     "frontend_work_contract_26924_1866.py": "34298fa3d95a70c3ab12b939e6a016fa52df5326695b4882c01a8ef9886ba87f",
     "frontend_work_contract_26924_2738.py": "7a2b903b0a001a323c36db0165b7e08afa0086141520c7301168e82c610ba226",
-    "hotfix_builder.py": "997279ed42a9023a5b23fd1b17d697e272ff50fb3e500a2ad3018b65d16baa78",
+    "hotfix_builder.py": "0a794659c4296274c46b54ee55ba46857cb99834060debe51359d1e904ff6736",
     "hotfix_profile_26730.py": "e3b479bda1a828a47ee425232a75f39e818f988d5f25a9c502788b775d111f5c",
     "hotfix_profile_26810.py": "6233c9bad3667a6ad911da47b2df01f8c57a29153c4149b225d22258df323d2e",
     "hotfix_profile_26818.py": "29b30e89e7911d34e6f7784914498d44fe50a8d4d5a8caba9793a34cbf796ff6",
@@ -73,7 +70,7 @@
     "hotfix_profile_26917_6896.py": "aee1f3aa875f6fa813e03480b079cb5ebcac459a8b9fd06f9b2859f0c1921219",
     "hotfix_profile_26917_9434.py": "ad71c4d6e359c0b1c5817f311e88f1311ced7db0397d55404acc07a20034170d",
     "hotfix_profile_26924_1866.py": "d59cb59e943b6424f3580e980902b9e5eab4e806c82a8bde63d2242e3aeaa73a",
-    "hotfix_profile_26924_2738.py": "0a1f3d67ae08c297e801517b52a35b808b3057884106eb35077b57f0137f9680"
+    "hotfix_profile_26924_2738.py": "cf6caaf0b7642ef507b91474dbd51d7301b745bf29200a995b7a15fdacabbebb"
   },
   "runtime": {
     "official": [
@@ -81,7 +78,7 @@
         "profile": "empty",
         "status": "passed",
         "renderer_features": 21,
-        "observed_seconds": 67.29700000002049,
+        "observed_seconds": 64.95400000002701,
         "current_app_server_match": true,
         "close_status": "closed",
         "backend_sha256": "8f0554ede25bbc5450921897c468b2e84635aa513c5017457997af0954581f49",
@@ -92,7 +89,7 @@
         "profile": "synthetic_tasks",
         "status": "passed",
         "renderer_features": 21,
-        "observed_seconds": 69.10999999986961,
+        "observed_seconds": 64.53100000007544,
         "current_app_server_match": true,
         "close_status": "closed",
         "backend_sha256": "8f0554ede25bbc5450921897c468b2e84635aa513c5017457997af0954581f49",
@@ -105,7 +102,7 @@
         "profile": "empty",
         "status": "passed",
         "renderer_features": 21,
-        "observed_seconds": 73.43699999991804,
+        "observed_seconds": 65.18799999996554,
         "current_app_server_match": true,
         "close_status": "closed",
         "backend_sha256": "729587f9cd039d9184ee335c65bb090bf3cc410b3bed7572370f020a60331ebf",
@@ -116,7 +113,7 @@
         "profile": "synthetic_tasks",
         "status": "passed",
         "renderer_features": 21,
-        "observed_seconds": 69.95299999997951,
+        "observed_seconds": 66.68700000003446,
         "current_app_server_match": true,
         "close_status": "closed",
         "backend_sha256": "729587f9cd039d9184ee335c65bb090bf3cc410b3bed7572370f020a60331ebf",
@@ -124,90 +121,5 @@
         "runtime_cache_isolated": true
       }
     ]
-  },
-  "start_event_recency": {
-    "official": {
-      "status": "passed",
-      "real_composer": true,
-      "refresh_used": false,
-      "start_to_visible_ms": 281.39999997615814,
-      "observed_seconds": 70.1575,
-      "cold_settings_and_times_preserved": true,
-      "native_matrix": {
-        "project_within": {
-          "status": "passed",
-          "real_composer": true,
-          "start_to_visible_ms": 248.89999997615814
-        },
-        "pinned_automatic": {
-          "status": "passed",
-          "real_composer": true,
-          "start_to_visible_ms": 542.7000000476837
-        },
-        "pinned_manual": {
-          "status": "passed",
-          "real_composer": true,
-          "start_to_visible_ms": 322
-        },
-        "flat": {
-          "status": "passed",
-          "real_composer": true,
-          "start_to_visible_ms": 124.80000007152557
-        }
-      },
-      "attention_protocol_rows": "passed",
-      "backend_match": true
-    },
-    "compat": {
-      "status": "passed",
-      "real_composer": true,
-      "refresh_used": false,
-      "start_to_visible_ms": 166.29999995231628,
-      "observed_seconds": 70.14470000004768,
-      "cold_settings_and_times_preserved": true,
-      "native_matrix": {
-        "project_within": {
-          "status": "passed",
-          "real_composer": true,
-          "start_to_visible_ms": 109.60000002384186
-        },
-        "pinned_automatic": {
-          "status": "passed",
-          "real_composer": true,
-          "start_to_visible_ms": 125
-        },
-        "pinned_manual": {
-          "status": "passed",
-          "real_composer": true,
-          "start_to_visible_ms": 167.29999995231628
-        },
-        "flat": {
-          "status": "passed",
-          "real_composer": true,
-          "start_to_visible_ms": 205.30000007152557
-        }
-      },
-      "attention_protocol_rows": "passed",
-      "backend_match": true,
-      "native_new_chat": {
-        "status": "passed",
-        "real_composer": true,
-        "physical_pin_identity_verified": true,
-        "start_to_visible_ms": 327.89999997615814
-      }
-    }
-  },
-  "acceptance_tools": {
-    "tools/recency/bootstrap_fixture.py": "8058799ac13308283e210a3f847d07e785c630491f6ca2dc63c1d576d2fe7d04",
-    "tools/recency/cdp.cjs": "0f6413f8a2937a9453643fa33000d62e12acc159f1c25ffcfaa6d195d91420be",
-    "tools/recency/cold.cjs": "4fde62ca6022643aa910059899411ed77f8e542a4adffba1bcdc548a2f1dd082",
-    "tools/recency/cold.py": "1790a72ff87af6e230fcdc13678fd393623a38abc4a080c5044018464b6585a3",
-    "tools/recency/matrix.cjs": "94fd46e8a2c8fef590d6c36cd23a45b3d21ba9734eafe2b7afc07a520ece66d8",
-    "tools/recency/mixed.cjs": "fcb990db6c38911c77c2aa810ed5427717d1357301cfc46942c444372590032a",
-    "tools/recency/mock_responses.py": "c75a32dc5eff00ac337e1624516064461ec64bac4bcc8079fb0608bfcbb260d7",
-    "tools/recency/native_fixture_projects.py": "eacc46df145a3d11b2637f97b93e8858325e3ff5ad317458b64ea09e677f1543",
-    "tools/recency/native_start_acceptance.cjs": "1cf0d058887edfed16c48eb91b137674c38094432f67f1cfe47ad0e8efedc956",
-    "tools/recency/new_chat.cjs": "8a52ba6ae59456e557f7e963fcd301ab24324f87ed3a9a9f198939a7c89685f0",
-    "tools/recency/run.py": "1a7bb32a2b494de11862f4fd8304a745a7f51f9718693168cd420913f5f60212"
   }
 }

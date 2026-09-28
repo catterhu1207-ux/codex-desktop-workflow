@@ -1,9 +1,9 @@
 # Compatibility
 
-| Component | Status in v0.3.2 |
+| Component | Status in v0.3.3 |
 |---|---|
 | Windows x64 | Supported |
-| Desktop `26.924.2738.0` | Official and opt-in source-built compatibility backend; independent profile and build identity |
+| Desktop `26.924.2738.0` | Official and opt-in source-built compatibility backend; frontend 2.7.3 start-event ordering; independent profile and build identity |
 | Desktop `26.924.1866.0` | Official and opt-in source-built compatibility backend |
 | Codex desktop `26.917.9434.0`, official ASAR `d4234b03eb532fe0f3e9a7d90caad51edb68af45f771cc786d966377e7446f5a` | Supported; executable copied unchanged after exact source and renderer qualification |
 | Codex desktop `26.917.6896.0`, official ASAR `00b7936388d11a3faede5fc736a8c6264eb66e1907bac4ef72c39b7399175d68` | Supported; executable copied unchanged |

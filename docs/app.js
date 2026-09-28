@@ -12,6 +12,8 @@ function setLanguage(language) {
     demo.src = language === "zh" ? demo.dataset.zhSrc : demo.dataset.enSrc;
     demo.alt = language === "zh" ? demo.dataset.zhAlt : demo.dataset.enAlt;
   }
+  const recency = document.querySelector('.recency-demo');
+  if (recency) { recency.src = language === 'zh' ? recency.dataset.zhSrc : recency.dataset.enSrc; recency.alt = language === 'zh' ? recency.dataset.zhAlt : recency.dataset.enAlt; }
   toggle.textContent = language === "zh" ? "English" : "中文";
   localStorage.setItem("codex-workflow-language", language);
 }

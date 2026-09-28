@@ -1,9 +1,7 @@
-# v0.3.2 — Desktop 26.924.2738.0 repair
+# v0.3.3 - Start-event ordering repair
 
-Compatibility builds verify all 72 official migrations across six databases, including cached builds. Independent history import preserves the memories database and existing task settings. The frontend uses its own 2.7.2 identity and retains previous version profiles.
+A newly started turn moves its task and project forward immediately in automatic sorting. Attention colors remain independent of order. Manual ordering and pinned-group boundaries are preserved, and streaming output, completion and reading keep the order stable.
 
-The official backend remains the default. Compatibility mode builds from pinned public [codex-history-compat v0.2.2](https://github.com/catterhu1207-ux/codex-history-compat/releases/tag/v0.2.2) source. It requires an x64 MSVC developer environment, Windows SDK, Rust 1.95.0, Git and Python.
+Supports Desktop 26.924.2738.0 with frontend build 2.7.3. The official backend remains the default; the opt-in compatibility backend stays pinned to codex-history-compat v0.2.2 and its 72 migrations across six databases. Existing desktop profiles and command-line interfaces are retained.
 
-README and Pages illustrations use real desktop screenshots with fictional tasks. The timestamp table explains sorting; separate pinned examples demonstrate colors and groups.
-
-Download the source-only bundle, install.ps1 and SHA256SUMS.txt, then supply your supported official application directory to build. See the [acceptance report](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/ACCEPTANCE.md) for runtime and packaging results.
+The bundle contains source wheels, the installer, README and license. Build the desktop copy from your own supported official installation. See the repository acceptance report for Windows tests and isolated runtime evidence.

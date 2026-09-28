@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.3.3
+
+- Move tasks and projects on actual turn starts in automatic sorting; separate attention colors from time order.
+- Preserve server ordering in manual pinned mode and use start-time ordering in automatic pinned mode.
+- Ignore mutable update timestamps when an older entry lacks a start time; use its creation time.
+- Package the start reducer, selector and project-consumer regression scenario with the wheel.
+- Retain the v0.2.2 compatibility source profile, all 72 migrations and previous desktop profiles.
+- Add a real composer-to-sidebar demonstration using fictional tasks.
+
+
 ## v0.3.2 - 2026-09-27
 
 - Bind Desktop 26.924.2738.0 compatibility builds to the immutable sqlite-v2 source profile and all 72 migrations across six databases.

@@ -52,7 +52,7 @@ assert(J7t({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`project-alpha`})
 let items=[{key:`p1`,kind:`project`,pinned:false,source:`codex`},{key:`p2`,kind:`project`,pinned:false,source:`codex`},{key:`c1`,kind:`conversation`,pinned:false,projectKey:`p1`,attentionState:`unread`,recencyAt:10,source:`codex`},{key:`c2`,kind:`conversation`,pinned:false,projectKey:`p2`,attentionState:`idle`,recencyAt:20,source:`codex`}];
 let opts={chatOrder:[],chatSortMode:`priority`,mode:`project`,pinnedOrder:[],pinnedSortMode:`manual`,projectOrder:[`p1`,`p2`],source:`codex`};
 assert(W3t(items,{...opts,projectSortMode:`updated_at`}).projectKeys.join()===`p2,p1`,`project updated`);
-assert(W3t(items,{...opts,projectSortMode:`priority`}).projectKeys.join()===`p1,p2`,`project priority`);
+assert(W3t(items,{...opts,projectSortMode:`priority`}).projectKeys.join()===`p2,p1`,`project priority`);
 let rows=items.filter(e=>e.kind===`conversation`).map(e=>({task:{key:e.key},recencyAt:e.recencyAt})),states=new Map([[`c1`,`unread`],[`c2`,`idle`]]);
 assert(fnn({items:rows,attentionStateByThreadKey:states}).join()===`c2,c1`,`active priority recency`);
 assert(pnn({items:rows,attentionStateByThreadKey:states,manualOrder:null,sortMode:`updated_at`}).join()===`c2,c1`,`active updated`);

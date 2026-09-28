@@ -26,3 +26,11 @@ The pinned example is separate. Fix tests and Update API are pinned through the 
 The tracked social preview is referenced by Pages metadata. GitHub's repository-level custom social card is a separate setting.
 
 Captured application UI belongs to its respective rights holders. Original capture and composition tooling and captions use the repository's MIT license.
+
+## v0.3.3 start-event recording
+
+`tools/recency/run.py` seeds 400 fictional tasks from an empty isolated data home, creates their native projects and submits a task through the real composer to a loopback Responses service. The runtime record measures the actual `turn/started` notification and visible sidebar change; no refresh is used. `matrix.cjs` checks further real submissions in project, flat and pinned automatic/manual modes. `mixed.cjs` supplies synthetic plan and completion protocol events to the production renderer for color regression.
+
+The new `raw/start-event-before.png` and `raw/start-event-after.png` preserve the real renderer around the composer submission. `compose_start_event.py` crops the sidebar, pastes its native pixels unchanged and adds bilingual captions outside the crop. The Chinese native UI and English fictional task titles are retained in both caption languages.
+
+Run the acceptance tools with an isolated public `--portable`, its verified `--empty-home`, a new `--output`, and `--mode official` or `compat`. Set `RECENCY_OUTPUT` to the output directory for the additional Node checks. After these finish, create the output directory's `finish` marker to request normal exit, `new_chat.cjs` additionally checks a real new chat retains one sidebar identity through completion; then use `cold.py` to verify recovery from the same synthetic home. Node 22+ and the x64 Windows test environment are required.

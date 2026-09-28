@@ -28,6 +28,8 @@ def run_semantics(initial, primary, shared, node='node'):
     functions.update(functions_from(shared, SHARED_FUNCTIONS))
     result = execute(functions, Path(__file__).parent.joinpath('codex_desktop_workflow/data', 'frontend_scenarios_26924_2738.js').read_text(encoding='utf8'), node)
     result['actual_row'] = run_row(initial, shared, node)
+    from frontend_recency_contract_26924_2738 import run as run_recency
+    result['start_event_recency'] = run_recency(initial, shared, node)
     return result
 
 def run_row(initial, shared, node='node'):
@@ -98,7 +100,7 @@ def validate(source_asar, portable_asar, node='node'):
         locations = []
         patched = False
         for dep in aliases.get(name, (name,)):
-            for key, groups in [('entry_path', p.PAIRS), ('secondary_entry_path', p.SECONDARY_PAIRS)]:
+            for key, groups in [('entry_path', p.PAIRS), ('secondary_entry_path', p.SECONDARY_PAIRS), ('shared_entry_path', p.SHARED_PAIRS)]:
                 for _, fixed in groups.get(dep, ()):
                     locations.append((key, fixed))
                     patched = True

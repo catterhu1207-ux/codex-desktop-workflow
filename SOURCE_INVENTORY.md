@@ -10,6 +10,7 @@
 | `install.ps1`, release and Pages workflows | Original distribution tooling for the public workflow | MIT |
 | `docs/assets/demo-*.gif`, `docs/assets/before-after-*.png`, `docs/assets/social-preview.png` | Real desktop screenshots with fictional tasks, plus original external captions and composition tooling | Captured application UI belongs to its respective rights holders; original tooling and captions MIT |
 | `docs/`, `docs/promotion/` | Original public documentation and launch copy | MIT |
+| `src/frontend_recency_contract_26924_2738.py`, its packaged JavaScript scenario and `tools/recency/` | Original start-event regression and credential-free synthetic composer fixtures | MIT |
 | Tests, examples and documentation | Original synthetic material | MIT |
 
 The repository contains byte signatures needed to identify and transform specific locations in a user-supplied official package. It does not contain the package, full extracted frontend files, binaries, credentials, sessions, databases, logs, or private maintenance state.

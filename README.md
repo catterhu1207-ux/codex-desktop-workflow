@@ -9,9 +9,11 @@
 
 ![Real desktop interface with fictional tasks](docs/assets/demo-en.gif)
 
-## v0.3.2 — Desktop 26.924.2738.0
+## v0.3.3 — Desktop 26.924.2738.0
 
-This repair release binds compatibility builds to all 72 official migrations across six SQLite databases. Independent import preserves the memories database and task settings. The refreshed interface retains sorting, attention states, remote project names, the Work picker and file drops.
+A new turn now moves its task and project forward immediately in automatic start-time ordering. Attention colors stay independent of order; streaming output, completion and reading do not repeatedly move tasks. Manual order and pinned-group boundaries are preserved. Frontend build 2.7.3 keeps the existing 72-migration compatibility backend profile.
+
+![Real composer submission moves a fictional task and project forward](docs/assets/start-event-en.gif)
 
 The official backend remains the default. To opt into the separately published compatibility source profile, download `install.ps1` and run:
 

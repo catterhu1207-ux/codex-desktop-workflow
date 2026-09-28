@@ -2,7 +2,33 @@
 
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
-## v0.3.2 qualification
+## v0.3.3 qualification
+
+Desktop 26.924.2738.0 was independently built from the verified official source with frontend 2.7.3 and both backend modes on 2026-09-28.
+
+| Check | Result |
+|---|---|
+| Exact frontend contracts | All 24 passed in both builds |
+| Fresh real renderer proof | All 21 features passed in four independent launches |
+| Windows tests | 78 passed; two older-sample test classes skipped; required 2738 and previous 1866 checks ran |
+| Older artifact regression | Exact 26.917.9434.0 checks also passed |
+| Official backend | Empty and 400-task launches, 67.30 and 69.11 seconds after proof; matching current app-server and normal exit |
+| Compatibility backend | Empty and 400-task launches, 73.44 and 69.95 seconds after proof; matching current app-server and normal exit |
+| Real composer to sidebar | Official 281.4 ms; compatibility 166.3 ms; each followed by more than 70 seconds of stable observation |
+| Native ordering matrix | Real starts passed within a project, across projects, in the flat list and in pinned automatic/manual modes; each change within two seconds |
+| Attention regression | Synthetic protocol plan/completion events exercised the real rows, including yellow plans after reading and pinning, pinned attention and ordinary unread |
+| New-chat identity | Additional compatibility-mode native new chat retained a stable sidebar alias, mapped to the physical task and passed native pin readback |
+| Cold recovery | Both modes retained project order, task settings and start times after normal exit; the compatibility cold-resume fixture kept its loopback provider available |
+| Backend source | Existing immutable v0.2.2 reference retained; all 72 migration digests across six databases validated |
+| Source isolation | Independent Windows user folders and runtime caches; daily instance and real data excluded |
+| Executable | Only the unique embedded ASAR digest changed in the independent copy |
+| Wheel and installer | Installed-wheel source binding and all 24 contracts passed in both modes; official, compatibility-manifest and compatibility-source dry-runs passed |
+| Publication scan | Source and three wheels passed sensitive-content checks |
+| Illustrations | Preserved native before/after screenshots; two frames per caption language; unchanged native crop and external captions |
+
+The source-bound qualification record includes the real-start measurements and native matrix. Historical v0.3.2 evidence remains in this directory and at its original release.
+
+## Historical v0.3.2 qualification
 
 The 26.924.2738.0 workflow was independently built from the complete signed official Windows x64 package and qualified with both backend modes on 2026-09-27.
 
@@ -20,6 +46,8 @@ The 26.924.2738.0 workflow was independently built from the complete signed offi
 | Public tests | 77 tests passed; two additional older-artifact test classes skipped because their exact samples were unavailable |
 | Previous-version regression | Exact 26.924.1866.0 contracts and protocol patch output passed; old profiles and source pins unchanged |
 | Database fixture | All six databases included; 400 visible tasks with native-readable metadata; additional native full-history reads passed for 400 tasks in each backend |
+| Wheel and installer | Installed-wheel source binding and all 24 contracts passed in both modes; official, compatibility-manifest and compatibility-source dry-runs passed |
+| Publication scan | Source and three wheels passed sensitive-content checks |
 | Illustrations | Eleven real, preserved screenshots; English five-frame and Chinese four-frame animations; native pin/read/plan/running states, pixel-preservation checks and mobile-sized single-sidebar frames passed |
 | Historical data | Logical-parent and physical-ancestor chains, ownership, byte boundaries, dependency changes and path escape checks passed; source preservation and independent imported copy passed |
 | Wheel and installer | Resource loading, bundle checksums, official dry-run, compatibility-manifest dry-run and compatibility-source dry-run passed |

@@ -20,6 +20,24 @@ class ReleaseQualification(unittest.TestCase):
         pin=json.loads((PACKAGE/'policies/backend-source-26.924.2738.0.json').read_text())
         self.assertEqual(evidence['compat_commit'],pin['commit'])
         self.assertEqual(evidence['feature_contract_count'],24)
+        self.assertEqual(evidence['frontend_build'],'2.7.3')
+        root=Path(__file__).resolve().parents[1]
+        for name,digest in evidence['acceptance_tools'].items():
+            raw=(root/name).read_bytes().replace(b'\r\n',b'\n')
+            self.assertEqual(hashlib.sha256(raw).hexdigest(),digest,name)
+
+        for mode in ('official','compat'):
+            proof=evidence['start_event_recency'][mode]
+            self.assertTrue(proof['real_composer'])
+            self.assertFalse(proof['refresh_used'])
+            self.assertLessEqual(proof['start_to_visible_ms'],2000)
+            self.assertGreaterEqual(proof['observed_seconds'],60)
+            self.assertTrue(proof['cold_settings_and_times_preserved'])
+            self.assertEqual(set(proof['native_matrix']),{'project_within','pinned_automatic','pinned_manual','flat'})
+            for case in proof['native_matrix'].values():
+                self.assertTrue(case['real_composer'])
+                self.assertLessEqual(case['start_to_visible_ms'],2000)
+
         for mode in ('official','compat'):
             runs=evidence['runtime'][mode]
             self.assertEqual({r['profile'] for r in runs},{'empty','synthetic_tasks'})

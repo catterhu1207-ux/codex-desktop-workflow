@@ -1,0 +1,34 @@
+const fs=require('node:fs'),path=require('node:path');const {connect}=require('./cdp.cjs');
+const sleep=ms=>new Promise(r=>setTimeout(r,ms)),assert=(v,m)=>{if(!v)throw Error(m)};
+(async()=>{const mode=process.argv[2],r=JSON.parse(fs.readFileSync(path.join(process.env.RECENCY_OUTPUT,mode+'-run.json'))),c=await connect(r.debug_port),[alpha,beta,gamma]=r.fixtures;
+const snapshot=`(()=>({projects:[...document.querySelectorAll('button[aria-label]')].map(e=>e.getAttribute('aria-label')).filter(x=>x.endsWith('的项目操作')),rows:[...document.querySelectorAll('[data-app-action-sidebar-thread-row]')].map(e=>({title:e.getAttribute('data-app-action-sidebar-thread-title'),pinned:e.getAttribute('data-app-action-sidebar-thread-pinned'),selected:e.getAttribute('data-app-action-sidebar-thread-selected'),colors:[...e.querySelectorAll('i[style]')].map(i=>getComputedStyle(i).backgroundColor),spinner:!!e.querySelector('[class*=animate-spin]')}))}))()`;
+const route=async t=>{await c.evaluate(`window.postMessage(${JSON.stringify({type:'navigate-to-route',path:'/local/'+t.id})},'*');true`);await sleep(4000)};
+const post=async(method,params)=>{await c.evaluate(`window.postMessage(${JSON.stringify({type:'mcp-notification',hostId:'local',method,params})},'*');true`);await sleep(250)};
+try{
+ for(const t of [beta,gamma]){let title=await c.evaluate(`document.querySelector('[data-app-action-sidebar-thread-id="local:${t.id}"]')?.getAttribute('data-app-action-sidebar-thread-title')`);if(title)t.title=title;await c.evaluate(`(()=>{const row=document.querySelector('[data-app-action-sidebar-thread-id="local:${t.id}"]');if(row?.getAttribute('data-app-action-sidebar-thread-pinned')==='true'){const b=[...row.querySelectorAll('button')].find(e=>/^(Unpin chat|取消置顶聊天)$/.test(e.getAttribute('aria-label')||''));if(!b)throw Error('Unpin action missing');b.click()}return true})()`);await sleep(600)}
+ await route(beta);
+ const turn={id:'synthetic-old-plan-'+Date.now(),status:'inProgress',items:[],error:null,startedAt:beta.recency};
+ await post('turn/started',{threadId:beta.id,turn});
+ await post('item/started',{threadId:beta.id,turnId:turn.id,item:{id:'synthetic-plan-item',type:'plan',text:'Implement the synthetic local plan.'}});
+ await post('item/completed',{threadId:beta.id,turnId:turn.id,item:{id:'synthetic-plan-item',type:'plan',text:'Implement the synthetic local plan.'}});
+ await post('turn/completed',{threadId:beta.id,turn:{...turn,status:'completed',items:[{id:'synthetic-plan-item',type:'plan',text:'Implement the synthetic local plan.'}],durationMs:50}});
+ await route(alpha);let plan=await c.evaluate(snapshot);
+ assert(plan.rows.some(x=>x.title===beta.title&&x.colors.includes('rgb(234, 179, 8)')),'Real plan request must produce yellow row');
+ assert(plan.projects[0]==='Project Alpha 的项目操作','Older waiting plan must not outrank new start');
+ await c.evaluate(`document.querySelector('[data-app-action-sidebar-thread-id="local:${beta.id}"] button[aria-label="置顶聊天"]').click();true`);await sleep(700);
+ let pinnedPlan=await c.evaluate(snapshot);
+ assert(pinnedPlan.rows.some(x=>x.title===beta.title&&x.pinned==='true'&&x.colors.includes('rgb(234, 179, 8)')),'Pinned plan stays yellow');
+ await route(beta);let readPlan=await c.evaluate(snapshot);
+ assert(readPlan.rows.some(x=>x.title===beta.title&&x.colors.includes('rgb(234, 179, 8)')),'Read plan stays yellow');
+ await route(gamma);await route(alpha);
+ const turn2={id:'synthetic-old-unread',status:'inProgress',items:[],error:null,startedAt:gamma.recency};
+ await post('turn/started',{threadId:gamma.id,turn:turn2});
+ await post('item/started',{threadId:gamma.id,turnId:turn2.id,item:{id:'synthetic-message',type:'agentMessage',text:'Synthetic unread completion.',phase:'final_answer'}});
+ await post('item/completed',{threadId:gamma.id,turnId:turn2.id,item:{id:'synthetic-message',type:'agentMessage',text:'Synthetic unread completion.',phase:'final_answer'}});
+ await post('turn/completed',{threadId:gamma.id,turn:{...turn2,status:'completed',items:[],durationMs:50}});
+ let unread=await c.evaluate(snapshot);assert(unread.rows.some(x=>x.title===gamma.title&&x.colors.length),'Native completion produces unread row');
+ await c.evaluate(`document.querySelector('[data-app-action-sidebar-thread-id="local:${gamma.id}"] button[aria-label="置顶聊天"]').click();true`);await sleep(700);
+ let red=await c.evaluate(snapshot);assert(red.rows.some(x=>x.title===gamma.title&&x.pinned==='true'&&x.colors.length&&!x.colors.includes('rgb(234, 179, 8)')),'Pinned unread retains red attention');
+ assert(red.projects[0]==='Project Alpha 的项目操作','Attention state does not reorder projects');
+ fs.writeFileSync(path.join(process.env.RECENCY_OUTPUT,mode+'-mixed.json'),JSON.stringify({status:'passed',plan,pinnedPlan,readPlan,unread,red,protocol_events:true,real_rows:true},null,2));console.log('Real mixed attention rows passed');
+}finally{c.close()}})().catch(e=>{console.error(e);process.exit(1)});
