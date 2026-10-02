@@ -25,6 +25,8 @@ Source builds require Python 3.11+, Git, Rust 1.95.0, x64 MSVC and Windows SDK. 
 
 The command-line equivalents are `build-backend --source <official-app> --target <new-directory>` and `build --source <official-app> --target <new-app> --backend-mode compat --backend-manifest <manifest.json>`. Compatibility builds use the immutable source reference recorded in the installed package.
 
+The published v0.3.5 bundle passed anonymous download and checksum verification, normal installation, and three complete isolated launches. Official and compatibility backend modes also passed their independent acceptance. See [the acceptance report](ACCEPTANCE.md).
+
 ## Use a downloaded official MSIX
 
 Download the complete official x64 MSIX, then run the installer with its path:

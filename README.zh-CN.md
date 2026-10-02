@@ -25,6 +25,8 @@
 
 兼容后端源码及旧版入口见 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat)。
 
+公开的 v0.3.5 安装包已通过匿名下载、校验和核对、正常安装及三轮完整隔离启动；官方后端和兼容后端也分别通过独立验收。详见[验收记录](ACCEPTANCE.md)。
+
 ## 使用下载的官方安装包
 
 下载官方完整 x64 MSIX 后，把文件路径交给安装器：

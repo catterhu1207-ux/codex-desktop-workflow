@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "version": "0.3.5",
+  "tag_commit": "712856043032bd029dfc1c24b0ade89ddacea8ff",
+  "release_url": "https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.5",
+  "anonymous_download": true,
+  "published_checksums_match": true,
+  "bundle_sha256": "df4e348ebadeb9f2022b56e88d02d5a7ab4e44170988e42cee24f31a20cc920c",
+  "installer_sha256": "381d2c1ad3d350fb5d02dc4a91015cf05eadc031edf77d3ecb71a0a4a39b097d",
+  "qualified_product_and_dependency_content_match": true,
+  "installed_modules_matched": 107,
+  "normal_install_from_download": true,
+  "runtime": [
+    {
+      "profile": "empty",
+      "status": "passed",
+      "renderer_features": 22,
+      "observed_seconds": 66.48949760012329,
+      "backend_match": true,
+      "native_sidebar_mounted": true,
+      "isolated": true,
+      "close_status": "closed",
+      "owned_job_empty": true
+    },
+    {
+      "profile": "synthetic_tasks",
+      "status": "passed",
+      "renderer_features": 22,
+      "observed_seconds": 68.3282818000298,
+      "backend_match": true,
+      "native_sidebar_mounted": true,
+      "isolated": true,
+      "close_status": "closed",
+      "owned_job_empty": true
+    },
+    {
+      "profile": "faithful_projects",
+      "status": "passed",
+      "renderer_features": 22,
+      "observed_seconds": 67.2669206999708,
+      "backend_match": true,
+      "native_sidebar_mounted": true,
+      "isolated": true,
+      "close_status": "closed",
+      "owned_job_empty": true
+    }
+  ],
+  "feature_contract_count": 25,
+  "actions": {
+    "release": "https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/runs/37045676434",
+    "tests": "https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/runs/37045677858",
+    "compatibility_source": "https://github.com/catterhu1207-ux/codex-history-compat/actions/runs/37044257950"
+  },
+  "data_scope": "Synthetic isolated acceptance data",
+  "encrypted_ssh_transport_tested": false,
+  "retained_unpublished_attempt": "v0.3.4 failed a timer-throughput-dependent test; v0.3.5 verifies completed concurrent reads and distinct clock updates."
+}

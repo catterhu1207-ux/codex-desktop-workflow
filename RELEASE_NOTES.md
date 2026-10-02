@@ -8,4 +8,4 @@ The installer also accepts a complete official MSIX through `-Source`, so the su
 
 Verification uses awake time for its launch and interface checks. Sleep time does not consume those budgets. Test processes and data are isolated from the daily application.
 
-The bundle contains source wheels, the installer, README and license. Supply your own supported official package or installation. Official application binaries and user data are not included. See the acceptance report for completed checks and any outstanding release requirements.
+The bundle contains source wheels, the installer, README and license. Supply your own supported official package or installation. Official application binaries and user data are not included. The published bundle passed anonymous download, checksum verification and normal installation, followed by three complete isolated launches. Both backend modes passed their independent runtime checks. See [the acceptance report](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/ACCEPTANCE.md) for the test scope and results.

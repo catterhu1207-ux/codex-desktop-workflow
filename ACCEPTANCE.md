@@ -6,7 +6,7 @@ This public report is a redacted summary of the maintainer-side Windows acceptan
 
 Desktop 26.928.4866.0 was independently built with both official and compatibility backends. The qualified source record binds the runtime results to the product and acceptance tools. Final distribution and installation from the public download are checked separately.
 
-The Windows process-ancestry and awake-clock repairs passed their regression checks. A complete MSIX installation then passed all three launch profiles using the installed package. Compatibility-backend qualification also passed. Final distribution checks remain pending.
+The Windows process-ancestry and awake-clock repairs passed their regression checks. A complete MSIX installation then passed all three launch profiles using the installed package. Compatibility-backend qualification also passed. The published v0.3.5 bundle passed anonymous download, checksum matching and installation into a fresh directory, followed by three complete launches.
 
 | Check | Current result |
 |---|---|
@@ -23,9 +23,11 @@ The Windows process-ancestry and awake-clock repairs passed their regression che
 | MSIX input | Signature, identity, archive boundaries, cache reuse and changed-source rejection checked; complete MSIX installation passed three launch profiles and installed source/resource matching |
 | New compatibility backend | Independent source build, HTTP, WebSocket, cold restoration, local and remote compaction, and 73 migration checks across six databases passed; 17 profile regression tests passed |
 | Compatibility full launches | Empty data, 400 synthetic tasks and synthetic projects/settings passed with 22 fresh renderer features, at least 60 seconds of observation, matching backend identity and normal exit each |
-| Distribution | Final wheel, release assets, anonymous download and installation from those assets remain pending |
+| Distribution | Published v0.3.5 assets and checksums verified without authentication; product and dependency modules matched the qualified bundle; installation from the downloaded bundle passed three full launch profiles |
 
 The new-chat repair addresses premature history recovery before the first message creates a saved conversation. A separate placement-format response was examined using recorded errors and the original resolver functions. That comparison does not establish a cloud-service repair. Unsent blank-page persistence is outside the restart guarantee; sent conversation history and model settings are covered.
+
+The distribution readback is recorded in [v0.3.5-distribution.json](acceptance/v0.3.5-distribution.json). The v0.3.4 tag remains as an unpublished attempt after its timer-throughput test failed on a slower CI runner. The replacement test checks actual concurrent reads and distinct clock updates at both fast and slow timer intervals. Application patches are unchanged.
 
 ## v0.3.3 qualification
 
