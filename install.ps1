@@ -19,6 +19,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
+Import-Module (Join-Path $PSHOME 'Modules/Microsoft.PowerShell.Security/Microsoft.PowerShell.Security.psd1') -ErrorAction Stop
+Import-Module (Join-Path $PSHOME 'Modules/Microsoft.PowerShell.Utility/Microsoft.PowerShell.Utility.psd1') -ErrorAction Stop
 [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 
 $Repository = "catterhu1207-ux/codex-desktop-workflow"
@@ -99,20 +101,14 @@ function Get-Bundle([string]$ResolvedVersion) {
         if ((Get-Item -LiteralPath $resolved).PSIsContainer) {
             return $resolved
         }
-        $extractRoot = Join-Path $InstallRoot "downloads\local"
-        if (Test-Path -LiteralPath $extractRoot) {
-            Remove-Item -LiteralPath $extractRoot -Recurse -Force
-        }
+        $extractRoot = Join-Path $InstallRoot ("downloads\local\" + [guid]::NewGuid().ToString('N'))
         New-Item -ItemType Directory -Path $extractRoot -Force | Out-Null
         Expand-Archive -LiteralPath $resolved -DestinationPath $extractRoot -Force
         return $extractRoot
     }
 
     $releaseRoot = Get-ReleaseRoot $ResolvedVersion
-    $downloadRoot = Join-Path $InstallRoot ("downloads\" + $ResolvedVersion.Replace("/", "_"))
-    if (Test-Path -LiteralPath $downloadRoot) {
-        Remove-Item -LiteralPath $downloadRoot -Recurse -Force
-    }
+    $downloadRoot = Join-Path $InstallRoot ("downloads\" + $ResolvedVersion.Replace("/", "_") + "\" + [guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory -Path $downloadRoot -Force | Out-Null
     $bundleZip = Join-Path $downloadRoot $BundleAsset
     $sumsFile = Join-Path $downloadRoot $SumsAsset
@@ -147,7 +143,8 @@ function Test-BundleContents([string]$BundleRoot) {
     $unexpected = @()
     foreach ($file in Get-ChildItem -LiteralPath $BundleRoot -Recurse -File) {
         $extension = $file.Extension.ToLowerInvariant()
-        if ($allowed -notcontains $extension) {
+        $sourceHelper = $file.FullName -eq (Join-Path $BundleRoot 'msix_source.py')
+        if ($allowed -notcontains $extension -and -not $sourceHelper) {
             $unexpected += $file.FullName
         }
     }
@@ -159,6 +156,21 @@ function Test-BundleContents([string]$BundleRoot) {
 function Get-OfficialSource([string]$RequestedSource) {
     if ($RequestedSource) {
         $source = (Resolve-Path -LiteralPath $RequestedSource).Path
+        if (-not (Get-Item -LiteralPath $source).PSIsContainer) {
+            if ([IO.Path]::GetExtension($source) -ine '.msix') { throw 'A file supplied with -Source must be a full official MSIX.' }
+            $helper = Join-Path $bundleRoot 'msix_source.py'
+            if (-not (Test-Path -LiteralPath $helper -PathType Leaf)) { throw 'This bundle does not support MSIX inputs.' }
+            [string[]]$sourceArguments = @()
+            if ($python.Count -gt 1) { $sourceArguments += $python[1..($python.Count - 1)] }
+            $sourceArguments += @('-X','utf8',$helper,'--source',$source,'--contracts',$versionFile)
+            if ($DryRun) { $sourceArguments += '--inspect-only' }
+            else { $sourceArguments += @('--cache-root',(Join-Path $InstallRoot 'sources')) }
+            $sourceOutput = & $python[0] @sourceArguments
+            if ($LASTEXITCODE -ne 0) { throw 'Official MSIX verification or extraction failed. No app was installed.' }
+            $sourceReport = ($sourceOutput -join "`n") | ConvertFrom-Json
+            if ($DryRun) { return [pscustomobject]@{ SourceApp = $null; IsMsix = $true; MsixPath = $source; Report = $sourceReport } }
+            return [pscustomobject]@{ SourceApp = [string]$sourceReport.source_app; IsMsix = $true; MsixPath = $source; Report = $sourceReport }
+        }
     }
     else {
         $package = Get-AppxPackage -Name "OpenAI.Codex" |
@@ -178,7 +190,7 @@ function Get-OfficialSource([string]$RequestedSource) {
     if (-not (Test-Path -LiteralPath (Join-Path $app "resources\app.asar"))) {
         throw "Official Codex app directory was not found below $source"
     }
-    return (Resolve-Path -LiteralPath $app).Path
+    return [pscustomobject]@{ SourceApp = (Resolve-Path -LiteralPath $app).Path; IsMsix = $false; Report = $null }
 }
 
 function Test-CodexProcesses {
@@ -235,7 +247,16 @@ try {
     $packageVersion = if ($versionInfo.version) { [string]$versionInfo.version } else { "0.3.3" }
     Write-Ok "Bundle prepared for $packageName $packageVersion"
 
-    $officialSource = Get-OfficialSource $Source
+    $sourceResolution = Get-OfficialSource $Source
+    if ($DryRun -and $sourceResolution.IsMsix) {
+        Write-Ok "Official MSIX verified: $($sourceResolution.Report.identity.Version), x64"
+        if (-not $sourceResolution.Report.qualified_version) { Stop-WithCode 'This version can be inspected but has not been adapted. Build and activation are blocked.' $ExitPrerequisite }
+        if ($BackendMode -eq 'official' -and $BackendManifest) { throw 'BackendManifest requires BackendMode compat.' }
+        Write-Host "Backend mode: $BackendMode"
+        Write-Ok 'Dry run complete. The source package was not extracted, built or installed.'
+        exit 0
+    }
+    $officialSource = $sourceResolution.SourceApp
     $sourceAsar = Join-Path $officialSource "resources\app.asar"
     $sourceHashBefore = Get-Sha256 $sourceAsar
     Write-Ok "Official source detected: $officialSource"
@@ -320,7 +341,7 @@ try {
     Invoke-Checked $venvPython $buildArguments
 
     if (-not $NoVerify) {
-        Write-Step "Verifying two isolated launches (about two minutes)"
+        Write-Step "Verifying isolated launches and observing each for at least one minute"
         Invoke-Checked $venvPython @(
             "-m", "codex_desktop_workflow.cli", "verify",
             "--source", $officialSource,
@@ -336,6 +357,13 @@ try {
         Stop-WithCode "The official app.asar changed during installation. Stop and inspect the machine." $ExitBuild
     }
     Write-Ok "Official app.asar remained unchanged"
+    if ($sourceResolution.IsMsix) {
+        if (-not (Test-Path -LiteralPath $sourceResolution.MsixPath -PathType Leaf) -or
+            (Get-Sha256 $sourceResolution.MsixPath) -ne $sourceResolution.Report.package_sha256) {
+            Stop-WithCode 'The original MSIX changed or disappeared. The candidate was not activated.' $ExitBuild
+        }
+        Write-Ok 'Original MSIX remained unchanged'
+    }
 
     $dataRoot = Join-Path $InstallRoot "data"
     if ($MigrateData) {

@@ -1,55 +1,62 @@
-"""Keep the required local runtime acceptance bound to the shipped source."""
+"""Require current-source evidence; historical release proof stays immutable."""
 import hashlib,json,unittest
 from pathlib import Path
 import codex_desktop_workflow
-
 PACKAGE=Path(codex_desktop_workflow.__file__).parent
 SOURCE=PACKAGE.parent
+ROOT=Path(__file__).resolve().parents[1]
+CURRENT='qualification-26.928.4866.0.json'
+
+def digest(p):return hashlib.sha256(p.read_bytes().replace(b"\r\n",b"\n")).hexdigest()
 
 class ReleaseQualification(unittest.TestCase):
     def test_current_source_has_complete_public_runtime_acceptance(self):
-        evidence=json.loads((PACKAGE/'policies/qualification-26.924.2738.0.json').read_text())
-        self.assertEqual(evidence['status'],'passed')
-        actual={str(p.relative_to(SOURCE)).replace('\\','/') for p in SOURCE.rglob('*')
-                if p.is_file() and p.suffix in ('.py','.js','.json')
-                and p.name!='qualification-26.924.2738.0.json'}
-        self.assertEqual(set(evidence['source_inputs']),actual)
-        for name,digest in evidence['source_inputs'].items():
-            raw=(SOURCE/name).read_bytes().replace(b'\r\n',b'\n')
-            self.assertEqual(hashlib.sha256(raw).hexdigest(),digest,name)
-        pin=json.loads((PACKAGE/'policies/backend-source-26.924.2738.0.json').read_text())
-        self.assertEqual(evidence['compat_commit'],pin['commit'])
-        self.assertEqual(evidence['feature_contract_count'],24)
-        self.assertEqual(evidence['frontend_build'],'2.7.3')
-        root=Path(__file__).resolve().parents[1]
-        for name,digest in evidence['acceptance_tools'].items():
-            raw=(root/name).read_bytes().replace(b'\r\n',b'\n')
-            self.assertEqual(hashlib.sha256(raw).hexdigest(),digest,name)
-
+        path=PACKAGE/'policies'/CURRENT
+        self.assertTrue(path.is_file(),'Current release qualification is incomplete')
+        e=json.loads(path.read_text())
+        self.assertEqual(e['status'],'passed')
+        self.assertEqual(e['desktop_version'],'26.928.4866.0')
+        actual={str(p.relative_to(SOURCE)).replace('\\','/') for p in SOURCE.rglob('*') if p.is_file() and p.suffix in ('.py','.js','.cjs','.json','.ps1') and p.name!=CURRENT}
+        self.assertEqual(set(e['source_inputs']),actual)
+        for name,value in e['source_inputs'].items():self.assertEqual(digest(SOURCE/name),value,name)
+        tools={str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'tools').rglob('*') if p.is_file() and p.suffix in ('.py','.js','.cjs','.json','.ps1')}
+        tools.update({'install.ps1','msix_source.py','tests/test_release_qualification.py'})
+        self.assertEqual(set(e['acceptance_tools']),tools)
+        for name,value in e['acceptance_tools'].items():self.assertEqual(digest(ROOT/name),value,name)
+        pin=json.loads((PACKAGE/'policies/backend-source-26.928.4866.0.json').read_text())
+        self.assertEqual(e['compat_commit'],pin['commit'])
+        self.assertEqual(e['feature_contract_count'],25)
+        self.assertEqual(e['frontend_build'],'2.7.9')
         for mode in ('official','compat'):
-            proof=evidence['start_event_recency'][mode]
-            self.assertTrue(proof['real_composer'])
-            self.assertFalse(proof['refresh_used'])
-            self.assertLessEqual(proof['start_to_visible_ms'],2000)
-            self.assertGreaterEqual(proof['observed_seconds'],60)
-            self.assertTrue(proof['cold_settings_and_times_preserved'])
-            self.assertEqual(set(proof['native_matrix']),{'project_within','pinned_automatic','pinned_manual','flat'})
-            for case in proof['native_matrix'].values():
-                self.assertTrue(case['real_composer'])
-                self.assertLessEqual(case['start_to_visible_ms'],2000)
-
-        for mode in ('official','compat'):
-            runs=evidence['runtime'][mode]
-            self.assertEqual({r['profile'] for r in runs},{'empty','synthetic_tasks'})
-            self.assertEqual(len(runs),2)
+            runs=e['runtime'][mode]
+            self.assertEqual({r['profile'] for r in runs},{'empty','synthetic_tasks','faithful_projects'})
+            self.assertEqual(len(runs),3)
             for run in runs:
-                self.assertEqual(run['renderer_features'],21)
+                self.assertEqual(run['renderer_features'],22)
                 self.assertGreaterEqual(run['observed_seconds'],60)
-                self.assertTrue(run['current_app_server_match'])
-                self.assertTrue(run['shell_folders_isolated'])
-                self.assertTrue(run['runtime_cache_isolated'])
+                for flag in ('current_app_server_match','shell_folders_isolated','runtime_cache_isolated','native_sidebar_mounted','owned_job_empty'):self.assertTrue(run[flag])
                 self.assertEqual(run['close_status'],'closed')
                 self.assertEqual(run['status'],'passed')
                 if mode=='official':self.assertEqual(run['backend_sha256'],pin['official_backend_sha256'])
+        self.assertEqual(set(e['backend_cases']),{'http','websocket','cold-resume','local-compaction','remote-compaction','migrations'})
+        for case in e['backend_cases'].values():self.assertEqual(case['status'],'passed')
+        self.assertEqual(e['backend_cases']['migrations']['migration_count'],73)
+        self.assertEqual(e['backend_cases']['migrations']['database_count'],6)
+        for flag in ('native_first_send','native_cold_reopen','proof_rejections','msix_installer','installed_wheel','previous_profile_regression','process_ancestry_regression','sensitive_content_scan'):self.assertEqual(e['checks'][flag],'passed')
+        self.assertEqual(e['new_chat']['synthetic_sent_chats'],6)
+        self.assertFalse(e['new_chat']['encrypted_ssh_transport_tested'])
+        self.assertEqual(len(e['old_runtime']),4)
+        for run in e['old_runtime']:
+            self.assertEqual(run['renderer_features'],21)
+            self.assertGreaterEqual(run['observed_seconds'],60)
+            self.assertTrue(run['owned_job_empty'])
+
+    def test_historical_qualification_keeps_original_contract(self):
+        e=json.loads((PACKAGE/'policies/qualification-26.924.2738.0.json').read_text())
+        self.assertEqual(e['feature_contract_count'],24)
+        self.assertEqual(e['frontend_build'],'2.7.3')
+        for runs in e['runtime'].values():
+            self.assertEqual(len(runs),2)
+            self.assertTrue(all(r['renderer_features']==21 for r in runs))
 
 if __name__=='__main__':unittest.main()

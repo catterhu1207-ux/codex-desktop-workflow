@@ -2,7 +2,7 @@
 import argparse,json,os,sqlite3,subprocess,time,urllib.request
 from pathlib import Path
 from codex_desktop_workflow import workflow as w
-from electron_update_safety.lifecycle import IsolatedRun
+from codex_desktop_workflow.isolated_run import IsolatedRun
 from bootstrap_fixture import seed
 from native_fixture_projects import prepare
 from mock_responses import FixtureServer

@@ -44,7 +44,7 @@ def main() -> int:
         else: result = workflow.stop(args.run, args.timeout)
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))
         return 0 if result.get("status") not in {"blocked", "backend_orphaned"} and result.get("close_status") != "timeout" else 2
-    except (subprocess.CalledProcessError, workflow.WorkflowError, hotfix_builder.HotfixError, OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+    except (subprocess.CalledProcessError, workflow.WorkflowError, hotfix_builder.HotfixError, RuntimeError, OSError, ValueError, KeyError, json.JSONDecodeError) as error:
         print(json.dumps({"status": "blocked", "reason": str(error), "content_logged": False}, ensure_ascii=False), file=sys.stderr)
         return 2
 

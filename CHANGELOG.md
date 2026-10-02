@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.3.4
+
+- Add an exact Desktop 26.928.4866.0 profile while retaining earlier profiles.
+- Show orange for outstanding questions, choices and approval requests; preserve yellow for plans awaiting implementation and existing ordering rules.
+- Preserve the native first-send path for newly opened chats that do not yet have saved history.
+- Accept a verified complete official MSIX as installer input without installing the Store package.
+- Exercise the native sidebar with persisted settings, synthetic history and project groups.
+- Use awake-time probe deadlines and owned process cleanup during isolated acceptance.
+- Bind optional compatibility builds to the matching 0.159.2 source and all 73 migrations across six databases.
+
 ## v0.3.3
 
 - Move tasks and projects on actual turn starts in automatic sorting; separate attention colors from time order.

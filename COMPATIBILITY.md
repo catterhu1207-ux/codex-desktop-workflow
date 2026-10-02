@@ -1,8 +1,10 @@
 # Compatibility
 
-| Component | Status in v0.3.3 |
+| Component | Status in v0.3.4 |
 |---|---|
 | Windows x64 | Supported |
+| Desktop `26.928.4866.0` | Official backend by default; optional source-built 0.159.2 compatibility profile; 25 contracts and 22 renderer proofs; three isolated launch profiles |
+| Complete official x64 MSIX | Accepted by PowerShell `-Source`; exact identity and signature required; no Store installation |
 | Desktop `26.924.2738.0` | Official and opt-in source-built compatibility backend; frontend 2.7.3 start-event ordering; independent profile and build identity |
 | Desktop `26.924.1866.0` | Official and opt-in source-built compatibility backend |
 | Codex desktop `26.917.9434.0`, official ASAR `d4234b03eb532fe0f3e9a7d90caad51edb68af45f771cc786d966377e7446f5a` | Supported; executable copied unchanged after exact source and renderer qualification |
@@ -12,7 +14,7 @@
 | Codex desktop `26.908.9136.0`, official ASAR `7a46bd6fe162050afbac27d7d5271d19524e887fa0cdd06c0f2d3fa9b606a31d` | Supported; retained v0.1.0 isolated-renderer acceptance evidence |
 | Any other desktop version or ASAR | Rejected |
 | Official bundled `codex.exe` | Default for all supported releases |
-| `codex-history-compat` backend | Opt-in profiles `desktop-26.924.2738.0-sqlite-v2` (72 migrations across six databases) and `0.158.0-alpha.2` for their respective desktop versions; older desktop profiles remain official-only |
+| `codex-history-compat` backend | Opt-in profiles `desktop-26.928.4866.0-sqlite-v2` (73 migrations across six databases), `desktop-26.924.2738.0-sqlite-v2` (72 migrations across six databases) and `0.158.0-alpha.2` for their respective desktop versions; older desktop profiles remain official-only |
 | Existing task data | Explicit snapshot import into a new independent directory |
 | Automatic task-data synchronization | Unsupported |
 

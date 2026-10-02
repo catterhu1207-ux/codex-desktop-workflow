@@ -1240,11 +1240,11 @@ def _validate_renderer_probe(
     script = builder.renderer_attestation_script(profile)
     if entry.count(script) != 1:
         raise ContractError("Live-renderer attestation script identity changed")
-    if set(builder.FRONTEND_ATTESTATION_FEATURES).intersection(
+    if set(builder.frontend_attestation_features(profile)).intersection(
         builder.NON_RENDERER_ATTESTATION_FEATURES
-    ) or set(builder.FRONTEND_ATTESTATION_FEATURES).union(
+    ) or set(builder.frontend_attestation_features(profile)).union(
         builder.NON_RENDERER_ATTESTATION_FEATURES
-    ) != set(builder.FEATURE_STATUSES):
+    ) != set(builder.frontend_feature_statuses(profile)):
         raise ContractError("Component feature inventories differ from release inventory")
     module_content = builder.renderer_attestation_module(profile)
     module_path = portable_asar.parent / builder.FRONTEND_ATTESTATION_MODULE_NAME
@@ -1271,7 +1271,10 @@ def _validate_renderer_probe(
     )
     _, protocol_entry = builder.read_entry(portable_asar, header_size, protocol_meta)
     latest = builder.is_split_frontend_profile(profile)
-    if profile.get("profile_spec_id") == "26924_2738":
+    if builder.is_orange_frontend_profile(profile):
+        from hotfix_profile_26928_4866 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile.get("profile_spec_id") == "26924_2738":
         from hotfix_profile_26924_2738 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
         resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
     elif profile.get("profile_spec_id") == "26924_1866":
@@ -1354,7 +1357,7 @@ def _validate_renderer_probe(
         ],
         "marker": builder.FRONTEND_ATTESTATION_MARKER,
         "artifact_id": builder.frontend_attestation_identity(profile)[1],
-        "feature_ids": list(builder.FRONTEND_ATTESTATION_FEATURES),
+        "feature_ids": list(builder.frontend_attestation_features(profile)),
         "script_sha256": _sha256(script),
         "module_relative_path": builder.FRONTEND_ATTESTATION_MODULE_NAME,
         "module_sha256": _sha256(module_content),
@@ -1916,6 +1919,9 @@ def validate(source_asar: Path, portable_asar: Path, node: str = "node") -> dict
 
     source_hash = builder.sha256_path(source_asar)
     profile = builder.profile_for_asar(source_hash)
+    if builder.is_orange_frontend_profile(profile):
+        from frontend_contract_26928_4866 import validate as validate_4866
+        return validate_4866(source_asar, portable_asar, node)
     if profile and profile.get("profile_spec_id") == "26924_2738":
         from frontend_contract_26924_2738 import validate as validate_2738
         return validate_2738(source_asar, portable_asar, node)

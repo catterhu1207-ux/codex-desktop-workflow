@@ -2,7 +2,7 @@
 import argparse,json,os,re,sqlite3,subprocess,time
 from pathlib import Path
 from codex_desktop_workflow import workflow as w
-from electron_update_safety.lifecycle import IsolatedRun
+from codex_desktop_workflow.isolated_run import IsolatedRun
 from mock_responses import FixtureServer
 p=argparse.ArgumentParser();p.add_argument('--portable',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--mode',required=True);a=p.parse_args()
 r=json.loads((a.output/(a.mode+'-run.json')).read_text());assert r['synthetic_only']

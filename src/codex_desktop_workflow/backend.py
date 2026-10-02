@@ -11,7 +11,7 @@ def sha(path):
     return digest.hexdigest()
 
 def pin(version=None):
-    path = PIN_PATH.with_name('backend-source-26.924.2738.0.json') if version == '26.924.2738.0' else PIN_PATH
+    path = PIN_PATH.with_name('backend-source-'+version+'.json') if version in ('26.924.2738.0','26.928.4866.0') else PIN_PATH
     return json.loads(path.read_text())
 
 def validate_manifest(path, version=None):
@@ -20,7 +20,7 @@ def validate_manifest(path, version=None):
     versions={item.get('package_version') for item in packages}
     if version is not None and version not in versions:
         raise ValueError('compat_backend_desktop_version_mismatch')
-    selected=version or ('26.924.2738.0' if versions=={'26.924.2738.0'} else None)
+    selected=version or next((v for v in ('26.924.2738.0','26.928.4866.0') if versions=={v}),None)
     p=pin(selected);provenance=data.get('provenance',{})
     required={'source_commit':p['upstream_commit'],'profile_sha256':p['profile_sha256'],'compat_commit':p['commit'],'compat_repository':p['repository'],'build_recipe_sha256':p['build_recipe_sha256']}
     if data.get('mode')!='patched' or any(provenance.get(k)!=v for k,v in required.items()):

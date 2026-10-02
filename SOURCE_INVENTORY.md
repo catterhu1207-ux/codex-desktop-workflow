@@ -13,4 +13,6 @@
 | `src/frontend_recency_contract_26924_2738.py`, its packaged JavaScript scenario and `tools/recency/` | Original start-event regression and credential-free synthetic composer fixtures | MIT |
 | Tests, examples and documentation | Original synthetic material | MIT |
 
+The 26.928.4866.0 profile adds author-owned version bindings, synthetic native-sidebar and new-chat probes, awake-time supervision, and MSIX input validation. The new profile follows the same licensing and source boundaries as the earlier profiles. Synthetic SSH tests bind external services locally; they do not include remote credentials or establish an encrypted SSH connection.
+
 The repository contains byte signatures needed to identify and transform specific locations in a user-supplied official package. It does not contain the package, full extracted frontend files, binaries, credentials, sessions, databases, logs, or private maintenance state.

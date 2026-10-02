@@ -1,0 +1,21 @@
+{
+  "upstream_repository": "https://github.com/catterhu1207-ux/codex-history-compat",
+  "commit": "f14ab65de66b4e107f962ced5022be07c8a36cc1",
+  "files": {
+    "local_replay.py": {
+      "origin": "codex-history-compat/tests/local_replay.py",
+      "changes": "explicit isolated output root; awake-time receive and process waits",
+      "canonical_lf_origin_sha256": "e167e8b1e9dd37e135fa46c2e50c5ea08b226959d93d01ee041433d913ba1645"
+    },
+    "cold_resume.py": {
+      "origin": "codex-history-compat/tests/cold_resume.py",
+      "changes": "explicit isolated output root; awake-time receive and process waits",
+      "canonical_lf_origin_sha256": "a104d9b961caddbad87c8c6bce4f62d2b3d19b0d9b5ec6c3b8193f9fd405774f"
+    },
+    "migration_replay.py": {
+      "origin": "codex-history-compat/tests/migration_replay.py",
+      "changes": "exact 26.928.4866.0 migration policy; awake-time receive and process waits",
+      "canonical_lf_origin_sha256": "37a2f769f60c4ad9a40e9cc3b38e4f6f76bdf8b93a45cf468dbd055bc9f72717"
+    }
+  }
+}

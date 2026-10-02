@@ -9,9 +9,9 @@
 
 ![Real desktop interface with fictional tasks](docs/assets/demo-en.gif)
 
-## v0.3.3 — Desktop 26.924.2738.0
+## v0.3.4 — Desktop 26.928.4866.0
 
-A new turn now moves its task and project forward immediately in automatic start-time ordering. Attention colors stay independent of order; streaming output, completion and reading do not repeatedly move tasks. Manual order and pinned-group boundaries are preserved. Frontend build 2.7.3 keeps the existing 72-migration compatibility backend profile.
+Adds support for Desktop 26.928.4866.0 without requiring Store installation first. Pending questions, choices and approvals use an orange dot, including while a task continues working. Orange takes precedence over a pending plan’s yellow dot. Reading or selecting a chat does not clear an unanswered request. Existing automatic ordering, manual order and pinned groups are preserved. New chats stay available until their first message is sent; sent history and per-chat model settings survive reopening.
 
 ![Real composer submission moves a fictional task and project forward](docs/assets/start-event-en.gif)
 
@@ -25,16 +25,28 @@ Source builds require Python 3.11+, Git, Rust 1.95.0, x64 MSVC and Windows SDK. 
 
 The command-line equivalents are `build-backend --source <official-app> --target <new-directory>` and `build --source <official-app> --target <new-app> --backend-mode compat --backend-manifest <manifest.json>`. Compatibility builds use the immutable source reference recorded in the installed package.
 
+## Use a downloaded official MSIX
+
+Download the complete official x64 MSIX, then run the installer with its path:
+
+```powershell
+.\install.ps1 -Source "D:\Downloads\ChatGPT-x64.msix"
+```
+
+The installer checks the signature, package identity and exact supported contents, then extracts a separate source cache. It does not install or replace the Store package. Without `-Source`, installed-package discovery keeps its existing behavior. An unsupported version cannot be activated automatically.
+
+An empty page with no sent messages is not promised to survive a restart. Sent messages, chat identity and valid model settings are retained. Large histories load when needed. Sleep time is excluded from the effective verification timeout.
+
 ## Install in one command
 
 ```powershell
 irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/download/install.ps1 | iex
 ```
 
-The installer finds your official Codex Desktop package, builds an independent copy, verifies two isolated launches, and leaves the official app untouched.
+The installer finds your official Codex Desktop package, builds an independent copy, verifies three isolated launches for 26.928.4866.0 (two for earlier profiles), and leaves the official app untouched.
 
 - **Start-time ordering** — initial loading and live updates use the same task/process recency rule.
-- **Attention colors** — yellow means a real pending plan, red means pinned attention, and blue means ordinary unread.
+- **Attention colors** — orange means an unanswered question or approval, yellow means a real pending plan, red means pinned attention, and blue means ordinary unread.
 - **Readable remote names** — sidebar, search, Work picker, tooltips, and accessibility text stop exposing project UUIDs.
 - **Per-task settings preserved** — existing tasks keep valid model and reasoning settings; the global default applies to new tasks.
 
@@ -42,7 +54,7 @@ The installer finds your official Codex Desktop package, builds an independent c
 
 When several Codex tasks are active at once, the hard part is often not execution. It is knowing **what needs attention next, which task is waiting for implementation, which one you pinned, which remote project you are looking at, and whether changing a global model default will disturb an existing task.**
 
-`codex-desktop-workflow` is a Windows-focused local build tool. You supply your own supported official Codex application directory. It creates an independent modified copy, validates the exact supported build and key UI entry points, then performs isolated launch verification against the generated artifact.
+`codex-desktop-workflow` is a Windows-focused local build tool. You supply your own supported official Codex application directory or, through the PowerShell installer, a complete official x64 MSIX. It creates an independent modified copy, validates the exact supported build and key UI entry points, then performs isolated launch verification against the generated artifact.
 
 [中文说明](README.zh-CN.md)
 
@@ -102,8 +114,9 @@ Unknown versions, hash mismatches, ambiguous patch matches, failed contracts, or
 
 ## Current support
 
-Version `v0.3.2` supports Windows x64 with the official bundled `codex.exe`:
+Version `v0.3.4` supports Windows x64 with the official bundled `codex.exe`:
 
+- Codex Desktop `26.928.4866.0`
 - Codex Desktop `26.924.2738.0`
 - Codex Desktop `26.924.1866.0`
   - `app.asar`: `96b6aa6e1ea46dd8a30b3fa5166be12284ba66bd3901241a81a60684f150189d`
@@ -128,7 +141,7 @@ A matching version number with different bytes is rejected.
 
 See [COMPATIBILITY.md](COMPATIBILITY.md) for the full support matrix.
 
-The cross-provider Responses compatibility profile is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat). Desktop `26.924.2738.0` and `26.924.1866.0` support it through the explicit source-build mode described above. Earlier desktop profiles continue to use their existing official backends.
+The cross-provider Responses compatibility profile is published separately in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat). Desktop `26.928.4866.0`, `26.924.2738.0` and `26.924.1866.0` support it through the explicit source-build mode described above. Earlier desktop profiles continue to use their existing official backends.
 
 ## Manual install and development
 

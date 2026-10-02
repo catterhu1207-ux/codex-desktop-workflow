@@ -2,6 +2,31 @@
 
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
+## v0.3.4 qualification
+
+Desktop 26.928.4866.0 was independently built with both official and compatibility backends. The qualified source record binds the runtime results to the product and acceptance tools. Final distribution and installation from the public download are checked separately.
+
+The Windows process-ancestry and awake-clock repairs passed their regression checks. A complete MSIX installation then passed all three launch profiles using the installed package. Compatibility-backend qualification also passed. Final distribution checks remain pending.
+
+| Check | Current result |
+|---|---|
+| Windows test suite | 110 tests ran successfully, including three skipped older-sample checks; exact 26.924.1866.0, 26.924.2738.0 and 26.928.4866.0 checks ran |
+| Exact frontend contracts | 25 passed, including pending-user orange and existing feature regressions |
+| Official-backend full launches | Empty data, 400 synthetic tasks, and synthetic projects/settings passed with 22 fresh renderer features and at least 60 seconds of observation each |
+| Native sidebar | Actual sidebar and persisted setting reads exercised; the previous wrong-scope setting read is rejected |
+| New-chat lifecycle | Six synthetic local, Work and SSH-host chats passed first send, cold backend recovery and native interface reopening; matching backend identity and normal exit were checked |
+| SSH boundary | Native host selection, names, paths and conversation identity exercised with local service bindings; encrypted SSH transport was not tested |
+| Proof parser | Three actual logs accepted; 15 mutated or stale proofs rejected |
+| Awake-time checks | Paused-clock, invalid-clock, output-drain, concurrent clock reading/writing and incomplete-sample tests passed; full launches repeated after the clock repair |
+| Test cleanup | Official-mode launch, reopen and complete installer groups exited without retained test descendants; a naturally exiting process is accepted only after a fresh ownership check |
+| Previous release regression | Both official and compatibility backends for 26.924.2738.0 passed two full launches each; exact 26.924.1866.0 and 26.924.2738.0 contract checks passed |
+| MSIX input | Signature, identity, archive boundaries, cache reuse and changed-source rejection checked; complete MSIX installation passed three launch profiles and installed source/resource matching |
+| New compatibility backend | Independent source build, HTTP, WebSocket, cold restoration, local and remote compaction, and 73 migration checks across six databases passed; 17 profile regression tests passed |
+| Compatibility full launches | Empty data, 400 synthetic tasks and synthetic projects/settings passed with 22 fresh renderer features, at least 60 seconds of observation, matching backend identity and normal exit each |
+| Distribution | Final wheel, release assets, anonymous download and installation from those assets remain pending |
+
+The new-chat repair addresses premature history recovery before the first message creates a saved conversation. A separate placement-format response was examined using recorded errors and the original resolver functions. That comparison does not establish a cloud-service repair. Unsent blank-page persistence is outside the restart guarantee; sent conversation history and model settings are covered.
+
 ## v0.3.3 qualification
 
 Desktop 26.924.2738.0 was independently built from the verified official source with frontend 2.7.3 and both backend modes on 2026-09-28.
