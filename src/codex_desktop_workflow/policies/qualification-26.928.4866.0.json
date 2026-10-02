@@ -60,7 +60,7 @@
     "codex_desktop_workflow/paginated_history_base.py": "8ea04167f0e44b7b7d359a9a6c7a2e0fcda28007766ba2b8228e45feb8dc5e1e",
     "codex_desktop_workflow/renderer_proof.py": "0bb9c7626e14c9756a0739158de87e00e69eeaee7435fb50db99f4c1c2717191",
     "codex_desktop_workflow/workflow.py": "6b2c4316a589366063316ced66cea0635412d9f7f1257c1e38b19dfcdf701d08",
-    "codex_desktop_workflow/__init__.py": "b0737e8f095669ea575960a74869d26380e30578708ef1146f754df8bb20995d",
+    "codex_desktop_workflow/__init__.py": "092142dc3436234d747f4110f2cc3e860b09b2712448481c5b0510e0e45a8974",
     "codex_desktop_workflow/data/awake_timers.cjs": "08ee79b39f830c60ef6b1c4221fb1c1a833e7b3f56acabe53568c2f796a86a01",
     "codex_desktop_workflow/data/frontend_bindings_26928_4866.json": "626cb3dd69be481e2bc0408f75eed53e17e7ef33573b54bad2585d01c788d711",
     "codex_desktop_workflow/data/frontend_drop_scenarios_26924_1866.js": "e5362d719ec0ccf27d54e4b2715e003c271087031915103f91e2a70f4e7896ae",
@@ -139,7 +139,8 @@
     "tools/recency/run.py": "4340a9543b2955d404a4ec0ebfc5e94a2e45c53fb12d220830861464649c6b3e",
     "install.ps1": "47135349e6b5264a7c7f70efbb81e676f92ad1049fcc25c14a4ee2b4347e2604",
     "msix_source.py": "61b87e57e7883610d61a3f6ffcccfa0e15ad65b5a57236bcabd4cbd236463e5d",
-    "tests/test_release_qualification.py": "8f83206a1a160f028f137bb606747d066362967326b24bd2c685bddd51bc5629"
+    "tests/test_release_qualification.py": "1df6269e1c05558e0e5620d4c0abe37c2af69f7300b675f2bb6a87896db38105",
+    "tests/test_awake_probes.py": "ad7d43eb56758061c369bff65d5aace1ff7697884e98e454ae324140fa9c9254"
   },
   "runtime": {
     "official": [
@@ -307,5 +308,11 @@
     }
   ],
   "publication": "not_yet_published",
-  "evidence_scope": "Maintainer-side isolated Windows acceptance. External account and SSH service capabilities use synthetic bindings."
+  "evidence_scope": "Maintainer-side isolated Windows acceptance. External account and SSH service capabilities use synthetic bindings.",
+  "release_metadata_delta": {
+    "file": "codex_desktop_workflow/__init__.py",
+    "tested_sha256": "b0737e8f095669ea575960a74869d26380e30578708ef1146f754df8bb20995d",
+    "current_sha256": "092142dc3436234d747f4110f2cc3e860b09b2712448481c5b0510e0e45a8974",
+    "change": "Public package version 0.3.4 to 0.3.5 only; no runtime consumers."
+  }
 }

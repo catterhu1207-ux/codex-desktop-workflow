@@ -9,7 +9,7 @@
 
 ![Real desktop interface with fictional tasks](docs/assets/demo-en.gif)
 
-## v0.3.4 — Desktop 26.928.4866.0
+## v0.3.5 — Desktop 26.928.4866.0
 
 Adds support for Desktop 26.928.4866.0 without requiring Store installation first. Pending questions, choices and approvals use an orange dot, including while a task continues working. Orange takes precedence over a pending plan’s yellow dot. Reading or selecting a chat does not clear an unanswered request. Existing automatic ordering, manual order and pinned groups are preserved. New chats stay available until their first message is sent; sent history and per-chat model settings survive reopening.
 
@@ -114,7 +114,7 @@ Unknown versions, hash mismatches, ambiguous patch matches, failed contracts, or
 
 ## Current support
 
-Version `v0.3.4` supports Windows x64 with the official bundled `codex.exe`:
+Version `v0.3.5` supports Windows x64 with the official bundled `codex.exe`:
 
 - Codex Desktop `26.928.4866.0`
 - Codex Desktop `26.924.2738.0`

@@ -16,11 +16,16 @@ class ReleaseQualification(unittest.TestCase):
         e=json.loads(path.read_text())
         self.assertEqual(e['status'],'passed')
         self.assertEqual(e['desktop_version'],'26.928.4866.0')
+        delta=e['release_metadata_delta']
+        self.assertEqual(delta['file'],'codex_desktop_workflow/__init__.py')
+        self.assertEqual(delta['current_sha256'],digest(PACKAGE/'__init__.py'))
+        previous=(PACKAGE/'__init__.py').read_bytes().replace(b"\r\n",b"\n").replace(b'__version__ = "0.3.5"',b'__version__ = "0.3.4"')
+        self.assertEqual(hashlib.sha256(previous).hexdigest(),delta['tested_sha256'])
         actual={str(p.relative_to(SOURCE)).replace('\\','/') for p in SOURCE.rglob('*') if p.is_file() and p.suffix in ('.py','.js','.cjs','.json','.ps1') and p.name!=CURRENT}
         self.assertEqual(set(e['source_inputs']),actual)
         for name,value in e['source_inputs'].items():self.assertEqual(digest(SOURCE/name),value,name)
         tools={str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'tools').rglob('*') if p.is_file() and p.suffix in ('.py','.js','.cjs','.json','.ps1')}
-        tools.update({'install.ps1','msix_source.py','tests/test_release_qualification.py'})
+        tools.update({'install.ps1','msix_source.py','tests/test_release_qualification.py','tests/test_awake_probes.py'})
         self.assertEqual(set(e['acceptance_tools']),tools)
         for name,value in e['acceptance_tools'].items():self.assertEqual(digest(ROOT/name),value,name)
         pin=json.loads((PACKAGE/'policies/backend-source-26.928.4866.0.json').read_text())

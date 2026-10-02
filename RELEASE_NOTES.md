@@ -1,4 +1,4 @@
-# v0.3.4 - Pending requests and Desktop 26.928.4866.0
+# v0.3.5 - Pending requests and Desktop 26.928.4866.0
 
 Unanswered questions, choices and approval requests show an orange dot, including when a chat continues working. The dot remains until every outstanding request is resolved. A plan awaiting implementation stays yellow unless another request needs your response. Reading or selecting a chat does not clear its requests or change its order.
 

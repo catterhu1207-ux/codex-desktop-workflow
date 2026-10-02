@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.3.4
+## v0.3.5
 
 - Add an exact Desktop 26.928.4866.0 profile while retaining earlier profiles.
 - Show orange for outstanding questions, choices and approval requests; preserve yellow for plans awaiting implementation and existing ordering rules.
@@ -80,3 +80,5 @@
 ## v0.1.0
 
 - Initial experimental source release for `26.908.9136.0`.
+
+The v0.3.4 tag is retained as an unpublished attempt: its CI concurrency check depended on timer throughput. v0.3.5 checks completed reads and distinct clock updates instead. Application patches and runtime behavior are unchanged.

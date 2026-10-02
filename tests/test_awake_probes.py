@@ -8,10 +8,16 @@ class AwakeProbes(unittest.TestCase):
     @unittest.skipUnless(shutil.which('node') and os.name=='nt','Windows and Node required')
     def test_concurrent_node_reads_and_python_clock_updates(self):
         with tempfile.TemporaryDirectory() as raw:
-            code="const {now}=require(process.env.CODEX_ACCEPTANCE_TIMER_MODULE);const end=now()+1200;let count=0;const id=setInterval(()=>{count++;if(now()>=end){clearInterval(id);console.log(count)}},1)"
-            result=awake_process.run(['node','-e',code],env=os.environ.copy(),root=Path(raw),timeout=10)
-            self.assertEqual(result.returncode,0,result.stderr)
-            self.assertGreater(int(result.stdout),100)
+            # Require actual overlapping reads and clock updates, independent
+            # of host timer resolution or operations completed per second.
+            for delay in (1, 16):
+                with self.subTest(timer_delay_ms=delay):
+                    code="const {now}=require(process.env.CODEX_ACCEPTANCE_TIMER_MODULE);let count=0;const samples=new Set();const id=setInterval(()=>{samples.add(now());count++;if(count>=128&&samples.size>=3){clearInterval(id);console.log(JSON.stringify({count,samples:samples.size}))}},"+str(delay)+")"
+                    result=awake_process.run(['node','-e',code],env=os.environ.copy(),root=Path(raw),timeout=30)
+                    self.assertEqual(result.returncode,0,result.stderr)
+                    measured=json.loads(result.stdout)
+                    self.assertGreaterEqual(measured['count'],128)
+                    self.assertGreaterEqual(measured['samples'],3)
 
     @unittest.skipUnless(shutil.which('node'),'Node required')
     def test_incomplete_trailing_sample_does_not_replace_complete_sample(self):

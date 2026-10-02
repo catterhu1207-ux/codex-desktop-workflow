@@ -2,7 +2,7 @@
 
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
-## v0.3.4 qualification
+## v0.3.5 qualification
 
 Desktop 26.928.4866.0 was independently built with both official and compatibility backends. The qualified source record binds the runtime results to the product and acceptance tools. Final distribution and installation from the public download are checked separately.
 
