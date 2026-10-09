@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import re
+import subprocess
 import time
 
 from electron_update_safety import lifecycle
@@ -50,16 +51,27 @@ class IsolatedRun(lifecycle.IsolatedRun):
     def _snapshot(self):
         if os.name != 'nt':
             raise RuntimeError('process_inspection_requires_windows')
-        command = "[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new(); Get-CimInstance Win32_Process | Select-Object ProcessId,ParentProcessId,ExecutablePath,CreationDate | ConvertTo-Json -Compress"
-        result = run_awake(['powershell.exe', '-NoProfile', '-NonInteractive', '-Command', command],
-                           env=os.environ.copy(), root=self.run_directory, timeout=15)
-        if result.returncode:
-            raise RuntimeError('process_snapshot_failed')
-        values = json.loads(result.stdout or '[]')
-        if isinstance(values, dict):
-            values = [values]
-        return [lifecycle.ProcessIdentity(int(row['ProcessId']), int(row['ParentProcessId']),
+        command = "$ErrorActionPreference='Stop'; [Console]::OutputEncoding=[System.Text.UTF8Encoding]::new(); Get-CimInstance -Namespace root/cimv2 Win32_Process -ErrorAction Stop | Select-Object ProcessId,ParentProcessId,ExecutablePath,CreationDate | ConvertTo-Json -Compress"
+        last_error=None
+        for attempt in range(3):
+            try:
+                result = run_awake(['powershell.exe', '-NoProfile', '-NonInteractive', '-Command', command],
+                                   env=os.environ.copy(), root=self.run_directory, timeout=15)
+                if result.returncode:
+                    raise RuntimeError('process_snapshot_command_failed:'+result.stderr[-400:])
+                values = json.loads(result.stdout)
+                if isinstance(values, dict):values=[values]
+                if not isinstance(values,list) or not values:raise RuntimeError('empty_process_snapshot')
+                rows=[lifecycle.ProcessIdentity(int(row['ProcessId']), int(row['ParentProcessId']),
                     row.get('ExecutablePath') or '', row.get('CreationDate') or '') for row in values]
+                return rows
+            except (RuntimeError,ValueError,KeyError,TypeError,OSError,subprocess.SubprocessError) as error:
+                if str(error).startswith('acceptance_awake_clock_unavailable'):raise
+                last_error=error
+                with (self.run_directory/'process-snapshot-retries.jsonl').open('a',encoding='utf8') as log:
+                    log.write(json.dumps({'attempt':attempt+1,'error':str(error),'successful_snapshot_required':True})+'\n')
+                if attempt<2:time.sleep(.2)
+        raise RuntimeError('process_snapshot_failed_after_three_reads') from last_error
 
     def status(self, backend_name=None):
         self._reap_started_process()
