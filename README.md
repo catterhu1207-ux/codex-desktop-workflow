@@ -1,5 +1,14 @@
 # codex-desktop-workflow
 
+## v0.3.6 development: Desktop 26.1002.7124.0
+
+Adds an exact version profile with descending last-update ordering, preserved manual and pinned groups, live reordering, native asynchronous question indicators, and paginated history. An unanswered question or approval request stays orange while work continues; reading a chat does not clear the request. Orange takes precedence over a pending plan's yellow and the loading spinner.
+
+The update UI distinguishes an announcement (◷), a verified downloadable complete package (↓), and a qualified prepared adaptation (✓). Package availability follows the internal MSIX version. Bounded metadata checks do not download or install the complete package. The public package supplies its own update helper rather than using a maintainer-specific directory.
+
+The official backend remains the default. The optional compatibility backend is built from a pinned public source commit. The official candidate has completed three isolated runs: empty data, 400 genuinely created and sent synthetic chats, and native settings/project fixtures, each observed for over 60 seconds. The independent compatibility build and final download/install acceptance are still pending. This development branch is not a published release; v0.3.5 remains the latest published package.
+
+
 [![tests](https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/workflows/tests.yml/badge.svg)](https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/workflows/tests.yml)
 [![release](https://img.shields.io/github/v/release/catterhu1207-ux/codex-desktop-workflow)](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)

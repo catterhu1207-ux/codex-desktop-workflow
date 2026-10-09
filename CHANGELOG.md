@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.3.6 — Unreleased
+
+- Add an exact 26.1002.7124.0 profile and keep historical public profile identities unchanged.
+- Preserve descending update-time ordering, native question priority and first-send history lifecycle checks.
+- Package the public update helper and separate the three sidebar update icons.
+- Pin optional 0.162.0-alpha.2 compatibility source to a public commit with 74 migration identities.
+- Release qualification is pending independent compatibility build and final installer acceptance.
+
+
 ## v0.3.5
 
 - Add an exact Desktop 26.928.4866.0 profile while retaining earlier profiles.

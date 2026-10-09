@@ -5,7 +5,7 @@ from awake_io import seconds,message as next_message,wait
 
 binary,source,home=map(lambda s:Path(s).resolve(),sys.argv[1:4])
 root=Path(__file__).resolve().parents[1]
-rows=json.loads((root.parent/'src/codex_desktop_workflow/policies/sqlite-migrations-26.928.4866.0.json').read_text())['migrations']
+rows=json.loads((root.parent/'src/codex_desktop_workflow/policies/sqlite-migrations-26.1002.7124.0.json').read_text())['migrations']
 home.mkdir(parents=True,exist_ok=False)
 names=list(dict.fromkeys(row['database'] for row in rows))
 def snapshot():

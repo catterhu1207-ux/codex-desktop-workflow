@@ -10,7 +10,7 @@ from pathlib import Path
 import subprocess
 
 
-def parse_owned_logs(manifest: Path, run_directory: Path, process: dict) -> dict:
+def parse_owned_logs(manifest: Path, run_directory: Path, process: dict, *, readonly=False) -> dict:
     root = run_directory.resolve()
     record = json.loads((root / "run.json").read_text(encoding="utf-8"))
     expected = record.get("main", {})
@@ -30,12 +30,16 @@ def parse_owned_logs(manifest: Path, run_directory: Path, process: dict) -> dict
     if Path(expected["executable"]).resolve() != (Path(value["portable_app"]) / "ChatGPT.exe").resolve():
         return {"status": "blocked", "reason": "candidate_process_path_mismatch"}
     inputs = root / "renderer-parser-input"
-    inputs.mkdir(exist_ok=True)
+    if readonly:
+        if not inputs.is_dir() or inputs.is_symlink():return {'status':'blocked','reason':'qualified_log_copy_missing'}
+    else:
+        inputs.mkdir(exist_ok=True)
     for label in ("stdout", "stderr"):
         source = root / (label + ".log")
         if not source.is_file() or source.is_symlink():
             continue
         stat = source.stat()
+        if readonly and stat.st_size>4*2**20:return {'status':'blocked','reason':'qualified_log_bounds'}
         # Renaming a copied log for the production parser must not turn an old
         # proof into a fresh one. Compare original timestamps before copying.
         if stat.st_mtime < process_created or getattr(stat, 'st_birthtime', stat.st_ctime) < process_created - 2:
@@ -44,7 +48,10 @@ def parse_owned_logs(manifest: Path, run_directory: Path, process: dict) -> dict
             return {"status": "blocked", "reason": "redirected_original_log"}
         data = source.read_bytes()
         target = inputs / f"codex-desktop-isolated-{expected['pid']}-t0-{label}.log"
-        target.write_bytes(data)
+        if readonly:
+            if not target.is_file() or target.is_symlink():return {'status':'blocked','reason':'qualified_log_copy_missing'}
+        else:
+            target.write_bytes(data)
         if hashlib.sha256(target.read_bytes()).digest() != hashlib.sha256(data).digest():
             raise RuntimeError("proof_log_copy_changed")
     parser = Path(__file__).parent / "data/renderer_attestation_26928_4866.ps1"
@@ -70,7 +77,10 @@ Get-PortableFrontendFeatureAttestation -LogsRoot $env:PROOF_LOGS -TargetProcessI
     if response.returncode:
         raise RuntimeError("production_proof_parser_failed: " + response.stderr[-1000:])
     proof = json.loads(response.stdout or "null")
+    required = set(value['feature_contracts']) - {'windows_watch_path_normalization','archived_heartbeat_terminal_guard','process_registry_resilience'}
+    if proof and proof.get('status') == 'passed' and (set(proof.get('features',{})) != required or proof.get('feature_count') != len(required)):
+        return {'status':'blocked','reason':'production_feature_inventory_mismatch'}
     return {"status": "passed" if proof and proof.get("status") == "passed" else "blocked",
-            "feature_count": 22 if proof and proof.get("status") == "passed" else 0,
+            "feature_count": len(required) if proof and proof.get("status") == "passed" else 0,
             "production_parser": proof, "process_id": expected["pid"],
             "owner_run_id": record["run_id"]}

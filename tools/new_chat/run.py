@@ -76,7 +76,12 @@ def qualify(app: Path, runs_root: Path) -> dict:
                     raise RuntimeError(str(reply))
                 result = reply['result']
                 thread = result['thread']
-                path = Path(thread['path']).resolve()
+                raw_path = thread['path']
+                if raw_path.startswith('\\\\?\\'):
+                    if len(raw_path)<7 or not raw_path[4].isalpha() or raw_path[5:7]!=':\\':
+                        raise RuntimeError('unexpected_extended_rollout_path')
+                    raw_path=raw_path[4:]
+                path = Path(raw_path).resolve()
                 if thread['id'] != row['id'] or result['model'] != 'fixture-model' or not path.is_relative_to(home):
                     raise RuntimeError('cold_identity_model_or_path_mismatch')
                 page = cold.call('thread/turns/list', {'threadId': row['id'], 'limit': 10})

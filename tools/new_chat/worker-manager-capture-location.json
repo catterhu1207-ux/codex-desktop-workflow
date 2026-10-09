@@ -1,1 +1,8 @@
-{"url": "app://-/assets/app-shared-19f7cd6bb8b6.js", "line": 482, "column": 119847}
+{
+  "url": "app://-/assets/app-shared-40678a67f0e3.js",
+  "line": 487,
+  "column": 118984,
+  "actual_method_signature": "async startConversation(e,t){",
+  "actual_shared_sha256": "5744e4f8c247e99df6ec58d1a95c4d925f26b1062027767b42b51a053939c19f",
+  "native_delegation": "Qcn(this,{assertActive,runtimeSettings,threadWorkspaceStorage,threadStartedNotificationDeferral,threadCreation,settings,history,...})"
+}

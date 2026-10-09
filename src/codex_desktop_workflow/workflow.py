@@ -7,6 +7,7 @@ from dataclasses import dataclass
 import hashlib
 import json
 import os
+import sys
 from pathlib import Path
 import shutil
 import socket
@@ -113,8 +114,12 @@ SUPPORTED_PACKAGES['26.924.2738.0'] = PackageSupport(version='26.924.2738.0', pa
 
 SUPPORTED_PACKAGES['26.928.4866.0'] = PackageSupport(version='26.928.4866.0', package_full_name='OpenAI.Codex_26.928.4866.0_x64__2p2nqsd0c76g0', asar_sha256='84fe697418b26a921f8d14090616559498a02f51768ff0bba69cefaadf4086f5', backend_sha256='fcd5eafefb4ff4a607f244e099e0974f66e17966b6ffda6948de2ef3a7a79530', backend_policy=_POLICY_ROOT / 'official-26.928.4866.0.json', backend_policy_sha256='1693992871077e918e1ddf4e985f9d3be009cd5be4754c78abce4aba87ca686b', entries={'webview/assets/app-initial-9e0f03d3c485.js': '25fd85da4880d4911062c05ca9c094fb0d38f1651e57e6ac804de4cff3abc4da', 'webview/assets/app-primary-2b539a729a98.js': '2c5259d8c72b2b7f3c437c372bdbad340357156036ca02d6e92caa5c08e55b29', 'webview/assets/app-shared-19f7cd6bb8b6.js': '9df2372b21a1636436ae76112efacdbd4ddf4b69eda60771cf7f41a988f07d4f', '.vite/build/main-DzkezlCV.js': '094276e26761b74ce7b6d68b35777b9bb888501c58a278596b9f48fe5cf7bdc0', '.vite/build/app-protocol-DaeIspKt.js': '55b7231b4edc06a9e9ed68277b6fe4e0731d94ad195e9347721cda10c2965150'})
 
-SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES))
-SUPPORTED_VERSION = max(SUPPORTED_VERSIONS)
+SUPPORTED_PACKAGES['26.1002.7124.0'] = PackageSupport(version='26.1002.7124.0',package_full_name='OpenAI.Codex_26.1002.7124.0_x64__2p2nqsd0c76g0',asar_sha256='76fe7078248c00e4e03dd2177a4275ec9ce158a9dd43452a4f0427d39a4ed012',backend_sha256='3553cd6e7df5a093d8cb8301cd8088a57e0971aba71ddbe0e67f7f44a15cdf68',backend_policy=_POLICY_ROOT/'official-26.1002.7124.0.json',backend_policy_sha256='e4d0e1ac0df1bbf382fce7a113d53d448369ce2c51a8df7d83c82e93a0bdd60d',entries={'webview/assets/app-initial-25361a10f2bf.js': 'bddf0e4e79918f7157682015c598b97eb833553c036026004555f88fa0cb9d3b', 'webview/assets/app-primary-2b28b2369958.js': '5715eec420d6e5ed076d3dcc533ac70316d516350b8d113e47d93ab6c9735c8b', 'webview/assets/app-shared-40678a67f0e3.js': '35b467c3a05695ec354eb1d0bb4572ad7e9d1480decc1cf0fae3d16b50aa5bd8', 'webview/assets/composer-project-picker-content-9ec8ec549fb9.js': '8920fe7ae368e52e35016860ab1678a71f5fd3b9ec838f87cc07fbe0052bd48a', '.vite/build/main-p91kJShj.js': 'aafd6a750458cb39b6202f9be00231482122d32ac14017b79d544c4ab741e889', '.vite/build/browser-background-switches-CowytfaF.js': '5ea600af76271e06b404f5f710436d418bf6ad6d0850e87de16f0fff1e91e89c'})
+
+SUPPORTED_PACKAGES['26.1002.7124.0'] = PackageSupport(version='26.1002.7124.0',package_full_name='OpenAI.Codex_26.1002.7124.0_x64__2p2nqsd0c76g0',asar_sha256='76fe7078248c00e4e03dd2177a4275ec9ce158a9dd43452a4f0427d39a4ed012',backend_sha256='3553cd6e7df5a093d8cb8301cd8088a57e0971aba71ddbe0e67f7f44a15cdf68',backend_policy=_POLICY_ROOT/'official-26.1002.7124.0.json',backend_policy_sha256='e4d0e1ac0df1bbf382fce7a113d53d448369ce2c51a8df7d83c82e93a0bdd60d',entries={'webview/assets/app-initial-25361a10f2bf.js': 'bddf0e4e79918f7157682015c598b97eb833553c036026004555f88fa0cb9d3b', 'webview/assets/app-primary-2b28b2369958.js': '5715eec420d6e5ed076d3dcc533ac70316d516350b8d113e47d93ab6c9735c8b', 'webview/assets/app-shared-40678a67f0e3.js': '35b467c3a05695ec354eb1d0bb4572ad7e9d1480decc1cf0fae3d16b50aa5bd8', 'webview/assets/composer-project-picker-content-9ec8ec549fb9.js': '8920fe7ae368e52e35016860ab1678a71f5fd3b9ec838f87cc07fbe0052bd48a', '.vite/build/main-p91kJShj.js': 'aafd6a750458cb39b6202f9be00231482122d32ac14017b79d544c4ab741e889', '.vite/build/browser-background-switches-CowytfaF.js': '5ea600af76271e06b404f5f710436d418bf6ad6d0850e87de16f0fff1e91e89c'})
+
+SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES,key=lambda value:tuple(map(int,value.split(".")))))
+SUPPORTED_VERSION = max(SUPPORTED_VERSIONS,key=lambda value:tuple(map(int,value.split("."))))
 DATA_FILES = (
     ".codex-global-state.json",
     "state_5.sqlite",
@@ -323,7 +328,7 @@ def _attestation_value(text: str, artifact_id: str) -> dict[str, Any] | None:
 
 
 def _attestations(home: Path, artifact_id: str, log_path: Path | tuple[Path, ...] | None = None, *, manifest: Path | None = None, run_directory: Path | None = None, process: dict | None = None) -> dict[str, Any]:
-    if artifact_id == "2.7.9-84fe697418b2":
+    if artifact_id in ("2.7.9-84fe697418b2","2.7.17-76fe7078248c"):
         if manifest is None or run_directory is None or process is None:
             return {"status": "blocked", "reason": "fresh_process_context_required"}
         from .renderer_proof import parse_owned_logs
@@ -374,6 +379,8 @@ def _portable_environment(portable: Path, data_home: Path) -> dict[str, str]:
         "CODEX_HOME": str(data_home),
         "CODEX_SQLITE_HOME": str(data_home),
         "CODEX_CLI_PATH": str((portable / "resources" / "codex.exe").resolve()),
+        "CODEX_WORKFLOW_PYTHON": sys.executable,
+        "CODEX_WORKFLOW_PORTABLE": str(portable.resolve()),
     }
 
 
@@ -648,15 +655,20 @@ def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seco
             hotfix_builder.profile_for_asar(support.asar_sha256)
         )
     )
-    if support.version == "26.928.4866.0":
+    if support.version in ("26.928.4866.0","26.1002.7124.0"):
         launches = max(3, launches)
     for index in range(launches):
-        faithful = support.version == "26.928.4866.0" and index == 2
+        faithful = support.version in ("26.928.4866.0","26.1002.7124.0") and index == 2
         profile_name = 'faithful_projects' if faithful else ('empty' if index % 2 == 0 else 'synthetic_tasks')
         home = (runs_root / ("home-" + os.urandom(8).hex())).resolve()
         home.mkdir(parents=True, exist_ok=False)
         if index % 2 == 1 or faithful:
-            _seed_synthetic_tasks(home, Path(runtime[0]['codex_home']))
+
+            if support.version == '26.1002.7124.0':
+                from .native_history_fixture import generate
+                generate(home,portable/'resources/codex.exe',count=400)
+            else:
+                _seed_synthetic_tasks(home, Path(runtime[0]['codex_home']))
         environment = _portable_environment(portable, home)
         if faithful:
             from .native_sidebar_fixture import seed, blocked_ssh_binding
@@ -676,16 +688,18 @@ def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seco
         deadline = proof_deadline
         proof_at = None
         latest: dict[str, Any] = {}
-        attestation_requested = support.version == "26.928.4866.0"
+        attestation_requested = support.version in ("26.928.4866.0","26.1002.7124.0")
         sidebar_process = None
         sidebar = None
-        if support.version == "26.928.4866.0":
+        if support.version in ("26.928.4866.0","26.1002.7124.0"):
             sidebar_env = os.environ.copy()
             sidebar_env['ISOLATED_DEBUG_PORT'] = str(debug_port)
             sidebar_env['NATIVE_SIDEBAR_PROFILE'] = 'faithful' if faithful else 'basic'
+            sidebar_env['ISOLATED_RUNTIME_LOG'] = str(run.run_directory/'stdout.log')
+            sidebar_env['ISOLATED_EXPECTED_THREAD_COUNT'] = '400' if index else '0'
             from .awake_process import AwakeProcess
             sidebar_process = AwakeProcess(
-                ['node', str(Path(__file__).parent / 'data/native_sidebar_basic.cjs')],
+                ['node', str(Path(__file__).parent / ('data/native_sidebar_7124.cjs' if support.version=='26.1002.7124.0' else 'data/native_sidebar_basic.cjs'))],
                 env=sidebar_env, root=run.run_directory)
         try:
             while awake_clock.seconds() < deadline:

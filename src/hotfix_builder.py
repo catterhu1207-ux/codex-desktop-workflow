@@ -17,17 +17,26 @@ from typing import Any, Iterable
 import hotfix_profile_26915_3509 as _profile_3509
 import hotfix_profile_26915_4065 as _profile_4065
 import hotfix_profile_26917_6896 as _profile_6896
+import hotfix_profile_26917_8451 as _profile_8451
 import hotfix_profile_26917_9434 as _profile_9434
 import hotfix_profile_26924_1866 as _profile_1866
 import hotfix_profile_26924_2738 as _profile_2738
+import hotfix_profile_26924_6891 as _profile_6891
+import hotfix_profile_26928_2636 as _profile_2636
+import hotfix_profile_26928_3736 as _profile_3736
 import hotfix_profile_26928_4866 as _profile_4866
+import hotfix_profile_26930_3930 as _profile_930
+import hotfix_profile_26930_4958 as _profile_4958
+import hotfix_profile_26930_6422 as _profile_6422
+import hotfix_profile_26930_7945 as _profile_7945
+import hotfix_profile_261002_7124 as _profile_7124
 
 def _profile_26915(profile):
-    return {"26915_3509": _profile_3509, "26915_4065": _profile_4065, "26917_6896": _profile_6896, "26917_9434": _profile_9434, "26924_1866": _profile_1866, "26924_2738": _profile_2738, "26928_4866": _profile_4866}[profile["profile_spec_id"]]
+    return {"26915_3509": _profile_3509, "26915_4065": _profile_4065, "26917_6896": _profile_6896, "26917_8451": _profile_8451, "26917_9434": _profile_9434, "26924_1866": _profile_1866, "26924_2738": _profile_2738, "26924_6891": _profile_6891, "26928_2636": _profile_2636, "26928_3736": _profile_3736, "26928_4866": _profile_4866, "26930_3930": _profile_930, "26930_4958": _profile_4958, "26930_6422": _profile_6422, "26930_7945": _profile_7945, "261002_7124": _profile_7124}[profile["profile_spec_id"]]
 
 
 
-BUILDER_VERSION = "2.7.3"
+BUILDER_VERSION = "2.7.8"
 FRONTEND_CONTRACT_VALIDATOR_VERSION = "2.5.1"
 
 # This probe is part of the hash-gated renderer entry.  It runs in the real
@@ -40,7 +49,7 @@ FRONTEND_ATTESTATION_MARKER = "[CF9]"
 # never satisfy the launch gate for a different official ASAR.  The id is the
 # builder version plus the first twelve hex digits of the official ASAR hash,
 # so it is regenerated for every adapted package.
-FRONTEND_ATTESTATION_ARTIFACT_ID = "2.6.13-d4234b03eb53"
+FRONTEND_ATTESTATION_ARTIFACT_ID = "2.7.8-599366b58cb0"
 FRONTEND_ATTESTATION_MODULE_NAME = "x.js"
 FRONTEND_ATTESTATION_APP_URL = "app://-/x"
 FRONTEND_ATTESTATION_PROTOCOL_ENTRY_PATH = ".vite/build/window-all-closed-KNH8jchn.js"
@@ -126,6 +135,8 @@ FRONTEND_ATTESTATION_FEATURES = (
 
 
 def frontend_builder_version(profile: dict[str, Any] | None = None) -> str:
+    if profile and profile.get("profile_spec_id") == "261002_7124":
+        return frontend_attestation_identity(profile)[1].split("-")[0]
     if is_orange_frontend_profile(profile):
         return "2.7.9"
     """Keep previously released artifact identities stable."""
@@ -144,28 +155,38 @@ def frontend_builder_version(profile: dict[str, Any] | None = None) -> str:
     return "2.6.9"
 
 
-def frontend_validator_version(profile: dict[str, Any] | None = None) -> str:
+def is_orange_frontend_profile(profile: dict[str, Any] | None) -> bool:
+    """New proof inventory belongs only to the complete immutable 4866 profile."""
+    return bool(profile and (profile == _profile_4866.PROFILE or profile == _profile_930.PROFILE or profile == _profile_4958.PROFILE or profile == _profile_6422.PROFILE or profile == _profile_7945.PROFILE or profile == _profile_7124.PROFILE))
+
+
+def frontend_attestation_features(profile: dict[str, Any] | None = None) -> tuple[str, ...]:
+    if profile == _profile_7124.PROFILE:
+        return FRONTEND_ATTESTATION_FEATURES + ("user_action_pending_orange", "portable_update_awareness")
+    elif profile == _profile_7945.PROFILE:
+        return FRONTEND_ATTESTATION_FEATURES + ("user_action_pending_orange", "portable_update_awareness")
+    elif profile == _profile_6422.PROFILE:
+        return FRONTEND_ATTESTATION_FEATURES + ("user_action_pending_orange", "portable_update_awareness")
+    elif profile == _profile_4958.PROFILE:
+        return FRONTEND_ATTESTATION_FEATURES + ("user_action_pending_orange", "portable_update_awareness")
     if is_orange_frontend_profile(profile):
-        return "2.6.0"
-    if profile and profile.get("profile_spec_id") == "26924_2738":
-        return "2.5.1"
-    elif profile and profile.get("profile_spec_id") == "26924_1866":
-        return "2.5.0"
-    if profile and profile.get("profile_spec_id") == "26915_3509":
-        return "2.4.7"
-    if profile and profile.get("profile_spec_id") == "26915_4065":
-        return "2.4.8"
-    if profile and profile.get("profile_spec_id") == "26917_6896":
-        return "2.4.9"
-    if profile and profile.get("profile_spec_id") == "26917_9434":
-        return "2.4.10"
-    return "2.4.6"
+        return FRONTEND_ATTESTATION_FEATURES + ("user_action_pending_orange",)
+    return FRONTEND_ATTESTATION_FEATURES
 
 
-def frontend_attestation_artifact_id(profile: dict[str, Any] | None = None) -> str:
-    if profile and profile.get("asar_source_sha256"):
-        return f"{frontend_builder_version(profile)}-{str(profile['asar_source_sha256'])[:12]}"
-    return FRONTEND_ATTESTATION_ARTIFACT_ID
+def frontend_feature_statuses(profile: dict[str, Any] | None = None) -> dict[str, set[str]]:
+    result = {name: set(states) for name, states in FEATURE_STATUSES.items()}
+    if is_orange_frontend_profile(profile):
+        result["user_action_pending_orange"] = {"patched", "official_fixed"}
+    if profile == _profile_7124.PROFILE:
+        result["portable_update_awareness"] = {"patched", "official_fixed"}
+    elif profile == _profile_7945.PROFILE:
+        result["portable_update_awareness"] = {"patched", "official_fixed"}
+    elif profile == _profile_6422.PROFILE:
+        result["portable_update_awareness"] = {"patched", "official_fixed"}
+    elif profile == _profile_4958.PROFILE:
+        result["portable_update_awareness"] = {"patched", "official_fixed"}
+    return result
 
 
 def is_split_frontend_profile(profile: dict[str, Any] | None) -> bool:
@@ -173,13 +194,9 @@ def is_split_frontend_profile(profile: dict[str, Any] | None) -> bool:
 
 
 def renderer_attestation_script(profile: dict[str, Any] | None = None) -> bytes:
-    if is_orange_frontend_profile(profile):
-        return _profile_4866.ATTESTATION_SCRIPT
-    if profile and profile.get("profile_spec_id") == "26924_2738":
-        return _profile_2738.ATTESTATION_SCRIPT
-    elif profile and profile.get("profile_spec_id") == "26924_1866":
-        return _profile_1866.ATTESTATION_SCRIPT
-    if profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434"}:
+    if profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
+        return _profile_26915(profile).ATTESTATION_SCRIPT
+    elif profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_8451", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
         return _profile_26915(profile).ATTESTATION_SCRIPT
     # The exact entry has a deliberately tiny source-map padding budget.  The
     # full semantic suite remains in frontend_feature_contracts.py; this live
@@ -201,6 +218,8 @@ def renderer_attestation_script(profile: dict[str, Any] | None = None) -> bytes:
 
 
 def renderer_attestation_module(profile: dict[str, Any] | None = None) -> bytes:
+    if profile and profile.get("profile_spec_id") == "261002_7124":
+        return _profile_26915(profile).ATTESTATION_MODULE
     if is_orange_frontend_profile(profile):
         return _profile_4866.ATTESTATION_MODULE
     if profile and profile.get("profile_spec_id") == "26924_2738":
@@ -387,9 +406,20 @@ def validate_renderer_attestation_log_bridge(
         profile.get("attestation_log_bridge_identifier", "ay")
         if profile else "ay"
     )
-    if not (is_orange_frontend_profile(profile) and identifier == "hd") and identifier not in {"ay", "U", "H", "h", "Er", "Dr", "qn", "Jn", "Js"} and not (
-        identifier == "aa" and profile and profile.get("profile_spec_id") == "26924_2738"
-    ):
+    exact_new_bridge = bool(profile and
+        profile.get("profile_spec_id") == "26928_2636" and
+        profile.get("package_version") == "26.928.2636.0" and
+        profile.get("asar_source_sha256") == _profile_2636.PROFILE["asar_source_sha256"] and
+        profile.get("attestation_log_bridge_signatures") == _profile_2636.PROFILE["attestation_log_bridge_signatures"] and
+        identifier == "Nd")
+    exact_3736_bridge = bool(profile and profile.get("profile_spec_id") == "26928_3736" and profile.get("package_version") == "26.928.3736.0" and profile.get("asar_source_sha256") == _profile_3736.PROFILE["asar_source_sha256"] and profile.get("attestation_log_bridge_signatures") == _profile_3736.PROFILE["attestation_log_bridge_signatures"] and identifier == "Kd")
+    exact_4866_bridge = bool(profile and profile.get("profile_spec_id") == "26928_4866" and profile.get("package_version") == "26.928.4866.0" and profile.get("asar_source_sha256") == _profile_4866.PROFILE["asar_source_sha256"] and profile.get("attestation_log_bridge_signatures") == _profile_4866.PROFILE["attestation_log_bridge_signatures"] and identifier == "hd")
+    exact_7124_bridge = bool(profile and profile == _profile_7124.PROFILE and identifier == 'oh')
+    exact_7945_bridge = bool(profile and profile == _profile_7945.PROFILE and identifier == "Mp")
+    exact_6422_bridge = bool(profile and profile == _profile_6422.PROFILE and identifier == "Mp")
+    exact_4958_bridge = bool(profile and profile == _profile_4958.PROFILE and identifier == "Mp")
+    exact_930_bridge = bool(profile and profile == _profile_930.PROFILE and identifier == "mh")
+    if not (exact_new_bridge or exact_3736_bridge or exact_4866_bridge or exact_930_bridge or exact_4958_bridge or exact_6422_bridge or exact_7945_bridge or exact_7124_bridge) and identifier not in {"ay", "U", "H", "h", "Er", "Dr", "qn", "Jn", "Js", "aa", "zf"}:
         raise HotfixError("Frontend attestation log-bridge identifier is unsupported")
     signatures = tuple(
         profile.get("attestation_log_bridge_signatures", ())
@@ -451,14 +481,18 @@ AUTOMATION_PRIORITY_POLICY = "scheduled_attention_before_idle_toggle"
 def automation_priority_membership_functions(
     profile: dict[str, Any] | None,
 ) -> list[str]:
+    """Return the real membership chain for the exact frontend generation."""
     if is_orange_frontend_profile(profile):
         return ['GR', 'SSr', 'xSr', 'wSr', 'CSr']
-    """Return the real membership chain for the exact frontend generation."""
-    if profile and profile.get("profile_spec_id") == "26924_2738":
-        return ["hP", "psn"]
-    elif profile and profile.get("profile_spec_id") == "26924_1866":
+    if profile and profile.get("profile_spec_id") == "26928_3736":
+        return ['GR', 'Qxr', 'Zxr', 'eSr', '$xr']
+    if profile and profile.get("profile_spec_id") == "26928_2636":
+        return ["NR", "lSr", "cSr", "dSr", "uSr"]
+    if profile and profile.get("profile_spec_id") in {"26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
         return ["hP", "psn"]
     if profile and profile.get("profile_spec_id") == "26917_9434":
+        return ['Y2', 'kls']
+    elif profile and profile.get("profile_spec_id") == "26917_8451":
         return ['Y2', 'kls']
     if profile and profile.get("profile_spec_id") == "26917_6896":
         return ["q2", "jls"]
@@ -1266,10 +1300,21 @@ PROCESS_REGISTRY_REMOVED_MAIN_26908_4834_PORTABLE_SHA256 = (
     "79a4d9a07eea4489ad55e9722fefdc9e8af3be0d32ee9b1d05b5847cceab7c92"
 )
 PROCESS_REGISTRY_REMOVED_MAIN_SOURCE_SHA256S = {
-    # Exact 4866 main module after auditing the 33 packaged main modules.
+    # Exact 26.1002.7124.0: all 31 main modules reviewed in native-process-registry-review.json.
+    'aafd6a750458cb39b6202f9be00231482122d32ac14017b79d544c4ab741e889',
+    # Exact 26.930.6422.0 module inventory: native-process-registry-review.json.
+    'a4b72dcd241e8ee360aa960442cc585aa822685a42efd056c760937d9f8b623e',
+    # Exact 26.930.4958.0 module inventory: native-process-registry-review.json.
+    'e58e0124daa49b216ae8f6a656cc967e82b5b17204206c2c2b7dd38db003d9d6',
+    # Exact 26.930.3930.0 module inventory: native-process-registry-review.json.
+    'd940b7ba89557a640cf23967c60555fa2a2344d6899807478c69ffc304314302',
+    # 26.928.4866.0: all 33 packaged main modules were reviewed for the
+    # removed osPid registry schema, file paths, and reader/writer signatures.
     "094276e26761b74ce7b6d68b35777b9bb888501c58a278596b9f48fe5cf7bdc0",
-    '18beea7d7e46866168528ff5dab5108ffe6d39fc13433367ce8dee7b187044f8',
-    'fe0ba5e84514b894e2b6e8a282bd981b2b86db735ed4a719cc93d3fdb8063544',
+    "febce65087ab1c20c53e6da4c1f17baf720a57e8fa5cedc9b9b84fc82223e811",
+    "05b3924c2e2b26eaf4b4a64ae5af43dc76d5cbf925d1d580efde01ec52523cd2",
+    "18beea7d7e46866168528ff5dab5108ffe6d39fc13433367ce8dee7b187044f8",
+    "fe0ba5e84514b894e2b6e8a282bd981b2b86db735ed4a719cc93d3fdb8063544",
     "1f2b91cf92fc023fb2fa41e1c1d03698fa6e37354ecd07dd0cebd21337607b08",
     "610ea8b045f207360ac50fcccfe43ca896c6298fa75562f323f1a45ed2364a1b",
     "c71bf3ffecef5fd390b4cd16d120d39dce30d30bffe3c563c8c74c1b691da018",
@@ -1282,10 +1327,22 @@ PROCESS_REGISTRY_REMOVED_MAIN_SOURCE_SHA256S = {
     PROCESS_REGISTRY_REMOVED_MAIN_26908_4834_SHA256,
 }
 PROCESS_REGISTRY_REMOVED_MAIN_ALL_SHA256S = {
-    # The same 4866 module with only the qualified portable update-menu edit.
+    # Exact 26.1002.7124.0 source plus the public menu and update bridge.
+    '8b5d3ceb9276157e7acc2370f0bd3e4d6c9a82db59968bf53c5bccf1913244f6',
+    # Same exact module with only the rehearsed portable update bridge substitutions.
+    '47f9c7c546dbcdd2cc4271cc555b985b4f706ef6dad31990e52563b9cda5fe70',
+    # Exact 26.930.6422.0 module inventory: native-process-registry-review.json.
+    '71459a22c76e9ce2416f7ca6f0aacbdd47aa2118fd79283eb5e5193863feee76',
+    # Exact 26.930.4958.0 module inventory: native-process-registry-review.json.
+    '10d103ff6fe5d99a628fc4aaba0dd017c7b411affd240fe6d56699960b250dba',
+    # Exact 26.930.3930.0 module inventory: native-process-registry-review.json.
+    '3d6375f2b8059011d7461f6baf8a5ccf32d58c2dc8379c0e934589fed0e2ffc4',
+    # Exact source plus only the allowlisted portable update-menu transform.
     "23e17c2be461a0f0c04e751e03a5378c5c71688d5a050d5073bf9fb6bbfacd57",
-    '2c15461a04af5b2c29890f019693d16870aebfd7f45aa39ce58df62fe94fcd63',
-    '2a636fc0c7032b7d0d50b9ccb9bad1d0aa05f26555f21d36b5f1eb5082844732',
+    "ed57c7620e4961a27ede7ba19d34055638455710425373ec2e6b517b86d74913",
+    "0aedabc106e7a206c1b45b7907114419e8c9511ea2e0e7c54d148f737aadc85a",
+    "c63ab22e343cbb96fdd47e5c7ad9ed9159bad2d13b6dc961484843d2383201c7",
+    "7948757a90ed66b222a97c2cefc39dce3137368dd2e534fd70de8edc7c9b2594",
     "7b0297fd9a222b8b5c1c4bb1ad0398bf32fdff33f9f13541186f2fd089c7fea7",
     *PROCESS_REGISTRY_REMOVED_MAIN_SOURCE_SHA256S,
     "34fb4866589ed25901debd17bf74ce7b7c0fa584e6b5952a0fbf607cc986cc95",
@@ -2445,6 +2502,16 @@ def _replacement_set_sha256(
     return digest.hexdigest()
 
 
+def frontend_attestation_identity(profile: dict[str, Any] | None) -> tuple[str, str]:
+    """Read immutable profile identity without relabeling historical artifacts."""
+    module = renderer_attestation_module(profile)
+    version = re.search(rb'validator_version:"([^"]+)"', module)
+    artifact = re.search(rb'\bA="([^"]+)"', module)
+    if version is None or artifact is None:
+        raise HotfixError("Renderer module release identity is missing")
+    return version.group(1).decode("ascii"), artifact.group(1).decode("ascii")
+
+
 def run_frontend_contract_validator(source_asar: Path, portable_asar: Path) -> dict[str, Any]:
     validator = Path(__file__).with_name("frontend_feature_contracts.py")
     if not validator.is_file():
@@ -2912,23 +2979,64 @@ _SPEC_26917_6896 = _FrontendProfileSpec(
     official_feature_signatures=_profile_6896.OFFICIAL_FEATURE_SIGNATURES,
 )
 
+FRONTEND_PROFILES += (_profile_8451.PROFILE,)
+_SPEC_26917_8451 = _FrontendProfileSpec(pairs=_profile_8451.PAIRS, official_features=frozenset(_profile_8451.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_8451.OFFICIAL_FEATURE_SIGNATURES)
 FRONTEND_PROFILES += (_profile_9434.PROFILE,)
-_SPEC_26917_9434 = _FrontendProfileSpec(
-    pairs=_profile_9434.PAIRS,
-    official_features=frozenset(_profile_9434.OFFICIAL_FEATURE_SIGNATURES),
-    injected_global_identifier_counts={}, protected_official_signatures=tuple(),
-    official_feature_signatures=_profile_9434.OFFICIAL_FEATURE_SIGNATURES,
-)
+_SPEC_26917_9434 = _FrontendProfileSpec(pairs=_profile_9434.PAIRS, official_features=frozenset(_profile_9434.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_9434.OFFICIAL_FEATURE_SIGNATURES)
+
+FRONTEND_PROFILES += (_profile_1866.PROFILE,)
+_SPEC_26924_1866 = _FrontendProfileSpec(pairs=_profile_1866.PAIRS, official_features=frozenset(_profile_1866.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_1866.OFFICIAL_FEATURE_SIGNATURES)
+
+FRONTEND_PROFILES += (_profile_2738.PROFILE,)
+FRONTEND_PROFILES += (_profile_6891.PROFILE, _profile_2636.PROFILE)
+_SPEC_26924_6891 = _FrontendProfileSpec(pairs=_profile_6891.PAIRS, official_features=frozenset(_profile_6891.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_6891.OFFICIAL_FEATURE_SIGNATURES)
+_SPEC_26928_2636 = _FrontendProfileSpec(pairs=_profile_2636.PAIRS, official_features=frozenset(_profile_2636.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_2636.OFFICIAL_FEATURE_SIGNATURES)
+_SPEC_26924_2738 = _FrontendProfileSpec(pairs=_profile_2738.PAIRS, official_features=frozenset(_profile_2738.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_2738.OFFICIAL_FEATURE_SIGNATURES)
+
+FRONTEND_PROFILES += (_profile_3736.PROFILE,)
+FRONTEND_PROFILES += (_profile_4866.PROFILE,)
+_SPEC_26928_4866 = _FrontendProfileSpec(pairs=_profile_4866.PAIRS, official_features=frozenset(_profile_4866.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_4866.OFFICIAL_FEATURE_SIGNATURES)
+_SPEC_26928_3736 = _FrontendProfileSpec(pairs=_profile_3736.PAIRS, official_features=frozenset(_profile_3736.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_3736.OFFICIAL_FEATURE_SIGNATURES)
+
+_SPEC_26930_3930 = _FrontendProfileSpec(pairs=_profile_930.PAIRS, official_features=frozenset(_profile_930.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_930.OFFICIAL_FEATURE_SIGNATURES)
+FRONTEND_PROFILES += (_profile_930.PROFILE,)
+
+_SPEC_26930_4958 = _FrontendProfileSpec(pairs=_profile_4958.PAIRS, official_features=frozenset(_profile_4958.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_4958.OFFICIAL_FEATURE_SIGNATURES)
+FRONTEND_PROFILES += (_profile_4958.PROFILE,)
+_SPEC_26930_6422 = _FrontendProfileSpec(pairs=_profile_6422.PAIRS, official_features=frozenset(_profile_6422.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_6422.OFFICIAL_FEATURE_SIGNATURES)
+FRONTEND_PROFILES += (_profile_6422.PROFILE,)
+_SPEC_26930_7945 = _FrontendProfileSpec(pairs=_profile_7945.PAIRS, official_features=frozenset(_profile_7945.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_7945.OFFICIAL_FEATURE_SIGNATURES)
+FRONTEND_PROFILES += (_profile_7945.PROFILE,)
+_SPEC_261002_7124 = _FrontendProfileSpec(pairs=_profile_7124.PAIRS, official_features=frozenset(_profile_7124.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_7124.OFFICIAL_FEATURE_SIGNATURES)
+FRONTEND_PROFILES += (_profile_7124.PROFILE,)
 
 def spec_for_profile(profile: dict[str, Any] | None) -> _FrontendProfileSpec:
-    if is_orange_frontend_profile(profile):
+    if profile == _profile_7124.PROFILE:
+        return _SPEC_261002_7124
+    elif profile == _profile_7945.PROFILE:
+        return _SPEC_26930_7945
+    elif profile == _profile_6422.PROFILE:
+        return _SPEC_26930_6422
+    elif profile == _profile_4958.PROFILE:
+        return _SPEC_26930_4958
+    if profile and profile == _profile_930.PROFILE:
+        return _SPEC_26930_3930
+    if profile and profile.get("asar_source_sha256") == _profile_4866.PROFILE["asar_source_sha256"]:
         return _SPEC_26928_4866
+    if profile and profile.get("asar_source_sha256") == _profile_3736.PROFILE["asar_source_sha256"]:
+        return _SPEC_26928_3736
+    if profile and profile.get("asar_source_sha256") == _profile_2636.PROFILE["asar_source_sha256"]:
+        return _SPEC_26928_2636
+    if profile and profile.get("asar_source_sha256") == _profile_6891.PROFILE["asar_source_sha256"]:
+        return _SPEC_26924_6891
     if profile and profile.get("asar_source_sha256") == _profile_2738.PROFILE["asar_source_sha256"]:
         return _SPEC_26924_2738
     if profile and profile.get("asar_source_sha256") == _profile_1866.PROFILE["asar_source_sha256"]:
         return _SPEC_26924_1866
     if profile and profile.get("asar_source_sha256") == _profile_9434.PROFILE["asar_source_sha256"]:
         return _SPEC_26917_9434
+    elif profile and profile.get("asar_source_sha256") == _profile_8451.PROFILE["asar_source_sha256"]:
+        return _SPEC_26917_8451
     if profile and profile.get("asar_source_sha256") == _profile_6896.PROFILE["asar_source_sha256"]:
         return _SPEC_26917_6896
     if profile and profile.get("asar_source_sha256") == _profile_4065.PROFILE["asar_source_sha256"]:
@@ -2993,9 +3101,9 @@ def spec_for_profile(profile: dict[str, Any] | None) -> _FrontendProfileSpec:
 def secondary_pairs_for_profile(
     profile: dict[str, Any] | None,
 ) -> dict[str, tuple[tuple[bytes, bytes], ...]]:
-    if profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"}:
+    if profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
         return _profile_26915(profile).SECONDARY_PAIRS
-    elif profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"}:
+    elif profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_8451", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
         return _profile_26915(profile).SECONDARY_PAIRS
     if profile and profile.get("package_version") in {"26.908.4834.0", "26.908.9136.0"}:
         return _PROFILE_26908_4834_SECONDARY_PAIRS
@@ -3011,9 +3119,9 @@ def secondary_pairs_for_profile(
 def secondary_official_signatures_for_profile(
     profile: dict[str, Any] | None,
 ) -> dict[str, tuple[bytes, ...]]:
-    if profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"}:
+    if profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
         return _profile_26915(profile).SECONDARY_OFFICIAL_FEATURE_SIGNATURES
-    elif profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"}:
+    elif profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_8451", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
         return _profile_26915(profile).SECONDARY_OFFICIAL_FEATURE_SIGNATURES
     if profile and profile.get("package_version") in {"26.908.4834.0", "26.908.9136.0"}:
         return _PROFILE_26908_4834_SECONDARY_OFFICIAL_FEATURE_SIGNATURES
@@ -3173,7 +3281,7 @@ def patch_current_frontend_entry(
             "status": "patched",
             "reason": None,
             "marker": FRONTEND_ATTESTATION_MARKER,
-            "artifact_id": frontend_attestation_identity(profile)[1] if is_orange_frontend_profile(profile) else FRONTEND_ATTESTATION_ARTIFACT_ID,
+            "artifact_id": frontend_attestation_identity(profile)[1],
             "feature_count": len(frontend_attestation_features(profile)),
         }
     patched = equalize_current_entry_length(entry, patched)
@@ -3199,6 +3307,21 @@ def patch_current_frontend_entry(
                 f"expected={expected_watch_status}, actual={watch_status}, reason={watch_reason}"
             )
     return patched, results
+
+
+def patch_profile_shared_entry(entry: bytes, profile: dict[str, Any]) -> bytes:
+    if sha256_bytes(entry) != profile.get("shared_entry_source_sha256"):
+        raise HotfixError("Shared frontend source hash differs")
+    patched = entry
+    for name, pairs in _profile_26915(profile).SHARED_PAIRS.items():
+        for old, new in pairs:
+            if patched.count(old) != 1 or patched.count(new) != 0:
+                raise HotfixError("Shared export signature differs: " + name)
+            patched = patched.replace(old, new, 1)
+    patched = equalize_current_entry_length(entry, patched)
+    if len(patched) != len(entry):
+        raise HotfixError("Shared frontend length changed")
+    return patched
 
 
 def patch_profile_secondary_entry(
@@ -3286,14 +3409,12 @@ def patch_portable_update_status_entry(entry: bytes, profile: dict[str, Any]) ->
     expected = profile.get("main_entry_source_sha256")
     if not expected or sha256_bytes(entry) != expected:
         raise HotfixError("Portable update-menu source hash differs from its exact profile")
-    if is_orange_frontend_profile(profile):
-        old, fixed = _profile_4866.UPDATE_MENU_OLD, _profile_4866.UPDATE_MENU_NEW
-    elif profile.get("profile_spec_id") == "26924_2738":
-        old, fixed = _profile_2738.UPDATE_MENU_OLD, _profile_2738.UPDATE_MENU_NEW
-    elif profile.get("profile_spec_id") == "26924_1866":
-        old, fixed = _profile_1866.UPDATE_MENU_OLD, _profile_1866.UPDATE_MENU_NEW
+    if profile.get("profile_spec_id") in {"26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
+        old, fixed = _profile_26915(profile).UPDATE_MENU_OLD, _profile_26915(profile).UPDATE_MENU_NEW
     elif profile.get("profile_spec_id") == "26917_9434":
-        old, fixed = UPDATE_MENU_26903_OLD, UPDATE_MENU_26903_NEW
+        old, fixed = UPDATE_MENU_26903_OLD.replace(b"_7()",b"_7()"), UPDATE_MENU_26903_NEW.replace(b"_7()",b"_7()")
+    elif profile.get("profile_spec_id") == "26917_8451":
+        old, fixed = UPDATE_MENU_26903_OLD.replace(b"_7()",b"_7()"), UPDATE_MENU_26903_NEW.replace(b"_7()",b"_7()")
     elif profile.get("profile_spec_id") == "26917_6896":
         old, fixed = UPDATE_MENU_26903_OLD.replace(b"_7()",b"h7()"), UPDATE_MENU_26903_NEW.replace(b"_7()",b"h7()")
     elif profile.get("profile_spec_id") == "26915_4065":
@@ -3310,7 +3431,28 @@ def patch_portable_update_status_entry(entry: bytes, profile: dict[str, Any]) ->
         old, fixed = UPDATE_MENU_OLD, UPDATE_MENU_NEW
     if entry.count(old) != 1 or entry.count(fixed) != 0:
         raise HotfixError("Portable update-menu callback is missing or ambiguous")
-    patched = equalize_entry_length(entry, entry.replace(old, fixed, 1))
+    patched = entry.replace(old, fixed, 1)
+    if profile == _profile_7124.PROFILE:
+        for original, replacement in _profile_7124.MAIN_PAIRS:
+            if patched.count(original) != 1 or patched.count(replacement) != 0:
+                raise HotfixError("Portable update sidebar bridge is missing or ambiguous")
+            patched = patched.replace(original, replacement, 1)
+    elif profile == _profile_7945.PROFILE:
+        for original, replacement in _profile_7945.MAIN_PAIRS:
+            if patched.count(original) != 1 or patched.count(replacement) != 0:
+                raise HotfixError("Portable update sidebar bridge is missing or ambiguous")
+            patched = patched.replace(original, replacement, 1)
+    elif profile == _profile_6422.PROFILE:
+        for original, replacement in _profile_6422.MAIN_PAIRS:
+            if patched.count(original) != 1 or patched.count(replacement) != 0:
+                raise HotfixError("Portable update sidebar bridge is missing or ambiguous")
+            patched = patched.replace(original, replacement, 1)
+    elif profile == _profile_4958.PROFILE:
+        for original, replacement in _profile_4958.MAIN_PAIRS:
+            if patched.count(original) != 1 or patched.count(replacement) != 0:
+                raise HotfixError("Portable update sidebar bridge is missing or ambiguous")
+            patched = patched.replace(original, replacement, 1)
+    patched = equalize_entry_length(entry, patched)
     if patched.count(old) != 0 or patched.count(fixed) != 1:
         raise HotfixError("Portable update-menu callback verification failed")
     return patched
@@ -3356,11 +3498,11 @@ def patch_frontend_attestation_protocol_entry(
             FRONTEND_ATTESTATION_PROTOCOL_HANDLER_26831_NEW
             if latest else FRONTEND_ATTESTATION_PROTOCOL_HANDLER_NEW
         )
-    if profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"}:
+    if profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
         resolver_old, resolver_new = _profile_26915(profile).PROTOCOL_OLD, _profile_26915(profile).PROTOCOL_NEW
         handler_old, handler_fixed = _profile_26915(profile).HANDLER_OLD, _profile_26915(profile).HANDLER_NEW
         old_count, new_count = entry.count(resolver_old), entry.count(resolver_new)
-    elif profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"}:
+    elif profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_8451", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
         resolver_old, resolver_new = _profile_26915(profile).PROTOCOL_OLD, _profile_26915(profile).PROTOCOL_NEW
         handler_old, handler_fixed = _profile_26915(profile).HANDLER_OLD, _profile_26915(profile).HANDLER_NEW
         old_count, new_count = entry.count(resolver_old), entry.count(resolver_new)
@@ -3376,11 +3518,11 @@ def patch_frontend_attestation_protocol_entry(
             f", compaction_old={compaction_old_count}, compaction_new={compaction_new_count}"
         )
     patched = entry.replace(resolver_old, resolver_new, 1)
-    if profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"}:
+    if profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
         if patched.count(_profile_26915(profile).PROTOCOL_COMPACTION_OLD) != 1:
             raise HotfixError("Protocol pathname expression differs from the signed source")
         patched = patched.replace(_profile_26915(profile).PROTOCOL_COMPACTION_OLD, _profile_26915(profile).PROTOCOL_COMPACTION_NEW, 1)
-    elif profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"}:
+    elif profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_8451", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
         if patched.count(_profile_26915(profile).PROTOCOL_COMPACTION_OLD) != 1:
             raise HotfixError("Protocol pathname expression differs from the signed source")
         patched = patched.replace(_profile_26915(profile).PROTOCOL_COMPACTION_OLD, _profile_26915(profile).PROTOCOL_COMPACTION_NEW, 1)
@@ -3402,7 +3544,7 @@ def patch_frontend_attestation_protocol_entry(
         or patched.count(handler_old) != 0
         or patched.count(handler_fixed) != 1
         or (not latest and patched.count(FRONTEND_ATTESTATION_PROTOCOL_COMPACTION_OLD) != 0)
-        or patched.count(_profile_26915(profile).PROTOCOL_COMPACTION_NEW if profile.get("profile_spec_id") in {"26924_1866", "26924_2738", "26928_4866"} else FRONTEND_ATTESTATION_PROTOCOL_COMPACTION_NEW) != 1
+        or patched.count(_profile_26915(profile).PROTOCOL_COMPACTION_NEW if profile.get("profile_spec_id") in {"26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"} else FRONTEND_ATTESTATION_PROTOCOL_COMPACTION_NEW) != 1
         or len(patched) != len(entry)
     ):
         raise HotfixError("Frontend attestation protocol patch did not converge")
@@ -4880,7 +5022,7 @@ def inspect_archive(
             elif all(status == "patchable" for status in dependency_statuses):
                 status = "patchable"
                 reason = None
-            elif (frontend_profile.get("profile_spec_id") in {"26928_4866"}
+            elif (frontend_profile.get("profile_spec_id") in {"26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}
                   and all(value in {"patchable", "official_fixed"} for value in dependency_statuses)):
                 # This exact release combines its native click behavior with
                 # the uniquely matched hold-membership conversion. Every
@@ -5235,7 +5377,7 @@ def build_archive(
             "26.901.6511.0",
             "26.903.9818.0",
             "26.908.4834.0",
-            "26.908.9136.0", "26.915.3509.0", "26.915.4065.0", "26.917.6896.0", "26.917.8451.0", "26.917.9434.0", "26.924.1866.0", "26.924.2738.0",
+            "26.908.9136.0", "26.915.3509.0", "26.915.4065.0", "26.917.6896.0", "26.917.8451.0", "26.917.9434.0", "26.924.1866.0", "26.924.2738.0", "26.924.6891.0", "26.928.2636.0", "26.928.3736.0",
         }:
             if not protocol_entry_path:
                 raise HotfixError("Frontend attestation protocol entry is missing from the profile")
@@ -5250,15 +5392,15 @@ def build_archive(
                 "entry_path": str(protocol_entry_path),
                 "source_sha256": sha256_bytes(protocol_plan["source"]),
                 "patched_sha256": sha256_bytes(protocol_plan["data"]),
-                "old_signature_count": 0 if frontend_profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"} else protocol_plan["data"].count(
-                    _profile_26915(frontend_profile).PROTOCOL_OLD if frontend_profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"} else FRONTEND_ATTESTATION_PROTOCOL_26908_OLD
+                "old_signature_count": 0 if frontend_profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_8451", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"} else protocol_plan["data"].count(
+                    _profile_26915(frontend_profile).PROTOCOL_OLD if frontend_profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_8451", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"} else FRONTEND_ATTESTATION_PROTOCOL_26908_OLD
                     if frontend_profile.get("package_version") in {"26.908.4834.0", "26.908.9136.0"}
                     else FRONTEND_ATTESTATION_PROTOCOL_26903_OLD
                     if frontend_profile.get("package_version") == "26.903.9818.0"
                     else FRONTEND_ATTESTATION_PROTOCOL_OLD
                 ),
-                "new_signature_count": protocol_plan["data"].count(_profile_26915(frontend_profile).PROTOCOL_NEW) if frontend_profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"} else protocol_plan["data"].count(
-                    _profile_26915(frontend_profile).PROTOCOL_NEW if frontend_profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"} else FRONTEND_ATTESTATION_PROTOCOL_26908_NEW
+                "new_signature_count": protocol_plan["data"].count(_profile_26915(frontend_profile).PROTOCOL_NEW) if frontend_profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_8451", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"} else protocol_plan["data"].count(
+                    _profile_26915(frontend_profile).PROTOCOL_NEW if frontend_profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_8451", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"} else FRONTEND_ATTESTATION_PROTOCOL_26908_NEW
                     if frontend_profile.get("package_version") in {"26.908.4834.0", "26.908.9136.0"}
                     else FRONTEND_ATTESTATION_PROTOCOL_26903_NEW
                     if frontend_profile.get("package_version") == "26.903.9818.0"
@@ -5775,6 +5917,19 @@ def build_archive(
             "sha256": sha256_bytes(module_content),
             "size": len(module_content),
         }
+    portable_update_helper = None
+    if frontend_profile == _profile_7124.PROFILE:
+        atomic_replace_bytes(target.parent / "u.cjs", _profile_7124.UPDATE_BRIDGE_MODULE)
+        portable_update_helper = {"relative_path":"u.cjs", "sha256":sha256_bytes(_profile_7124.UPDATE_BRIDGE_MODULE), "size":len(_profile_7124.UPDATE_BRIDGE_MODULE)}
+    elif frontend_profile == _profile_7945.PROFILE:
+        atomic_replace_bytes(target.parent / "u.cjs", _profile_7945.UPDATE_BRIDGE_MODULE)
+        portable_update_helper = {"relative_path":"u.cjs", "sha256":sha256_bytes(_profile_7945.UPDATE_BRIDGE_MODULE), "size":len(_profile_7945.UPDATE_BRIDGE_MODULE)}
+    elif frontend_profile == _profile_6422.PROFILE:
+        atomic_replace_bytes(target.parent / "u.cjs", _profile_6422.UPDATE_BRIDGE_MODULE)
+        portable_update_helper = {"relative_path":"u.cjs", "sha256":sha256_bytes(_profile_6422.UPDATE_BRIDGE_MODULE), "size":len(_profile_6422.UPDATE_BRIDGE_MODULE)}
+    elif frontend_profile == _profile_4958.PROFILE:
+        atomic_replace_bytes(target.parent / "u.cjs", _profile_4958.UPDATE_BRIDGE_MODULE)
+        portable_update_helper = {"relative_path":"u.cjs", "sha256":sha256_bytes(_profile_4958.UPDATE_BRIDGE_MODULE), "size":len(_profile_4958.UPDATE_BRIDGE_MODULE)}
     frontend_contract_result = (
         run_frontend_contract_validator(source, target)
         if current_profile and is_split_frontend_profile(frontend_profile)
@@ -5854,6 +6009,7 @@ def build_archive(
         if current_profile
         else None,
         "update_status_bridge": update_status_output,
+        "portable_update_helper": portable_update_helper,
         "frontend_attestation_protocol_route": attestation_protocol_output,
         "created_at": utc_now(),
         "package_full_name": package_full_name,
@@ -5937,8 +6093,32 @@ def verify_manifest(
     if manifest.get("schema_version") != 2:
         raise HotfixError("Unsupported manifest schema")
     identity_profile = profile_for_asar(str(manifest.get("official_source_sha256") or ""))
+    if identity_profile == _profile_7124.PROFILE:
+        helper = manifest.get("portable_update_helper") or {}
+        helper_path = Path(manifest["portable_app"]) / "resources/u.cjs"
+        expected_helper = sha256_bytes(_profile_7124.UPDATE_BRIDGE_MODULE)
+        if helper != {"relative_path":"u.cjs", "sha256":expected_helper, "size":len(_profile_7124.UPDATE_BRIDGE_MODULE)} or not helper_path.is_file() or helper_path.is_symlink() or sha256_path(helper_path) != expected_helper:
+            raise HotfixError("Portable update helper identity differs")
+    elif identity_profile == _profile_7945.PROFILE:
+        helper = manifest.get("portable_update_helper") or {}
+        helper_path = Path(manifest["portable_app"]) / "resources/u.cjs"
+        expected_helper = sha256_bytes(_profile_7945.UPDATE_BRIDGE_MODULE)
+        if helper != {"relative_path":"u.cjs", "sha256":expected_helper, "size":len(_profile_7945.UPDATE_BRIDGE_MODULE)} or not helper_path.is_file() or helper_path.is_symlink() or sha256_path(helper_path) != expected_helper:
+            raise HotfixError("Portable update helper identity differs")
+    elif identity_profile == _profile_6422.PROFILE:
+        helper = manifest.get("portable_update_helper") or {}
+        helper_path = Path(manifest["portable_app"]) / "resources/u.cjs"
+        expected_helper = sha256_bytes(_profile_6422.UPDATE_BRIDGE_MODULE)
+        if helper != {"relative_path":"u.cjs", "sha256":expected_helper, "size":len(_profile_6422.UPDATE_BRIDGE_MODULE)} or not helper_path.is_file() or helper_path.is_symlink() or sha256_path(helper_path) != expected_helper:
+            raise HotfixError("Portable update helper identity differs")
+    elif identity_profile == _profile_4958.PROFILE:
+        helper = manifest.get("portable_update_helper") or {}
+        helper_path = Path(manifest["portable_app"]) / "resources/u.cjs"
+        expected_helper = sha256_bytes(_profile_4958.UPDATE_BRIDGE_MODULE)
+        if helper != {"relative_path":"u.cjs", "sha256":expected_helper, "size":len(_profile_4958.UPDATE_BRIDGE_MODULE)} or not helper_path.is_file() or helper_path.is_symlink() or sha256_path(helper_path) != expected_helper:
+            raise HotfixError("Portable update helper identity differs")
     expected_builder = BUILDER_VERSION
-    if identity_profile and identity_profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"}:
+    if identity_profile and identity_profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_8451", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
         expected_builder = frontend_attestation_identity(identity_profile)[1].split("-")[0]
     if manifest.get("builder_version") != expected_builder:
         raise HotfixError("Manifest builder version differs")
@@ -6078,7 +6258,7 @@ def verify_manifest(
                 if is_orange_frontend_profile(source_profile) or source_profile.get("package_version") in {
                     "26.903.9818.0",
                     "26.908.4834.0",
-            "26.908.9136.0", "26.915.3509.0", "26.915.4065.0", "26.917.6896.0", "26.917.8451.0", "26.917.9434.0", "26.924.1866.0", "26.924.2738.0",
+            "26.908.9136.0", "26.915.3509.0", "26.915.4065.0", "26.917.6896.0", "26.917.8451.0", "26.917.9434.0", "26.924.1866.0", "26.924.2738.0", "26.924.6891.0", "26.928.2636.0", "26.928.3736.0",
                 }
                 else 2
             ),
@@ -6136,7 +6316,7 @@ def verify_manifest(
             if is_26908_route
             else FRONTEND_ATTESTATION_PROTOCOL_HANDLER_26903_OLD if is_26903_route else protocol_handler_old
         )
-        if source_profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26924_1866", "26924_2738", "26928_4866"}:
+        if source_profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_8451", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"}:
             resolver_old, resolver_new = _profile_26915(source_profile).PROTOCOL_OLD, _profile_26915(source_profile).PROTOCOL_NEW
             handler_old_value, handler_new = _profile_26915(source_profile).HANDLER_OLD, _profile_26915(source_profile).HANDLER_NEW
         if (
@@ -6148,7 +6328,7 @@ def verify_manifest(
             or (
                 not is_26903_route
                 and not is_26908_route
-                and protocol_data.count(_profile_26915(source_profile).PROTOCOL_COMPACTION_NEW if source_profile.get("profile_spec_id") in {"26924_1866", "26924_2738", "26928_4866"} else FRONTEND_ATTESTATION_PROTOCOL_COMPACTION_NEW) != 1
+                and protocol_data.count(_profile_26915(source_profile).PROTOCOL_COMPACTION_NEW if source_profile.get("profile_spec_id") in {"26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124"} else FRONTEND_ATTESTATION_PROTOCOL_COMPACTION_NEW) != 1
             )
         ):
             raise HotfixError("Portable frontend attestation protocol route differs")
@@ -6871,55 +7051,35 @@ def main() -> int:
         return 2
 
 
+PUBLIC_SOURCE_VERSIONS={'26.908.9136.0','26.915.3509.0','26.915.4065.0','26.917.6896.0','26.917.9434.0','26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0'}
+FRONTEND_PROFILES=tuple(p for p in FRONTEND_PROFILES if p.get('package_version') in PUBLIC_SOURCE_VERSIONS)
 
 
-def frontend_attestation_identity(profile: dict[str, Any] | None) -> tuple[str, str]:
-    """Read immutable profile identity without relabeling historical artifacts."""
-    module = renderer_attestation_module(profile)
-    version = re.search(rb'validator_version:"([^"]+)"', module)
-    artifact = re.search(rb'\bA="([^"]+)"', module)
-    if version is None or artifact is None:
-        raise HotfixError("Renderer module release identity is missing")
-    return version.group(1).decode("ascii"), artifact.group(1).decode("ascii")
-def patch_profile_shared_entry(entry: bytes, profile: dict[str, Any]) -> bytes:
-    if sha256_bytes(entry) != profile.get("shared_entry_source_sha256"):
-        raise HotfixError("Shared frontend source hash differs")
-    patched = entry
-    for name, pairs in _profile_26915(profile).SHARED_PAIRS.items():
-        for old, new in pairs:
-            if patched.count(old) != 1 or patched.count(new) != 0:
-                raise HotfixError("Shared export signature differs: " + name)
-            patched = patched.replace(old, new, 1)
-    patched = equalize_current_entry_length(entry, patched)
-    if len(patched) != len(entry):
-        raise HotfixError("Shared frontend length changed")
-    return patched
-
-FRONTEND_PROFILES += (_profile_1866.PROFILE,)
-_SPEC_26924_1866 = _FrontendProfileSpec(pairs=_profile_1866.PAIRS, official_features=frozenset(_profile_1866.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_1866.OFFICIAL_FEATURE_SIGNATURES)
-
-
-
-FRONTEND_PROFILES += (_profile_2738.PROFILE,)
-_SPEC_26924_2738 = _FrontendProfileSpec(pairs=_profile_2738.PAIRS, official_features=frozenset(_profile_2738.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_2738.OFFICIAL_FEATURE_SIGNATURES)
-
-def is_orange_frontend_profile(profile: dict[str, Any] | None) -> bool:
-    """New proof inventory belongs only to the complete immutable 4866 profile."""
-    return bool(profile and profile == _profile_4866.PROFILE)
-
-def frontend_attestation_features(profile: dict[str, Any] | None = None) -> tuple[str, ...]:
+def frontend_validator_version(profile: dict[str, Any] | None = None) -> str:
+    if profile and profile.get("profile_spec_id") == "261002_7124":
+        return frontend_attestation_identity(profile)[0]
     if is_orange_frontend_profile(profile):
-        return FRONTEND_ATTESTATION_FEATURES + ("user_action_pending_orange",)
-    return FRONTEND_ATTESTATION_FEATURES
+        return "2.6.0"
+    if profile and profile.get("profile_spec_id") == "26924_2738":
+        return "2.5.1"
+    elif profile and profile.get("profile_spec_id") == "26924_1866":
+        return "2.5.0"
+    if profile and profile.get("profile_spec_id") == "26915_3509":
+        return "2.4.7"
+    if profile and profile.get("profile_spec_id") == "26915_4065":
+        return "2.4.8"
+    if profile and profile.get("profile_spec_id") == "26917_6896":
+        return "2.4.9"
+    if profile and profile.get("profile_spec_id") == "26917_9434":
+        return "2.4.10"
+    return "2.4.6"
 
-def frontend_feature_statuses(profile: dict[str, Any] | None = None) -> dict[str, set[str]]:
-    result = {name: set(states) for name, states in FEATURE_STATUSES.items()}
-    if is_orange_frontend_profile(profile):
-        result["user_action_pending_orange"] = {"patched", "official_fixed"}
-    return result
-
-FRONTEND_PROFILES += (_profile_4866.PROFILE,)
-_SPEC_26928_4866 = _FrontendProfileSpec(pairs=_profile_4866.PAIRS, official_features=frozenset(_profile_4866.OFFICIAL_FEATURE_SIGNATURES), injected_global_identifier_counts={}, protected_official_signatures=tuple(), official_feature_signatures=_profile_4866.OFFICIAL_FEATURE_SIGNATURES)
+def frontend_attestation_artifact_id(profile: dict[str, Any] | None = None) -> str:
+    if profile and profile.get("profile_spec_id") == "261002_7124":
+        return frontend_attestation_identity(profile)[1]
+    if profile and profile.get("asar_source_sha256"):
+        return f"{frontend_builder_version(profile)}-{str(profile['asar_source_sha256'])[:12]}"
+    return FRONTEND_ATTESTATION_ARTIFACT_ID
 
 if __name__ == "__main__":
     raise SystemExit(main())

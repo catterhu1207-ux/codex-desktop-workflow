@@ -195,6 +195,15 @@ def verify_owned(source, portable, runs_root, observe_seconds, launches):
         if job.pids():raise RuntimeError('owned_descendants_remain')
         value=json.loads(result.read_text(encoding='utf8'))
         value['owned_cleanup']={'owned_job_empty':True,'auxiliary_processes':pending}
+        # Read the complete logs after natural exit, including late failures.
+        from .renderer_proof import parse_owned_logs
+        if value.get('bundle',{}).get('package_version') == '26.1002.7124.0':
+            manifest=portable/'codex-desktop-workflow-manifest.json'
+            for run in value['runtime']:
+                proof=parse_owned_logs(manifest,Path(run['run_directory']),run['pre_close']['main'])
+                if proof.get('status')!='passed':raise RuntimeError('final_closed_renderer_proof_rejected')
+                run['attestation']=proof
+            value['closed_log_readback']='passed'
         result.write_text(json.dumps(value,indent=2),encoding='utf8')
         (portable/'codex-desktop-workflow-verification.json').write_text(json.dumps(value,indent=2),encoding='utf8')
         return value

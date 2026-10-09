@@ -23,6 +23,10 @@ def qualify(app, runs_root, previous):
         records=write.execute('SELECT id,rollout_path,first_user_message FROM threads').fetchall()
         if len(records)!=6:raise ValueError('synthetic_source_rows_missing')
         for identity,raw,first in records:
+            if raw.startswith('\\\\?\\'):
+                if len(raw)<7 or not raw[4].isalpha() or raw[5:7]!=':\\':
+                    raise ValueError('unexpected_extended_rollout_path')
+                raw=raw[4:]
             original=Path(raw).resolve()
             if not original.is_relative_to(source) or original.is_symlink() or not first.startswith('Synthetic native facade first send '):
                 raise ValueError('non_synthetic_or_redirected_source')
