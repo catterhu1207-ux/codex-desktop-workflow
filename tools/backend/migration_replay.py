@@ -1,11 +1,11 @@
 """Initialize the real backend against six purely synthetic migrated databases."""
 import hashlib,json,os,queue,sqlite3,subprocess,sys,threading,time
 from pathlib import Path
-from awake_io import seconds,message as next_message,wait
+from awake_io import seconds,message as next_message,wait,owned_popen
 
 binary,source,home=map(lambda s:Path(s).resolve(),sys.argv[1:4])
 root=Path(__file__).resolve().parents[1]
-rows=json.loads((root.parent/'src/codex_desktop_workflow/policies/sqlite-migrations-26.928.4866.0.json').read_text())['migrations']
+rows=json.loads((root.parent/'src/codex_desktop_workflow/policies/sqlite-migrations-26.1002.7124.0.json').read_text())['migrations']
 home.mkdir(parents=True,exist_ok=False)
 names=list(dict.fromkeys(row['database'] for row in rows))
 def snapshot():
@@ -29,7 +29,7 @@ for key in list(env):
     if key.endswith('_API_KEY') or key.endswith('_TOKEN'):env.pop(key,None)
 (home/'config.toml').write_text('model_provider="fixture"\n[model_providers.fixture]\nname="Offline fixture"\nbase_url="http://127.0.0.1:1/v1"\nwire_api="responses"\nrequires_openai_auth=false\n')
 with (home/'stderr.log').open('w',encoding='utf8') as log:
-    p=subprocess.Popen([str(binary),'app-server'],env=env,cwd=home,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,text=True,encoding='utf8',creationflags=0x08000000)
+    p=owned_popen([str(binary),'app-server'],env=env,cwd=home,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=log,text=True,encoding='utf8',creationflags=0x08000000)
     messages=queue.Queue()
     threading.Thread(target=lambda:[messages.put(json.loads(line)) for line in p.stdout if line.strip()],daemon=True).start()
     def call(i,method,params):

@@ -1,0 +1,22 @@
+{
+  "desktop_version": "26.1002.7124.0",
+  "source": "exact packaged native call chain relocation",
+  "synthetic_only": true,
+  "files": {
+    "native_empty_negative.js": "977abafb143dc0cf844b798681c1c0e5fafde944677d3dca39f0499fec3ade22",
+    "native_host_resolution.js": "93e9ffe478b08950a0b44ff929cb9a2c056b0003edcac3e5b9e6d155ada4d2a7",
+    "native_reopen.cjs": "d8c8b726e66232743281dd4b4ce4d058fa2732884f7c938b70e3be5b85a5fafe",
+    "native_reopen.js": "9390400c07b4561d61b6a28cf4800873567592cd55f717c8ef5acddab4c84f13",
+    "native_scope_lifecycle.cjs": "3eed57b214c43b33912efb1150003612407168109a3005937e7746730d9df09a",
+    "native_scope_lifecycle.js": "97e718ceb7ffe61e47a2950b90775043bbe8f66777534a7c2f61473274717b76",
+    "native_ssh_lifecycle.js": "8bb2724283c24e92b0490a00e986a3b8d1230e1326dd1c4b4b91e2f537e2b89b",
+    "native_ssh_reopen.js": "9606e48dc9226619c7bc18d6f28e99ba2465be5a6f329c9a2b3759075f1c4ffc",
+    "reopen.py": "4f77d3950e891a4b185c8e68cdf12a7672059ce8d0a88447d0695afb3d9c863d",
+    "run.py": "58212704ad38c585dc126c002a2c05def7753904711a7dfcef8004c77a6323da",
+    "sidebar-capture-location.json": "8a95901f2e3d0bace6db2c42d06775c9f829496442315c5083fa16a84933778d",
+    "synthetic_service.py": "e72d3d46f845f71ccead3943b19602c1d184cafd2e81ce4ee767da10568c1b32",
+    "worker-manager-capture-location.json": "ffd813e227effec139f47d8f45de15ad00d60cfabc55c4563571df71e70ea7ed",
+    "worker-resume-capture-location.json": "3436bdbb29b21d8bb45e228d4b9aa8e468a1f2b61d1ec92b50724ead40e6948e"
+  },
+  "local_changes": "Owned process cleanup, awake waits, extended Windows drive-path qualification; explicit packaged verifier invocation"
+}

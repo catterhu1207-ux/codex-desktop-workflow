@@ -6,11 +6,12 @@ import json
 import re
 from pathlib import Path
 import subprocess
+from codex_desktop_workflow.awake_process import capture as awake_capture
 import sys
 from typing import Any
 
 
-VALIDATOR_VERSION = "2.4.6"
+VALIDATOR_VERSION = "2.5.1"
 CONTRACT_SCHEMA_VERSION = 2
 
 
@@ -200,15 +201,15 @@ assert(DDt({turns:[{itemsPagination:{hasLoadedOldest:false}}]})===false,`DDt inc
 let idle=bAt({conversationId:`id`,hostId:`local`,createdAt:1,updatedAt:2,title:`t`});
 assert(idle.resumeState===`needs_resume`&&idle.turns.length===0,`bAt idle resume shape failed`);
 
-const uuid=`11111111-1111-4111-8111-111111111111`;
-let remote=smr([{id:uuid,hostId:`remote-ssh-discovered:Host`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote-ssh-discovered:Host`,displayName:`Insolvency`}],{} )[0];
-assert(remote.label===`project-alpha`&&remote.projectId===uuid&&remote.hostId===`remote-ssh-discovered:Host`,`smr route identity failed`);
+const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
+let remote=smr([{id:uuid,hostId:`remote-ssh-discovered:Insolvency`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote-ssh-discovered:Insolvency`,displayName:`Insolvency`}],{} )[0];
+assert(remote.label===`project-alpha`&&remote.projectId===uuid&&remote.hostId===`remote-ssh-discovered:Insolvency`,`smr route identity failed`);
 remote=smr([{id:uuid,hostId:`remote`,label:`Saved name`,remotePath:`/root/project-alpha`}],[],{})[0];
 assert(remote.label===`Saved name`,`smr saved label failed`);
 let liveRemote={...remote,label:uuid,threadKeys:[`remote-thread`]};
 let mergedRemote=VCr([remote],[liveRemote],new Map())[0];
 assert(mergedRemote.label===`Saved name`&&mergedRemote.projectId===uuid&&mergedRemote.threadKeys.join()===`remote-thread`,`VCr same-id late UUID overwrite failed`);
-let changedId=`22222222-2222-4222-8222-222222222222`;
+let changedId=`423dd422-a9ef-4fc4-8c97-583483a49850`;
 mergedRemote=VCr([remote],[{...liveRemote,projectId:changedId,groupId:changedId}],new Map())[0];
 assert(mergedRemote.label===`Saved name`&&mergedRemote.projectId===uuid&&mergedRemote.threadKeys.join()===`remote-thread`,`VCr host-path fallback failed`);
 
@@ -261,7 +262,7 @@ process.stdout.write(JSON.stringify({
   ssh:{saved_name_precedence:true,uuid_fallback:true,post_merge_saved_name:true,host_path_fallback:true,thread_keys_preserved:true,route_identity_unchanged:true}
 }));
 '''
-    completed = subprocess.run(
+    completed = awake_capture(
         [node, "-"], input=_with_module_stubs(script, functions), text=True, capture_output=True, timeout=30
     )
     if completed.returncode != 0:
@@ -411,12 +412,12 @@ assert(color(pIo({statusState:{i:false,p:true,unread:false,unreadCount:0}}))===`
 assert(color(pIo({statusState:{i:false,p:false,unread:true,unreadCount:0}}))===`var(--color-text-info)`,`blue indicator failed`);
 assert(pIo({statusState:{}})===null,`empty indicator failed`);
 
-const uuid=`11111111-1111-4111-8111-111111111111`;
+const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
 let saved=k_i([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote`,displayName:`Host`}],{})[0];
 assert(saved.label===`project-alpha`&&saved.projectId===uuid,`SSH path fallback failed`);
 let merged=dCi([saved],[{...saved,label:uuid,threadKeys:[`thread`]}],new Map())[0];
 assert(merged.label===`project-alpha`&&merged.projectId===uuid&&merged.threadKeys[0]===`thread`,`SSH same-id merge failed`);
-let moved=dCi([saved],[{...saved,projectId:`22222222-2222-4222-8222-222222222222`,groupId:`22222222-2222-4222-8222-222222222222`,label:uuid,threadKeys:[`thread`]}],new Map())[0];
+let moved=dCi([saved],[{...saved,projectId:`423dd422-a9ef-4fc4-8c97-583483a49850`,groupId:`423dd422-a9ef-4fc4-8c97-583483a49850`,label:uuid,threadKeys:[`thread`]}],new Map())[0];
 assert(moved.label===`project-alpha`&&moved.projectId===uuid&&moved.threadKeys[0]===`thread`,`SSH host/path merge failed`);
 assert(hCi({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`project-alpha`}).label===`project-alpha`,`project subtitle failed`);
 
@@ -451,7 +452,7 @@ process.stdout.write(JSON.stringify({
  history:{resume:true,paginated_tail:true},work:{remote_project:true}
 }));
 '''
-    completed = subprocess.run(
+    completed = awake_capture(
         [node, "-"], input=_with_module_stubs(script, functions), text=True, capture_output=True, timeout=30
     )
     if completed.returncode != 0:
@@ -686,14 +687,14 @@ assert(color(oKo({statusState:planState}))===`#eab308`,`yellow must not inherit 
 assert(color(oKo({statusState:unreadState}))===`var(--color-text-info)`,`blue`);
 assert(scalarOnlyState.p===false&&oKo({statusState:scalarOnlyState})===null,`display scalar bypass`);
 assert(oKo({statusState:emptyState})===null,`empty`);
-const uuid=`11111111-1111-4111-8111-111111111111`;
+const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
 let raw={id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`};
 let picker={...raw,label:qZx(raw)};
 assert(picker.label===`project-alpha`&&picker.id===uuid&&picker.hostId===raw.hostId&&picker.remotePath===raw.remotePath,`new chat picker label`);
 let saved=Qwi([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote`,displayName:`Host`}],{})[0];
 assert(saved.label===`project-alpha`&&saved.projectId===uuid,`ssh path`);
 let merged=NAi([saved],[{...saved,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(merged.label===`project-alpha`&&merged.threadKeys[0]===`thread`,`ssh merge`);
-let moved=NAi([saved],[{...saved,projectId:`22222222-2222-4222-8222-222222222222`,groupId:`22222222-2222-4222-8222-222222222222`,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(moved.projectId===uuid&&moved.label===`project-alpha`,`ssh moved id`);
+let moved=NAi([saved],[{...saved,projectId:`423dd422-a9ef-4fc4-8c97-583483a49850`,groupId:`423dd422-a9ef-4fc4-8c97-583483a49850`,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(moved.projectId===uuid&&moved.label===`project-alpha`,`ssh moved id`);
 assert(LAi({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`project-alpha`}).label===`project-alpha`,`subtitle`);
 let items=[{key:`p1`,kind:`project`,pinned:false,source:`codex`},{key:`p2`,kind:`project`,pinned:false,source:`codex`},{key:`c1`,kind:`conversation`,pinned:false,projectKey:`p1`,attentionState:`unread`,recencyAt:10,source:`codex`},{key:`c2`,kind:`conversation`,pinned:false,projectKey:`p2`,attentionState:`idle`,recencyAt:20,source:`codex`}];
 let opts={chatSortMode:`updated_at`,mode:`project`,pinnedOrder:[],pinnedSortMode:`manual`,projectOrder:[`p1`,`p2`],source:`codex`};
@@ -705,7 +706,7 @@ let idle=a9t({thread:{createdAt:1,updatedAt:2,source:null,historyMode:`paginated
 process.stdout.write(JSON.stringify({status:`passed`,executed:[`_W`,`EAi`,`U3o`,`N8`,`a4t`,`i4t`,`oKo`,`cKo`,`qZx`,`Qwi`,`NAi`,`zji`,`lLi`,`uLi`,`LAi`,`eEi`,`XU`,`a9t`,`iki`,`ojn`,`_H`,`$Yt`],priority:{normal:true,pinned:true,live_refresh:true,reminder_membership:true,dormant_excluded:true,process_start_source:true,output_write_stable:true},attention:{loading:`spinner`,pinned:`red`,plan:`yellow`,unread:`blue`,none:null,plan_source:`pending_request_object`,display_scalar_rejected:true,pinned_source:`isPinned`},sorting:{project_updated:true,project_priority:true},ssh:{saved_name_precedence:true,uuid_fallback:true,host_path_fallback:true,thread_keys_preserved:true,route_identity_unchanged:true,new_chat_picker_label:`project-alpha`,new_chat_picker_visible_uuid_count:0,raw_route_identity_unchanged:true},history:{resume:true,paginated_tail:true},work:{remote_project:true,visible_label:`project-alpha`,route_project_id:uuid}}));
 '''
     )
-    completed = subprocess.run(
+    completed = awake_capture(
         [node, "-"], input=_with_module_stubs(script, functions), text=True, capture_output=True, timeout=30
     )
     if completed.returncode != 0:
@@ -968,14 +969,14 @@ assert(color(b$o({statusState:planState}))===`#eab308`,`yellow must not inherit 
 assert(color(b$o({statusState:unreadState}))===`var(--color-text-info)`,`blue`);
 assert(scalarOnlyState.p===false&&b$o({statusState:scalarOnlyState})===null,`display scalar bypass`);
 assert(b$o({statusState:emptyState})===null,`empty`);
-const uuid=`11111111-1111-4111-8111-111111111111`;
+const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
 let raw={id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`};
 let picker={...raw,label:qZx(raw)};
 assert(picker.label===`project-alpha`&&picker.id===uuid&&picker.hostId===raw.hostId&&picker.remotePath===raw.remotePath,`new chat picker label`);
 let saved=Jki([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote`,displayName:`Host`}],{})[0];
 assert(saved.label===`project-alpha`&&saved.projectId===uuid,`ssh path`);
 let merged=WFi([saved],[{...saved,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(merged.label===`project-alpha`&&merged.threadKeys[0]===`thread`,`ssh merge`);
-let moved=WFi([saved],[{...saved,projectId:`22222222-2222-4222-8222-222222222222`,groupId:`22222222-2222-4222-8222-222222222222`,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(moved.projectId===uuid&&moved.label===`project-alpha`,`ssh moved id`);
+let moved=WFi([saved],[{...saved,projectId:`423dd422-a9ef-4fc4-8c97-583483a49850`,groupId:`423dd422-a9ef-4fc4-8c97-583483a49850`,label:uuid,threadKeys:[`thread`]}],new Map())[0];assert(moved.projectId===uuid&&moved.label===`project-alpha`,`ssh moved id`);
 assert(JFi({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`project-alpha`}).label===`project-alpha`,`subtitle`);
 let items=[{key:`p1`,kind:`project`,pinned:false,source:`codex`},{key:`p2`,kind:`project`,pinned:false,source:`codex`},{key:`c1`,kind:`conversation`,pinned:false,projectKey:`p1`,attentionState:`unread`,recencyAt:10,source:`codex`},{key:`c2`,kind:`conversation`,pinned:false,projectKey:`p2`,attentionState:`idle`,recencyAt:20,source:`codex`}];
 let opts={chatSortMode:`updated_at`,mode:`project`,pinnedOrder:[],pinnedSortMode:`manual`,projectOrder:[`p1`,`p2`],source:`codex`};
@@ -987,7 +988,7 @@ let idle=Y9t({thread:{createdAt:1,updatedAt:2,source:null,historyMode:`paginated
 process.stdout.write(JSON.stringify({status:`passed`,executed:[`RW`,`LFi`,`qns`,`$8`,`Y4t`,`J4t`,`b$o`,`S$o`,`qZx`,`Jki`,`WFi`,`JIi`,`hHi`,`gHi`,`JFi`,`ZAi`,`mW`,`Y9t`,`hPi`,`oIn`,`HB`,`j$t`],priority:{normal:true,pinned:true,live_refresh:true,reminder_membership:true,dormant_excluded:true,process_start_source:true,output_write_stable:true},attention:{loading:`spinner`,pinned:`red`,plan:`yellow`,unread:`blue`,none:null,plan_source:`pending_request_object`,display_scalar_rejected:true,pinned_source:`isPinned`},sorting:{project_updated:true,project_priority:true},ssh:{saved_name_precedence:true,uuid_fallback:true,host_path_fallback:true,thread_keys_preserved:true,route_identity_unchanged:true,new_chat_picker_label:`project-alpha`,new_chat_picker_visible_uuid_count:0,raw_route_identity_unchanged:true},history:{resume:true,paginated_tail:true},work:{remote_project:true,visible_label:`project-alpha`,route_project_id:uuid}}));
 '''
     )
-    completed = subprocess.run(
+    completed = awake_capture(
         [node, "-"], input=_with_module_stubs(script, functions), text=True, capture_output=True, timeout=30
     )
     if completed.returncode != 0:
@@ -1169,7 +1170,7 @@ assert(color(xCo({statusState:pinnedPlanState}))===`var(--color-text-danger)`,`r
 assert(color(xCo({statusState:planState}))===`#eab308`,`yellow must not inherit the warning token`);
 assert(color(xCo({statusState:unreadState}))===`var(--color-text-info)`,`blue`);
 assert(scalarOnlyState.p===false&&xCo({statusState:scalarOnlyState})===null,`display scalar bypass`);
-const uuid=`11111111-1111-4111-8111-111111111111`;
+const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
 let raw={id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`};
 let picker={...raw,label:qZx(raw)};
 assert(picker.label===`project-alpha`&&picker.id===uuid&&picker.hostId===raw.hostId&&picker.remotePath===raw.remotePath,`new chat picker label`);
@@ -1177,7 +1178,7 @@ let saved=s2r([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alp
 assert(saved.label===`project-alpha`&&saved.projectId===uuid,`ssh path`);
 let merged=c9r([saved],[{...saved,label:uuid,threadKeys:[`thread`]}],new Map())[0];
 assert(merged.label===`project-alpha`&&merged.threadKeys[0]===`thread`,`ssh merge`);
-let moved=c9r([saved],[{...saved,projectId:`22222222-2222-4222-8222-222222222222`,groupId:`22222222-2222-4222-8222-222222222222`,label:uuid,threadKeys:[`thread`]}],new Map())[0];
+let moved=c9r([saved],[{...saved,projectId:`423dd422-a9ef-4fc4-8c97-583483a49850`,groupId:`423dd422-a9ef-4fc4-8c97-583483a49850`,label:uuid,threadKeys:[`thread`]}],new Map())[0];
 assert(moved.projectId===uuid&&moved.label===`project-alpha`,`ssh moved id`);
 assert(f9r({chatLabel:`Chat`,task:{kind:`remote`},projectLabel:`project-alpha`}).label===`project-alpha`,`subtitle`);
 let items=[{key:`p1`,kind:`project`,pinned:false,source:`codex`},{key:`p2`,kind:`project`,pinned:false,source:`codex`},{key:`c1`,kind:`conversation`,pinned:false,projectKey:`p1`,attentionState:`unread`,recencyAt:10,source:`codex`},{key:`c2`,kind:`conversation`,pinned:false,projectKey:`p2`,attentionState:`idle`,recencyAt:20,source:`codex`}];
@@ -1215,7 +1216,7 @@ process.stdout.write(JSON.stringify({status:`passed`,executed:[`iV`,`t9r`,`iLo`,
             'assert(color(xCo({statusState:{...pinnedPlanState,p:false,unread:true}}))===`var(--color-text-danger)`,`pinned unread stays red`);'
             'assert(xCo({statusState:{...pinnedPlanState,p:false,unread:false,unreadCount:0}})===null,`pinned idle stays empty`);'
             'assert(xCo({statusState:{...pinnedPlanState,type:`loading`}})?.kind===`spinner`,`loading retains spinner`);')
-    completed = subprocess.run(
+    completed = awake_capture(
         [node, "-"], input=_with_module_stubs(script, functions), text=True,
         capture_output=True, timeout=30,
     )
@@ -1240,9 +1241,10 @@ def _validate_renderer_probe(
     script = builder.renderer_attestation_script(profile)
     if entry.count(script) != 1:
         raise ContractError("Live-renderer attestation script identity changed")
-    if set(builder.frontend_attestation_features(profile)).intersection(
+    expected_frontend_features = builder.frontend_attestation_features(profile)
+    if set(expected_frontend_features).intersection(
         builder.NON_RENDERER_ATTESTATION_FEATURES
-    ) or set(builder.frontend_attestation_features(profile)).union(
+    ) or set(expected_frontend_features).union(
         builder.NON_RENDERER_ATTESTATION_FEATURES
     ) != set(builder.frontend_feature_statuses(profile)):
         raise ContractError("Component feature inventories differ from release inventory")
@@ -1271,8 +1273,32 @@ def _validate_renderer_probe(
     )
     _, protocol_entry = builder.read_entry(portable_asar, header_size, protocol_meta)
     latest = builder.is_split_frontend_profile(profile)
-    if builder.is_orange_frontend_profile(profile):
+    if profile == builder._profile_7124.PROFILE:
+        from hotfix_profile_261002_7124 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile == builder._profile_7945.PROFILE:
+        from hotfix_profile_26930_7945 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile == builder._profile_6422.PROFILE:
+        from hotfix_profile_26930_6422 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile == builder._profile_4958.PROFILE:
+        from hotfix_profile_26930_4958 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile == builder._profile_930.PROFILE:
+        from hotfix_profile_26930_3930 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile == builder._profile_4866.PROFILE:
         from hotfix_profile_26928_4866 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile.get("profile_spec_id") == "26928_3736":
+        from hotfix_profile_26928_3736 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile.get("profile_spec_id") == "26928_2636":
+        from hotfix_profile_26928_2636 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile.get("profile_spec_id") == "26924_6891":
+        from hotfix_profile_26924_6891 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
         resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
     elif profile.get("profile_spec_id") == "26924_2738":
         from hotfix_profile_26924_2738 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
@@ -1282,6 +1308,9 @@ def _validate_renderer_probe(
         resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
     elif profile.get("profile_spec_id") == "26917_9434":
         from hotfix_profile_26917_9434 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+        resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
+    elif profile.get("profile_spec_id") == "26917_8451":
+        from hotfix_profile_26917_8451 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
         resolver_old, resolver_new, handler_old, handler_fixed = PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
     elif profile.get("profile_spec_id") == "26917_6896":
         from hotfix_profile_26917_6896 import PROTOCOL_OLD, PROTOCOL_NEW, HANDLER_OLD, HANDLER_NEW
@@ -1357,7 +1386,7 @@ def _validate_renderer_probe(
         ],
         "marker": builder.FRONTEND_ATTESTATION_MARKER,
         "artifact_id": builder.frontend_attestation_identity(profile)[1],
-        "feature_ids": list(builder.frontend_attestation_features(profile)),
+        "feature_ids": list(expected_frontend_features),
         "script_sha256": _sha256(script),
         "module_relative_path": builder.FRONTEND_ATTESTATION_MODULE_NAME,
         "module_sha256": _sha256(module_content),
@@ -1919,9 +1948,36 @@ def validate(source_asar: Path, portable_asar: Path, node: str = "node") -> dict
 
     source_hash = builder.sha256_path(source_asar)
     profile = builder.profile_for_asar(source_hash)
-    if builder.is_orange_frontend_profile(profile):
+    if profile == builder._profile_7124.PROFILE:
+        from frontend_contract_261002_7124 import validate as validate_4958
+        return validate_4958(source_asar, portable_asar, node)
+    elif profile == builder._profile_7945.PROFILE:
+        from frontend_contract_26930_7945 import validate as validate_4958
+        return validate_4958(source_asar, portable_asar, node)
+    elif profile == builder._profile_6422.PROFILE:
+        from frontend_contract_26930_6422 import validate as validate_4958
+        return validate_4958(source_asar, portable_asar, node)
+    elif profile == builder._profile_4958.PROFILE:
+        from frontend_contract_26930_4958 import validate as validate_4958
+        return validate_4958(source_asar, portable_asar, node)
+    if profile and profile == builder._profile_930.PROFILE:
+        from frontend_contract_26930_3930 import validate as validate_930
+        return validate_930(source_asar, portable_asar, node)
+    if profile and profile.get("profile_spec_id") == "26928_4866":
+        import hotfix_builder as builder
+        if not builder.is_orange_frontend_profile(profile):
+            raise ContractError("New-version contract identity differs from the reviewed profile")
         from frontend_contract_26928_4866 import validate as validate_4866
         return validate_4866(source_asar, portable_asar, node)
+    if profile and profile.get("profile_spec_id") == "26928_3736":
+        from frontend_contract_26928_3736 import validate as validate_3736
+        return validate_3736(source_asar, portable_asar, node)
+    if profile and profile.get("profile_spec_id") == "26928_2636":
+        from frontend_contract_26928_2636 import validate as validate_2636
+        return validate_2636(source_asar, portable_asar, node)
+    if profile and profile.get("profile_spec_id") == "26924_6891":
+        from frontend_contract_26924_6891 import validate as validate_6891
+        return validate_6891(source_asar, portable_asar, node)
     if profile and profile.get("profile_spec_id") == "26924_2738":
         from frontend_contract_26924_2738 import validate as validate_2738
         return validate_2738(source_asar, portable_asar, node)
@@ -1931,6 +1987,9 @@ def validate(source_asar: Path, portable_asar: Path, node: str = "node") -> dict
     elif profile and profile.get("profile_spec_id") == "26917_9434":
         from frontend_contract_26917_9434 import validate as validate_9434
         return validate_9434(source_asar, portable_asar, node)
+    elif profile and profile.get("profile_spec_id") == "26917_8451":
+        from frontend_contract_26917_8451 import validate as validate_8451
+        return validate_8451(source_asar, portable_asar, node)
     if profile and profile.get("profile_spec_id") == "26917_6896":
         from frontend_contract_26917_6896 import validate as validate_6896
         return validate_6896(source_asar, portable_asar, node)

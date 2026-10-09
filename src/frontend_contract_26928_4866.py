@@ -31,7 +31,7 @@ def functions_from(raw,names,role,node='node'):
 def run_semantics(initial, primary, shared, node='node'):
     functions = functions_from(initial, INITIAL_FUNCTIONS + ('eSr', '$xr'), 'initial', node)
     functions.update(functions_from(shared, SHARED_FUNCTIONS, 'shared', node))
-    result = execute(functions, Path(__file__).parent.joinpath('codex_desktop_workflow/data', 'frontend_scenarios_26928_4866.js').read_text(encoding='utf8'), node)
+    result = execute(functions, (Path(__file__).resolve().parent/'codex_desktop_workflow/data'/'frontend_scenarios_26928_4866.js').read_text(encoding='utf8'), node)
     result['actual_row'] = run_row(initial, shared, node)
     from frontend_recency_contract_26928_4866 import run as run_recency
     result['start_event_recency'] = run_recency(initial, shared, node)
@@ -42,7 +42,7 @@ def run_semantics(initial, primary, shared, node='node'):
 def run_row(initial, shared, node='node'):
     functions = functions_from(initial, ('Xbo', 'Edo', 'rdo', 'r1', 'wuo', 'Tuo', 'qZp'), 'initial', node)
     functions.update(functions_from(shared, ('l4t', 'u4t', 'zR', 'JQ', 'RR'), 'shared', node))
-    scenario=Path(__file__).parent.joinpath('codex_desktop_workflow/data', 'frontend_row_scenarios_26928_4866.js').read_text(encoding='utf8')
+    scenario=(Path(__file__).resolve().parent/'codex_desktop_workflow/data'/'frontend_row_scenarios_26928_4866.js').read_text(encoding='utf8')
     result=execute(functions,scenario,node)
     needle='ot=!!(at||N.p||N.u)'
     if functions['rdo'].count(needle)!=1:raise ContractError('Native orange row visibility changed')
@@ -70,7 +70,7 @@ def require_routes(entries):
 def run_drop(initial, primary, node='node'):
     functions = functions_from(initial, ('Oga', 'd9o', 'gga', '_ga', 'Aga'), 'initial', node)
     functions.update(functions_from(primary, ('PKe', 'DDt', 'ODt', 'U5'), 'primary', node))
-    return execute(functions, Path(__file__).parent.joinpath('codex_desktop_workflow/data', 'frontend_drop_scenarios_26928_4866.js').read_text(encoding='utf8'), node)
+    return execute(functions, (Path(__file__).resolve().parent/'codex_desktop_workflow/data'/'frontend_drop_scenarios_26928_4866.js').read_text(encoding='utf8'), node)
 
 def run_archive(main, node='node'):
     functions = functions_from(main, ('Kl',), 'main', node)

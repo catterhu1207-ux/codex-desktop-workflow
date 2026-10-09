@@ -11,6 +11,6 @@ def run(initial, primary, picker, shared, node='node'):
     functions.update(functions_from(primary, ('T7', 'fOt', 'mOt', '_et', 'u4', 'AAt', 'pkt', 'cDt', 'VDt'), 'primary', node))
     functions.update(functions_from(shared, ('EM', 'TM', 'obt'), 'shared', node))
     lazy = functions_from(picker, ('R', 'z', 'B', 'V', 'H'), 'picker', node)
-    scenario = Path(__file__).parent.joinpath('codex_desktop_workflow/data', 'frontend_work_scenarios_26928_4866.js').read_text(encoding='utf8')
+    scenario = (Path(__file__).resolve().parent/'codex_desktop_workflow/data'/'frontend_work_scenarios_26928_4866.js').read_text(encoding='utf8')
     scenario = scenario.replace('/* EXACT_PICKER_FUNCTIONS */', '\n'.join(lazy.values()))
     return execute(functions, scenario, node)

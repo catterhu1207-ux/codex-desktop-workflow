@@ -1,5 +1,16 @@
 # codex-desktop-workflow
 
+## v0.3.6 开发版：26.1002.7124.0
+
+新增这个精确版本的适配。自动列表按聊天更新时间降序排列，保留手动顺序、置顶分组和实时重排。未回答的原生中间提问及权限请求显示橙色圆点，即使 Codex 仍在工作；读过聊天不会清除请求。需要你处理的橙色优先于待实施计划的黄色和加载转圈。
+
+左侧更新提示区分三种状态，分别使用 ◷（官方公布）、↓（完整原包可获取）、✓（已通过验收的适配已准备）。下载包是否可获取以包内版本为准。检查只读取有限的响应头和安装包元数据，不自动下载安装包或启用未经验证的版本。
+
+新版更新检查随公开安装包提供，不依赖维护者电脑中的私人启动器目录。官方后端仍为默认；可选兼容后端绑定公开源码的固定提交。
+
+目前官方后端候选完成了空目录、400 条真实创建并发送的合成聊天及原生设置／项目资料三轮运行检查，每轮超过 60 秒。可选兼容后端独立编译和最终下载安装验收仍在进行。此开发分支尚不是新版公开发行包；最新已发布版本仍为 v0.3.5。
+
+
 [![tests](https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/workflows/tests.yml/badge.svg)](https://github.com/catterhu1207-ux/codex-desktop-workflow/actions/workflows/tests.yml)
 [![release](https://img.shields.io/github/v/release/catterhu1207-ux/codex-desktop-workflow)](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)

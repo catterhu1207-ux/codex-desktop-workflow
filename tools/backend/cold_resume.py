@@ -1,7 +1,7 @@
 """Synthetic app-server cold resume with the retained desktop task settings."""
 import hashlib,json,os,queue,subprocess,sys,threading,time,uuid
 from pathlib import Path
-from awake_io import seconds,message as next_message,wait
+from awake_io import seconds,message as next_message,wait,owned_popen
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 
 binary=Path(sys.argv[1]).resolve()
@@ -37,7 +37,7 @@ for key in ('OPENAI_API_KEY','CODEX_API_KEY','DEEPSEEK_API_KEY'):env.pop(key,Non
 class Client:
     def __init__(self):
         self.log=(root/('stderr-'+uuid.uuid4().hex+'.log')).open('w')
-        self.p=subprocess.Popen([str(binary),'app-server'],env=env,cwd=workspace,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=self.log,text=True,encoding='utf8',creationflags=0x08000000)
+        self.p=owned_popen([str(binary),'app-server'],env=env,cwd=workspace,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=self.log,text=True,encoding='utf8',creationflags=0x08000000)
         self.q=queue.Queue();self.id=0
         threading.Thread(target=lambda:[self.q.put(json.loads(line)) for line in self.p.stdout if line.strip()],daemon=True).start()
         self.call('initialize',{'clientInfo':{'name':'synthetic-test','version':'1'},'capabilities':{'experimentalApi':True}})

@@ -3,6 +3,7 @@
 | Component | Status in v0.3.4 |
 |---|---|
 | Windows x64 | Supported |
+| Desktop `26.1002.7124.0` (v0.3.6 development) | Official candidate: 26 contracts and 23 signed renderer proofs, three isolated native sidebar runs; optional public-source backend and final installation acceptance pending |
 | Desktop `26.928.4866.0` | Official backend by default; optional source-built 0.159.2 compatibility profile; 25 contracts and 22 renderer proofs; three isolated launch profiles |
 | Complete official x64 MSIX | Accepted by PowerShell `-Source`; exact identity and signature required; no Store installation |
 | Desktop `26.924.2738.0` | Official and opt-in source-built compatibility backend; frontend 2.7.3 start-event ordering; independent profile and build identity |
