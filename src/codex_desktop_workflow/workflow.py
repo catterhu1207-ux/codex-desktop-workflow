@@ -241,7 +241,7 @@ def inspect(source: Path) -> dict[str, Any]:
 
 def build_backend(source: Path, target: Path) -> dict[str, Any]:
     inspected = inspect(source)
-    if inspected['status'] != 'passed' or inspected['supported_version'] not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0'):
+    if inspected['status'] != 'passed' or inspected['supported_version'] not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0'):
         raise WorkflowError('compat_backend_source_unsupported')
     return backend.build(Path(inspected['app_directory']), target, inspected['supported_version'])
 
@@ -254,7 +254,7 @@ def build(source: Path, target: Path, backend_mode: str = 'official', backend_ma
     if backend_mode not in ('official', 'compat'):
         raise WorkflowError('unsupported_backend_mode')
     if backend_mode == 'compat':
-        if support.version not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0') or backend_manifest is None:
+        if support.version not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0') or backend_manifest is None:
             raise WorkflowError('compatible_backend_manifest_required_for_supported_version')
         backend.validate_manifest(backend_manifest, support.version)
         selected_policy = backend_manifest
