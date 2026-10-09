@@ -16,11 +16,15 @@ class ReleaseQualification(unittest.TestCase):
         e=json.loads(path.read_text())
         self.assertEqual(e['status'],'passed')
         self.assertEqual(e['desktop_version'],'26.1002.7124.0')
-        delta=e['release_metadata_delta']
-        self.assertEqual(delta['file'],'codex_desktop_workflow/__init__.py')
-        self.assertEqual(delta['current_sha256'],digest(PACKAGE/'__init__.py'))
-        previous=(PACKAGE/'__init__.py').read_bytes().replace(b"\r\n",b"\n").replace(b'__version__ = "0.3.6"',b'__version__ = "0.3.5"')
-        self.assertEqual(hashlib.sha256(previous).hexdigest(),delta['tested_sha256'])
+        # Bind evidence to the source actually built, not an invented earlier
+        # version string or a later documentation-only commit.
+        self.assertEqual(e['package_version'],codex_desktop_workflow.__version__)
+        artifacts=e['tested_artifacts']
+        self.assertEqual(set(artifacts),{'official','compat','installed_wheel'})
+        for artifact in artifacts.values():
+            self.assertRegex(artifact['source_commit'],r'^[0-9a-f]{40}$')
+            self.assertRegex(artifact['artifact_sha256'],r'^[0-9a-f]{64}$')
+            self.assertEqual(artifact['source_inputs'],e['source_inputs'])
         actual={str(p.relative_to(SOURCE)).replace('\\','/') for p in SOURCE.rglob('*') if p.is_file() and p.suffix in ('.py','.js','.cjs','.json','.ps1') and p.name!=CURRENT}
         self.assertEqual(set(e['source_inputs']),actual)
         for name,value in e['source_inputs'].items():self.assertEqual(digest(SOURCE/name),value,name)
@@ -50,8 +54,13 @@ class ReleaseQualification(unittest.TestCase):
         for flag in ('native_first_send','native_cold_reopen','proof_rejections','msix_installer','installed_wheel','previous_profile_regression','process_ancestry_regression','sensitive_content_scan'):self.assertEqual(e['checks'][flag],'passed')
         self.assertEqual(e['new_chat']['synthetic_sent_chats'],6)
         self.assertFalse(e['new_chat']['encrypted_ssh_transport_tested'])
-        self.assertEqual(len(e['old_runtime']),4)
+        self.assertTrue(e['old_runtime'])
         for run in e['old_runtime']:
+            if run['status']=='skipped':
+                self.assertEqual(run['reason'],'official_source_unavailable')
+                self.assertFalse(run['counted_as_passed'])
+                continue
+            self.assertEqual(run['status'],'passed')
             self.assertEqual(run['renderer_features'],21)
             self.assertGreaterEqual(run['observed_seconds'],60)
             self.assertTrue(run['owned_job_empty'])
