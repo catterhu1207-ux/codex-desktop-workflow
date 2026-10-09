@@ -15,12 +15,16 @@ This adaptation is in development. It is not an installable release yet. The lat
 - The production proof parser accepted the actual closed logs and rejected all 11 tested identity, transport, freshness and missing-feature mutations.
 - A locally built public wheel bundle installed into a fresh directory and completed three native launches, each with all 23 proofs and at least 60 seconds of awake observation. This is local bundle acceptance, not anonymous release-download acceptance.
 - Directory dry-run passed. A genuinely signed older MSIX was rejected as an unsupported version before building or installing anything. Positive MSIX acceptance is still blocked by the missing matching package.
-- Six awake-time probe tests passed, including paused-time budgets and large-output process completion.
+- Nine awake-time probe tests passed, including stdin capture, paused-time budgets, active-time rejection and large-output process completion. Three bounded process-snapshot recovery tests passed; persistent read failures and empty snapshots remain rejected.
+- The optional backend was independently built from frozen public source commit `5e87c10d0e767faae15a682fa1200f29e8e3e77b`. The retained, tested binary passed HTTP, WebSocket, cold resume, local and remote compaction, and migration checks for all 74 migrations across six databases. A later build produced different binary bytes and is not covered by these results.
+- The build monitor stopped a remaining owned Microsoft compiler auxiliary process. The original terminal warning is retained; binary-content acceptance is recorded separately from process cleanup.
+- Backend GitHub Actions passed. The current frontend run checked 115 tests: 108 passed, six were skipped, and one remains blocked by incomplete release qualification.
 
 ## Still required
 
-- Complete the independently built optional backend and its communication, compaction, migration and three-launch checks.
-- Finish optional-backend acceptance and final anonymously downloaded packaged-installer acceptance.
+- Complete the optional backend's native three-launch and first-send/cold-reopen checks. Its independent public-source binary and all six backend acceptance cases have passed.
+- Repeat affected checks for the final source and rebuilt wheel after the awake-time and process-snapshot fixes. The previously tested wheel is preliminary and does not qualify later source changes.
+- Finish final anonymously downloaded packaged-installer acceptance.
 - Complete the final release bundle, Actions, anonymous download and fresh-install verification.
 - Obtain a matching full official MSIX for positive installer acceptance. The generic download entry inspected during this work still contained 26.930.7945.0, which is not this target. It must not be used as proof for 26.1002.7124.0.
 - Historical runtime checks whose original packages are unavailable remain skipped, rather than passed.
