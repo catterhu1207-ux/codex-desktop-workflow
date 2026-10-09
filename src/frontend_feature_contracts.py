@@ -6,6 +6,7 @@ import json
 import re
 from pathlib import Path
 import subprocess
+from codex_desktop_workflow.awake_process import capture as awake_capture
 import sys
 from typing import Any
 
@@ -261,7 +262,7 @@ process.stdout.write(JSON.stringify({
   ssh:{saved_name_precedence:true,uuid_fallback:true,post_merge_saved_name:true,host_path_fallback:true,thread_keys_preserved:true,route_identity_unchanged:true}
 }));
 '''
-    completed = subprocess.run(
+    completed = awake_capture(
         [node, "-"], input=_with_module_stubs(script, functions), text=True, capture_output=True, timeout=30
     )
     if completed.returncode != 0:
@@ -451,7 +452,7 @@ process.stdout.write(JSON.stringify({
  history:{resume:true,paginated_tail:true},work:{remote_project:true}
 }));
 '''
-    completed = subprocess.run(
+    completed = awake_capture(
         [node, "-"], input=_with_module_stubs(script, functions), text=True, capture_output=True, timeout=30
     )
     if completed.returncode != 0:
@@ -705,7 +706,7 @@ let idle=a9t({thread:{createdAt:1,updatedAt:2,source:null,historyMode:`paginated
 process.stdout.write(JSON.stringify({status:`passed`,executed:[`_W`,`EAi`,`U3o`,`N8`,`a4t`,`i4t`,`oKo`,`cKo`,`qZx`,`Qwi`,`NAi`,`zji`,`lLi`,`uLi`,`LAi`,`eEi`,`XU`,`a9t`,`iki`,`ojn`,`_H`,`$Yt`],priority:{normal:true,pinned:true,live_refresh:true,reminder_membership:true,dormant_excluded:true,process_start_source:true,output_write_stable:true},attention:{loading:`spinner`,pinned:`red`,plan:`yellow`,unread:`blue`,none:null,plan_source:`pending_request_object`,display_scalar_rejected:true,pinned_source:`isPinned`},sorting:{project_updated:true,project_priority:true},ssh:{saved_name_precedence:true,uuid_fallback:true,host_path_fallback:true,thread_keys_preserved:true,route_identity_unchanged:true,new_chat_picker_label:`project-alpha`,new_chat_picker_visible_uuid_count:0,raw_route_identity_unchanged:true},history:{resume:true,paginated_tail:true},work:{remote_project:true,visible_label:`project-alpha`,route_project_id:uuid}}));
 '''
     )
-    completed = subprocess.run(
+    completed = awake_capture(
         [node, "-"], input=_with_module_stubs(script, functions), text=True, capture_output=True, timeout=30
     )
     if completed.returncode != 0:
@@ -987,7 +988,7 @@ let idle=Y9t({thread:{createdAt:1,updatedAt:2,source:null,historyMode:`paginated
 process.stdout.write(JSON.stringify({status:`passed`,executed:[`RW`,`LFi`,`qns`,`$8`,`Y4t`,`J4t`,`b$o`,`S$o`,`qZx`,`Jki`,`WFi`,`JIi`,`hHi`,`gHi`,`JFi`,`ZAi`,`mW`,`Y9t`,`hPi`,`oIn`,`HB`,`j$t`],priority:{normal:true,pinned:true,live_refresh:true,reminder_membership:true,dormant_excluded:true,process_start_source:true,output_write_stable:true},attention:{loading:`spinner`,pinned:`red`,plan:`yellow`,unread:`blue`,none:null,plan_source:`pending_request_object`,display_scalar_rejected:true,pinned_source:`isPinned`},sorting:{project_updated:true,project_priority:true},ssh:{saved_name_precedence:true,uuid_fallback:true,host_path_fallback:true,thread_keys_preserved:true,route_identity_unchanged:true,new_chat_picker_label:`project-alpha`,new_chat_picker_visible_uuid_count:0,raw_route_identity_unchanged:true},history:{resume:true,paginated_tail:true},work:{remote_project:true,visible_label:`project-alpha`,route_project_id:uuid}}));
 '''
     )
-    completed = subprocess.run(
+    completed = awake_capture(
         [node, "-"], input=_with_module_stubs(script, functions), text=True, capture_output=True, timeout=30
     )
     if completed.returncode != 0:
@@ -1215,7 +1216,7 @@ process.stdout.write(JSON.stringify({status:`passed`,executed:[`iV`,`t9r`,`iLo`,
             'assert(color(xCo({statusState:{...pinnedPlanState,p:false,unread:true}}))===`var(--color-text-danger)`,`pinned unread stays red`);'
             'assert(xCo({statusState:{...pinnedPlanState,p:false,unread:false,unreadCount:0}})===null,`pinned idle stays empty`);'
             'assert(xCo({statusState:{...pinnedPlanState,type:`loading`}})?.kind===`spinner`,`loading retains spinner`);')
-    completed = subprocess.run(
+    completed = awake_capture(
         [node, "-"], input=_with_module_stubs(script, functions), text=True,
         capture_output=True, timeout=30,
     )

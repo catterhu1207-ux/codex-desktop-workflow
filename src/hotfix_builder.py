@@ -9,6 +9,7 @@ import re
 import shutil
 import struct
 import subprocess
+from codex_desktop_workflow.awake_process import capture as awake_capture
 import sys
 import uuid
 from datetime import datetime, timezone
@@ -1502,7 +1503,7 @@ def pe_authenticode_status(path: Path) -> str:
 def codex_version_output(path: Path) -> str:
     creationflags = 0x08000000 if os.name == "nt" else 0
     try:
-        completed = subprocess.run(
+        completed = awake_capture(
             [str(path), "--version"],
             check=False,
             capture_output=True,
@@ -2516,7 +2517,7 @@ def run_frontend_contract_validator(source_asar: Path, portable_asar: Path) -> d
     validator = Path(__file__).with_name("frontend_feature_contracts.py")
     if not validator.is_file():
         raise HotfixError("Frontend feature-contract validator is missing")
-    completed = subprocess.run(
+    completed = awake_capture(
         [
             sys.executable,
             str(validator),
