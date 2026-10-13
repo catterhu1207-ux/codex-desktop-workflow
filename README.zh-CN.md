@@ -284,3 +284,5 @@ codex-desktop-workflow stop --run C:\codex-workflow\daily-runs\run-<id>
 **一句话定位：** 这不是另一个 Codex 客户端，而是一套把官方 Codex Desktop 的多任务工作流改成“更容易判断下一步做什么”的本地、可验证适配工具。
 
 重复构建时，可用 `CODEX_COMPAT_BUILD_CACHE` 指定已有源码构建目录。固定版本的构建入口会重新校验源码、依赖锁定文件和迁移文件，再运行测试及 Cargo 构建。工具链前置条件仍须满足。
+
+维护与续办请参阅[桌面维护技能](docs/maintenance/SKILL.md)及[经验与发行状态](docs/maintenance/2026-10-lessons.md)。

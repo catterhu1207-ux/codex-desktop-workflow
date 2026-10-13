@@ -282,3 +282,5 @@ Please do not upload authentication files, task content, access tokens, or unaut
 **One-line positioning:** this is not another Codex client. It is a local, verifiable adaptation layer that makes the official Codex Desktop workflow easier to prioritize when many tasks are running at once.
 
 For repeated source builds, `CODEX_COMPAT_BUILD_CACHE` can name an existing build target. The pinned recipe rechecks its source, workspace lock and migrations, reruns tests, and rebuilds through Cargo before copying the result. Tool prerequisites remain required.
+
+For maintenance and resumable work, see the [desktop maintenance skill](docs/maintenance/SKILL.md) and [findings and distribution status](docs/maintenance/2026-10-lessons.md).
