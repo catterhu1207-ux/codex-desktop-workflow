@@ -1,6 +1,8 @@
 # Compatibility
 
-| Component | Status in v0.3.4 |
+Current published installer: **v0.3.5**. This table describes published support; source-only or local adaptations are tracked separately.
+
+| Component | Status in v0.3.5 |
 |---|---|
 | Windows x64 | Supported |
 | Desktop `26.928.4866.0` | Official backend by default; optional source-built 0.159.2 compatibility profile; 25 contracts and 22 renderer proofs; three isolated launch profiles |

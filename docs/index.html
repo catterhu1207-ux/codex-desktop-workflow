@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Codex Desktop Workflow — priority-aware multitasking</title>
-  <meta name="description" content="An unofficial local workflow mod for Codex Desktop: start-time ordering, plan-waiting yellow, pinned red, unread blue, and readable remote project names.">
-  <meta property="og:title" content="Codex Desktop Workflow">
-  <meta property="og:description" content="Make Codex Desktop easier to scan, prioritize, and resume when many tasks run in parallel.">
+  <title>Codex Desktop Workflow — see which chat needs your answer</title>
+  <meta name="description" content="Manage parallel Codex chats with orange pending-input indicators, yellow pending plans and readable SSH project names. Windows x64; check supported versions before installing.">
+  <meta property="og:title" content="Codex Desktop Workflow — see which chat needs you">
+  <meta property="og:description" content="Orange for questions and approvals, yellow for pending plans. Check compatibility and build an independent Codex Desktop copy.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://catterhu1207-ux.github.io/codex-desktop-workflow/">
   <meta property="og:image" content="https://catterhu1207-ux.github.io/codex-desktop-workflow/assets/social-preview.png">
@@ -22,89 +22,78 @@
       </div>
     </nav>
     <div class="hero-copy">
-      <p class="eyebrow" data-en="Unofficial Codex Desktop workflow mod" data-zh="非官方 Codex Desktop 工作流增强补丁">Unofficial Codex Desktop workflow mod</p>
-      <p data-en="v0.3.3 · Desktop 26.924.2738.0 · Official backend by default; optional compatibility source build" data-zh="v0.3.3 · 适配桌面版 26.924.2738.0 · 默认官方后端，可选择源码构建兼容后端">v0.3.3 · Desktop 26.924.2738.0 · Official backend by default; optional compatibility source build</p>
-      <h1 data-en="Know which Codex task needs you next." data-zh="一眼看出下一个该处理哪个 Codex 任务。">Know which Codex task needs you next.</h1>
-      <p class="lede" data-en="Start-time ordering, plan-waiting yellow, pinned red, ordinary unread blue, and human-readable remote project names — built as a verified local copy." data-zh="按实际开始时间排序；黄色表示计划待实施，红色表示置顶关注，蓝色表示普通未读；远程项目显示人类可读名称。所有改动都在独立本地副本中完成。">Start-time ordering, plan-waiting yellow, pinned red, ordinary unread blue, and human-readable remote project names — built as a verified local copy.</p>
-      <div class="install">
-        <code id="install-command">irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/download/install.ps1 | iex</code>
-        <button id="copy-command" type="button" data-en="Copy" data-zh="复制">Copy</button>
+      <p class="eyebrow" data-en="Windows x64 · Unofficial community tool" data-zh="Windows x64 · 非官方社区工具">Windows x64 · Unofficial community tool</p>
+      <h1 data-en="See which Codex chat needs your answer." data-zh="从侧栏看见哪个 Codex 聊天正在等你回答。">See which Codex chat needs your answer.</h1>
+      <p class="lede" data-en="Handle several chats without relying on every notification: orange marks pending questions and approvals, yellow marks plans awaiting implementation, and remote projects have readable names." data-zh="同时处理多个聊天时，待回答或批准的请求用橙色标记，待实施计划用黄色标记，远程项目显示可读名称。错过弹窗后，也能回到侧栏检查状态。">Handle several chats without relying on every notification: orange marks pending questions and approvals, yellow marks plans awaiting implementation, and remote projects have readable names.</p>
+      <div class="compatibility-note">
+        <strong data-en="Published release v0.3.5 · Newest supported official package: 26.928.4866.0" data-zh="公开发行 v0.3.5 · 最高支持官方包：26.928.4866.0">Published release v0.3.5 · Newest supported official package: 26.928.4866.0</strong>
+        <p data-en="Newer official packages need a matching release. Check your version before installing." data-zh="较新的官方包需要匹配的新发行版。安装前请先核对版本。">Newer official packages need a matching release. Check your version before installing.</p>
       </div>
-      <p class="fine-print" data-en="Windows x64 · You supply your own official Codex package · No official binaries are redistributed" data-zh="Windows x64 · 使用你自己的官方 Codex 包 · 不重新分发官方二进制">Windows x64 · You supply your own official Codex package · No official binaries are redistributed</p>
+      <div class="hero-actions">
+        <a href="#compatibility" data-en="Check my version →" data-zh="查看兼容版本 →">Check my version →</a>
+        <a href="#install" data-en="Installation steps →" data-zh="查看安装步骤 →">Installation steps →</a>
+      </div>
     </div>
-    <img class="demo" src="assets/demo-en.gif" data-en-src="assets/demo-en.gif" data-zh-src="assets/demo-zh.gif" data-en-alt="Real interface with fictional tasks: start-time sorting, pending plans, pinned attention and running states" data-zh-alt="真实界面，使用虚构任务：开始时间排序、待实施计划、固定关注及运行状态" alt="Real interface with fictional tasks: start-time sorting, pending plans, pinned attention and running states">
-    <p class="capture-note"><a href="assets/CAPTURE.md" data-en="Real screenshots with fictional tasks; timestamp inputs and reproduction" data-zh="真实截图，任务为虚构数据；查看时间输入及复现流程">Real screenshots with fictional tasks; timestamp inputs and reproduction</a></p>
+    <img class="demo" src="assets/demo-en.gif" data-en-src="assets/demo-en.gif" data-zh-src="assets/demo-zh.gif" data-en-alt="Real interface with fictional tasks showing lists, plan states and remote projects" data-zh-alt="真实界面，使用虚构任务展示列表、计划状态和远程项目" alt="Real interface with fictional tasks showing lists, plan states and remote projects">
+    <p class="capture-note" data-en="The demo shows lists, plan states and remote projects using fictional tasks. Orange is explained in the legend below." data-zh="示例展示列表、计划状态与远程项目，任务为虚构数据；橙色含义见下方图例。">The demo shows lists, plan states and remote projects using fictional tasks. Orange is explained in the legend below.</p>
   </header>
 
   <main>
-    <section class="strip">
-      <div><strong data-en="Plan waiting" data-zh="等待计划">Plan waiting</strong><span class="dot yellow"></span></div>
+    <section class="strip" aria-label="Chat status legend">
+      <div><strong data-en="Your input needed" data-zh="待回答或批准">Your input needed</strong><span class="dot orange"></span></div>
+      <div><strong data-en="Plan awaiting implementation" data-zh="计划待实施">Plan awaiting implementation</strong><span class="dot yellow"></span></div>
       <div><strong data-en="Pinned attention" data-zh="置顶关注">Pinned attention</strong><span class="dot red"></span></div>
       <div><strong data-en="Ordinary unread" data-zh="普通未读">Ordinary unread</strong><span class="dot blue"></span></div>
     </section>
 
     <section class="features">
       <article>
-        <h2 data-en="Start time, not last noise" data-zh="按实际开始时间，而不是最后一条消息">Start time, not last noise</h2>
-        <p data-en="Initial loading and live updates use the same recency comparator: the task or process start time." data-zh="初次加载和实时更新使用同一规则：按任务或进程实际开始时间排序。">Initial loading and live updates use the same recency comparator: the task or process start time.</p>
+        <h2 data-en="Keep pending requests visible" data-zh="待处理请求留在侧栏">Keep pending requests visible</h2>
+        <p data-en="Orange takes priority over the spinner and yellow plan state. Reading a chat keeps its pending requests; handling them recalculates the indicator." data-zh="橙色优先于转圈和黄色计划状态。阅读聊天会保留待处理请求；完成请求后重新计算提示。">Orange takes priority over the spinner and yellow plan state. Reading a chat keeps its pending requests; handling them recalculates the indicator.</p>
       </article>
       <article>
-        <h2 data-en="Readable remote projects" data-zh="远程项目显示可读名称">Readable remote projects</h2>
-        <p data-en="Sidebar, search, Work picker, prompt, tooltip, and accessibility text show a recognizable name while routing identity stays unchanged." data-zh="侧栏、搜索、Work 选择器、提示、悬浮提示和无障碍文本显示可识别名称，同时保留原路由身份。">Sidebar, search, Work picker, prompt, tooltip, and accessibility text show a recognizable name while routing identity stays unchanged.</p>
+        <h2 data-en="Recognize remote projects" data-zh="辨认远程项目">Recognize remote projects</h2>
+        <p data-en="Readable names in the sidebar, search and Work picker, with connection and task routing identities preserved." data-zh="侧栏、搜索和 Work 选择器显示可读名称，连接与任务路由身份保持不变。">Readable names in the sidebar, search and Work picker, with connection and task routing identities preserved.</p>
       </article>
       <article>
-        <h2 data-en="Preserve parallel context" data-zh="并行任务上下文不被打乱">Preserve parallel context</h2>
-        <p data-en="Existing tasks keep their valid model and reasoning settings; the global default applies to new tasks." data-zh="已有任务保留有效的模型和推理设置；全局默认只作用于新任务。">Existing tasks keep their valid model and reasoning settings; the global default applies to new tasks.</p>
+        <h2 data-en="Keep each chat's settings" data-zh="保留各聊天的设置">Keep each chat's settings</h2>
+        <p data-en="Existing chats keep valid model and reasoning settings. Ordering follows the selected version's contract; global defaults apply to new chats." data-zh="已有聊天保留有效的模型与推理设置。排序按所选版本的合同执行，全局默认用于新聊天。">Existing chats keep valid model and reasoning settings. Ordering follows the selected version's contract; global defaults apply to new chats.</p>
       </article>
     </section>
 
-    <section class="proof">
-      <div>
-        <p class="eyebrow" data-en="Why trust it" data-zh="为什么可以验证">Why trust it</p>
-        <h2 data-en="Built as a copy, not an override." data-zh="生成独立副本，不覆盖官方安装。">Built as a copy, not an override.</h2>
-        <p data-en="The installer validates the exact official package, keeps the official bundled backend, runs two isolated 60-second launches, and compares the official app.asar before and after." data-zh="安装器会核对精确的官方包，保留官方自带后端，执行两轮各 60 秒的隔离启动验证，并在安装前后比较官方 app.asar 是否保持不变。">The installer validates the exact official package, keeps the official bundled backend, runs two isolated 60-second launches, and compares the official app.asar before and after.</p>
-        <ul>
-          <li data-en="No account takeover, proxy, or telemetry." data-zh="不接管账号，不做代理，不加入遥测。">No account takeover, proxy, or telemetry.</li>
-          <li data-en="No official app.asar, codex.exe, or patched backend in the release bundle." data-zh="Release bundle 不包含官方 app.asar、codex.exe 或补丁后端。">No official app.asar, codex.exe, or patched backend in the release bundle.</li>
-          <li data-en="Unknown versions or mismatched package identities stop instead of guessing." data-zh="未知版本或包标识不一致时会停止，而不是猜测继续。">Unknown versions or mismatched package identities stop instead of guessing.</li>
-        </ul>
+    <section class="faq" id="compatibility">
+      <h2 data-en="Can I install it?" data-zh="我的版本能安装吗？">Can I install it?</h2>
+      <p data-en="v0.3.5 supports Windows x64 and official package 26.928.4866.0, plus supported older versions such as 26.924.2738.0 and 26.924.1866.0." data-zh="v0.3.5 支持 Windows x64 和官方包 26.928.4866.0，以及 26.924.2738.0、26.924.1866.0 等已列明的较早版本。">v0.3.5 supports Windows x64 and official package 26.928.4866.0, plus supported older versions such as 26.924.2738.0 and 26.924.1866.0.</p>
+      <p><a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/COMPATIBILITY.md" data-en="Read the full release compatibility list →" data-zh="查看发行版完整支持列表 →">Read the full release compatibility list →</a></p>
+      <p data-en="Check Codex version information or Windows Installed apps. Other package numbers, including newer versions, need their own adapted release." data-zh="可在 Codex 版本信息或 Windows“已安装的应用”中查看包号。其他包号，包括较新的版本，需要对应的新适配发行。">Check Codex version information or Windows Installed apps. Other package numbers, including newer versions, need their own adapted release.</p>
+    </section>
+
+    <section class="faq" id="install">
+      <h2 data-en="Install with a supported package" data-zh="使用受支持的包安装">Install with a supported package</h2>
+      <p data-en="Have Python 3.10 or later and available disk space. The installer creates an independent app copy and runs isolated startup checks. The official backend is the default." data-zh="准备 Python 3.10 以上及可用磁盘空间。安装器会创建独立应用副本并运行隔离启动检查，默认使用官方后端。">Have Python 3.10 or later and available disk space. The installer creates an independent app copy and runs isolated startup checks. The official backend is the default.</p>
+      <div class="install">
+        <code id="install-command">irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/download/install.ps1 | iex</code>
+        <button id="copy-command" type="button" data-en="Copy" data-zh="复制">Copy</button>
       </div>
-      <a class="proof-link" href="https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/ACCEPTANCE.md">
-        <span data-en="Read the redacted two-run acceptance report" data-zh="查看脱敏的两轮验收记录">Read the redacted two-run acceptance report</span>
-        <strong>ACCEPTANCE.md →</strong>
-      </a>
+      <p data-en="For an uninstalled complete x64 MSIX, download install.ps1 from the release page and pass -Source with its file path. Its internal version must be supported." data-zh="若持有尚未安装的完整 x64 MSIX，可从发行页下载 install.ps1，再用 -Source 指定文件路径；包内版本仍须受支持。">For an uninstalled complete x64 MSIX, download install.ps1 from the release page and pass -Source with its file path. Its internal version must be supported.</p>
+      <p data-en="Your official app stays in place. Existing chats require explicit data import and signing in again; the two apps then keep separate data without automatic synchronization." data-zh="官方应用保持不变。继续旧聊天需要显式导入任务副本并重新登录，之后两边的数据各自保存，不自动同步。">Your official app stays in place. Existing chats require explicit data import and signing in again; the two apps then keep separate data without automatic synchronization.</p>
+      <p data-en="The 26.928.4866.0 profile runs three isolated launches, each observed for at least 60 awake seconds. Copying, startup and checks add time; wait for completion." data-zh="26.928.4866.0 执行三轮隔离启动，每轮至少观察 60 秒有效运行时间。复制、启动和校验另需时间，请等待安装完成。">The 26.928.4866.0 profile runs three isolated launches, each observed for at least 60 awake seconds. Copying, startup and checks add time; wait for completion.</p>
+      <p><a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest" data-en="Downloads →" data-zh="下载发行文件 →">Downloads →</a> · <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/README.zh-CN.md" data-en="Chinese installation guide" data-zh="中文安装说明">Chinese installation guide</a> · <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/README.md" data-en="English installation guide" data-zh="英文安装说明">English installation guide</a></p>
     </section>
 
     <section class="faq">
-      <p class="eyebrow" data-en="Questions before you install" data-zh="安装前常见问题">Questions before you install</p>
-      <details>
-        <summary data-en="Do I need a Codex account?" data-zh="需要 Codex 账号吗？">Do I need a Codex account?</summary>
-        <p data-en="Yes. The tool builds a local copy; it does not provide or share an account. Sign in inside the copy after it launches." data-zh="需要。工具只生成本地副本，不提供或共享账号。启动副本后请在其中登录。">Yes. The tool builds a local copy; it does not provide or share an account. Sign in inside the copy after it launches.</p>
-      </details>
-      <details>
-        <summary data-en="Will it replace my official app?" data-zh="会替换我的官方应用吗？">Will it replace my official app?</summary>
-        <p data-en="No. The source app is not modified, and the installer verifies that its app.asar stays unchanged." data-zh="不会。源应用不会被修改，安装器会核对 app.asar 前后一致。">No. The source app is not modified, and the installer verifies that its app.asar stays unchanged.</p>
-      </details>
-      <details>
-        <summary data-en="Can I keep my existing tasks?" data-zh="原有任务还能保留吗？">Can I keep my existing tasks?</summary>
-        <p data-en="Yes. Close Codex, then run the installer with -MigrateData. It creates an independent snapshot and excludes authentication and configuration." data-zh="可以。关闭 Codex 后使用 -MigrateData 再运行安装器；它会创建独立数据快照，并排除认证和配置。">Yes. Close Codex, then run the installer with -MigrateData. It creates an independent snapshot and excludes authentication and configuration.</p>
-      </details>
-      <details>
-        <summary data-en="Is it affiliated with OpenAI?" data-zh="和 OpenAI 官方有关系吗？">Is it affiliated with OpenAI?</summary>
-        <p data-en="No. It is an unofficial community project. It does not distribute official binaries or replace official support." data-zh="没有。这是非官方社区项目，不重新分发官方二进制，也不替代官方支持。">No. It is an unofficial community project. It does not distribute official binaries or replace official support.</p>
-      </details>
+      <h2 data-en="Tell us what worked or got in the way" data-zh="告诉我们哪里有用、哪里卡住">Tell us what worked or got in the way</h2>
+      <p data-en="Share how many chats you handle and which states you miss. For an installation problem, include Windows, official-package and release versions, plus the error message. Use fictional tasks and keep credentials and real chat content on your machine." data-zh="欢迎反馈同时处理多少个聊天、哪种状态容易错过。安装问题请附 Windows、官方包和发行版本，以及错误信息；用虚构任务复现，账号与真实聊天留在本机。">Share how many chats you handle and which states you miss. For an installation problem, include Windows, official-package and release versions, plus the error message. Use fictional tasks and keep credentials and real chat content on your machine.</p>
+      <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/issues" data-en="Send feedback →" data-zh="提交反馈 →">Send feedback →</a>
     </section>
-  <section><h2 data-en="New turns move forward immediately" data-zh="新一轮开始后立即前移">New turns move forward immediately</h2><p data-en="Automatic sorting follows actual turn starts. Attention colors remain independent; manual order and pinned boundaries are preserved." data-zh="自动排序依据实际开始时间；注意颜色独立显示，手动顺序和固定区域边界保留。">Automatic sorting follows actual turn starts. Attention colors remain independent; manual order and pinned boundaries are preserved.</p><img class="recency-demo" src="assets/start-event-en.gif" data-en-src="assets/start-event-en.gif" data-zh-src="assets/start-event-zh.gif" data-en-alt="Real composer submission reorders fictional tasks and projects" data-zh-alt="真实提交后虚构任务及项目前移" alt="Real composer submission reorders fictional tasks and projects" loading="lazy" style="max-width:100%"></section>
-</main>
+  </main>
 
   <footer>
     <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow">GitHub</a>
-    <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/README.md" data-en="README" data-zh="英文 README">README</a>
-    <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/README.zh-CN.md" data-en="中文 README" data-zh="中文 README">中文 README</a>
-    <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/issues">Issues</a>
-    <span data-en="Unofficial project. Not affiliated with OpenAI." data-zh="非官方项目，与 OpenAI 无隶属关系。">Unofficial project. Not affiliated with OpenAI.</span>
+    <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/docs/FAQ.md" data-en="FAQ" data-zh="常见问题">FAQ</a>
+    <a href="https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/ACCEPTANCE.md" data-en="Acceptance records" data-zh="验收记录">Acceptance records</a>
+    <span data-en="Unaffiliated with OpenAI. Users supply their own official application package." data-zh="与 OpenAI 无隶属关系，官方应用包由用户自行提供。">Unaffiliated with OpenAI. Users supply their own official application package.</span>
   </footer>
-
   <script src="app.js"></script>
 </body>
 </html>

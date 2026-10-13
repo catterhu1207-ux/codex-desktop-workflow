@@ -1,29 +1,45 @@
 # FAQ
 
-## Does this replace the official Codex Desktop app?
+[Back to installation](../README.md)
 
-No. The workflow builds an independent copy from a user-supplied official package. The official app directory is not modified, and the installer compares the official `app.asar` before and after.
+## Is my official version supported?
 
-## Does it work with a Store installation?
+Published v0.3.5 supports official versions up to `26.928.4866.0`. See the [release compatibility matrix](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/COMPATIBILITY.md) for the supported package numbers. Both version and file identity must match; a newer official package needs its own adapted release.
 
-Yes. On Windows, the installer asks Windows for the installed `OpenAI.Codex` package and uses that directory as the source. It does not write to `WindowsApps`.
+## Must I install my downloaded MSIX first?
 
-## Why does verification take about two minutes?
+No. Download the release's `install.ps1` and pass a supported complete x64 MSIX with `-Source`. The tool verifies and extracts it independently, without a Store installation. Identical filenames can contain different versions.
 
-The release gate starts two isolated copies, observes each for 60 seconds, requires a fresh renderer proof, and closes the copy through the app's own quit action. One successful launch is not enough to claim runtime verification.
+## Will this replace my official app or existing chats?
 
-## Will I have to sign in again?
+Your official app stays in place. The modified app and its data are independent. Continuing existing chats requires an explicit task-data import; originals remain in place and the two apps subsequently keep separate data, without automatic synchronization or merging. See [data import](DEVELOPMENT.md#import-your-own-task-copy).
 
-Yes. `-MigrateData` copies task data with SQLite-consistent backups but deliberately excludes `auth.json`, `config.toml`, plugins, and skills. Sign in and configure services inside the independent copy.
+## Why do I sign in again?
 
-## Does the release bundle contain Codex binaries?
+Task import excludes authentication, service configuration, plugins and skills. Sign in and configure services inside the independent app. Release and acceptance materials use synthetic data; accounts and real chats remain on your machine.
 
-No. The bundle contains wheels, the installer, documentation, and checksums. It never contains `app.asar`, `codex.exe`, a patched backend, user data, or credentials.
+## How long does installation verification take?
 
-## What happens after a Codex Desktop update?
+Normal installation for `26.928.4866.0` runs three isolated launches, each observed for at least 60 seconds of effective awake time. Older profiles use their two-run contracts. Copying, building, startup and validation take additional time, so total installation exceeds the observation periods. Optional compatibility-source compilation usually takes longer and depends on the machine and cache.
 
-The exact version and hashes stop matching. Run `inspect` to see the detected version, then wait for a version-matched profile or open an adaptation issue. The tool does not silently patch an unknown build.
+Each run requires real renderer proof, the matching backend and full observation. Suspension is excluded from the effective runtime deadline. Wait for the installer to report completion before using the generated launcher.
 
-## Is this affiliated with OpenAI?
+## What do orange and yellow mean?
 
-No. It is an unofficial community project. It does not distribute official binaries, proxy accounts, or replace official support.
+Orange means a question, option picker or permission request needs your input. Yellow means a plan awaits implementation. Orange takes priority when both exist; yellow takes priority over pinned attention. Reading a chat keeps pending requests, and handling them recalculates the indicator.
+
+## Will an unsent blank page survive a restart?
+
+Persistence across restarts is not guaranteed before the first message. Sent chats, identities and valid model settings restore according to their version's contract; large histories load on demand.
+
+## What should I do after an official update?
+
+Compare the new package number with the support matrix. Unknown versions are blocked from activation. Wait for a matching release or [request an adaptation](https://github.com/catterhu1207-ux/codex-desktop-workflow/issues). Include the version and error; keep official binaries out of the report.
+
+## Is the compatibility backend required?
+
+The official backend is the default. Optional compatibility mode is for users who need its specific history-request behavior and requires an independent source build and toolchain. See [advanced use](DEVELOPMENT.md).
+
+## Is this an official OpenAI project?
+
+This is an unaffiliated community project providing build and verification tools. Users supply their own official app package.
