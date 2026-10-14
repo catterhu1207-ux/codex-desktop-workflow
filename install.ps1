@@ -75,7 +75,7 @@ function Resolve-Python {
                 $arguments += $candidate[1..($candidate.Count - 1)]
             }
             [string[]]$probe = $arguments
-            $probe += @("-c", "import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)")
+            $probe += @("-c", "import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)")
             & $command @probe *> $null
             if ($LASTEXITCODE -eq 0) {
                 return $candidate
@@ -210,7 +210,7 @@ try {
     if (-not $python) {
         if ($InstallPython) {
             if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-                Stop-WithCode "Python 3.10+ is missing and winget is unavailable." $ExitPrerequisite
+                Stop-WithCode "Python 3.11+ is missing and winget is unavailable." $ExitPrerequisite
             }
             Write-Step "Installing Python 3.12 with winget"
             Invoke-Checked "winget" @(
@@ -222,7 +222,7 @@ try {
             $python = Resolve-Python
         }
         if (-not $python) {
-            Stop-WithCode "Python 3.10+ is required. Re-run with -InstallPython or install it from python.org." $ExitPrerequisite
+            Stop-WithCode "Python 3.11+ is required. Re-run with -InstallPython or install it from python.org." $ExitPrerequisite
         }
     }
 
