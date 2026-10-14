@@ -1,5 +1,4 @@
 async function(workspace){
- const setTimeout=(callback,ms,...args)=>globalThis.__qualifiedAwakeDelay(ms).then(()=>callback(...args));
  const manager=this,ok=(v,m)=>{if(!v)throw Error(m)};
  const inputs={hasDesktopRuntime:false,isBrowserRuntime:false,hasDeveloperInstructions:false,everydayWork:false,usesDesktopMcp:false,sidebarSectionToolsEnabled:false,projectId:null,instructionOverrides:null,persistentModelPolicy:null};
  const request={cwd:workspace,workspaceRoots:[workspace],workspaceKind:'project',collaborationMode:{mode:'default',settings:{model:'fixture-model',reasoning_effort:'medium',developer_instructions:null}},serviceTier:null,defaultFeatureOverrides:{},config:{model_provider:'custom'},permissionsConfig:{sandboxPolicy:{type:'readOnly'},approvalPolicy:'never',approvalsReviewer:null,activePermissionProfile:null,runtimeWorkspaceRoots:[workspace]}};

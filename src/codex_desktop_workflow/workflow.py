@@ -7,6 +7,7 @@ from dataclasses import dataclass
 import hashlib
 import json
 import os
+import sys
 from pathlib import Path
 import shutil
 import socket
@@ -113,8 +114,13 @@ SUPPORTED_PACKAGES['26.924.2738.0'] = PackageSupport(version='26.924.2738.0', pa
 
 SUPPORTED_PACKAGES['26.928.4866.0'] = PackageSupport(version='26.928.4866.0', package_full_name='OpenAI.Codex_26.928.4866.0_x64__2p2nqsd0c76g0', asar_sha256='84fe697418b26a921f8d14090616559498a02f51768ff0bba69cefaadf4086f5', backend_sha256='fcd5eafefb4ff4a607f244e099e0974f66e17966b6ffda6948de2ef3a7a79530', backend_policy=_POLICY_ROOT / 'official-26.928.4866.0.json', backend_policy_sha256='1693992871077e918e1ddf4e985f9d3be009cd5be4754c78abce4aba87ca686b', entries={'webview/assets/app-initial-9e0f03d3c485.js': '25fd85da4880d4911062c05ca9c094fb0d38f1651e57e6ac804de4cff3abc4da', 'webview/assets/app-primary-2b539a729a98.js': '2c5259d8c72b2b7f3c437c372bdbad340357156036ca02d6e92caa5c08e55b29', 'webview/assets/app-shared-19f7cd6bb8b6.js': '9df2372b21a1636436ae76112efacdbd4ddf4b69eda60771cf7f41a988f07d4f', '.vite/build/main-DzkezlCV.js': '094276e26761b74ce7b6d68b35777b9bb888501c58a278596b9f48fe5cf7bdc0', '.vite/build/app-protocol-DaeIspKt.js': '55b7231b4edc06a9e9ed68277b6fe4e0731d94ad195e9347721cda10c2965150'})
 
-SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES))
-SUPPORTED_VERSION = max(SUPPORTED_VERSIONS)
+SUPPORTED_PACKAGES['26.1002.7124.0'] = PackageSupport(version='26.1002.7124.0',package_full_name='OpenAI.Codex_26.1002.7124.0_x64__2p2nqsd0c76g0',asar_sha256='76fe7078248c00e4e03dd2177a4275ec9ce158a9dd43452a4f0427d39a4ed012',backend_sha256='3553cd6e7df5a093d8cb8301cd8088a57e0971aba71ddbe0e67f7f44a15cdf68',backend_policy=_POLICY_ROOT/'official-26.1002.7124.0.json',backend_policy_sha256='e4d0e1ac0df1bbf382fce7a113d53d448369ce2c51a8df7d83c82e93a0bdd60d',entries={'webview/assets/app-initial-25361a10f2bf.js': 'bddf0e4e79918f7157682015c598b97eb833553c036026004555f88fa0cb9d3b', 'webview/assets/app-primary-2b28b2369958.js': '5715eec420d6e5ed076d3dcc533ac70316d516350b8d113e47d93ab6c9735c8b', 'webview/assets/app-shared-40678a67f0e3.js': '35b467c3a05695ec354eb1d0bb4572ad7e9d1480decc1cf0fae3d16b50aa5bd8', 'webview/assets/composer-project-picker-content-9ec8ec549fb9.js': '8920fe7ae368e52e35016860ab1678a71f5fd3b9ec838f87cc07fbe0052bd48a', '.vite/build/main-p91kJShj.js': 'aafd6a750458cb39b6202f9be00231482122d32ac14017b79d544c4ab741e889', '.vite/build/browser-background-switches-CowytfaF.js': '5ea600af76271e06b404f5f710436d418bf6ad6d0850e87de16f0fff1e91e89c'})
+
+SUPPORTED_PACKAGES['26.1002.7124.0'] = PackageSupport(version='26.1002.7124.0',package_full_name='OpenAI.Codex_26.1002.7124.0_x64__2p2nqsd0c76g0',asar_sha256='76fe7078248c00e4e03dd2177a4275ec9ce158a9dd43452a4f0427d39a4ed012',backend_sha256='3553cd6e7df5a093d8cb8301cd8088a57e0971aba71ddbe0e67f7f44a15cdf68',backend_policy=_POLICY_ROOT/'official-26.1002.7124.0.json',backend_policy_sha256='e4d0e1ac0df1bbf382fce7a113d53d448369ce2c51a8df7d83c82e93a0bdd60d',entries={'webview/assets/app-initial-25361a10f2bf.js': 'bddf0e4e79918f7157682015c598b97eb833553c036026004555f88fa0cb9d3b', 'webview/assets/app-primary-2b28b2369958.js': '5715eec420d6e5ed076d3dcc533ac70316d516350b8d113e47d93ab6c9735c8b', 'webview/assets/app-shared-40678a67f0e3.js': '35b467c3a05695ec354eb1d0bb4572ad7e9d1480decc1cf0fae3d16b50aa5bd8', 'webview/assets/composer-project-picker-content-9ec8ec549fb9.js': '8920fe7ae368e52e35016860ab1678a71f5fd3b9ec838f87cc07fbe0052bd48a', '.vite/build/main-p91kJShj.js': 'aafd6a750458cb39b6202f9be00231482122d32ac14017b79d544c4ab741e889', '.vite/build/browser-background-switches-CowytfaF.js': '5ea600af76271e06b404f5f710436d418bf6ad6d0850e87de16f0fff1e91e89c'})
+
+SUPPORTED_PACKAGES['26.1007.9446.0']=PackageSupport(version='26.1007.9446.0',package_full_name='OpenAI.Codex_26.1007.9446.0_x64__2p2nqsd0c76g0',asar_sha256='356c13dc715816436fa1cf31e9f77863f62ea7b7cacc465b397313246eb29325',backend_sha256='e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e',backend_policy=_POLICY_ROOT/'official-26.1007.9446.0.json',backend_policy_sha256='9501720b76a8219e1e050b5342bc53f1d8e5c357ea06c2bf5c57b7fa154a3556',entries={'webview/assets/app-initial-102e45562729.js': 'c59b2a0be6c13496b30ebda167925cdccab26799cae350c62d2b37afe3589b57', 'webview/assets/app-primary-cd52df2361eb.js': '9602eea8c6dd07ddfbbc2772eac271e8ec7f765e1f275fe47ef681b996ac056a', 'webview/assets/app-shared-30671c57ec82.js': '392b023063a3569a2efc47a019accb2d1e72295b1bfec2cbb81fc37e1515580a', '.vite/build/main-Bgi5Xaw-.js': 'e8923725ad6357380ac7bb25818f78eb4d97e522ebbde2ddf6ff5a2a93032e54', '.vite/build/browser-background-switches-Zzmx0u5p.js': '86b083490f39350ba981d04b843f790fc2021a5fc278d2cb49c2313a57b097c9'})
+SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES,key=lambda value:tuple(map(int,value.split(".")))))
+SUPPORTED_VERSION = max(SUPPORTED_VERSIONS,key=lambda value:tuple(map(int,value.split("."))))
 DATA_FILES = (
     ".codex-global-state.json",
     "state_5.sqlite",
@@ -236,7 +242,7 @@ def inspect(source: Path) -> dict[str, Any]:
 
 def build_backend(source: Path, target: Path) -> dict[str, Any]:
     inspected = inspect(source)
-    if inspected['status'] != 'passed' or inspected['supported_version'] not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0'):
+    if inspected['status'] != 'passed' or inspected['supported_version'] not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0'):
         raise WorkflowError('compat_backend_source_unsupported')
     return backend.build(Path(inspected['app_directory']), target, inspected['supported_version'])
 
@@ -249,7 +255,7 @@ def build(source: Path, target: Path, backend_mode: str = 'official', backend_ma
     if backend_mode not in ('official', 'compat'):
         raise WorkflowError('unsupported_backend_mode')
     if backend_mode == 'compat':
-        if support.version not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0') or backend_manifest is None:
+        if support.version not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0') or backend_manifest is None:
             raise WorkflowError('compatible_backend_manifest_required_for_supported_version')
         backend.validate_manifest(backend_manifest, support.version)
         selected_policy = backend_manifest
@@ -288,7 +294,7 @@ def build(source: Path, target: Path, backend_mode: str = 'official', backend_ma
         selected_policy = copied_policy
     public = {
         "schema_version": 1,
-        "status": "bundle_qualified",
+        "status": "source_bundle_prepared" if support.version == "26.1007.9446.0" else "bundle_qualified",
         "created_at": _now(),
         "package_version": support.version,
         "source_app": str(app),
@@ -323,7 +329,7 @@ def _attestation_value(text: str, artifact_id: str) -> dict[str, Any] | None:
 
 
 def _attestations(home: Path, artifact_id: str, log_path: Path | tuple[Path, ...] | None = None, *, manifest: Path | None = None, run_directory: Path | None = None, process: dict | None = None) -> dict[str, Any]:
-    if artifact_id == "2.7.9-84fe697418b2":
+    if artifact_id in ("2.7.9-84fe697418b2","2.7.17-76fe7078248c","2.7.19-356c13dc7158"):
         if manifest is None or run_directory is None or process is None:
             return {"status": "blocked", "reason": "fresh_process_context_required"}
         from .renderer_proof import parse_owned_logs
@@ -374,6 +380,8 @@ def _portable_environment(portable: Path, data_home: Path) -> dict[str, str]:
         "CODEX_HOME": str(data_home),
         "CODEX_SQLITE_HOME": str(data_home),
         "CODEX_CLI_PATH": str((portable / "resources" / "codex.exe").resolve()),
+        "CODEX_WORKFLOW_PYTHON": sys.executable,
+        "CODEX_WORKFLOW_PORTABLE": str(portable.resolve()),
     }
 
 
@@ -642,27 +650,57 @@ def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seco
     if expected_backend_sha256 != selected_hash:
         raise WorkflowError("portable_backend_identity_mismatch")
     runtime: list[dict[str, Any]] = []
+    native_nonrenderer = None
+    if support.version == '26.1007.9446.0':
+        from .native_heartbeat_9446 import verify as verify_heartbeat
+        from .native_protocol_9446 import verify as verify_protocol
+        native_nonrenderer = {'archived_heartbeat_terminal_guard':verify_heartbeat(portable),'protocol_resource_route':verify_protocol(portable)}
     artifact_id = str(
         bundle.get("artifact_id")
         or hotfix_builder.frontend_attestation_artifact_id(
             hotfix_builder.profile_for_asar(support.asar_sha256)
         )
     )
-    if support.version == "26.928.4866.0":
+    if support.version in ("26.928.4866.0","26.1002.7124.0","26.1007.9446.0"):
         launches = max(3, launches)
     for index in range(launches):
-        faithful = support.version == "26.928.4866.0" and index == 2
+        faithful = support.version in ("26.928.4866.0","26.1002.7124.0","26.1007.9446.0") and index == 2
         profile_name = 'faithful_projects' if faithful else ('empty' if index % 2 == 0 else 'synthetic_tasks')
         home = (runs_root / ("home-" + os.urandom(8).hex())).resolve()
         home.mkdir(parents=True, exist_ok=False)
         if index % 2 == 1 or faithful:
-            _seed_synthetic_tasks(home, Path(runtime[0]['codex_home']))
+
+            if support.version in ('26.1002.7124.0','26.1007.9446.0'):
+                from .native_history_fixture import generate
+                generate(home,portable/'resources/codex.exe',count=400)
+                if support.version == '26.1007.9446.0':
+                    config=home/'config.toml'
+                    text=config.read_text()
+                    if text.count('model="fixture-model"')!=1 or text.count('model_reasoning_effort="medium"')!=1:raise WorkflowError('synthetic_default_model_change_ambiguous')
+                    config.write_text(text.replace('model="fixture-model"','model="fixture-global-changed"').replace('model_reasoning_effort="medium"','model_reasoning_effort="low"'),encoding='utf8')
+            else:
+                _seed_synthetic_tasks(home, Path(runtime[0]['codex_home']))
         environment = _portable_environment(portable, home)
         if faithful:
             from .native_sidebar_fixture import seed, blocked_ssh_binding
             seed(home)
             binding = blocked_ssh_binding(home)
             environment['PATH'] = str(binding) + os.pathsep + os.environ.get('PATH', '')
+        fixture_server=None
+        if support.version == '26.1007.9446.0':
+            import tomllib,threading
+            from http.server import ThreadingHTTPServer
+            from .native_history_fixture import Handler
+            workspace=home/'synthetic-workspaces'/'0';workspace.mkdir(parents=True,exist_ok=True)
+            if not (home/'config.toml').exists():
+                fixture_server=ThreadingHTTPServer(('127.0.0.1',0),Handler)
+                (home/'config.toml').write_text(f'model_provider="fixture"\nmodel="fixture-model"\nmodel_reasoning_effort="medium"\n[model_providers.fixture]\nname="Synthetic loopback"\nbase_url="http://127.0.0.1:{fixture_server.server_port}/v1"\nwire_api="responses"\nrequires_openai_auth=false\n')
+            else:
+                from urllib.parse import urlsplit
+                cfg=tomllib.loads((home/'config.toml').read_text());url=urlsplit(cfg['model_providers']['fixture']['base_url'])
+                if cfg['model_provider']!='fixture' or url.hostname!='127.0.0.1':raise WorkflowError('isolated_loopback_binding_mismatch')
+                fixture_server=ThreadingHTTPServer(('127.0.0.1',url.port),Handler)
+            threading.Thread(target=fixture_server.serve_forever,daemon=True).start()
         history.inspect(home)
         debug_port = _available_loopback_port()
         run = IsolatedRun.start(
@@ -675,17 +713,29 @@ def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seco
         proof_deadline = awake_clock.seconds() + 240
         deadline = proof_deadline
         proof_at = None
+        route_at = None
+        module_at = None
+        timing_stage = 'bootstrap'
         latest: dict[str, Any] = {}
-        attestation_requested = support.version == "26.928.4866.0"
+        attestation_requested = support.version in ("26.928.4866.0","26.1002.7124.0","26.1007.9446.0")
         sidebar_process = None
         sidebar = None
-        if support.version == "26.928.4866.0":
+        round_error = None
+        attestation = {'status':'blocked','reason':'no_completed_round'}
+        observed = 0
+        backend_match = False
+        if support.version in ("26.928.4866.0","26.1002.7124.0","26.1007.9446.0"):
             sidebar_env = os.environ.copy()
             sidebar_env['ISOLATED_DEBUG_PORT'] = str(debug_port)
             sidebar_env['NATIVE_SIDEBAR_PROFILE'] = 'faithful' if faithful else 'basic'
+            sidebar_env['ISOLATED_RUNTIME_LOG'] = str(run.run_directory/'stdout.log')
+            sidebar_env['ISOLATED_EXPECTED_THREAD_COUNT'] = '400' if index else '0'
+            if support.version == '26.1007.9446.0':sidebar_env['ISOLATED_WORKSPACE']=str(home/'synthetic-workspaces'/'0')
+            if support.version == '26.1007.9446.0' and index:
+                sidebar_env['ISOLATED_COLD_HISTORY_SPEC']=str(home/'native-history-fixture.json')
             from .awake_process import AwakeProcess
             sidebar_process = AwakeProcess(
-                ['node', str(Path(__file__).parent / 'data/native_sidebar_basic.cjs')],
+                ['node', str(Path(__file__).parent / ('data/native_focus_261007_9446.cjs' if support.version=='26.1007.9446.0' else 'data/native_sidebar_7124.cjs' if support.version=='26.1002.7124.0' else 'data/native_sidebar_basic.cjs'))],
                 env=sidebar_env, root=run.run_directory)
         try:
             while awake_clock.seconds() < deadline:
@@ -695,9 +745,20 @@ def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seco
                 if not attestation_requested:
                     attestation_requested = _request_renderer_attestation(debug_port)
                 fresh = _attestations(home, artifact_id, (run.run_directory / 'stdout.log', run.run_directory / 'stderr.log'), manifest=manifest_path, run_directory=run.run_directory, process=latest.get('main'))
+                if support.version == '26.1007.9446.0' and proof_at is None:
+                    route_record=run.run_directory/'native-primary-route-observation.json'
+                    if route_at is None and route_record.is_file() and json.loads(route_record.read_text()).get('status')=='primary_route_found':
+                        route_at=awake_clock.seconds()
+                        if module_at is None:deadline=route_at+120;timing_stage='signed_module_loading'
+                    if module_at is None and (fresh.get('production_parser') or {}).get('status')=='module_loaded':
+                        module_at=awake_clock.seconds();deadline=module_at+30;timing_stage='signed_feature_execution'
+                    if module_at is not None and awake_clock.seconds()>=deadline:
+                        raise WorkflowError('signed_feature_execution_awake_budget_exceeded')
                 if fresh.get('status') == 'passed' and proof_at is None:
+                    (run.run_directory/'renderer-proof-accepted.json').write_text(json.dumps(fresh),encoding='utf8')
                     proof_at = awake_clock.seconds()
                     deadline = proof_at + observe_seconds
+                    timing_stage = 'runtime_observation'
                 time.sleep(1)
             latest = run.status("codex.exe")
             backend_match = _current_app_server_match(
@@ -714,19 +775,28 @@ def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seco
                 sidebar = json.loads(stdout)
                 if sidebar.get('status') != 'passed':
                     raise WorkflowError('native_sidebar_acceptance_failed')
+        except BaseException as error:
+            round_error = error
         finally:
             if sidebar_process is not None and sidebar_process.poll() is None:
                 sidebar_process.terminate()
                 sidebar_process.wait(timeout=10)
             close = _normal_codex_stop(run, 30)
-        runtime.append({"run_directory": str(run.run_directory), "codex_home": str(home), "profile": profile_name, "native_sidebar": sidebar, "observed_seconds": observed, "attestation_requested": attestation_requested, "pre_close": latest, "close": close, "attestation": attestation, "backend_expected_sha256": expected_backend_sha256, "backend_match": backend_match})
+            if fixture_server is not None:fixture_server.shutdown();fixture_server.server_close()
+        runtime.append({"run_directory": str(run.run_directory), "codex_home": str(home), "profile": profile_name, "native_sidebar": sidebar, "observed_seconds": observed, "attestation_requested": attestation_requested, "pre_close": latest, "close": close, "attestation": attestation, "backend_expected_sha256": expected_backend_sha256, "backend_match": backend_match,"timing_stage":timing_stage,"route_seen_awake":route_at,"module_seen_awake":module_at,"proof_seen_awake":proof_at})
+        round_passed = round_error is None and proof_at is not None and observed >= observe_seconds and latest.get('status') == 'running' and backend_match and close.get('close_status') == 'closed' and attestation.get('status') == 'passed'
+        (run.run_directory/'runtime-round.json').write_text(json.dumps({'status':'passed' if round_passed else 'failed','round':runtime[-1],'error':str(round_error) if round_error else None},indent=2),encoding='utf8')
+        if round_error is not None:
+            failure={'status':'blocked','stage':'isolated_native_round','bundle':bundle,'runtime':runtime,'error':str(round_error),'content_logged':False}
+            (portable/'codex-desktop-workflow-verification-failed.json').write_text(json.dumps(failure,indent=2),encoding='utf8')
+            raise round_error
         if proof_at is None or observed < observe_seconds or latest.get("status") != "running" or not backend_match or close.get("close_status") != "closed" or attestation.get("status") != "passed":
             failure = {"status": "blocked", "stage": "isolated_renderer_qualification", "bundle": bundle, "feature_contracts": contracts, "runtime": runtime, "content_logged": False}
             (portable / "codex-desktop-workflow-verification-failed.json").write_text(json.dumps(failure, ensure_ascii=False, indent=2), encoding="utf-8")
             raise WorkflowError("two_run_lifecycle_validation_failed")
     if _sha256(Path(source_result['app_directory']) / 'resources/app.asar') != support.asar_sha256:
         raise WorkflowError('verification_source_changed_during_run')
-    result = {"status": "passed", "stage": "isolated_renderer_qualified", "bundle": bundle, "feature_contracts": contracts, "runtime": runtime, "source_binding": source_binding, "content_logged": False}
+    result = {"status": "passed", "stage": "isolated_renderer_qualified", "bundle": bundle, "feature_contracts": contracts, "runtime": runtime, "source_binding": source_binding, "native_nonrenderer":native_nonrenderer, "content_logged": False}
     report = runs_root / "verification-before-owned-cleanup.json"
     report.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
     return result
@@ -798,6 +868,10 @@ def launch(portable: Path, data: Path, runs_root: Path) -> dict[str, Any]:
     portable, data = portable.resolve(), data.resolve()
     if not (portable / "codex-desktop-workflow-manifest.json").is_file():
         raise WorkflowError("verified_portable_manifest_missing")
+    manifest_data = json.loads((portable / 'codex-desktop-workflow-manifest.json').read_text(encoding='utf8'))
+    if manifest_data.get('package_version') == '26.1007.9446.0':
+        from .qualification import require
+        require(portable)
     if not data.is_dir():
         raise WorkflowError("independent_data_directory_missing")
     public_path = portable / 'codex-desktop-workflow.json'

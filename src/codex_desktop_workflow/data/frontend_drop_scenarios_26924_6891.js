@@ -1,0 +1,13 @@
+const assert=(v,m)=>{if(!v)throw Error(m)},memo=()=>new Array(60).fill(Symbol.for('react.memo_cache_sentinel'));
+const Lzt={c:memo},M8t={c:memo},N6={useState:v=>[v,()=>{}],useEffectEvent:v=>v,useEffect:()=>{}},u9=N6;
+const FC=HY,Bge=B6i,Rye=c7r,M6=()=>false,ype=()=>false,yi=f=>f.type?.startsWith('image/'),_7r='Files',Node=class{},Element=class{},window={};
+const file={name:'example.txt',size:8,type:'text/plain'},transfer={items:[{kind:'file',getAsFile:()=>file,webkitGetAsEntry:()=>null}],files:[file],types:['Files']};
+const event=()=>({type:'drop',dataTransfer:transfer,preventDefault(){this.defaultPrevented=true},stopPropagation(){},currentTarget:{},target:{}});
+let received=null,called=0;
+let handlers=Izt({activeBrowserImageDragBrowserTabId:null,addFiles:(files,via,source)=>{received=files;assert(via==='drop'&&source===transfer,'drop source')},addDraggedImage:()=>{throw Error('wrong image route')},directBrowserConversationId:null,dragCounterRef:{current:0},dropTargetPortalTarget:null,isDragActive:false,onAttachmentAdded:null,setIsDragActive:()=>{},setShowShiftOverlay:()=>{}});
+let e=event();handlers.handleDrop(e);assert(e.defaultPrevented&&received[0]===file,'actual new-chat composer drop');
+let h=k8t({disabled:false,dropTarget:null,onFilesDropped:files=>{called++;assert(files[0]===file,'drop identity')}});h.onDrop(event());assert(called===1,'enabled target');
+k8t({disabled:true,dropTarget:null,onFilesDropped:()=>called++}).onDrop(event());assert(called===1,'disabled target');
+transfer.items[0].webkitGetAsEntry=()=>({isDirectory:true});h.onDrop(event());assert(called===1,'directory excluded');
+assert(!HY({items:[],types:['text/plain']}),'text excluded');
+process.stdout.write(JSON.stringify({status:'passed',actual_composer_handler:true,file_identity_preserved:true,disabled_rejected:true,directory_excluded:true}));

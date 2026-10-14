@@ -1,11 +1,11 @@
 """Run acceptance probes with awake-time deadlines and a shared renderer clock."""
 from pathlib import Path
-import json,os,subprocess,threading,time,uuid
+import json,os,subprocess,threading,time,uuid,tempfile
 from .awake_clock import seconds
 
 
 class AwakeProcess:
-    def __init__(self, command, *, env, root):
+    def __init__(self, command, *, env, root, input_data=None, cwd=None):
         self.root=Path(root)/('probe-'+uuid.uuid4().hex)
         self.root.mkdir(parents=True,exist_ok=False)
         self.command=command
@@ -17,7 +17,15 @@ class AwakeProcess:
         environment['CODEX_ACCEPTANCE_TIMER_MODULE']=str(Path(__file__).parent/'data/awake_timers.cjs')
         try:
             self._write_clock()
-            self.process=subprocess.Popen(command,env=environment,stdout=self.stdout,stderr=self.stderr,creationflags=0x08000000)
+            stdin=None
+            if input_data is not None:
+                input_path=self.root/'stdin.bin'
+                input_path.write_bytes(input_data)
+                stdin=input_path.open('rb')
+            try:
+                self.process=subprocess.Popen(command,env=environment,cwd=cwd,stdin=stdin,stdout=self.stdout,stderr=self.stderr,creationflags=0x08000000 if os.name=='nt' else 0)
+            finally:
+                if stdin is not None:stdin.close()
         except BaseException:
             self.stdout.close();self.stderr.close();raise
         self.thread=threading.Thread(target=self._clock_loop,daemon=True)
@@ -74,6 +82,26 @@ def run(command, *, env, root, timeout):
     try:
         stdout,stderr=process.communicate(timeout)
         return subprocess.CompletedProcess(command,process.returncode,stdout.decode('utf8',errors='replace'),stderr.decode('utf8',errors='replace'))
+    finally:
+        if process.process.poll() is None:process.terminate()
+        process.wait(10)
+
+
+def capture(command, *, input=None, text=False, capture_output=True, timeout,
+            check=False, env=None, cwd=None, encoding=None, creationflags=0):
+    """Capture a bounded validation command without charging standby time."""
+    if not capture_output:raise ValueError('awake_capture_requires_output_capture')
+    if timeout<=0:raise ValueError('awake_capture_requires_positive_budget')
+    codec=encoding or 'utf8'
+    data=input.encode(codec) if isinstance(input,str) else input
+    root=Path((env or os.environ).get('CODEX_WORKFLOW_ACCEPTANCE_ROOT',tempfile.gettempdir()))/'codex-workflow-acceptance'
+    process=AwakeProcess(command,env=dict(os.environ) if env is None else env,root=root,input_data=data,cwd=cwd)
+    try:
+        out,err=process.communicate(timeout)
+        if text:out,err=out.decode(codec,errors='replace'),err.decode(codec,errors='replace')
+        result=subprocess.CompletedProcess(command,process.returncode,out,err)
+        if check:result.check_returncode()
+        return result
     finally:
         if process.process.poll() is None:process.terminate()
         process.wait(10)

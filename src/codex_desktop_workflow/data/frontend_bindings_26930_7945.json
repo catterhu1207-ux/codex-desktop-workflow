@@ -1,0 +1,2680 @@
+[
+  {
+    "role": "initial",
+    "old": "$xr",
+    "current": "YOr",
+    "closure_bindings": {
+      "_5n": "Dir",
+      "xun": "q_n",
+      "Oxr": "wOr"
+    },
+    "old_free": [
+      "_5n",
+      "xun",
+      "Oxr"
+    ],
+    "current_free": [
+      "Dir",
+      "q_n",
+      "wOr"
+    ],
+    "failures": [],
+    "original_function_sha256": "5d5306f2a9bf7837d09c9c0fe004da1cca27109db481fc8cce7e9b5e8bd2128c",
+    "current_function_sha256": "87f5247cb99cd33d6d496c2957baddbe5aa543527707571b1e3f32bafcf91576",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "Aga",
+    "current": "Qya",
+    "closure_bindings": {
+      "gga": "Rya",
+      "To": "bd"
+    },
+    "old_free": [
+      "gga",
+      "To"
+    ],
+    "current_free": [
+      "Rya",
+      "bd"
+    ],
+    "failures": [],
+    "original_function_sha256": "f94809b10830cd9ebdd7c61c32039b1a026f1f5d7df3cd1b479a2dc08d1a708b",
+    "current_function_sha256": "0f498578ab90259c0719e8fd9a0e06e3750e5ac55606dbcd5d8fd38f08ba217d",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "BOn",
+    "current": "TFn",
+    "closure_bindings": {
+      "VOn": "EFn",
+      "Yd": "Dc",
+      "Bg": "_r",
+      "W": "$",
+      "Pr": "Ll",
+      "eve": "B"
+    },
+    "old_free": [
+      "VOn",
+      "Yd",
+      "Bg",
+      "W",
+      "Pr",
+      "eve"
+    ],
+    "current_free": [
+      "EFn",
+      "Dc",
+      "_r",
+      "$",
+      "Ll",
+      "B"
+    ],
+    "failures": [],
+    "original_function_sha256": "43e77eeddbe17f78b7640d69fa1d047a4d5db05cc4d89b30d3b14ab47141ab24",
+    "current_function_sha256": "39ceda21d294db51c8b7d6b2f2b5d3ebfe4827577b5ecbbd08404d5e6fae7f14",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "DOn",
+    "current": "fFn",
+    "closure_bindings": {
+      "Map": "Map",
+      "AOn": "hFn"
+    },
+    "old_free": [
+      "Map",
+      "AOn"
+    ],
+    "current_free": [
+      "Map",
+      "hFn"
+    ],
+    "failures": [],
+    "original_function_sha256": "b979ac3b81cd3541882b9e0ee9413d9dae12647e0b68fbe6506bf06601011c97",
+    "current_function_sha256": "0f6949f666506fc06db79e8011a3abec9e789331321cc76e735b3fcc94e9417d",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "Edo",
+    "current": "Omo",
+    "closure_bindings": {
+      "Ddo": "kmo",
+      "Odo": "Amo",
+      "zp": "ca",
+      "nio": "iso",
+      "rdo": "amo"
+    },
+    "old_free": [
+      "Ddo",
+      "Odo",
+      "zp",
+      "nio",
+      "rdo"
+    ],
+    "current_free": [
+      "kmo",
+      "Amo",
+      "ca",
+      "iso",
+      "amo"
+    ],
+    "failures": [],
+    "original_function_sha256": "97fe156f634379a638e5b4b4c59cb594bd9a87f687cf3f6b4ca3b6e31b9a5537",
+    "current_function_sha256": "ff88bfb59d4a5179c5c4b571073fa7ed67ff5c85c76dcb87b4e453b074002c25",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "GDn",
+    "current": "NPn",
+    "closure_bindings": {
+      "Set": "Set",
+      "Map": "Map"
+    },
+    "old_free": [
+      "Set",
+      "Map"
+    ],
+    "current_free": [
+      "Set",
+      "Map"
+    ],
+    "failures": [],
+    "original_function_sha256": "46789a79e84332d75b487c9d4d98bb1892c769f5e3ce044206592a07549bef65",
+    "current_function_sha256": "c2f09c7ebe208dd9022bf8a0f8141743922ee0c270614e7a04442f130b1bebea",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "GR",
+    "current": "kz",
+    "closure_bindings": {
+      "fe": "hee",
+      "rdn": "Dvn",
+      "_5n": "Dir",
+      "ip": "Wa",
+      "nh": "wi",
+      "Li": "of",
+      "tI": "tL",
+      "eI": "eL"
+    },
+    "old_free": [
+      "fe",
+      "rdn",
+      "_5n",
+      "ip",
+      "nh",
+      "Li",
+      "tI",
+      "eI"
+    ],
+    "current_free": [
+      "hee",
+      "Dvn",
+      "Dir",
+      "Wa",
+      "wi",
+      "of",
+      "tL",
+      "eL"
+    ],
+    "failures": [],
+    "original_function_sha256": "b306c9070046b246b9d26afa451e3ecb99008c34c9ba43d46a286e01bbc87e20",
+    "current_function_sha256": "e26ea0d1a778c2e19305b2d40c495884b2200d511e7b159b69d60013100e583c",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "HA",
+    "current": "Pj",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "a4314caa28111f2ae4416d2f6119142a75c6ecf85a7655ae23aec7e26d238aaa",
+    "current_function_sha256": "4dec466b68333a1e1e944f33145fa42cf7a706de4cb373e4a3d407195d75a69f",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "Mmo",
+    "current": "avo",
+    "closure_bindings": {
+      "rk": "Nk",
+      "nlo": "ifo",
+      "DY": "UJ"
+    },
+    "old_free": [
+      "rk",
+      "nlo",
+      "DY"
+    ],
+    "current_free": [
+      "Nk",
+      "ifo",
+      "UJ"
+    ],
+    "failures": [],
+    "original_function_sha256": "685149ce5c9efbcb54e3d76ebf18f80351c7b6bfbc614f86c03899b405b90252",
+    "current_function_sha256": "db6c067b296827d7fcd3976bccca6d54a5d2d8d852320a8d632f6290c285eb0a",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "Oga",
+    "current": "Xya",
+    "closure_bindings": {
+      "Array": "Array",
+      "zga": "sba"
+    },
+    "old_free": [
+      "Array",
+      "zga"
+    ],
+    "current_free": [
+      "Array",
+      "sba"
+    ],
+    "failures": [],
+    "original_function_sha256": "bc0a577fa42b0da852fbc4e1fa4c2baac1249a82581125bd0fa319ee040ea9af",
+    "current_function_sha256": "e9c7b8cdaf3c5845e2dab8042ab7adf72006462dd351e445ab7a1847c9870259",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "Qpn",
+    "current": "gxn",
+    "closure_bindings": {
+      "Set": "Set",
+      "nmn": "bxn",
+      "imn": "Sxn",
+      "tmn": "yxn",
+      "Xpn": "mxn"
+    },
+    "old_free": [
+      "Set",
+      "nmn",
+      "imn",
+      "tmn",
+      "Xpn"
+    ],
+    "current_free": [
+      "Set",
+      "bxn",
+      "Sxn",
+      "yxn",
+      "mxn"
+    ],
+    "failures": [],
+    "original_function_sha256": "979bbaf1403428f9f3eb120b16cfb627dce7bed560bc25929b3644659af856a6",
+    "current_function_sha256": "fda7a036a2934faa4b16874f07cb5b10b95444362c292deb02c8b84d58a1e9f3",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "Qxr",
+    "current": "JOr",
+    "closure_bindings": {
+      "GR": "kz",
+      "Zxr": "qOr",
+      "eSr": "XOr",
+      "ik": "Fk",
+      "oye": "EBe"
+    },
+    "old_free": [
+      "GR",
+      "Zxr",
+      "eSr",
+      "ik",
+      "oye"
+    ],
+    "current_free": [
+      "kz",
+      "qOr",
+      "XOr",
+      "Fk",
+      "EBe"
+    ],
+    "failures": [],
+    "original_function_sha256": "10c8649252f95de4ce540c52300cf9142045d12ce89c807fa5bb2147cefcb3bf",
+    "current_function_sha256": "48d06abc3441621b74d9206762d72510f7a33e0b050bee3a27e7e69e2e33ecdd",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "Tuo",
+    "current": "Dpo",
+    "closure_bindings": {
+      "Euo": "Opo",
+      "Ad": "vs",
+      "i1": "j$",
+      "Dr": "Ti"
+    },
+    "old_free": [
+      "Euo",
+      "Ad",
+      "i1",
+      "Dr"
+    ],
+    "current_free": [
+      "Opo",
+      "vs",
+      "j$",
+      "Ti"
+    ],
+    "failures": [],
+    "original_function_sha256": "49963973c12109fa70075e63f433563e115a36eb5887d773dd610517939dff85",
+    "current_function_sha256": "86946c800889fd747140a7df26a14ee03d38bcbee2f6141cab66eb8a04bd6497",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "Xpn",
+    "current": "mxn",
+    "closure_bindings": {
+      "rmn": "xxn",
+      "tmn": "yxn",
+      "Array": "Array",
+      "Set": "Set",
+      "Map": "Map"
+    },
+    "old_free": [
+      "rmn",
+      "tmn",
+      "Array",
+      "Set",
+      "Map"
+    ],
+    "current_free": [
+      "xxn",
+      "yxn",
+      "Array",
+      "Set",
+      "Map"
+    ],
+    "failures": [],
+    "original_function_sha256": "f7ec8f27980f4801a4a5b1f278ff7bb13cd6e0d11aad42d6b15ccdc6ca915791",
+    "current_function_sha256": "d9c082258c1fb865d8f418684f9cf2866b867b4aa8995f7da475eca3b62e6d3b",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "Zxr",
+    "current": "qOr",
+    "closure_bindings": {
+      "Yke": "OXe"
+    },
+    "old_free": [
+      "Yke"
+    ],
+    "current_free": [
+      "OXe"
+    ],
+    "failures": [],
+    "original_function_sha256": "4b024739adf1f20f5d7a9ee3addafd2fa5d83a3d5a7e6e474b17186f353e47ae",
+    "current_function_sha256": "240ec9618daa100fc7cc403b911d84fd1c4c1a3e7ad6bfa97e7fea2f839651d7",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "_ga",
+    "current": "zya",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "5ae3bc0fd2a87be2a5a93582a934f9e135b47876be3a32bd657070e3f7af8421",
+    "current_function_sha256": "e7083ee11807b28b9fa98afbd5e7a96502bdb930f688607b20a27ac215713e11",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "apn",
+    "current": "Ebn",
+    "closure_bindings": {
+      "Tpn": "Ak",
+      "opn": "Dbn",
+      "_h": "yp",
+      "lpn": "Abn",
+      "dpn": "Mbn"
+    },
+    "old_free": [
+      "Tpn",
+      "opn",
+      "_h",
+      "lpn",
+      "dpn"
+    ],
+    "current_free": [
+      "Ak",
+      "Dbn",
+      "yp",
+      "Abn",
+      "Mbn"
+    ],
+    "failures": [],
+    "original_function_sha256": "2815cd4f7eb0f331296f83095e9b61c5560b680435fe047714585f52be8e2dd4",
+    "current_function_sha256": "edaa8ff5c59b9ed5111b19ca7b44fd3ee1a512e35bd7bc47bfafd2fa8a64126c",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "cOn",
+    "current": "XPn",
+    "closure_bindings": {
+      "gl": "ig"
+    },
+    "old_free": [
+      "gl"
+    ],
+    "current_free": [
+      "ig"
+    ],
+    "failures": [],
+    "original_function_sha256": "feeffb0a4c165ca17d1f67de4af91d78bbc8b3f4adbdbb42701e715c39361489",
+    "current_function_sha256": "74d21d9228d82d9db5ae9d68d545bb3cf5cca0b3859a1fbb60df2832adba4c40",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "d9o",
+    "current": "r9o",
+    "closure_bindings": {
+      "Array": "Array"
+    },
+    "old_free": [
+      "Array"
+    ],
+    "current_free": [
+      "Array"
+    ],
+    "failures": [],
+    "original_function_sha256": "04a0d1cbaae42238c94e051f4f193bbd6297f391d9554773ccbd832ac2655d76",
+    "current_function_sha256": "a0ef11ee6cca4ea34abe96b25545dae145aad4c72c2aef9cf8447797217ca1e6",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "eSr",
+    "current": "XOr",
+    "closure_bindings": {
+      "$xr": "YOr",
+      "ySr": "gkr"
+    },
+    "old_free": [
+      "$xr",
+      "ySr"
+    ],
+    "current_free": [
+      "YOr",
+      "gkr"
+    ],
+    "failures": [],
+    "original_function_sha256": "1d7a39ad77a15311271ee12fdba51f18b53f37c16cbfe450fa1b7f170213dbbc",
+    "current_function_sha256": "7959249f23ff6050faf7947cf045939bd3c330c3c223b6a3ae68691aa1712b48",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "g0n",
+    "current": "f7n",
+    "closure_bindings": {
+      "v0n": "m7n"
+    },
+    "old_free": [
+      "v0n"
+    ],
+    "current_free": [
+      "m7n"
+    ],
+    "failures": [],
+    "original_function_sha256": "a5efd1038a1742c0fd628201faa39619760b6bc36881412c3ee8431060092bb2",
+    "current_function_sha256": "7061d50ad40a5289c7bfd709394ef81947cdea27d04c0f4c183e33dee9a73796",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "gga",
+    "current": "Rya",
+    "closure_bindings": {
+      "Array": "Array",
+      "_ga": "zya"
+    },
+    "old_free": [
+      "Array",
+      "_ga"
+    ],
+    "current_free": [
+      "Array",
+      "zya"
+    ],
+    "failures": [],
+    "original_function_sha256": "91915412d90e308d99b303ecc834e73afb1951dd25ec92e73ad545193cdf150e",
+    "current_function_sha256": "a085f319726248c7ea7e679e9941aab2d4dc05cec15a4e8bf3ecf60c53180a3f",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "iOn",
+    "current": "KPn",
+    "closure_bindings": {
+      "Map": "Map",
+      "rOn": "GPn"
+    },
+    "old_free": [
+      "Map",
+      "rOn"
+    ],
+    "current_free": [
+      "Map",
+      "GPn"
+    ],
+    "failures": [],
+    "original_function_sha256": "74a154d3dced191bc08943f470e5251c3d7f86015973d72e845671b3288c70b0",
+    "current_function_sha256": "7af0d7464daef9c4a6eddfb9846e60aca800dae858d304f55c9520c16064ea3a",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "kM",
+    "current": "EN",
+    "closure_bindings": {
+      "ozn": "jGn",
+      "Pr": "Ll",
+      "qRn": "vGn",
+      "lzn": "PGn",
+      "Dte": "JKe",
+      "$i": "jd",
+      "Bg": "_r",
+      "Pi": "kg"
+    },
+    "old_free": [
+      "ozn",
+      "Pr",
+      "qRn",
+      "lzn",
+      "Dte",
+      "$i",
+      "Bg",
+      "Pi"
+    ],
+    "current_free": [
+      "jGn",
+      "Ll",
+      "vGn",
+      "PGn",
+      "JKe",
+      "jd",
+      "_r",
+      "kg"
+    ],
+    "failures": [],
+    "original_function_sha256": "5d579b7ddd586d11574fa0689bd389d818b96dfedd2d48df62a75852f85faa7e",
+    "current_function_sha256": "26525e718f07fb4d0ed9dbed9ff394d0d367a1415af85d2f40d23fbc506a344a",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "lzn",
+    "current": "PGn",
+    "closure_bindings": {
+      "Da": "no"
+    },
+    "old_free": [
+      "Da"
+    ],
+    "current_free": [
+      "no"
+    ],
+    "failures": [],
+    "original_function_sha256": "b50a03deb6e7c2ec4ad5315782a247c9d1057ceeff2883655eb7b8a7a39e3a7d",
+    "current_function_sha256": "96cce8fffaef8387903de2b7d32c26ef6e7574c4c418bc49f29d0ff6fa173aac",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "nmn",
+    "current": "bxn",
+    "closure_bindings": {
+      "Map": "Map",
+      "Set": "Set"
+    },
+    "old_free": [
+      "Map",
+      "Set"
+    ],
+    "current_free": [
+      "Map",
+      "Set"
+    ],
+    "failures": [],
+    "original_function_sha256": "e2a796e7464e0efce1a05db607e01655e98206d8bb9eba7c9fba9c97438a2fe4",
+    "current_function_sha256": "5333e431048714dafb63a610c9b0cbee5de69057dd481c110a4f5e386a3411b2",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "opn",
+    "current": "Dbn",
+    "closure_bindings": {
+      "dpn": "Mbn"
+    },
+    "old_free": [
+      "dpn"
+    ],
+    "current_free": [
+      "Mbn"
+    ],
+    "failures": [],
+    "original_function_sha256": "5bafe7a2a54c59745f80df2f76a1c00f71c5c2730b89997df84f5180dc52f025",
+    "current_function_sha256": "ac50edc57d34cca3f5646e7f51125c98a0bc243c59b208b08ad2d6312e4be52a",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "pkn",
+    "current": "QFn",
+    "closure_bindings": {
+      "cl": "To",
+      "akn": "WFn"
+    },
+    "old_free": [
+      "cl",
+      "akn"
+    ],
+    "current_free": [
+      "To",
+      "WFn"
+    ],
+    "failures": [],
+    "original_function_sha256": "eb1f04e8761f7b74daf357fff71de61ac38f3d44c9cd5352cf1650018c770982",
+    "current_function_sha256": "0b924a18690cff1a5853fb87ba43c240148b0cc1e8be8aee944c8b0fba52e9db",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "r1",
+    "current": "A$",
+    "closure_bindings": {
+      "Euo": "Opo",
+      "i1": "j$",
+      "Cuo": "Tpo",
+      "Tuo": "Dpo",
+      "Symbol": "Symbol",
+      "wuo": "Epo"
+    },
+    "old_free": [
+      "Euo",
+      "i1",
+      "Cuo",
+      "Tuo",
+      "Symbol",
+      "wuo"
+    ],
+    "current_free": [
+      "Opo",
+      "j$",
+      "Tpo",
+      "Dpo",
+      "Symbol",
+      "Epo"
+    ],
+    "failures": [],
+    "original_function_sha256": "9d897238b21148d83e89f82383165e3bb4bdd9e2c828a651776e92650c89a690",
+    "current_function_sha256": "9c9b8214e6e70530f7148e0927c339194f4bc8c61efc314a7884a648b98870b5",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "rQi",
+    "current": "d1i",
+    "closure_bindings": {
+      "pkn": "QFn"
+    },
+    "old_free": [
+      "pkn"
+    ],
+    "current_free": [
+      "QFn"
+    ],
+    "failures": [],
+    "original_function_sha256": "5c793ec39e2052f77699b4f8b6bb5932b35bd732b54413eb1241f08359a37e74",
+    "current_function_sha256": "cd9212aef9cbe1c6d3bd826637ca00691bc7d38237e3245c0d3a4b324912e031",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "rdo",
+    "current": "amo",
+    "closure_bindings": {
+      "u1": "L$",
+      "W": "$",
+      "QR": "Lz",
+      "d1": "R$",
+      "zp": "ca",
+      "f1": "z$",
+      "Cc": "Ga",
+      "Lte": "F$e",
+      "mdo": "gmo",
+      "gdo": "vmo",
+      "Symbol": "Symbol",
+      "Juo": "Xpo",
+      "p1": "B$",
+      "zVe": "qQe",
+      "lX": "FY",
+      "r1": "A$",
+      "cdo": "umo",
+      "ZAa": "$Na",
+      "c1": "F$",
+      "ado": "smo",
+      "Sdo": "wmo",
+      "Cdo": "Tmo",
+      "wdo": "Emo",
+      "ldo": "dmo",
+      "xdo": "Cmo",
+      "ul": "Dp",
+      "Oga": "Xya",
+      "ido": "omo",
+      "String": "String",
+      "aNi": "SBi",
+      "nio": "iso",
+      "hdo": "_mo",
+      "J": "q",
+      "odo": "cmo",
+      "buo": "Spo",
+      "guo": "vpo",
+      "pdo": "hmo",
+      "Ys": "pl"
+    },
+    "old_free": [
+      "u1",
+      "W",
+      "QR",
+      "d1",
+      "zp",
+      "f1",
+      "Cc",
+      "Lte",
+      "mdo",
+      "gdo",
+      "Symbol",
+      "Juo",
+      "p1",
+      "zVe",
+      "lX",
+      "r1",
+      "cdo",
+      "ZAa",
+      "c1",
+      "ado",
+      "Sdo",
+      "Cdo",
+      "wdo",
+      "ldo",
+      "xdo",
+      "ul",
+      "Oga",
+      "ido",
+      "String",
+      "aNi",
+      "nio",
+      "hdo",
+      "J",
+      "odo",
+      "buo",
+      "guo",
+      "pdo",
+      "Ys"
+    ],
+    "current_free": [
+      "L$",
+      "$",
+      "Lz",
+      "R$",
+      "ca",
+      "z$",
+      "Ga",
+      "F$e",
+      "gmo",
+      "vmo",
+      "Symbol",
+      "Xpo",
+      "B$",
+      "qQe",
+      "FY",
+      "A$",
+      "umo",
+      "$Na",
+      "F$",
+      "smo",
+      "wmo",
+      "Tmo",
+      "Emo",
+      "dmo",
+      "Cmo",
+      "Dp",
+      "Xya",
+      "omo",
+      "String",
+      "SBi",
+      "iso",
+      "_mo",
+      "q",
+      "cmo",
+      "Spo",
+      "vpo",
+      "hmo",
+      "pl"
+    ],
+    "failures": [],
+    "original_function_sha256": "391cc7c85d8ae4bc126ef15fcc62162351ac86e5c98cd45b1d0a31f0f271bbe2",
+    "current_function_sha256": "583e794e1d021c0cdf9ca82ea56a850446fc8df6c224298fe30cf42163c69cd6",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "skn",
+    "current": "KFn",
+    "closure_bindings": {
+      "HA": "Pj"
+    },
+    "old_free": [
+      "HA"
+    ],
+    "current_free": [
+      "Pj"
+    ],
+    "failures": [],
+    "original_function_sha256": "a187cd8ea14c51db0751a147a014a1921648c2eefeca83bc484c0a37a7d70468",
+    "current_function_sha256": "8a55b5b3db39fbbd0d88e18ce8dcd78297231522f38ec9dbb60455cc78af8e31",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "spn",
+    "current": "Obn",
+    "closure_bindings": {
+      "ms": "mm",
+      "$a": "mg",
+      "tk": "jk",
+      "tpn": "Sbn",
+      "epn": "xbn",
+      "apn": "Ebn",
+      "Mpn": "Zbn",
+      "upn": "jbn"
+    },
+    "old_free": [
+      "ms",
+      "$a",
+      "tk",
+      "tpn",
+      "epn",
+      "apn",
+      "Mpn",
+      "upn"
+    ],
+    "current_free": [
+      "mm",
+      "mg",
+      "jk",
+      "Sbn",
+      "xbn",
+      "Ebn",
+      "Zbn",
+      "jbn"
+    ],
+    "failures": [],
+    "original_function_sha256": "9be468780d11bf01ac3cd22fc67708bdc1bf2d61997f86eac48e60141f440b72",
+    "current_function_sha256": "53623a1ae0d54f458d147ca6f2b966139efa8b16f386c3c2d58ae2facc9c6012",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "tmn",
+    "current": "yxn",
+    "closure_bindings": {
+      "Set": "Set"
+    },
+    "old_free": [
+      "Set"
+    ],
+    "current_free": [
+      "Set"
+    ],
+    "failures": [],
+    "original_function_sha256": "27c28cda9e7bedf7d3a0278812c84e2098e065797b989819cbcce30dbc4165cb",
+    "current_function_sha256": "06dd44947f7e8ed93a3545343056ec31bdca625b978643b633739834acf96940",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "upn",
+    "current": "jbn",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "a566aab5da417349889b8878681108cf33a98859e79fc68ad580337dbcafde04",
+    "current_function_sha256": "000fe94f01eb635ff371c649c621497011e6c1e1e84e6cd6b45c0f24fb1c944a",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "wuo",
+    "current": "Epo",
+    "closure_bindings": {
+      "Euo": "Opo",
+      "Symbol": "Symbol",
+      "i1": "j$"
+    },
+    "old_free": [
+      "Euo",
+      "Symbol",
+      "i1"
+    ],
+    "current_free": [
+      "Opo",
+      "Symbol",
+      "j$"
+    ],
+    "failures": [],
+    "original_function_sha256": "237a40d7d20289f5b39b266d9041225d599deb599ea0312320e3277bca7b8c6c",
+    "current_function_sha256": "902049401e4297e5aeee8e761f8ba8e2a2d91e507c8f78bd463699f24f38cab5",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "zOn",
+    "current": "wFn",
+    "closure_bindings": {
+      "oi": "yh"
+    },
+    "old_free": [
+      "oi"
+    ],
+    "current_free": [
+      "yh"
+    ],
+    "failures": [],
+    "original_function_sha256": "77e27ca1bb37ef1c5cb3705cb2b5558f14ebc40271c377444ba93a56329635d7",
+    "current_function_sha256": "dd81649d9039ebc4df6bbb21a5d2dad857178b7731ef3895d8427a811e2808f2",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "initial",
+    "old": "Xbo",
+    "current": "xwo",
+    "closure_bindings": {
+      "Qbo": "Cwo",
+      "Fe": "pp",
+      "Z": "W",
+      "W": "$",
+      "Io": "Ma",
+      "Ad": "vs",
+      "No": "Wl",
+      "oV": "WV",
+      "os": "Nc",
+      "qO": "gk",
+      "_h": "yp",
+      "Rm": "Ad",
+      "zO": "ck",
+      "zfe": "C",
+      "tbo": "ECo",
+      "Kun": "vvn",
+      "y0": "Y1",
+      "VO": "uk",
+      "Hyo": "pCo",
+      "pbo": "RCo",
+      "oXi": "mQi",
+      "omo": "s_o",
+      "pLi": "tGi",
+      "Ec": "cEe",
+      "Zbo": "Swo",
+      "F0": "d0",
+      "J": "q",
+      "exo": "Two",
+      "tl": "ve",
+      "Avo": "tSo",
+      "Mp": "_p",
+      "JSe": "WXe",
+      "TBa": "AUa",
+      "hme": "EHe",
+      "hbo": "BCo",
+      "qyo": "vCo",
+      "qbo": "vwo",
+      "Yo": "td",
+      "Ou": "ec",
+      "KK": "W2i",
+      "Ds": "da",
+      "UMn": "Ozn",
+      "es": "Oc",
+      "HMn": "Dzn",
+      "Mr": "ch",
+      "wte": "JTe",
+      "$bo": "wwo",
+      "Edo": "Omo",
+      "MVr": "UV",
+      "Sf": "gs",
+      "Zyo": "SCo",
+      "Sd": "qo",
+      "ZDe": "MAe",
+      "obo": "jCo",
+      "Symbol": "Symbol"
+    },
+    "old_free": [
+      "Qbo",
+      "Fe",
+      "Z",
+      "W",
+      "Io",
+      "Ad",
+      "No",
+      "oV",
+      "os",
+      "qO",
+      "_h",
+      "Rm",
+      "zO",
+      "zfe",
+      "tbo",
+      "Kun",
+      "y0",
+      "VO",
+      "Hyo",
+      "pbo",
+      "oXi",
+      "omo",
+      "pLi",
+      "Ec",
+      "Zbo",
+      "op",
+      "Ip",
+      "zya",
+      "$d",
+      "F0",
+      "Mfo",
+      "Cc",
+      "SBe",
+      "Ifo",
+      "Kd",
+      "t_e",
+      "J",
+      "exo",
+      "tl",
+      "Avo",
+      "Mp",
+      "JSe",
+      "TBa",
+      "hme",
+      "hbo",
+      "qyo",
+      "qbo",
+      "Yo",
+      "Ou",
+      "KK",
+      "Ds",
+      "UMn",
+      "es",
+      "HMn",
+      "Mr",
+      "wte",
+      "$bo",
+      "Edo",
+      "MVr",
+      "Sf",
+      "Zyo",
+      "Sd",
+      "ZDe",
+      "obo",
+      "Symbol"
+    ],
+    "current_free": [
+      "Cwo",
+      "pp",
+      "W",
+      "$",
+      "Ma",
+      "vs",
+      "Wl",
+      "WV",
+      "Nc",
+      "gk",
+      "yp",
+      "Ad",
+      "ck",
+      "C",
+      "ECo",
+      "vvn",
+      "Y1",
+      "uk",
+      "pCo",
+      "RCo",
+      "mQi",
+      "s_o",
+      "tGi",
+      "cEe",
+      "Swo",
+      "GSa",
+      "rc",
+      "$d",
+      "rCa",
+      "_l",
+      "d0",
+      "Pho",
+      "Ga",
+      "Nt",
+      "Rho",
+      "Mp",
+      "WBe",
+      "q",
+      "Two",
+      "ve",
+      "tSo",
+      "_p",
+      "WXe",
+      "AUa",
+      "EHe",
+      "BCo",
+      "vCo",
+      "vwo",
+      "td",
+      "ec",
+      "W2i",
+      "da",
+      "Ozn",
+      "Oc",
+      "Dzn",
+      "ch",
+      "JTe",
+      "wwo",
+      "Omo",
+      "UV",
+      "gs",
+      "SCo",
+      "qo",
+      "MAe",
+      "jCo",
+      "Symbol"
+    ],
+    "failures": [],
+    "original_function_sha256": "2286f5f0887b6f6bcc3faf0b12de4b55c6a2f1770a490c7d621468777f3455ac",
+    "current_function_sha256": "77d56abbe06625a36de2cb083ac2179d6937c8537594c5cb5279ee5b1f1ca5bb",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner",
+    "additional_native_free": [
+      "GSa",
+      "rc",
+      "$d",
+      "rCa",
+      "_l",
+      "Pho",
+      "Ga",
+      "Nt",
+      "Rho",
+      "Mp",
+      "WBe"
+    ]
+  },
+  {
+    "role": "initial",
+    "old": "dpn",
+    "current": "Mbn",
+    "closure_bindings": {
+      "Number": "Number"
+    },
+    "old_free": [
+      "Number"
+    ],
+    "current_free": [
+      "Number"
+    ],
+    "failures": [],
+    "original_function_sha256": "d4db2b9d51746351c57cb9e3617f747778f7516f33985c8376da6ccde52ceaa2",
+    "current_function_sha256": "2a7c37a94c7145ca19d36419d3b1c67b323619b1c19e115ee78732f3eaede84c",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "AAt",
+    "current": "Qjt",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "9aa352b99413a5a2a75fd2e66dafea2160ff80b3eaa42d13d18a18535745b583",
+    "current_function_sha256": "9e18070d515327f81c5be7dcb867f2d5f77d798beb91f751b142cbe91b00e8de",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "DDt",
+    "current": "rkt",
+    "closure_bindings": {
+      "kDt": "akt",
+      "W5": "J5",
+      "Kfe": "DD",
+      "XR": "GR",
+      "sw": "Jx",
+      "U5": "q5",
+      "ODt": "ikt",
+      "Node": "Node",
+      "window": "window",
+      "document": "document",
+      "qhe": "She",
+      "G5": "Y5",
+      "Symbol": "Symbol"
+    },
+    "old_free": [
+      "kDt",
+      "W5",
+      "Kfe",
+      "XR",
+      "sw",
+      "U5",
+      "ODt",
+      "Node",
+      "window",
+      "document",
+      "qhe",
+      "G5",
+      "Symbol"
+    ],
+    "current_free": [
+      "akt",
+      "J5",
+      "DD",
+      "GR",
+      "Jx",
+      "q5",
+      "ikt",
+      "Node",
+      "window",
+      "document",
+      "She",
+      "Y5",
+      "Symbol"
+    ],
+    "failures": [],
+    "original_function_sha256": "be6ed9175b98c5ea8a4e8cd24cd99da6ed099b7fabc3057f87e6a6eaade9d595",
+    "current_function_sha256": "9a4265d1df616d6b60e2f9b8024fd99c9e97d2c0ef55b8dfd4b909b68ea5e601",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "ODt",
+    "current": "ikt",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "9be81249628e4298e58350527e55902103357baa894e4f43e79a2d4320967cf5",
+    "current_function_sha256": "de4657b0eec3a58c6318ad87d69cf6be63dfe943c561c78552bfb7cebe096b33",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "PKe",
+    "current": "Fqe",
+    "closure_bindings": {
+      "FKe": "Iqe",
+      "ZR": "KR",
+      "rTe": "Fbe",
+      "sw": "Jx",
+      "bje": "Jfe",
+      "XR": "GR",
+      "Math": "Math",
+      "window": "window",
+      "HTMLElement": "HTMLElement"
+    },
+    "old_free": [
+      "FKe",
+      "ZR",
+      "rTe",
+      "sw",
+      "bje",
+      "XR",
+      "Math",
+      "window",
+      "HTMLElement"
+    ],
+    "current_free": [
+      "Iqe",
+      "KR",
+      "Fbe",
+      "Jx",
+      "Jfe",
+      "GR",
+      "Math",
+      "window",
+      "HTMLElement"
+    ],
+    "failures": [],
+    "original_function_sha256": "ba44a1d2d061ad3f35c80c4e716dd1f517d4c71fce5005263dd8b1b523d29860",
+    "current_function_sha256": "6fe70252f75b8e25fe922e77c8b9ffb9717dca6f55c21e73bd0f9c69d78e473b",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "T7",
+    "current": "x7",
+    "closure_bindings": {
+      "E7": "S7",
+      "q": "$",
+      "Ge": "rf",
+      "pp": "Qu",
+      "uc": "Qd",
+      "du": "cp",
+      "D7": "C7",
+      "fOt": "Pkt",
+      "mOt": "Ikt"
+    },
+    "old_free": [
+      "E7",
+      "q",
+      "Ge",
+      "pp",
+      "uc",
+      "du",
+      "D7",
+      "fOt",
+      "mOt"
+    ],
+    "current_free": [
+      "S7",
+      "$",
+      "rf",
+      "Qu",
+      "Qd",
+      "cp",
+      "C7",
+      "Pkt",
+      "Ikt"
+    ],
+    "failures": [],
+    "original_function_sha256": "9de021df2228833d50248965c5af76e2fde14adfe019dca5ad7e4b603fed3ac6",
+    "current_function_sha256": "3413f30204b4eef7d835d2e534dd8d509683a582d6eddb6f8bc37fc555fb4eda",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "U5",
+    "current": "q5",
+    "closure_bindings": {
+      "Element": "Element",
+      "Node": "Node"
+    },
+    "old_free": [
+      "Element",
+      "Node"
+    ],
+    "current_free": [
+      "Element",
+      "Node"
+    ],
+    "failures": [],
+    "original_function_sha256": "ed8e9fe9a3ceceeaece3bcdd5a7722900ededa9e43c46a66fbad785bb7c189a9",
+    "current_function_sha256": "2eaf932083839b23454f77393e67681532c54c7f8bc715fd646afc7b291bb369",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "_et",
+    "current": "Btt",
+    "closure_bindings": {
+      "JJ": "VJ",
+      "A": "jm",
+      "HD": "Bv",
+      "q": "$",
+      "Eje": "BNe",
+      "Hh": "cc",
+      "eg": "Rm",
+      "tf": "Lp",
+      "PE": "Xb",
+      "Xt": "Th",
+      "$T": "KC",
+      "YJ": "HJ",
+      "Z8e": "U5e"
+    },
+    "old_free": [
+      "JJ",
+      "A",
+      "HD",
+      "q",
+      "Eje",
+      "Hh",
+      "eg",
+      "tf",
+      "PE",
+      "Xt",
+      "$T",
+      "YJ",
+      "Z8e"
+    ],
+    "current_free": [
+      "VJ",
+      "jm",
+      "Bv",
+      "$",
+      "BNe",
+      "cc",
+      "Rm",
+      "Lp",
+      "Xb",
+      "Th",
+      "KC",
+      "HJ",
+      "U5e"
+    ],
+    "failures": [],
+    "original_function_sha256": "7f0e78689399dc5b425704449bc85e952924945f2b1e8540cdaf35683071d2ae",
+    "current_function_sha256": "7d3eb145869c4a06e958d3b757f74b23cc269898d9ac7b16ca356fbe3c9020fc",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "cDt",
+    "current": "ROt",
+    "closure_bindings": {
+      "lDt": "zOt",
+      "Math": "Math",
+      "Ube": "YAe"
+    },
+    "old_free": [
+      "lDt",
+      "Math",
+      "Ube"
+    ],
+    "current_free": [
+      "zOt",
+      "Math",
+      "YAe"
+    ],
+    "failures": [],
+    "original_function_sha256": "83af32af532e120a0a6b038b8be2ca0394eb9f05365c9f971a99be2fe5754837",
+    "current_function_sha256": "e266dac60835308eec7c3b57ffc14a6863f1d098c2e6a0efbed2fd6eaecc3a95",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "fOt",
+    "current": "Pkt",
+    "closure_bindings": {
+      "E7": "S7",
+      "A": "jm",
+      "Q": "q",
+      "eg": "Rm",
+      "gAe": "PCe",
+      "Lfe": "ev",
+      "za": "Gm",
+      "fe": "Pm",
+      "Eg": "p",
+      "nb": "EC",
+      "vy": "LE",
+      "pOt": "Fkt",
+      "D7": "C7",
+      "u4": "s4"
+    },
+    "old_free": [
+      "E7",
+      "A",
+      "Q",
+      "eg",
+      "gAe",
+      "Lfe",
+      "za",
+      "fe",
+      "Eg",
+      "nb",
+      "vy",
+      "pOt",
+      "D7",
+      "u4"
+    ],
+    "current_free": [
+      "S7",
+      "jm",
+      "q",
+      "Rm",
+      "PCe",
+      "ev",
+      "Gm",
+      "Pm",
+      "p",
+      "EC",
+      "LE",
+      "Fkt",
+      "C7",
+      "s4"
+    ],
+    "failures": [],
+    "original_function_sha256": "e0b62779de2f0eb6d1a10c24be54ad63aa843dc9476ebc4cf7af62121cd62698",
+    "current_function_sha256": "5436463c3e4b1c98f93c9e3ede09570ce5721b11094f546ba08fba3bca21a757",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "mOt",
+    "current": "Ikt",
+    "closure_bindings": {
+      "E7": "S7",
+      "A": "jm",
+      "Q": "q",
+      "tf": "Lp",
+      "eg": "Rm",
+      "q": "$",
+      "pp": "Qu",
+      "uc": "Qd",
+      "Xt": "Th",
+      "he": "c",
+      "Eje": "BNe",
+      "kDe": "Ive",
+      "Symbol": "Symbol",
+      "J": "Y",
+      "Qp": "_u",
+      "Hh": "cc",
+      "gAe": "PCe",
+      "TT": "kE",
+      "Al": "qie",
+      "hOt": "Lkt",
+      "uy": "KD",
+      "hOe": "_pe",
+      "$Ne": "uOe",
+      "PE": "Xb",
+      "ar": "Ih",
+      "fo": "gf",
+      "_d": "ee",
+      "$T": "KC",
+      "jme": "Dve",
+      "Lfe": "ev",
+      "za": "Gm",
+      "fe": "Pm",
+      "Eg": "p",
+      "nb": "EC",
+      "vy": "LE",
+      "gf": "ii",
+      "u4": "s4",
+      "D7": "C7"
+    },
+    "old_free": [
+      "E7",
+      "A",
+      "Q",
+      "tf",
+      "eg",
+      "q",
+      "pp",
+      "uc",
+      "Xt",
+      "he",
+      "Eje",
+      "kDe",
+      "Symbol",
+      "J",
+      "Qp",
+      "Hh",
+      "gAe",
+      "TT",
+      "Al",
+      "hOt",
+      "uy",
+      "hOe",
+      "$Ne",
+      "PE",
+      "ar",
+      "fo",
+      "_d",
+      "$T",
+      "jme",
+      "Lfe",
+      "za",
+      "fe",
+      "Eg",
+      "nb",
+      "vy",
+      "gf",
+      "u4",
+      "D7"
+    ],
+    "current_free": [
+      "S7",
+      "jm",
+      "q",
+      "Lp",
+      "Rm",
+      "$",
+      "Qu",
+      "Qd",
+      "Th",
+      "c",
+      "BNe",
+      "Ive",
+      "Symbol",
+      "Y",
+      "_u",
+      "cc",
+      "PCe",
+      "kE",
+      "qie",
+      "Lkt",
+      "KD",
+      "_pe",
+      "uOe",
+      "Xb",
+      "Ih",
+      "gf",
+      "ee",
+      "KC",
+      "Dve",
+      "ev",
+      "Gm",
+      "Pm",
+      "p",
+      "EC",
+      "LE",
+      "ii",
+      "s4",
+      "C7"
+    ],
+    "failures": [],
+    "original_function_sha256": "d450aedf28e60055dec69ef2c98f9c0188c8a1ae081d9357198e3c0c6c24eb0f",
+    "current_function_sha256": "76de2a2dcf83694a67841e6c05f82c62bea52e4ca962b4d15eb09eb4bf6ccd6f",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "pkt",
+    "current": "FAt",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "6f00a99be5d7eda5124969ea2840d405ba835e723d818b62c445f0892aec1d6b",
+    "current_function_sha256": "c0888b05c9d5d62b95614abdd7510b0145a8f4e859bd4bf557ef22cd532023ba",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "VDt",
+    "current": "_kt",
+    "closure_bindings": {
+      "HDt": "vkt",
+      "i7": "c7",
+      "mE": "pb",
+      "bY": "iY",
+      "dy": "sv",
+      "Ko": "he"
+    },
+    "old_free": [
+      "HDt",
+      "i7",
+      "mE",
+      "bY",
+      "dy",
+      "Ko"
+    ],
+    "current_free": [
+      "vkt",
+      "c7",
+      "pb",
+      "iY",
+      "sv",
+      "he"
+    ],
+    "failures": [],
+    "original_function_sha256": "7a1425ef413a1ef9f50e930dc6f2995da3e2dd7289aa027e48a9ce7c7b9ca8a0",
+    "current_function_sha256": "e3bda1acf731ddb1ba4e610c66ccd7444763b33e01532fde3cec05b322883228",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "primary",
+    "old": "u4",
+    "current": "s4",
+    "closure_bindings": {
+      "lgt": "R_t",
+      "A": "jm",
+      "Q": "q",
+      "qf": "Cc",
+      "eg": "Rm",
+      "za": "Gm",
+      "fe": "Pm",
+      "d4": "c4",
+      "Eg": "p",
+      "nb": "EC",
+      "vy": "LE",
+      "Symbol": "Symbol",
+      "TC": "cS",
+      "q": "$",
+      "TT": "kE",
+      "f4": "l4",
+      "dy": "sv",
+      "mE": "pb",
+      "el": "_a",
+      "di": "Pf",
+      "ugt": "z_t",
+      "Re": "bn",
+      "gY": "eY",
+      "af": "za",
+      "bb0": "bb0",
+      "s4": "i4",
+      "Ri": "Kse",
+      "wT": "O_"
+    },
+    "old_free": [
+      "lgt",
+      "A",
+      "Q",
+      "qf",
+      "eg",
+      "za",
+      "fe",
+      "d4",
+      "Eg",
+      "nb",
+      "vy",
+      "Symbol",
+      "TC",
+      "q",
+      "TT",
+      "f4",
+      "dy",
+      "mE",
+      "el",
+      "di",
+      "ugt",
+      "Re",
+      "gY",
+      "af",
+      "bb0",
+      "s4",
+      "Ri",
+      "wT"
+    ],
+    "current_free": [
+      "R_t",
+      "jm",
+      "q",
+      "Cc",
+      "Rm",
+      "Gm",
+      "Pm",
+      "c4",
+      "p",
+      "EC",
+      "LE",
+      "Symbol",
+      "cS",
+      "$",
+      "kE",
+      "l4",
+      "sv",
+      "pb",
+      "_a",
+      "Pf",
+      "z_t",
+      "bn",
+      "eY",
+      "za",
+      "bb0",
+      "i4",
+      "Kse",
+      "O_"
+    ],
+    "failures": [],
+    "original_function_sha256": "614938a03c3f92b0e8cadbeb727842fe8840802da088069fbf34728884687221",
+    "current_function_sha256": "99f9a725d0ac57d43d594517d2767708eea1c8c4fd4b415737063d5a4e8f5515",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "$ue",
+    "current": "dde",
+    "closure_bindings": {
+      "nde": "mde"
+    },
+    "old_free": [
+      "nde"
+    ],
+    "current_free": [
+      "mde"
+    ],
+    "failures": [],
+    "original_function_sha256": "6c057a3faca80a808742f9ecfc21bb66ca4c9a3487d2290f0bd515dc0897bc5f",
+    "current_function_sha256": "c30db827a068f6a841c099b08176b5358e07e870d058bb47c24036f9c15b501a",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "EM",
+    "current": "oN",
+    "closure_bindings": {
+      "TM": "aN",
+      "obt": "Lyt"
+    },
+    "old_free": [
+      "TM",
+      "obt"
+    ],
+    "current_free": [
+      "aN",
+      "Lyt"
+    ],
+    "failures": [],
+    "original_function_sha256": "3b242aca2760abd24816b96485bc9a390d656d56ae9dac91f8a2677c124aec02",
+    "current_function_sha256": "997148a4e862d3b5626423b93c467c01efe781fb5eb391d51bc3878d8e32d346",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "JJn",
+    "current": "YJn",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "fc7416d551da55674c99253adf27319476fbf6ed13a1450d8b23362d59d71df7",
+    "current_function_sha256": "6c5d53f7a1759402b8f774b62f30c8fb90288a0190b2181c66bc3c31a9d4b0f7",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "JQt",
+    "current": "SZt",
+    "closure_bindings": {
+      "RR": "SB"
+    },
+    "old_free": [
+      "RR"
+    ],
+    "current_free": [
+      "SB"
+    ],
+    "failures": [],
+    "original_function_sha256": "8d1f4aa7357fe35206036926e392e1c728f63352d92119fe06931bed7a859a61",
+    "current_function_sha256": "8fbfc2478c5aa3fecb5ff4022d77825dcce5122a20c91f891b2832ca382457fb",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "Qm",
+    "current": "Km",
+    "closure_bindings": {
+      "Set": "Set",
+      "Map": "Map",
+      "Xm": "Gm",
+      "Uue": "tde",
+      "Wm": "Vm",
+      "Vue": "$ue",
+      "qm": "Um",
+      "Jf": "Ff",
+      "Gm": "Hm"
+    },
+    "old_free": [
+      "Set",
+      "Map",
+      "Xm",
+      "Uue",
+      "Wm",
+      "Vue",
+      "qm",
+      "Jf",
+      "Gm"
+    ],
+    "current_free": [
+      "Set",
+      "Map",
+      "Gm",
+      "tde",
+      "Vm",
+      "$ue",
+      "Um",
+      "Ff",
+      "Hm"
+    ],
+    "failures": [],
+    "original_function_sha256": "4af44813c29d5460c5bf91ccbdc517c75e3b789ad36c02d2215e55ca47a17c79",
+    "current_function_sha256": "d680d104619949a3c54d2cb1ea4d376a9737eb14c3a60f470b16b7739a674cef",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "Que",
+    "current": "ude",
+    "closure_bindings": {
+      "nde": "mde"
+    },
+    "old_free": [
+      "nde"
+    ],
+    "current_free": [
+      "mde"
+    ],
+    "failures": [],
+    "original_function_sha256": "7cce67f34cc480e9d3cd08835e25cffc3cbb4d88c56f32bc515be7f01013257e",
+    "current_function_sha256": "68e6718d921c62ee17ac30b4c99e80ef60bbc3ad14e94187b1b5423fbf261715",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "TM",
+    "current": "aN",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "3e55be38b84557a27c3d1bed3709394b0276bf6f41b6bef818556911d990d5b2",
+    "current_function_sha256": "96cd46cec1befcb7d13154e9ad6ed512fa49ede4e8dc62bc552389d5c5b465f6",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "Uue",
+    "current": "tde",
+    "closure_bindings": {
+      "cp": "sp",
+      "Hue": "ede",
+      "Gue": "rde"
+    },
+    "old_free": [
+      "cp",
+      "Hue",
+      "Gue"
+    ],
+    "current_free": [
+      "sp",
+      "ede",
+      "rde"
+    ],
+    "failures": [],
+    "original_function_sha256": "f2b63344b120b2b02d1c2f67eb75174efaca888182a4bd481898124ecb6c6ec6",
+    "current_function_sha256": "62b9365265131472a1d967cafadebe2512d3878048374eaa7807368919d64482",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "W4t",
+    "current": "x2t",
+    "closure_bindings": {
+      "uB": "KV",
+      "Z": "Z",
+      "Az": "fV",
+      "fB": "JV"
+    },
+    "old_free": [
+      "uB",
+      "Z",
+      "Az",
+      "fB"
+    ],
+    "current_free": [
+      "KV",
+      "Z",
+      "fV",
+      "JV"
+    ],
+    "failures": [],
+    "original_function_sha256": "b4b2864d17081c0478e5cbd9fc93b2077a64654ba8a8d0b6d13c4203f3cc1772",
+    "current_function_sha256": "59e0e67c484f11f575bb5680557a6c5cf85477c6c37168a79282ea7438e77290",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "WQt",
+    "current": "vZt",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "5db4e3a53c72c324d62867a9745a4b61dae7fc9a04e7f2a20b2de4624c71543a",
+    "current_function_sha256": "4a239585c2ba926fb136e381968cbadff893409249765e348b44d176efa815a6",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "Wm",
+    "current": "Vm",
+    "closure_bindings": {
+      "qm": "Um"
+    },
+    "old_free": [
+      "qm"
+    ],
+    "current_free": [
+      "Um"
+    ],
+    "failures": [],
+    "original_function_sha256": "da0a1f1232a05ba0297ff187ace7011bae8c85504d1a1b68585e3521514db62d",
+    "current_function_sha256": "6a90e80d22ca23887968c6eb7ee0cf6b6a9f099cc2eee42cc694360d42856d7f",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "Xm",
+    "current": "Gm",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "36010430f123278d8fe8023d233a3e73172f98587af99a4e6ac73148afe16ef8",
+    "current_function_sha256": "3b3198822b4376d3dc2ab693360cf87e475f4ab23ba1ce5dcf9830d5ee0bd13b",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "YQt",
+    "current": "CZt",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "c1712c791801b69e57477f2169555544cc5cd7d4473499c9e8e3bf42f09269f8",
+    "current_function_sha256": "63a81ae8829e2ca34e011112ea769df8ac5e9934462a5728f176b199e0be5da3",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "c4t",
+    "current": "z0t",
+    "closure_bindings": {
+      "l4t": "B0t"
+    },
+    "old_free": [
+      "l4t"
+    ],
+    "current_free": [
+      "B0t"
+    ],
+    "failures": [],
+    "original_function_sha256": "afa4f15985eb45d30537e05e58707d11dfbda34fa579e7e2e8568bca605e053a",
+    "current_function_sha256": "a4f1c8fb2b2ba49b5ccfdc1a502a8c55c2aabf15894ee85168633774df57dc8c",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "ede",
+    "current": "fde",
+    "closure_bindings": {
+      "nde": "mde"
+    },
+    "old_free": [
+      "nde"
+    ],
+    "current_free": [
+      "mde"
+    ],
+    "failures": [],
+    "original_function_sha256": "54bffa4d145482c035b5438b474333796f6ef34c5c09792922b07185831dd1de",
+    "current_function_sha256": "7250e0132dbd562967925f0ca604ac7cd2fe837fdfa194a0fad43bc383239984",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "eh",
+    "current": "Jm",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "757de3ce118eec2e21d27a6992c91b563515c71b9205e8e9e5603d8b7c204ebe",
+    "current_function_sha256": "c81f7e0b1122b35acf8da46885692a9aabeab181ce11f1cbd7ffc5a979c8b0c8",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "l4t",
+    "current": "B0t",
+    "closure_bindings": {
+      "Map": "Map",
+      "eB": "IV",
+      "nB": "RV",
+      "Ej": "Tj",
+      "o4t": "L0t",
+      "d4t": "H0t",
+      "zR": "CB",
+      "Pz": "gV",
+      "u4t": "V0t",
+      "DP": "LF"
+    },
+    "old_free": [
+      "Map",
+      "eB",
+      "nB",
+      "Ej",
+      "o4t",
+      "d4t",
+      "zR",
+      "Pz",
+      "u4t",
+      "DP"
+    ],
+    "current_free": [
+      "Map",
+      "IV",
+      "RV",
+      "Tj",
+      "L0t",
+      "H0t",
+      "CB",
+      "gV",
+      "V0t",
+      "LF"
+    ],
+    "failures": [],
+    "original_function_sha256": "23055afc6852ee70ee618f7b984fa0758cfde4f50bb92e300ce7f19531cd4209",
+    "current_function_sha256": "8d8de22fc4205bff98155fac9ee3a5ac6a5b5db80130ba34e3edaca89cbcdef7",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "l7t",
+    "current": "A8t",
+    "closure_bindings": {
+      "Z": "Z",
+      "ih": "Qm",
+      "lde": "xde",
+      "oz": "UB",
+      "Z5t": "v8t",
+      "Vz": "CV",
+      "rh": "Zm",
+      "ah": "$m",
+      "BR": "wB",
+      "u7t": "j8t",
+      "H5t": "u8t",
+      "U5t": "d8t",
+      "s7t": "O8t",
+      "K5t": "m8t",
+      "l2t": "B1t",
+      "t7t": "S8t"
+    },
+    "old_free": [
+      "Z",
+      "ih",
+      "lde",
+      "oz",
+      "Z5t",
+      "Vz",
+      "rh",
+      "ah",
+      "BR",
+      "u7t",
+      "H5t",
+      "U5t",
+      "s7t",
+      "K5t",
+      "l2t",
+      "t7t"
+    ],
+    "current_free": [
+      "Z",
+      "Qm",
+      "xde",
+      "UB",
+      "v8t",
+      "CV",
+      "Zm",
+      "$m",
+      "wB",
+      "j8t",
+      "u8t",
+      "d8t",
+      "O8t",
+      "m8t",
+      "B1t",
+      "S8t"
+    ],
+    "failures": [],
+    "original_function_sha256": "572c74e130766734556ff76ca174322e6f6371098f93439bedfaa082ee245a44",
+    "current_function_sha256": "001afb03d62332619d60b3c9a80df0f5687b970a25343e19f342549f3eda5d7f",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "l8t",
+    "current": "SH",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "35491b25360302dc4458c83423f4ddc703b608fa3a6409f171dceaa395141401",
+    "current_function_sha256": "0e5b874857656bdb78e9fa7884d30dce9f11047d9e2f2eb35763d57c2e834e66",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "nB",
+    "current": "RV",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "355ffde9f66d454d78e2ac1ad6a40a973079d6766434e1e6ea99097e19079ee5",
+    "current_function_sha256": "a7ef6cbfd05d95dc6415fc1658f700707be15c72e5947e23a62f9cb853a9b49e",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "nde",
+    "current": "mde",
+    "closure_bindings": {
+      "Qm": "Km",
+      "Error": "Error",
+      "JSON": "JSON"
+    },
+    "old_free": [
+      "Qm",
+      "Error",
+      "JSON"
+    ],
+    "current_free": [
+      "Km",
+      "Error",
+      "JSON"
+    ],
+    "failures": [],
+    "original_function_sha256": "7725bd12dd19ab5142441ef73be201dfac9d05719a1beb2cc768f7834986674c",
+    "current_function_sha256": "bf940769b94fa659092e261029f7f9f6022f1db39082f3924210d442f7ea30f7",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "nh",
+    "current": "Xm",
+    "closure_bindings": {
+      "Bf": "wf",
+      "Que": "ude",
+      "ede": "fde",
+      "$ue": "dde"
+    },
+    "old_free": [
+      "Bf",
+      "Que",
+      "ede",
+      "$ue"
+    ],
+    "current_free": [
+      "wf",
+      "ude",
+      "fde",
+      "dde"
+    ],
+    "failures": [],
+    "original_function_sha256": "4acfdb024830c23ccc7c11e5a9b883c09c06cde79fa47a95beed113e4061084e",
+    "current_function_sha256": "0c29f4a052af5a21a2c535512c7187f14291b0dad793a71b17da63afdaf1ff79",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "obt",
+    "current": "Lyt",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "da49a5141fbf3a05bd27910cd77deb4b3276669053e291765b722b7f2d8a8421",
+    "current_function_sha256": "f3679a99b3f333d0752532e2b3d52bd80b9dde04f4511a01bced8df17849b442",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "qQt",
+    "current": "xZt",
+    "closure_bindings": {
+      "JQt": "SZt",
+      "WQt": "vZt",
+      "YQt": "CZt"
+    },
+    "old_free": [
+      "JQt",
+      "WQt",
+      "YQt"
+    ],
+    "current_free": [
+      "SZt",
+      "vZt",
+      "CZt"
+    ],
+    "failures": [],
+    "original_function_sha256": "c2dbd1e216603d62fffc9f21f0e6925d7c8f24e339c758cd19fc48fb9d2b200b",
+    "current_function_sha256": "0324007a1d3827982ebf958b061d80280d21851bded29da0e2ae746205e24675",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "qm",
+    "current": "Um",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "af2848cb877d69310aea80156d883504f21c1d07cc2426320c9d2e65673df71b",
+    "current_function_sha256": "c12b56d2f477a343f37d768dcac8d32aa59f17f62ecfb485d86dbd74ebd3a682",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "th",
+    "current": "Ym",
+    "closure_bindings": {
+      "nh": "Xm",
+      "Bf": "wf"
+    },
+    "old_free": [
+      "nh",
+      "Bf"
+    ],
+    "current_free": [
+      "Xm",
+      "wf"
+    ],
+    "failures": [],
+    "original_function_sha256": "5edcbeb78fea5280d208482722c513c89f96eb37a01baa5ee32d2afe76506751",
+    "current_function_sha256": "d722ac6e79b09a6442a769dca288bc32c0d92add6935a5d8db6f03397c756b4b",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "u4t",
+    "current": "V0t",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "3e94af278a161753d3463dfc048a0da49c3b6e341feca9c04791bb9bde0c587c",
+    "current_function_sha256": "7a5dfeaaf353dc0e4921da5fbc27b6609bfd5e41e2a565d8fccc651d8b96f5d4",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "zJn",
+    "current": "BJn",
+    "closure_bindings": {
+      "BJn": "VJn"
+    },
+    "old_free": [
+      "BJn"
+    ],
+    "current_free": [
+      "VJn"
+    ],
+    "failures": [],
+    "original_function_sha256": "f0266e27bdc9188ce125ac3eaedcd392cd58f1e36182b50d329375d8d2ae3a12",
+    "current_function_sha256": "6cdb11107a7f38bc3bfce01a57e8e963e432fb5ec67fa21160ffaf055d8c42bc",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "zR",
+    "current": "CB",
+    "closure_bindings": {
+      "RR": "SB",
+      "Qm": "Km"
+    },
+    "old_free": [
+      "RR",
+      "Qm"
+    ],
+    "current_free": [
+      "SB",
+      "Km"
+    ],
+    "failures": [],
+    "original_function_sha256": "1115b7268049670a5de3bb1ee94028a42c08c106d48a44f8a4f13387e98869cd",
+    "current_function_sha256": "e51ee8ae9710f9007cfc2dbadbbf72a0e62255e0e9069a090ea609297dc86a85",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "Bf",
+    "current": "wf",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "17f26cdc4678fd4034dee28b8173f360df8860247715879e2cfaea9cfb18efbd",
+    "current_function_sha256": "55ae2d1dff5e18fc8e572121fc9d7fa38200651b549f5be83e3a3fc45993e5eb",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "JQ",
+    "current": "p$",
+    "closure_bindings": {
+      "zJn": "BJn"
+    },
+    "old_free": [
+      "zJn"
+    ],
+    "current_free": [
+      "BJn"
+    ],
+    "failures": [],
+    "original_function_sha256": "4c44ad54cae9c8e1a8309643e8a4323e15db0df5158c8a43bb9c05940457c7ff",
+    "current_function_sha256": "492ee9fcceb4a5027fa024bf3583e978ee00a3468473151aff0542bbcc04e60c",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "VR",
+    "current": "TB",
+    "closure_bindings": {
+      "eh": "Jm",
+      "RR": "SB"
+    },
+    "old_free": [
+      "eh",
+      "RR"
+    ],
+    "current_free": [
+      "Jm",
+      "SB"
+    ],
+    "failures": [],
+    "original_function_sha256": "a07a163554f5243df2c4115222dd38e075331618c2cce320336ab626b33ad36b",
+    "current_function_sha256": "3ca5943ee3ff687d5cce1d93c19a58422985495bb724e5d4b9457f4b4448e726",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "shared",
+    "old": "qJn",
+    "current": "JJn",
+    "closure_bindings": {
+      "JQ": "p$"
+    },
+    "old_free": [
+      "JQ"
+    ],
+    "current_free": [
+      "p$"
+    ],
+    "failures": [],
+    "original_function_sha256": "8468247994b8af66c801f5f0350ac9556f808bc3042968d1c2d10b15fed009b3",
+    "current_function_sha256": "07088f59f96bf5bbaa3aca89429eb194474619fdf1355533f9fac998624be092",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "picker",
+    "old": "R",
+    "current": "z",
+    "closure_bindings": {
+      "U": "U",
+      "g": "l",
+      "r": "x",
+      "k": "k",
+      "j": "j",
+      "H": "H",
+      "V": "V",
+      "Symbol": "Symbol",
+      "W": "W",
+      "u": "p",
+      "p": "o",
+      "x": "te",
+      "S": "T",
+      "ne": "A",
+      "F": "N",
+      "t": "r",
+      "te": "ee",
+      "ee": "a",
+      "a": "f",
+      "s": "t",
+      "d": "u",
+      "N": "L",
+      "B": "B",
+      "z": "ne",
+      "c": "g",
+      "L": "I"
+    },
+    "old_free": [
+      "U",
+      "g",
+      "r",
+      "k",
+      "j",
+      "H",
+      "V",
+      "Symbol",
+      "W",
+      "u",
+      "p",
+      "x",
+      "S",
+      "ne",
+      "F",
+      "t",
+      "te",
+      "ee",
+      "a",
+      "s",
+      "d",
+      "N",
+      "B",
+      "z",
+      "c",
+      "L"
+    ],
+    "current_free": [
+      "U",
+      "l",
+      "x",
+      "k",
+      "j",
+      "H",
+      "V",
+      "Symbol",
+      "W",
+      "p",
+      "o",
+      "te",
+      "T",
+      "A",
+      "N",
+      "r",
+      "ee",
+      "a",
+      "f",
+      "t",
+      "u",
+      "L",
+      "B",
+      "ne",
+      "g",
+      "I"
+    ],
+    "failures": [],
+    "original_function_sha256": "1ad08bf748f3a3de6ae15ec306e269fed9fa14daaa63c68f8d6a401602b7d0a0",
+    "current_function_sha256": "4de4a4556943a4c5a3ee09e8ff8f636ee21e7cf7e9d473a076117f4affe8f627",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "picker",
+    "old": "z",
+    "current": "ne",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "fc95caac63302d1e8843185275f099490dda4a2817fe5e130e3d495ce9af095e",
+    "current_function_sha256": "694df3e36b06cc2e1f926fda2bb5f4e957682e0a28a70036476b462f0ea9ecc3",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "picker",
+    "old": "B",
+    "current": "B",
+    "closure_bindings": {
+      "W": "W",
+      "T": "O"
+    },
+    "old_free": [
+      "W",
+      "T"
+    ],
+    "current_free": [
+      "W",
+      "O"
+    ],
+    "failures": [],
+    "original_function_sha256": "d161bbf4a5c2194778f9ae495bcc2b83c08bd49aa8ce094831431a4ab1c59947",
+    "current_function_sha256": "a53d5094a855fc34969d244243609db7d21da8911a1337b3dc81aada41d48f5f",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "picker",
+    "old": "V",
+    "current": "V",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "f1a01b95442fd02838d99a8ea9b8cd6f9f9f199c47dd1ce138aec0fba86cdc6c",
+    "current_function_sha256": "f1a01b95442fd02838d99a8ea9b8cd6f9f9f199c47dd1ce138aec0fba86cdc6c",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "picker",
+    "old": "H",
+    "current": "H",
+    "closure_bindings": {},
+    "old_free": [],
+    "current_free": [],
+    "failures": [],
+    "original_function_sha256": "e2bd0b2219fb3e96629f8286546321ce2b69d942cc6ff2435b0c9452ab3c1c92",
+    "current_function_sha256": "e2bd0b2219fb3e96629f8286546321ce2b69d942cc6ff2435b0c9452ab3c1c92",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  },
+  {
+    "role": "main",
+    "old": "Kl",
+    "current": "Vl",
+    "closure_bindings": {
+      "Ol": "Cl",
+      "Dl": "Sl",
+      "m": "m",
+      "wl": "yl",
+      "tu": "Xl",
+      "kl": "wl",
+      "eu": "Yl",
+      "Ul": "Rl",
+      "nu": "Zl",
+      "Jl": "Ul",
+      "Al": "Tl",
+      "o": "o"
+    },
+    "old_free": [
+      "Ol",
+      "Dl",
+      "m",
+      "wl",
+      "tu",
+      "kl",
+      "eu",
+      "Ul",
+      "nu",
+      "Jl",
+      "Al",
+      "o"
+    ],
+    "current_free": [
+      "Cl",
+      "Sl",
+      "m",
+      "yl",
+      "Xl",
+      "wl",
+      "Yl",
+      "Rl",
+      "Zl",
+      "Pl",
+      "Ul",
+      "Tl",
+      "o"
+    ],
+    "failures": [],
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner",
+    "current_function_sha256": "e0892968e68c48b162e7fe42c0f3c939f82f187e6280b8028e23ee3e42ac948f",
+    "additional_native_free": [
+      "Pl"
+    ],
+    "reviewed_native_change": "native next-run/nominal-run pair; archived terminal guard bytes unchanged"
+  },
+  {
+    "role": "shared",
+    "old": "RR",
+    "current": "SB",
+    "closure_bindings": {
+      "WQt": "vZt"
+    },
+    "old_free": [
+      "WQt"
+    ],
+    "current_free": [
+      "vZt"
+    ],
+    "failures": [],
+    "original_function_sha256": "7f7e5ee9c5f740cd67bd488e8d75e37c8315de0445e447c8ca09c0a5be7a821d",
+    "current_function_sha256": "68e97743ab8ad28a085bae6b12f16b900dfe92046d28d7349be8dd6149924abb",
+    "derivation": "canonical fixture names -> exact prior native owner -> reviewed current native owner"
+  }
+]

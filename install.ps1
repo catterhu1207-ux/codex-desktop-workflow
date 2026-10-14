@@ -296,6 +296,14 @@ try {
     }
 
     Write-Step "Installing dependencies from the verified bundle"
+    $node = Get-Command node.exe -ErrorAction SilentlyContinue
+    if (-not $node) {
+        Stop-WithCode 'Node.js with built-in WebSocket support is required. Install Node.js 22 or later, then re-run this installer.' $ExitPrerequisite
+    }
+    & $node.Source -e "if(typeof WebSocket!=='function'||!process.binding('natives')['internal/deps/acorn/acorn/dist/acorn'])process.exit(2)"
+    if ($LASTEXITCODE -ne 0) {
+        Stop-WithCode 'This Node.js runtime lacks required WebSocket or parser support. Use Node.js 22 or later.' $ExitPrerequisite
+    }
     Invoke-Checked $venvPython @(
         "-m", "pip", "install",
         "--no-index",

@@ -9,13 +9,17 @@
     },
     "cold_resume.py": {
       "origin": "codex-history-compat/tests/cold_resume.py",
-      "changes": "explicit isolated output root; awake-time receive and process waits",
+      "changes": "explicit isolated output root; awake-time receive; owned child job and qualified Git auxiliary cleanup",
       "canonical_lf_origin_sha256": "a104d9b961caddbad87c8c6bce4f62d2b3d19b0d9b5ec6c3b8193f9fd405774f"
     },
     "migration_replay.py": {
       "origin": "codex-history-compat/tests/migration_replay.py",
-      "changes": "exact 26.928.4866.0 migration policy; awake-time receive and process waits",
+      "changes": "exact 26.1002.7124.0 migration policy across all six databases; awake-time waits; owned child job and qualified Git auxiliary cleanup",
       "canonical_lf_origin_sha256": "37a2f769f60c4ad9a40e9cc3b38e4f6f76bdf8b93a45cf468dbd055bc9f72717"
+    },
+    "awake_io.py": {
+      "origin": "codex-desktop-workflow acceptance tools",
+      "changes": "awake-time receive and process waits; owned Windows job; reject unqualified residual children"
     }
   }
 }

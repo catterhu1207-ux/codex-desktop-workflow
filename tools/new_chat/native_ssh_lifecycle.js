@@ -1,5 +1,4 @@
 async function(workspace){
- const setTimeout=(callback,ms,...args)=>globalThis.__qualifiedAwakeDelay(ms).then(()=>callback(...args));
  const original=this,ok=(v,m)=>{if(!v)throw Error(m)},host='ssh-isolated-windows-service',calls=[];
  // Only the external SSH service is bound to the already isolated real app-server.
  // The frontend uses its native manager, native host branch and unchanged IDs.

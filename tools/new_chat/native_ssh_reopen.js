@@ -1,5 +1,4 @@
 async function(spec){
- const setTimeout=(callback,ms,...args)=>globalThis.__qualifiedAwakeDelay(ms).then(()=>callback(...args));
  const original=this,host='ssh-isolated-windows-service',calls=[],ok=(v,m)=>{if(!v)throw Error(m)};
  const transport=new Proxy(original.requestClient,{get(target,key){if(key==='hostId')return host;if(key==='dispose')return()=>{};if(key==='sendRequest')return async(method,params,...rest)=>{calls.push({host,method,threadId:params?.threadId??null});return target.sendRequest(method,params,...rest)};const value=Reflect.get(target,key,target);return typeof value==='function'?value.bind(target):value}});
  const boundaryCalls=[];
@@ -19,7 +18,7 @@ async function(spec){
    ok(entry.host===host,'Original SSH host differs');
    await remote.resumeConversation({conversationId:entry.id,model:null,reasoningEffort:null,workspaceRoots:[spec.workspace],collaborationMode:null});
    let row=remote.threadStore.getConversation(entry.id);const initialModel=row?.latestModel??null;let modelPolls=0;
-   while(row?.latestModel!=='fixture-model'&&modelPolls<50){await new Promise(r=>setTimeout(r,100));row=remote.threadStore.getConversation(entry.id);modelPolls++}
+   while(row?.latestModel!=='fixture-model'&&modelPolls<50){await self.__qualifiedAwakeDelay(100);row=remote.threadStore.getConversation(entry.id);modelPolls++}
    const response=await remote.readThread(entry.id,{includeTurns:true});
    ok(row?.id===entry.id&&row.latestModel==='fixture-model','Restored SSH identity/model mismatch '+JSON.stringify({id:entry.id,initialModel,latestModel:row?.latestModel,resumeState:row?.resumeState}));
    ok(response.thread.id===entry.id&&response.thread.cwd===spec.workspace,'SSH routing path changed');

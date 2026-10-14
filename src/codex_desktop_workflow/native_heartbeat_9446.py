@@ -1,0 +1,22 @@
+"""Execute the exact packaged heartbeat and RPC classifier on synthetic state."""
+from pathlib import Path
+import json,subprocess,hashlib
+import hotfix_builder as h
+import hotfix_profile_261007_9446 as p
+def verify(portable):
+    asar=Path(portable)/'resources/app.asar';hs,_,header=h.read_asar(asar)
+    def read(path):return h.read_entry(asar,hs,h.get_entry_meta(header,path))[1]
+    def extract(data,names):
+        tool=Path(__file__).parent/'data/native_fragments_261007_9446.cjs'
+        cp=subprocess.run(['node',str(tool)],input=json.dumps({'source':data.decode(),'names':names}),capture_output=True,text=True,encoding='utf8',creationflags=0x08000000,timeout=30)
+        if cp.returncode:raise RuntimeError(cp.stderr)
+        return json.loads(cp.stdout)
+    functions=extract(read(p.PROFILE['main_entry_path']),['du','ql','Kl','bu','vu','Jl','yu','cu','xu','iu','pu','mu','Yl','Rl','Ll','zl'])
+    network=read('.vite/build/application-network-startup-YSC7OAs0.js')
+    if b'Object.defineProperty(exports,"Yt",{enumerable:!0,get:function(){return ee}})' not in network:raise RuntimeError('Native classifier export differs')
+    functions.update(extract(network,['ee','L','te','P']))
+    scenario="\nconst ok=(v,m)=>{if(!v)throw Error(m)};\nconst canonical={id:'synthetic-heartbeat',kind:'heartbeat',status:'ACTIVE',targetThreadId:'synthetic-thread',rrule:'fixture',prompt:'synthetic'};\nlet current={...canonical},writes=[],deletes=[],notifications=0,rpcError={code:-32000,message:'thread synthetic-thread is archived'};\nconst i={Mn:()=>1,Nn:()=>2,Kn:()=>{},Ut:({baseInstructions})=>baseInstructions,jn:()=>[1],In:()=>false,kn:()=>({nextRunAt:2,nextRunNominalAt:2}),Vn:()=>{},On:()=>current,Jn:value=>{writes.push(value);return value}},c={Yt:ee};\nconst Ul=()=>({warning:()=>{},debug:()=>{}});\nconst connection={readThread:async()=>({id:'synthetic-thread',cwd:'/synthetic',status:{type:'idle'}}),listModels:async()=>({data:[],nextCursor:null}),resumeThread:async()=>{throw rpcError},notifyAutomationRunTriggered:()=>{},notifyAutomationRunsUpdated:()=>notifications++};\nconst mode={mode:'default',settings:{model:'synthetic',developer_instructions:'synthetic'}};\nconst base={automation:canonical,now:1,appServerConnection:connection,assertCurrent:()=>{},heartbeatThreadRendererStates:new Map(),heartbeatThreadCollaborationModes:new Map([['synthetic-thread',mode]]),heartbeatThreadPermissions:new Map()};\n(async()=>{\n ok(ee(rpcError)==='thread_archived','Actual RPC classifier did not recognize archived thread');\n await du({...base,deleteArchivedHeartbeat:async id=>{deletes.push(id);return'deleted'}});\n ok(deletes.length===1&&notifications===1&&writes.length===0,'Archived heartbeat not deleted exactly once');\n deletes=[];notifications=0;await du(base);ok(writes.length===1&&writes[0].status==='PAUSED'&&notifications===1,'Pause fallback');\n for(const changed of [{...canonical,status:'PAUSED'},{...canonical,targetThreadId:'other'},{...canonical,kind:'cron'},null]){\n  current=changed;writes=[];deletes=[];notifications=0;\n  await du({...base,deleteArchivedHeartbeat:async id=>{deletes.push(id);return'deleted'}});\n  ok(!writes.length&&!deletes.length&&!notifications,'Changed canonical state overwritten');\n }\n current={...canonical};rpcError={code:-32000,message:'unrelated failure'};let rejected=false;\n try{await du(base)}catch(error){rejected=error===rpcError}\n ok(rejected,'Unrelated backend failure swallowed');\n ok(bu({expectedThreadId:'synthetic-thread',heartbeatThreadRendererStates:new Map([['synthetic-thread',{isEligible:false,reason:'synthetic-block',updatedAtMs:Date.now()}]])})==='synthetic-block','Actual renderer eligibility guard');\n process.stdout.write(JSON.stringify({status:'passed',actual_native_heartbeat_entry:true,actual_native_rpc_classifier:true,actual_resume_transport_error_boundary:true,delete_once:true,pause_fallback:true,concurrent_canonical_state_preserved:true,unrelated_error_rejected:true,renderer_eligibility_guard:true,synthetic_only:true}));\n})().catch(error=>{process.stderr.write(String(error.stack||error));process.exitCode=1});\n"
+    script='\n'.join(functions.values())+'\n'+scenario
+    cp=subprocess.run(['node','-'],input=script,capture_output=True,text=True,encoding='utf8',creationflags=0x08000000,timeout=30)
+    if cp.returncode:raise RuntimeError(cp.stderr)
+    record=json.loads(cp.stdout);record.update(script_sha256=hashlib.sha256(script.encode()).hexdigest(),candidate_sha256=h.sha256_path(asar));return record

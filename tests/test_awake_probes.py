@@ -5,6 +5,28 @@ from unittest.mock import patch
 
 
 class AwakeProbes(unittest.TestCase):
+    def test_capture_reads_real_stdin_and_preserves_bytes_or_text(self):
+        with tempfile.TemporaryDirectory() as raw:
+            env=dict(os.environ,CODEX_WORKFLOW_ACCEPTANCE_ROOT=raw)
+            command=[sys.executable,'-c','import sys;sys.stdout.buffer.write(sys.stdin.buffer.read())']
+            binary=awake_process.capture(command,input=b'synthetic\x00input',timeout=10,env=env)
+            self.assertEqual(binary.stdout,b'synthetic\x00input')
+            text=awake_process.capture(command,input='synthetic input',text=True,timeout=10,env=env)
+            self.assertEqual(text.stdout,'synthetic input')
+
+    def test_capture_does_not_charge_paused_awake_clock(self):
+        with tempfile.TemporaryDirectory() as raw,patch.object(awake_process,'seconds',return_value=100):
+            env=dict(os.environ,CODEX_WORKFLOW_ACCEPTANCE_ROOT=raw)
+            result=awake_process.capture([sys.executable,'-c',"import time;time.sleep(.3);print('completed')"],timeout=.02,text=True,env=env)
+            self.assertEqual(result.returncode,0)
+            self.assertEqual(result.stdout.strip(),'completed')
+
+    def test_capture_still_rejects_active_time_expiration(self):
+        with tempfile.TemporaryDirectory() as raw:
+            env=dict(os.environ,CODEX_WORKFLOW_ACCEPTANCE_ROOT=raw)
+            with self.assertRaises(subprocess.TimeoutExpired):
+                awake_process.capture([sys.executable,'-c','import time;time.sleep(5)'],timeout=.1,env=env)
+
     @unittest.skipUnless(shutil.which('node') and os.name=='nt','Windows and Node required')
     def test_concurrent_node_reads_and_python_clock_updates(self):
         with tempfile.TemporaryDirectory() as raw:

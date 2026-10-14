@@ -1,5 +1,8 @@
 from http.server import BaseHTTPRequestHandler
+from pathlib import Path
 import json,os,queue,subprocess,threading,time
+from codex_desktop_workflow.awake_clock import seconds
+from codex_desktop_workflow.owned_verification import SpaceJob,owned_process_images,qualified_auxiliary
 
 class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args): pass
@@ -17,6 +20,7 @@ class Client:
             if key.endswith('_API_KEY'):env.pop(key)
         self.errorlog=(home/'stderr.log').open('w',encoding='utf8')
         self.p=subprocess.Popen([str(binary),'app-server'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=self.errorlog,cwd=workspace,env=env,text=True,encoding='utf8',creationflags=subprocess.CREATE_NO_WINDOW)
+        self.job=SpaceJob();self.job.assign(self.p)
         self.q=queue.Queue();self.id=0;self.notifications=[]
         threading.Thread(target=lambda:[self.q.put(json.loads(line)) for line in self.p.stdout if line.strip()],daemon=True).start()
         response=self.call('initialize',{'clientInfo':{'name':'synthetic-isolation','version':'1'},'capabilities':{'experimentalApi':True}})
@@ -25,17 +29,19 @@ class Client:
     def call(self,method,params):
         self.id+=1;request_id=self.id
         self.p.stdin.write(json.dumps({'id':request_id,'method':method,'params':params})+'\n');self.p.stdin.flush()
-        deadline=time.monotonic()+45
-        while time.monotonic()<deadline:
-            message=self.q.get(timeout=max(.1,deadline-time.monotonic()))
+        deadline=seconds()+45
+        while seconds()<deadline:
+            try:message=self.q.get(timeout=min(.25,max(.1,deadline-seconds())))
+            except queue.Empty:continue
             if message.get('id')==request_id:return message
             self.notifications.append(message)
         raise TimeoutError(method)
     def finish_turn(self):
         if any(n.get('method')=='turn/completed' for n in self.notifications):return
-        deadline=time.monotonic()+45
-        while time.monotonic()<deadline:
-            msg=self.q.get(timeout=max(.1,deadline-time.monotonic()))
+        deadline=seconds()+45
+        while seconds()<deadline:
+            try:msg=self.q.get(timeout=min(.25,max(.1,deadline-seconds())))
+            except queue.Empty:continue
             if msg.get('method')=='turn/completed':return
         raise TimeoutError('turn/completed')
     def close(self):
@@ -43,4 +49,15 @@ class Client:
         try:self.p.wait(timeout=15)
         except subprocess.TimeoutExpired:
             self.p.terminate();self.p.wait(timeout=10)
-        self.errorlog.close()
+        try:
+            auxiliary=owned_process_images(self.job)
+            git_root=Path(os.environ.get('ProgramFiles','C:/Program Files'))/'Git'
+            for row in auxiliary:
+                image=Path(row['image']).resolve()
+                if image.name.lower()!='conhost.exe' and not image.is_relative_to(git_root.resolve()):
+                    raise RuntimeError('unexpected_synthetic_backend_descendant')
+                if not qualified_auxiliary(row['image']):raise RuntimeError('unqualified_synthetic_backend_descendant')
+            if auxiliary:self.job.stop_and_wait()
+            self.owned_cleanup={'owned_job_empty':not self.job.pids(),'auxiliary_processes':auxiliary}
+        finally:
+            self.job.close();self.errorlog.close()
