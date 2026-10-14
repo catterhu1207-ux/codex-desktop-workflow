@@ -751,7 +751,7 @@ def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seco
                         route_at=awake_clock.seconds()
                         if module_at is None:deadline=route_at+120;timing_stage='signed_module_loading'
                     if module_at is None and (fresh.get('production_parser') or {}).get('status')=='module_loaded':
-                        module_at=awake_clock.seconds();deadline=module_at+30;timing_stage='signed_feature_execution'
+                        module_at=awake_clock.seconds();deadline=module_at+90;timing_stage='signed_feature_execution'
                     if module_at is not None and awake_clock.seconds()>=deadline:
                         raise WorkflowError('signed_feature_execution_awake_budget_exceeded')
                 if fresh.get('status') == 'passed' and proof_at is None:

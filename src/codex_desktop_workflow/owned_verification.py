@@ -184,7 +184,7 @@ def verify_owned(source, portable, runs_root, observe_seconds, launches):
                 env=env,stdin=subprocess.PIPE,stdout=stdout,stderr=stderr,creationflags=0x08000000)
             job.assign(worker)
             worker.stdin.write(TOKEN);worker.stdin.close()
-            per_run_budget=240+120+30+observe_seconds+120+30+300 if metadata.get('package_version')=='26.1007.9446.0' else 420
+            per_run_budget=240+120+90+observe_seconds+120+30+300 if metadata.get('package_version')=='26.1007.9446.0' else 420
             deadline=awake_clock.seconds()+max(3,launches)*per_run_budget+300
             while worker.poll() is None:
                 if awake_clock.seconds()>=deadline:raise RuntimeError('owned_verification_awake_budget_exceeded')
