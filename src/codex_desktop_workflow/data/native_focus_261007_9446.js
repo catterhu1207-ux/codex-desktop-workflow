@@ -1,6 +1,7 @@
 (async function(project){
  const shared=await import('app://-/assets/app-shared-30671c57ec82.js'),initial=await import('app://-/assets/app-initial-102e45562729.js'),picker=await import('app://-/assets/composer-project-picker-content-39e0ac169231.js');
  const React=shared.PCn(),jsx=React.createElement,ok=(v,m)=>{if(!v)throw Error(m)},wait=ms=>globalThis.__qualifiedAwakeDelay(ms);shared.ofn();
+ ok(/^en(?:-|$)/i.test(navigator.language),'Public UI default did not reach the actual renderer');
  ok(typeof initial.Cln==='function'&&initial.Cln.name==='Rcr','Exact native remote-selection hook export');
  ok(typeof initial.fln==='function'&&initial.fln.name==='ilr','Exact native Work route export');
  let selected=null,depth=-1;

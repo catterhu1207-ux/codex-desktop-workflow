@@ -52,6 +52,9 @@ class IsolatedRun(lifecycle.IsolatedRun):
     def start(cls, executable, runs_root, args=None, environment=None, debug_port=None, isolate_shell_folders=False):
         arguments=list(args or [])
         metadata=Path(executable).parent/'codex-desktop-workflow-manifest.json'
+        if metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version')=='26.1007.9446.0':
+            if not any(value.startswith('--lang=') or value == '--lang' for value in arguments):
+                arguments.append('--lang=en-US')
         if debug_port is not None and metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version')=='26.1007.9446.0':
             for flag in ('--disable-renderer-backgrounding','--disable-background-timer-throttling','--disable-features=CalculateNativeWinOcclusion'):
                 if flag not in arguments:arguments.append(flag)

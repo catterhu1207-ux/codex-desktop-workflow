@@ -900,6 +900,8 @@ def launch(portable: Path, data: Path, runs_root: Path) -> dict[str, Any]:
             raise WorkflowError('portable_backend_changed_before_launch')
         if public.get('portable_asar_sha256') != _sha256(portable / 'resources/app.asar'):
             raise WorkflowError('portable_frontend_changed_before_launch')
+    from .language import initialize_new_data
+    initialize_new_data(data)
     history.inspect(data)
     return IsolatedRun.start(
         portable / "ChatGPT.exe",
