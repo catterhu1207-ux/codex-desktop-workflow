@@ -16,7 +16,7 @@ def qualify(app,runs_root,previous_round):
  config=home/'config.toml';original=config.read_bytes()
  assert b'model="fixture-model"' in original or b'model = "fixture-model"' in original
  server=ThreadingHTTPServer(('127.0.0.1',0),Handler);threading.Thread(target=server.serve_forever,daemon=True).start()
- config.write_text(f'model_provider="fixture"\nmodel="fixture-global-changed"\nmodel_reasoning_effort="low"\n[model_providers.fixture]\nname="Synthetic cold restart"\nbase_url="http://127.0.0.1:{server.server_port}/v1"\nwire_api="responses"\nrequires_openai_auth=false\n',encoding='utf8')
+ config.write_text(f'model_provider="fixture"\nmodel="fixture-global-changed"\nmodel_reasoning_effort="low"\n[model_providers.fixture]\nname="Synthetic cold restart"\nbase_url="http://127.0.0.1:{server.server_port}/v1"\nwire_api="responses"\nrequires_openai_auth=false\n[windows]\nsandbox="unelevated"\n',encoding='utf8')
  run=None;probe=None;result={'status':'failed','synthetic_only':True,'original_round_sha256':hashlib.sha256(Path(previous_round).read_bytes()).hexdigest()}
  try:
   port=workflow._available_loopback_port();run=IsolatedRun.start(app/'ChatGPT.exe',runs_root,environment=workflow._portable_environment(app,home),debug_port=port,isolate_shell_folders=True)

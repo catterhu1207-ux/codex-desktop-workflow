@@ -701,6 +701,10 @@ def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seco
                 if cfg['model_provider']!='fixture' or url.hostname!='127.0.0.1':raise WorkflowError('isolated_loopback_binding_mismatch')
                 fixture_server=ThreadingHTTPServer(('127.0.0.1',url.port),Handler)
             threading.Thread(target=fixture_server.serve_forever,daemon=True).start()
+            isolated_config=home/'config.toml'
+            isolated_text=isolated_config.read_text(encoding='utf8')
+            if 'windows' in tomllib.loads(isolated_text):raise WorkflowError('unexpected_fixture_windows_sandbox_configuration')
+            isolated_config.write_text(isolated_text+'\n[windows]\nsandbox="unelevated"\n',encoding='utf8')
         history.inspect(home)
         debug_port = _available_loopback_port()
         run = IsolatedRun.start(
