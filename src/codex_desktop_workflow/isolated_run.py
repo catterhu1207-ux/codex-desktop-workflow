@@ -48,6 +48,15 @@ def descendants(rows, expected_main):
 
 
 class IsolatedRun(lifecycle.IsolatedRun):
+    @classmethod
+    def start(cls, executable, runs_root, args=None, environment=None, debug_port=None, isolate_shell_folders=False):
+        arguments=list(args or [])
+        metadata=Path(executable).parent/'codex-desktop-workflow-manifest.json'
+        if debug_port is not None and metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version')=='26.1007.9446.0':
+            for flag in ('--disable-renderer-backgrounding','--disable-background-timer-throttling','--disable-features=CalculateNativeWinOcclusion'):
+                if flag not in arguments:arguments.append(flag)
+        return super().start(executable,runs_root,args=arguments,environment=environment,debug_port=debug_port,isolate_shell_folders=isolate_shell_folders)
+
     def _snapshot(self):
         if os.name != 'nt':
             raise RuntimeError('process_inspection_requires_windows')
