@@ -40,3 +40,11 @@ Feed actual signed logs to the production parser. Reject wrong version/artifact/
 Distinguish local preparation, first genuine launch, lifecycle completion, public source update, installable release and cleanup. Complete installer creation, final assets, independent public build, Actions, anonymous download and installation/runtime checks remain publication gates. A matching source unavailable for an older target stays a named blocker; it neither authorizes silently changing targets nor blocks unrelated qualified cleanup.
 
 Archive only authorized sanitized recovery materials. Credentials, accounts and real chat content/databases stay out of public and private archives. Independently restore and verify an archive before deleting originals. Preserve running/installed components and required rollback. Push unique task-local Git changes and verify remote recovery before retiring redundant checkouts.
+
+## Resource refusal and public UI language
+
+Identify the actual failed stage before rebuilding. A high handle count in an unrelated process is diagnostic; fixed counts alone do not establish Windows resource exhaustion. Use an applicable OS resource signal or demonstrated failure for a blocking policy, preserve unreadable-sampling rejection, and do not restart unrelated services as a launcher workaround. A passing helper check is distinct from a fresh genuine startup.
+
+Trace transformed output before declaring a private dependency: private-manager strings may be original-byte matching templates replaced by a later exact transformation. Verify the complete transformation chain and packaged result.
+
+For an English public release, check installer and launcher prompts, added renderer labels, the actual native language default and mounted controls. Preserve protocol identities, user text and existing language choices. A new artifact identifier must match every producer and production parser before expensive runtime checks. Old release evidence stays historical; record new results under the new identity.

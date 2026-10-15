@@ -329,7 +329,7 @@ def _attestation_value(text: str, artifact_id: str) -> dict[str, Any] | None:
 
 
 def _attestations(home: Path, artifact_id: str, log_path: Path | tuple[Path, ...] | None = None, *, manifest: Path | None = None, run_directory: Path | None = None, process: dict | None = None) -> dict[str, Any]:
-    if artifact_id in ("2.7.9-84fe697418b2","2.7.17-76fe7078248c","2.7.19-356c13dc7158"):
+    if artifact_id in ("2.7.9-84fe697418b2","2.7.17-76fe7078248c","2.7.19-356c13dc7158","2.7.20-356c13dc7158"):
         if manifest is None or run_directory is None or process is None:
             return {"status": "blocked", "reason": "fresh_process_context_required"}
         from .renderer_proof import parse_owned_logs
@@ -367,6 +367,12 @@ def _attestations(home: Path, artifact_id: str, log_path: Path | tuple[Path, ...
     valid_runs = {item.get('run_id') for item in passed} & {item.get('run_id') for item in loaded}
     valid_runs.discard(None)
     return {"status": "passed" if valid_runs else "blocked", "feature_count": len(required) if valid_runs else 0, "module_loaded": len(loaded), "passed": len(passed), "run_ids": sorted(valid_runs)}
+
+
+def _require_nonfatal_frontend_evidence(value: dict[str, Any]) -> None:
+    proof = value.get('production_parser') or {}
+    if proof.get('fatal') is True:
+        raise WorkflowError('renderer_proof_rejected:' + str(proof.get('kind', 'unknown_contract_error')))
 
 
 def _available_loopback_port() -> int:
@@ -754,6 +760,7 @@ def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seco
                 if not attestation_requested:
                     attestation_requested = _request_renderer_attestation(debug_port)
                 fresh = _attestations(home, artifact_id, (run.run_directory / 'stdout.log', run.run_directory / 'stderr.log'), manifest=manifest_path, run_directory=run.run_directory, process=latest.get('main'))
+                _require_nonfatal_frontend_evidence(fresh)
                 if support.version == '26.1007.9446.0' and proof_at is None:
                     route_record=run.run_directory/'native-primary-route-observation.json'
                     if route_at is None and route_record.is_file() and json.loads(route_record.read_text()).get('status')=='primary_route_found':

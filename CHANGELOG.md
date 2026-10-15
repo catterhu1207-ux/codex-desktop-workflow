@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.3.7
+
+- Default new 9446 public data and renderer language to English.
+- Translate persistent update status labels and explanations.
+- Preserve existing language choices and user content.
+- Bind the changed frontend to its own exact artifact and fresh acceptance evidence.
+
 ## v0.3.6
 
 - Add exact Desktop 26.1007.9446.0 and source-built 0.162.0-alpha.17.2 compatibility profile.
