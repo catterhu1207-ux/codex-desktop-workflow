@@ -9,3 +9,5 @@ The official backend remains the default. The optional compatibility backend ret
 Sorting by descending update time, orange pending questions and approvals, yellow pending implementation, lazy history, per-chat models, SSH project identity, Work selection and file drops are retained.
 
 See [acceptance results](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/ACCEPTANCE.md) for the completed release checks and unavailable historical-source inputs.
+
+Current-source and installed-wheel checks passed all 131 tests, with six unavailable historical-source skips. Both backend modes passed three profiles; a normal wheel installation passed three more. The three English update states were checked in the actual mounted component. Final anonymous distribution readback is tracked separately.

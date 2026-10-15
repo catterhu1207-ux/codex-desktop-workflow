@@ -2,6 +2,22 @@
 
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
+
+## v0.3.7 source and installed-wheel qualification
+
+Desktop 26.1007.9446.0 uses frontend artifact 2.7.20. New independent data defaults to English while existing preferences are preserved. The actual native update component passed announcement, available-package and adaptation-ready cases, including English labels, descriptions, accessibility labels and three distinct collapsed icons.
+
+The frozen public executable sources passed three complete profiles with the official backend and three with the unchanged public-source compatibility backend. A normal offline wheel installation with `-NoShortcut` then passed all three profiles again and created its launch command. Each matrix covered empty data, at least 400 conversations created and sent through the actual backend, and native project/settings fixtures. Every round produced 23 fresh same-run interface proofs, mounted the native sidebar, observed at least 60 awake seconds, rechecked the backend and closed normally. The 26 feature contracts, six local/Work/simulated-SSH first sends, cold per-chat model recovery and production-parser rejection cases passed.
+
+The compatibility binary and its source, recipe, dependency and migration identities are unchanged from v0.3.6. Its HTTP, WebSocket, compaction and 75-migration/six-database evidence is reused with explicit provenance; those transport tests were not rerun for this UI-only change. Current backend identity and migration checks were repeated. SSH service bindings remained synthetic; encrypted SSH transport and real-account migration were not tested.
+
+All 131 source tests completed without failure, with six unavailable historical-original inputs recorded as skips. Directory and signed full-MSIX installer dry runs passed for both backend modes without Store installation or full extraction. The unchanged full-MSIX extraction/installation path retains its separately recorded v0.3.6 evidence; this release's fresh normal installation used the identical verified extracted source.
+
+One outer supervision run found a signed, owned Windows console auxiliary after the inner compatibility matrix had closed successfully. The supervisor stopped its own group; the original failed terminal was preserved. Process absence, the exact OS image, unchanged candidate/code bindings and all three closed proofs were independently read back before reusing the functional results. The task monitor subsequently passed real Job tests for bounded natural child teardown and rejection of persistent descendants.
+
+Final release download and fresh installation are recorded separately after publication.
+
+
 ## v0.3.6 source qualification
 
 The Windows x64 Desktop 26.1007.9446.0 source was rebuilt independently with the official backend and the public-source compatibility backend. Both modes passed normal complete-MSIX installation with the installed wheel and three isolated launch profiles: empty data, at least 400 conversations actually created and sent through the backend, and persisted project/settings fixtures. Each profile mounted the native sidebar, produced all 23 same-run interface proofs, observed at least 60 awake seconds, rechecked backend identity and closed its owned process group. Exact-resource checks found no pending sandbox elevation requests.

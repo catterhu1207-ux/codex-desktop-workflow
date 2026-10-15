@@ -1,6 +1,7 @@
 """Read six actually sent synthetic native chats after a cold application restart."""
 from pathlib import Path
-import json,os,sys,time,hashlib,threading
+import json,os,sys,time,hashlib,threading,tomllib
+from urllib.parse import urlsplit
 from http.server import ThreadingHTTPServer
 from codex_desktop_workflow import workflow
 from codex_desktop_workflow.isolated_run import IsolatedRun
@@ -14,12 +15,22 @@ def qualify(app,runs_root,previous_round):
  assert previous['status']=='passed' and row['close']['close_status']=='closed' and home.is_relative_to(runs_root)
  sent=row['native_sidebar']['native_six_lifecycle']['records'];assert len(sent)==6
  config=home/'config.toml';original=config.read_bytes()
- assert b'model="fixture-model"' in original or b'model = "fixture-model"' in original
+ config_value=tomllib.loads(original.decode('utf8'))
+ assert config_value.get('model') in ('fixture-model','fixture-global-changed')
+ assert config_value.get('model_provider')=='fixture'
+ assert urlsplit(config_value['model_providers']['fixture']['base_url']).hostname=='127.0.0.1'
  server=ThreadingHTTPServer(('127.0.0.1',0),Handler);threading.Thread(target=server.serve_forever,daemon=True).start()
- config.write_text(f'model_provider="fixture"\nmodel="fixture-global-changed"\nmodel_reasoning_effort="low"\n[model_providers.fixture]\nname="Synthetic cold restart"\nbase_url="http://127.0.0.1:{server.server_port}/v1"\nwire_api="responses"\nrequires_openai_auth=false\n[windows]\nsandbox="unelevated"\n',encoding='utf8')
+ config.write_text(f'model_provider="fixture"\nmodel="fixture-cold-global"\nmodel_reasoning_effort="low"\n[model_providers.fixture]\nname="Synthetic cold restart"\nbase_url="http://127.0.0.1:{server.server_port}/v1"\nwire_api="responses"\nrequires_openai_auth=false\n[windows]\nsandbox="unelevated"\n',encoding='utf8')
  run=None;probe=None;result={'status':'failed','synthetic_only':True,'original_round_sha256':hashlib.sha256(Path(previous_round).read_bytes()).hexdigest()}
  try:
-  port=workflow._available_loopback_port();run=IsolatedRun.start(app/'ChatGPT.exe',runs_root,environment=workflow._portable_environment(app,home),debug_port=port,isolate_shell_folders=True)
+  environment=workflow._portable_environment(app,home)
+  binding=home/'isolated-test-bin'
+  if binding.is_dir():
+   meta=json.loads((binding/'binding.json').read_text())
+   assert meta['kind']=='rejecting_local_service_binding'
+   assert workflow._sha256(binding/'ssh.exe')==meta['node_sha256']
+   environment['PATH']=str(binding)+os.pathsep+os.environ.get('PATH','')
+  port=workflow._available_loopback_port();run=IsolatedRun.start(app/'ChatGPT.exe',runs_root,environment=environment,debug_port=port,isolate_shell_folders=True)
   spec=run.run_directory/'native-reopen-spec.json';workspace=home/'synthetic-workspaces'/'0';spec.write_text(json.dumps({'workspace':str(workspace),'sent':sent}))
   env=dict(os.environ,ISOLATED_DEBUG_PORT=str(port),ISOLATED_RUNTIME_LOG=str(run.run_directory/'stdout.log'),NATIVE_REOPEN_SPEC=str(spec))
   probe=AwakeProcess(['node',str(Path(__file__).with_name('native_reopen_9446.cjs'))],env=env,root=run.run_directory)

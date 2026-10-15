@@ -18,6 +18,7 @@ class IsolatedVisibility(unittest.TestCase):
     metadata.write_text(json.dumps({'package_version':version}))
     with patch.object(lifecycle.IsolatedRun,'start',return_value='owned-test') as start:
      IsolatedRun.start(root/'ChatGPT.exe',root/'runs',args=['--test-marker'],debug_port=port)
-     self.assertEqual(start.call_args.kwargs['args'],['--test-marker'])
+     expected=['--test-marker']+(['--lang=en-US'] if version=='26.1007.9446.0' else [])
+     self.assertEqual(start.call_args.kwargs['args'],expected)
 
 if __name__=='__main__':unittest.main()

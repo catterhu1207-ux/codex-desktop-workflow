@@ -1,8 +1,8 @@
 {
   "status": "passed",
   "desktop_version": "26.1007.9446.0",
-  "package_version": "0.3.6",
-  "frontend_build": "2.7.19",
+  "package_version": "0.3.7",
+  "frontend_build": "2.7.20",
   "feature_contract_count": 26,
   "source_inputs": {
     "composer_selector_contract.py": "23848e0c7440f3f3a6e4bb3dc0c8e0d8ab5c836b2bbe914204939cc15a6bbf0c",
@@ -69,7 +69,7 @@
     "frontend_work_contract_26930_7945.py": "b110635889683097f0e36718d0cbed50833cd906788884f31a927fc33eaf8b57",
     "hotfix_builder.py": "4e984b361a8d929b7b78ee1f178c23f0f9b0bc31e0ce7325998f994e59ad39ba",
     "hotfix_profile_261002_7124.py": "08bf88e81d993379780984ce19cff1dd9ecf9160c9e5e91062793de080c5c96a",
-    "hotfix_profile_261007_9446.py": "78d35648ff3a49c9a324ea73efb2e63dcad7e57dbb4d63b65235a59328efa977",
+    "hotfix_profile_261007_9446.py": "74d880f7d93caa2b81ca45d565aca878e3d11aec76a08e6b97118f966baa2a74",
     "hotfix_profile_26730.py": "e3b479bda1a828a47ee425232a75f39e818f988d5f25a9c502788b775d111f5c",
     "hotfix_profile_26810.py": "6233c9bad3667a6ad911da47b2df01f8c57a29153c4149b225d22258df323d2e",
     "hotfix_profile_26818.py": "29b30e89e7911d34e6f7784914498d44fe50a8d4d5a8caba9793a34cbf796ff6",
@@ -106,7 +106,8 @@
     "codex_desktop_workflow/brokered_processes.py": "8cfbb20414de1df969e033ae35e1fb3e6f9028792d07d2c67b0c9ae6b4ef1f6b",
     "codex_desktop_workflow/cli.py": "f08976b4e91a4f6db8f4f1c1b82c063613bf75e45d141805056ef19e53a041e2",
     "codex_desktop_workflow/history.py": "6abc492c13243e35954f6bb72ed242ece064f191fda84af2ec39469efaa3b42b",
-    "codex_desktop_workflow/isolated_run.py": "fe4843d1cdf45ec2c25d9af74d727d2568b914136ca265fcfff9bd0d8694614c",
+    "codex_desktop_workflow/isolated_run.py": "4cf442bd73793e6cad26805eabe9ec30f5f5032d96484557cc5bb0b0d3ea193e",
+    "codex_desktop_workflow/language.py": "84d3c090a946861ea0610aca2d8cc7099f982cbe7725027b4b66485a40a0817e",
     "codex_desktop_workflow/native_heartbeat_9446.py": "fc3e06ada532d7de1aec5faf6324928b18bb5193edca8111fe26ec53e0ed903b",
     "codex_desktop_workflow/native_history_fixture.py": "f59925f637e57f75d67123366c1b082e9e826061f914b28c3afe31ea015b55a9",
     "codex_desktop_workflow/native_protocol_9446.py": "3b0de541179521308f04bbf466050d866e97eb2b83a5071de43c887c3abfc42c",
@@ -117,8 +118,8 @@
     "codex_desktop_workflow/qualification.py": "2fb1184b53ab9772dba24ba90726049daf7348456a9eaa6cf1680cacef291d5b",
     "codex_desktop_workflow/renderer_proof.py": "02aa79584e99e63f90f6e2c067fb0c449fc6b3794e5fd46f5e33f34a34154ffa",
     "codex_desktop_workflow/update_awareness.py": "c3645c3e2a2550447ec4cbb31cce6c6c63d278d94e4a6ced8d01d47b1ed17363",
-    "codex_desktop_workflow/workflow.py": "d93e00a63b426e391a8c97e2686ad38f5b34fbd1b0890053d24789567fccd232",
-    "codex_desktop_workflow/__init__.py": "60fb8f310637a8915b750470753915ce525c9b55e830a05b6763c3ec379106c8",
+    "codex_desktop_workflow/workflow.py": "1b75f41de4a951a9a969a77512a7736299c2bec676feeb13aa72a779d00bb4eb",
+    "codex_desktop_workflow/__init__.py": "09badef60265fd09c0a546236205271258170b238531b56d4dae1447d5d297c8",
     "codex_desktop_workflow/data/awake_timers.cjs": "08ee79b39f830c60ef6b1c4221fb1c1a833e7b3f56acabe53568c2f796a86a01",
     "codex_desktop_workflow/data/frontend_bindings_261002_7124.json": "e967a06f08385f6d47566473086085145e144a240e714c4c8937866283e4a42d",
     "codex_desktop_workflow/data/frontend_bindings_26928_4866.json": "626cb3dd69be481e2bc0408f75eed53e17e7ef33573b54bad2585d01c788d711",
@@ -208,7 +209,7 @@
     "codex_desktop_workflow/data/frontend_work_scenarios_26930_6422.js": "0cbbb583883106b1bb35cb01bdac546165c2011983dcdd6d9973ae81ceac4f21",
     "codex_desktop_workflow/data/frontend_work_scenarios_26930_7945.js": "0cbbb583883106b1bb35cb01bdac546165c2011983dcdd6d9973ae81ceac4f21",
     "codex_desktop_workflow/data/native_focus_261007_9446.cjs": "8b23aa4ba1d07f1939d380e9366a31a16315358b2baa179d984078c60fdae40e",
-    "codex_desktop_workflow/data/native_focus_261007_9446.js": "8da45719203a68001df5a691201cff4141688529878c26328c005953163976aa",
+    "codex_desktop_workflow/data/native_focus_261007_9446.js": "5dd78915216dff8122d357a8ef71932fac57950dcc14e4aa25f54d1eb36304fb",
     "codex_desktop_workflow/data/native_fragments_261007_9446.cjs": "b208d5b38fcf3e9c2f65426ed47571344ede9ea7a67659d90f602b0c1cf47261",
     "codex_desktop_workflow/data/native_sidebar_7124.cjs": "28bbd244d45bd104f2ac00768cf7abfb0dc69f7f1593deef06789985cf5edff8",
     "codex_desktop_workflow/data/native_sidebar_basic.cjs": "dfc6f02f0a758f791b41c4efd7a7d1dd8adc4a4e135071318205c2e02fd334bf",
@@ -216,7 +217,7 @@
     "codex_desktop_workflow/data/native_sidebar_basic_function_7124.js": "a2f57904c1b0710fa59271dd42013e6ac79609cc920357fb99b7af2caf1a383b",
     "codex_desktop_workflow/data/native_sidebar_function.js": "e11f47fefa4f97fdc87c9bda57d026102d1c7e035a9179a91ed71fefce6d462e",
     "codex_desktop_workflow/data/native_sidebar_function_7124.js": "ef3ee8513db3c6e07767997cfc8ae43643fd34c2a39bfdf3fbbeb5ef34cb008a",
-    "codex_desktop_workflow/data/renderer_attestation_261007_9446.ps1": "b2bd3db379bf7c8875ef7672c482432afa8ea2f1434c8029ee9d215e78254a0e",
+    "codex_desktop_workflow/data/renderer_attestation_261007_9446.ps1": "55b7b2de60228e7cd9803781ed04932f30aa0810668f662d8e24de270b1caf60",
     "codex_desktop_workflow/data/renderer_attestation_26928_4866.ps1": "bf01b225c007a01a7d2d4cb37d01e1965257f8d58493c58c09e21651fc4e960c",
     "codex_desktop_workflow/data/sidebar-capture-location.json": "b37179daafa6947cb4e804201e4755b24ea35f83162849efef902f0e421f3614",
     "codex_desktop_workflow/data/sidebar-capture-location_7124.json": "8a95901f2e3d0bace6db2c42d06775c9f829496442315c5083fa16a84933778d",
@@ -262,7 +263,7 @@
     "tools/new_chat/native_ssh_lifecycle.js": "8bb2724283c24e92b0490a00e986a3b8d1230e1326dd1c4b4b91e2f537e2b89b",
     "tools/new_chat/native_ssh_reopen.js": "9606e48dc9226619c7bc18d6f28e99ba2465be5a6f329c9a2b3759075f1c4ffc",
     "tools/new_chat/reopen.py": "4f77d3950e891a4b185c8e68cdf12a7672059ce8d0a88447d0695afb3d9c863d",
-    "tools/new_chat/reopen_9446.py": "33150850f73c16d66b412b1235b3ff63f4492a5a19d0b0d46b376046341e57bb",
+    "tools/new_chat/reopen_9446.py": "01689701df13780102157578cf9f11e588df416fd369c31bf863edb1e21522c4",
     "tools/new_chat/reopen_owned_9446.py": "c0eff3ec3dfb4a0124c83800a1023c293d04eea836e5074509ad1a2cb0e1f985",
     "tools/new_chat/run.py": "58212704ad38c585dc126c002a2c05def7753904711a7dfcef8004c77a6323da",
     "tools/new_chat/sidebar-capture-location.json": "8a95901f2e3d0bace6db2c42d06775c9f829496442315c5083fa16a84933778d",
@@ -282,17 +283,20 @@
     "tools/recency/new_chat.cjs": "8a52ba6ae59456e557f7e963fcd301ab24324f87ed3a9a9f198939a7c89685f0",
     "tools/recency/run.py": "4340a9543b2955d404a4ec0ebfc5e94a2e45c53fb12d220830861464649c6b3e",
     "tools/update_icons/mount.js": "3473fa14305cf7498886dbda57398cbf1ec55f41c96826df25b3c59df47e16b2",
+    "tools/update_icons/mount_9446.js": "fb8c4a067cde3e8db6cac8a46d7e1b7f76922c25666ac354ef66a1d0dd1f0f82",
     "tools/update_icons/run.cjs": "72f7626762c0eaeb27bafaa83b295e0ffaa048925d6866310148f68aefb79725",
     "tools/update_icons/run.py": "acc4343fe1f95ea5965e340ebbce389f824ba6239a2f85f3d71edb10beee002b",
+    "tools/update_icons/run_9446.cjs": "ea47436c9ed4ea4ad5b9a38f9937e43153e58ea47bfb8426c859f50d149c8ad1",
+    "tools/update_icons/run_9446.py": "537b59bdf622d787fe40d3a3d164907ff81d9f0a625a5d73d8088ed22001f3e2",
     "install.ps1": "040cc67dfe869784de3dabf1b6dd855521f352a922d4f14b492eca1fa899803e",
     "msix_source.py": "61b87e57e7883610d61a3f6ffcccfa0e15ad65b5a57236bcabd4cbd236463e5d",
-    "tests/test_release_qualification.py": "0452ab48161551ef589069f52f8f10f22ebbed68b08e6e53bf02a168041c0efa",
+    "tests/test_release_qualification.py": "a4f44ca0c4568341b8515a0f7ef1e05304e1191090b093c2fe864f10d4054e52",
     "tests/test_awake_probes.py": "9830df6776dc20dd53394750c992fece18adf0262ec08a7eee09b093ecc88883"
   },
   "tested_artifacts": {
     "official": {
-      "source_commit": "68311674d23b66cfc17b8d3072f71126fa086c55",
-      "artifact_sha256": "c9674b7141228298e54922f02622b2075973166673a2c27bc52540779825e96f",
+      "source_commit": "0615b5677ed15f7b832b40a55a9c4819df75d9d9",
+      "artifact_sha256": "7735cf31d8924291d0400c366cfe132b422b41217b019f3f8de169ca96d70b50",
       "source_inputs": {
         "composer_selector_contract.py": "23848e0c7440f3f3a6e4bb3dc0c8e0d8ab5c836b2bbe914204939cc15a6bbf0c",
         "frontend_bindings_261002_7124.py": "fbd7a7a0e6a1cc8074c33001deb806684dbb9467f80feb3f2b8d9ffdf30974d6",
@@ -358,7 +362,7 @@
         "frontend_work_contract_26930_7945.py": "b110635889683097f0e36718d0cbed50833cd906788884f31a927fc33eaf8b57",
         "hotfix_builder.py": "4e984b361a8d929b7b78ee1f178c23f0f9b0bc31e0ce7325998f994e59ad39ba",
         "hotfix_profile_261002_7124.py": "08bf88e81d993379780984ce19cff1dd9ecf9160c9e5e91062793de080c5c96a",
-        "hotfix_profile_261007_9446.py": "78d35648ff3a49c9a324ea73efb2e63dcad7e57dbb4d63b65235a59328efa977",
+        "hotfix_profile_261007_9446.py": "74d880f7d93caa2b81ca45d565aca878e3d11aec76a08e6b97118f966baa2a74",
         "hotfix_profile_26730.py": "e3b479bda1a828a47ee425232a75f39e818f988d5f25a9c502788b775d111f5c",
         "hotfix_profile_26810.py": "6233c9bad3667a6ad911da47b2df01f8c57a29153c4149b225d22258df323d2e",
         "hotfix_profile_26818.py": "29b30e89e7911d34e6f7784914498d44fe50a8d4d5a8caba9793a34cbf796ff6",
@@ -395,7 +399,8 @@
         "codex_desktop_workflow/brokered_processes.py": "8cfbb20414de1df969e033ae35e1fb3e6f9028792d07d2c67b0c9ae6b4ef1f6b",
         "codex_desktop_workflow/cli.py": "f08976b4e91a4f6db8f4f1c1b82c063613bf75e45d141805056ef19e53a041e2",
         "codex_desktop_workflow/history.py": "6abc492c13243e35954f6bb72ed242ece064f191fda84af2ec39469efaa3b42b",
-        "codex_desktop_workflow/isolated_run.py": "fe4843d1cdf45ec2c25d9af74d727d2568b914136ca265fcfff9bd0d8694614c",
+        "codex_desktop_workflow/isolated_run.py": "4cf442bd73793e6cad26805eabe9ec30f5f5032d96484557cc5bb0b0d3ea193e",
+        "codex_desktop_workflow/language.py": "84d3c090a946861ea0610aca2d8cc7099f982cbe7725027b4b66485a40a0817e",
         "codex_desktop_workflow/native_heartbeat_9446.py": "fc3e06ada532d7de1aec5faf6324928b18bb5193edca8111fe26ec53e0ed903b",
         "codex_desktop_workflow/native_history_fixture.py": "f59925f637e57f75d67123366c1b082e9e826061f914b28c3afe31ea015b55a9",
         "codex_desktop_workflow/native_protocol_9446.py": "3b0de541179521308f04bbf466050d866e97eb2b83a5071de43c887c3abfc42c",
@@ -406,8 +411,8 @@
         "codex_desktop_workflow/qualification.py": "2fb1184b53ab9772dba24ba90726049daf7348456a9eaa6cf1680cacef291d5b",
         "codex_desktop_workflow/renderer_proof.py": "02aa79584e99e63f90f6e2c067fb0c449fc6b3794e5fd46f5e33f34a34154ffa",
         "codex_desktop_workflow/update_awareness.py": "c3645c3e2a2550447ec4cbb31cce6c6c63d278d94e4a6ced8d01d47b1ed17363",
-        "codex_desktop_workflow/workflow.py": "d93e00a63b426e391a8c97e2686ad38f5b34fbd1b0890053d24789567fccd232",
-        "codex_desktop_workflow/__init__.py": "60fb8f310637a8915b750470753915ce525c9b55e830a05b6763c3ec379106c8",
+        "codex_desktop_workflow/workflow.py": "1b75f41de4a951a9a969a77512a7736299c2bec676feeb13aa72a779d00bb4eb",
+        "codex_desktop_workflow/__init__.py": "09badef60265fd09c0a546236205271258170b238531b56d4dae1447d5d297c8",
         "codex_desktop_workflow/data/awake_timers.cjs": "08ee79b39f830c60ef6b1c4221fb1c1a833e7b3f56acabe53568c2f796a86a01",
         "codex_desktop_workflow/data/frontend_bindings_261002_7124.json": "e967a06f08385f6d47566473086085145e144a240e714c4c8937866283e4a42d",
         "codex_desktop_workflow/data/frontend_bindings_26928_4866.json": "626cb3dd69be481e2bc0408f75eed53e17e7ef33573b54bad2585d01c788d711",
@@ -497,7 +502,7 @@
         "codex_desktop_workflow/data/frontend_work_scenarios_26930_6422.js": "0cbbb583883106b1bb35cb01bdac546165c2011983dcdd6d9973ae81ceac4f21",
         "codex_desktop_workflow/data/frontend_work_scenarios_26930_7945.js": "0cbbb583883106b1bb35cb01bdac546165c2011983dcdd6d9973ae81ceac4f21",
         "codex_desktop_workflow/data/native_focus_261007_9446.cjs": "8b23aa4ba1d07f1939d380e9366a31a16315358b2baa179d984078c60fdae40e",
-        "codex_desktop_workflow/data/native_focus_261007_9446.js": "8da45719203a68001df5a691201cff4141688529878c26328c005953163976aa",
+        "codex_desktop_workflow/data/native_focus_261007_9446.js": "5dd78915216dff8122d357a8ef71932fac57950dcc14e4aa25f54d1eb36304fb",
         "codex_desktop_workflow/data/native_fragments_261007_9446.cjs": "b208d5b38fcf3e9c2f65426ed47571344ede9ea7a67659d90f602b0c1cf47261",
         "codex_desktop_workflow/data/native_sidebar_7124.cjs": "28bbd244d45bd104f2ac00768cf7abfb0dc69f7f1593deef06789985cf5edff8",
         "codex_desktop_workflow/data/native_sidebar_basic.cjs": "dfc6f02f0a758f791b41c4efd7a7d1dd8adc4a4e135071318205c2e02fd334bf",
@@ -505,7 +510,7 @@
         "codex_desktop_workflow/data/native_sidebar_basic_function_7124.js": "a2f57904c1b0710fa59271dd42013e6ac79609cc920357fb99b7af2caf1a383b",
         "codex_desktop_workflow/data/native_sidebar_function.js": "e11f47fefa4f97fdc87c9bda57d026102d1c7e035a9179a91ed71fefce6d462e",
         "codex_desktop_workflow/data/native_sidebar_function_7124.js": "ef3ee8513db3c6e07767997cfc8ae43643fd34c2a39bfdf3fbbeb5ef34cb008a",
-        "codex_desktop_workflow/data/renderer_attestation_261007_9446.ps1": "b2bd3db379bf7c8875ef7672c482432afa8ea2f1434c8029ee9d215e78254a0e",
+        "codex_desktop_workflow/data/renderer_attestation_261007_9446.ps1": "55b7b2de60228e7cd9803781ed04932f30aa0810668f662d8e24de270b1caf60",
         "codex_desktop_workflow/data/renderer_attestation_26928_4866.ps1": "bf01b225c007a01a7d2d4cb37d01e1965257f8d58493c58c09e21651fc4e960c",
         "codex_desktop_workflow/data/sidebar-capture-location.json": "b37179daafa6947cb4e804201e4755b24ea35f83162849efef902f0e421f3614",
         "codex_desktop_workflow/data/sidebar-capture-location_7124.json": "8a95901f2e3d0bace6db2c42d06775c9f829496442315c5083fa16a84933778d",
@@ -534,8 +539,8 @@
       }
     },
     "compat": {
-      "source_commit": "68311674d23b66cfc17b8d3072f71126fa086c55",
-      "artifact_sha256": "c9674b7141228298e54922f02622b2075973166673a2c27bc52540779825e96f",
+      "source_commit": "0615b5677ed15f7b832b40a55a9c4819df75d9d9",
+      "artifact_sha256": "7735cf31d8924291d0400c366cfe132b422b41217b019f3f8de169ca96d70b50",
       "source_inputs": {
         "composer_selector_contract.py": "23848e0c7440f3f3a6e4bb3dc0c8e0d8ab5c836b2bbe914204939cc15a6bbf0c",
         "frontend_bindings_261002_7124.py": "fbd7a7a0e6a1cc8074c33001deb806684dbb9467f80feb3f2b8d9ffdf30974d6",
@@ -601,7 +606,7 @@
         "frontend_work_contract_26930_7945.py": "b110635889683097f0e36718d0cbed50833cd906788884f31a927fc33eaf8b57",
         "hotfix_builder.py": "4e984b361a8d929b7b78ee1f178c23f0f9b0bc31e0ce7325998f994e59ad39ba",
         "hotfix_profile_261002_7124.py": "08bf88e81d993379780984ce19cff1dd9ecf9160c9e5e91062793de080c5c96a",
-        "hotfix_profile_261007_9446.py": "78d35648ff3a49c9a324ea73efb2e63dcad7e57dbb4d63b65235a59328efa977",
+        "hotfix_profile_261007_9446.py": "74d880f7d93caa2b81ca45d565aca878e3d11aec76a08e6b97118f966baa2a74",
         "hotfix_profile_26730.py": "e3b479bda1a828a47ee425232a75f39e818f988d5f25a9c502788b775d111f5c",
         "hotfix_profile_26810.py": "6233c9bad3667a6ad911da47b2df01f8c57a29153c4149b225d22258df323d2e",
         "hotfix_profile_26818.py": "29b30e89e7911d34e6f7784914498d44fe50a8d4d5a8caba9793a34cbf796ff6",
@@ -638,7 +643,8 @@
         "codex_desktop_workflow/brokered_processes.py": "8cfbb20414de1df969e033ae35e1fb3e6f9028792d07d2c67b0c9ae6b4ef1f6b",
         "codex_desktop_workflow/cli.py": "f08976b4e91a4f6db8f4f1c1b82c063613bf75e45d141805056ef19e53a041e2",
         "codex_desktop_workflow/history.py": "6abc492c13243e35954f6bb72ed242ece064f191fda84af2ec39469efaa3b42b",
-        "codex_desktop_workflow/isolated_run.py": "fe4843d1cdf45ec2c25d9af74d727d2568b914136ca265fcfff9bd0d8694614c",
+        "codex_desktop_workflow/isolated_run.py": "4cf442bd73793e6cad26805eabe9ec30f5f5032d96484557cc5bb0b0d3ea193e",
+        "codex_desktop_workflow/language.py": "84d3c090a946861ea0610aca2d8cc7099f982cbe7725027b4b66485a40a0817e",
         "codex_desktop_workflow/native_heartbeat_9446.py": "fc3e06ada532d7de1aec5faf6324928b18bb5193edca8111fe26ec53e0ed903b",
         "codex_desktop_workflow/native_history_fixture.py": "f59925f637e57f75d67123366c1b082e9e826061f914b28c3afe31ea015b55a9",
         "codex_desktop_workflow/native_protocol_9446.py": "3b0de541179521308f04bbf466050d866e97eb2b83a5071de43c887c3abfc42c",
@@ -649,8 +655,8 @@
         "codex_desktop_workflow/qualification.py": "2fb1184b53ab9772dba24ba90726049daf7348456a9eaa6cf1680cacef291d5b",
         "codex_desktop_workflow/renderer_proof.py": "02aa79584e99e63f90f6e2c067fb0c449fc6b3794e5fd46f5e33f34a34154ffa",
         "codex_desktop_workflow/update_awareness.py": "c3645c3e2a2550447ec4cbb31cce6c6c63d278d94e4a6ced8d01d47b1ed17363",
-        "codex_desktop_workflow/workflow.py": "d93e00a63b426e391a8c97e2686ad38f5b34fbd1b0890053d24789567fccd232",
-        "codex_desktop_workflow/__init__.py": "60fb8f310637a8915b750470753915ce525c9b55e830a05b6763c3ec379106c8",
+        "codex_desktop_workflow/workflow.py": "1b75f41de4a951a9a969a77512a7736299c2bec676feeb13aa72a779d00bb4eb",
+        "codex_desktop_workflow/__init__.py": "09badef60265fd09c0a546236205271258170b238531b56d4dae1447d5d297c8",
         "codex_desktop_workflow/data/awake_timers.cjs": "08ee79b39f830c60ef6b1c4221fb1c1a833e7b3f56acabe53568c2f796a86a01",
         "codex_desktop_workflow/data/frontend_bindings_261002_7124.json": "e967a06f08385f6d47566473086085145e144a240e714c4c8937866283e4a42d",
         "codex_desktop_workflow/data/frontend_bindings_26928_4866.json": "626cb3dd69be481e2bc0408f75eed53e17e7ef33573b54bad2585d01c788d711",
@@ -740,7 +746,7 @@
         "codex_desktop_workflow/data/frontend_work_scenarios_26930_6422.js": "0cbbb583883106b1bb35cb01bdac546165c2011983dcdd6d9973ae81ceac4f21",
         "codex_desktop_workflow/data/frontend_work_scenarios_26930_7945.js": "0cbbb583883106b1bb35cb01bdac546165c2011983dcdd6d9973ae81ceac4f21",
         "codex_desktop_workflow/data/native_focus_261007_9446.cjs": "8b23aa4ba1d07f1939d380e9366a31a16315358b2baa179d984078c60fdae40e",
-        "codex_desktop_workflow/data/native_focus_261007_9446.js": "8da45719203a68001df5a691201cff4141688529878c26328c005953163976aa",
+        "codex_desktop_workflow/data/native_focus_261007_9446.js": "5dd78915216dff8122d357a8ef71932fac57950dcc14e4aa25f54d1eb36304fb",
         "codex_desktop_workflow/data/native_fragments_261007_9446.cjs": "b208d5b38fcf3e9c2f65426ed47571344ede9ea7a67659d90f602b0c1cf47261",
         "codex_desktop_workflow/data/native_sidebar_7124.cjs": "28bbd244d45bd104f2ac00768cf7abfb0dc69f7f1593deef06789985cf5edff8",
         "codex_desktop_workflow/data/native_sidebar_basic.cjs": "dfc6f02f0a758f791b41c4efd7a7d1dd8adc4a4e135071318205c2e02fd334bf",
@@ -748,7 +754,7 @@
         "codex_desktop_workflow/data/native_sidebar_basic_function_7124.js": "a2f57904c1b0710fa59271dd42013e6ac79609cc920357fb99b7af2caf1a383b",
         "codex_desktop_workflow/data/native_sidebar_function.js": "e11f47fefa4f97fdc87c9bda57d026102d1c7e035a9179a91ed71fefce6d462e",
         "codex_desktop_workflow/data/native_sidebar_function_7124.js": "ef3ee8513db3c6e07767997cfc8ae43643fd34c2a39bfdf3fbbeb5ef34cb008a",
-        "codex_desktop_workflow/data/renderer_attestation_261007_9446.ps1": "b2bd3db379bf7c8875ef7672c482432afa8ea2f1434c8029ee9d215e78254a0e",
+        "codex_desktop_workflow/data/renderer_attestation_261007_9446.ps1": "55b7b2de60228e7cd9803781ed04932f30aa0810668f662d8e24de270b1caf60",
         "codex_desktop_workflow/data/renderer_attestation_26928_4866.ps1": "bf01b225c007a01a7d2d4cb37d01e1965257f8d58493c58c09e21651fc4e960c",
         "codex_desktop_workflow/data/sidebar-capture-location.json": "b37179daafa6947cb4e804201e4755b24ea35f83162849efef902f0e421f3614",
         "codex_desktop_workflow/data/sidebar-capture-location_7124.json": "8a95901f2e3d0bace6db2c42d06775c9f829496442315c5083fa16a84933778d",
@@ -777,8 +783,8 @@
       }
     },
     "installed_wheel": {
-      "source_commit": "68311674d23b66cfc17b8d3072f71126fa086c55",
-      "artifact_sha256": "c9674b7141228298e54922f02622b2075973166673a2c27bc52540779825e96f",
+      "source_commit": "0615b5677ed15f7b832b40a55a9c4819df75d9d9",
+      "artifact_sha256": "7735cf31d8924291d0400c366cfe132b422b41217b019f3f8de169ca96d70b50",
       "source_inputs": {
         "composer_selector_contract.py": "23848e0c7440f3f3a6e4bb3dc0c8e0d8ab5c836b2bbe914204939cc15a6bbf0c",
         "frontend_bindings_261002_7124.py": "fbd7a7a0e6a1cc8074c33001deb806684dbb9467f80feb3f2b8d9ffdf30974d6",
@@ -844,7 +850,7 @@
         "frontend_work_contract_26930_7945.py": "b110635889683097f0e36718d0cbed50833cd906788884f31a927fc33eaf8b57",
         "hotfix_builder.py": "4e984b361a8d929b7b78ee1f178c23f0f9b0bc31e0ce7325998f994e59ad39ba",
         "hotfix_profile_261002_7124.py": "08bf88e81d993379780984ce19cff1dd9ecf9160c9e5e91062793de080c5c96a",
-        "hotfix_profile_261007_9446.py": "78d35648ff3a49c9a324ea73efb2e63dcad7e57dbb4d63b65235a59328efa977",
+        "hotfix_profile_261007_9446.py": "74d880f7d93caa2b81ca45d565aca878e3d11aec76a08e6b97118f966baa2a74",
         "hotfix_profile_26730.py": "e3b479bda1a828a47ee425232a75f39e818f988d5f25a9c502788b775d111f5c",
         "hotfix_profile_26810.py": "6233c9bad3667a6ad911da47b2df01f8c57a29153c4149b225d22258df323d2e",
         "hotfix_profile_26818.py": "29b30e89e7911d34e6f7784914498d44fe50a8d4d5a8caba9793a34cbf796ff6",
@@ -881,7 +887,8 @@
         "codex_desktop_workflow/brokered_processes.py": "8cfbb20414de1df969e033ae35e1fb3e6f9028792d07d2c67b0c9ae6b4ef1f6b",
         "codex_desktop_workflow/cli.py": "f08976b4e91a4f6db8f4f1c1b82c063613bf75e45d141805056ef19e53a041e2",
         "codex_desktop_workflow/history.py": "6abc492c13243e35954f6bb72ed242ece064f191fda84af2ec39469efaa3b42b",
-        "codex_desktop_workflow/isolated_run.py": "fe4843d1cdf45ec2c25d9af74d727d2568b914136ca265fcfff9bd0d8694614c",
+        "codex_desktop_workflow/isolated_run.py": "4cf442bd73793e6cad26805eabe9ec30f5f5032d96484557cc5bb0b0d3ea193e",
+        "codex_desktop_workflow/language.py": "84d3c090a946861ea0610aca2d8cc7099f982cbe7725027b4b66485a40a0817e",
         "codex_desktop_workflow/native_heartbeat_9446.py": "fc3e06ada532d7de1aec5faf6324928b18bb5193edca8111fe26ec53e0ed903b",
         "codex_desktop_workflow/native_history_fixture.py": "f59925f637e57f75d67123366c1b082e9e826061f914b28c3afe31ea015b55a9",
         "codex_desktop_workflow/native_protocol_9446.py": "3b0de541179521308f04bbf466050d866e97eb2b83a5071de43c887c3abfc42c",
@@ -892,8 +899,8 @@
         "codex_desktop_workflow/qualification.py": "2fb1184b53ab9772dba24ba90726049daf7348456a9eaa6cf1680cacef291d5b",
         "codex_desktop_workflow/renderer_proof.py": "02aa79584e99e63f90f6e2c067fb0c449fc6b3794e5fd46f5e33f34a34154ffa",
         "codex_desktop_workflow/update_awareness.py": "c3645c3e2a2550447ec4cbb31cce6c6c63d278d94e4a6ced8d01d47b1ed17363",
-        "codex_desktop_workflow/workflow.py": "d93e00a63b426e391a8c97e2686ad38f5b34fbd1b0890053d24789567fccd232",
-        "codex_desktop_workflow/__init__.py": "60fb8f310637a8915b750470753915ce525c9b55e830a05b6763c3ec379106c8",
+        "codex_desktop_workflow/workflow.py": "1b75f41de4a951a9a969a77512a7736299c2bec676feeb13aa72a779d00bb4eb",
+        "codex_desktop_workflow/__init__.py": "09badef60265fd09c0a546236205271258170b238531b56d4dae1447d5d297c8",
         "codex_desktop_workflow/data/awake_timers.cjs": "08ee79b39f830c60ef6b1c4221fb1c1a833e7b3f56acabe53568c2f796a86a01",
         "codex_desktop_workflow/data/frontend_bindings_261002_7124.json": "e967a06f08385f6d47566473086085145e144a240e714c4c8937866283e4a42d",
         "codex_desktop_workflow/data/frontend_bindings_26928_4866.json": "626cb3dd69be481e2bc0408f75eed53e17e7ef33573b54bad2585d01c788d711",
@@ -983,7 +990,7 @@
         "codex_desktop_workflow/data/frontend_work_scenarios_26930_6422.js": "0cbbb583883106b1bb35cb01bdac546165c2011983dcdd6d9973ae81ceac4f21",
         "codex_desktop_workflow/data/frontend_work_scenarios_26930_7945.js": "0cbbb583883106b1bb35cb01bdac546165c2011983dcdd6d9973ae81ceac4f21",
         "codex_desktop_workflow/data/native_focus_261007_9446.cjs": "8b23aa4ba1d07f1939d380e9366a31a16315358b2baa179d984078c60fdae40e",
-        "codex_desktop_workflow/data/native_focus_261007_9446.js": "8da45719203a68001df5a691201cff4141688529878c26328c005953163976aa",
+        "codex_desktop_workflow/data/native_focus_261007_9446.js": "5dd78915216dff8122d357a8ef71932fac57950dcc14e4aa25f54d1eb36304fb",
         "codex_desktop_workflow/data/native_fragments_261007_9446.cjs": "b208d5b38fcf3e9c2f65426ed47571344ede9ea7a67659d90f602b0c1cf47261",
         "codex_desktop_workflow/data/native_sidebar_7124.cjs": "28bbd244d45bd104f2ac00768cf7abfb0dc69f7f1593deef06789985cf5edff8",
         "codex_desktop_workflow/data/native_sidebar_basic.cjs": "dfc6f02f0a758f791b41c4efd7a7d1dd8adc4a4e135071318205c2e02fd334bf",
@@ -991,7 +998,7 @@
         "codex_desktop_workflow/data/native_sidebar_basic_function_7124.js": "a2f57904c1b0710fa59271dd42013e6ac79609cc920357fb99b7af2caf1a383b",
         "codex_desktop_workflow/data/native_sidebar_function.js": "e11f47fefa4f97fdc87c9bda57d026102d1c7e035a9179a91ed71fefce6d462e",
         "codex_desktop_workflow/data/native_sidebar_function_7124.js": "ef3ee8513db3c6e07767997cfc8ae43643fd34c2a39bfdf3fbbeb5ef34cb008a",
-        "codex_desktop_workflow/data/renderer_attestation_261007_9446.ps1": "b2bd3db379bf7c8875ef7672c482432afa8ea2f1434c8029ee9d215e78254a0e",
+        "codex_desktop_workflow/data/renderer_attestation_261007_9446.ps1": "55b7b2de60228e7cd9803781ed04932f30aa0810668f662d8e24de270b1caf60",
         "codex_desktop_workflow/data/renderer_attestation_26928_4866.ps1": "bf01b225c007a01a7d2d4cb37d01e1965257f8d58493c58c09e21651fc4e960c",
         "codex_desktop_workflow/data/sidebar-capture-location.json": "b37179daafa6947cb4e804201e4755b24ea35f83162849efef902f0e421f3614",
         "codex_desktop_workflow/data/sidebar-capture-location_7124.json": "8a95901f2e3d0bace6db2c42d06775c9f829496442315c5083fa16a84933778d",
@@ -1027,7 +1034,7 @@
         "profile": "empty",
         "status": "passed",
         "renderer_features": 23,
-        "observed_seconds": 67.03474389998883,
+        "observed_seconds": 64.8137768000015,
         "backend_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
         "current_app_server_match": true,
         "shell_folders_isolated": true,
@@ -1035,14 +1042,13 @@
         "native_sidebar_mounted": true,
         "owned_job_empty": true,
         "close_status": "closed",
-        "brokered_prompts": "none",
-        "evidence_sha256": "d5a0134f1cfbd05454f554c811d3c89b83339bda7261440218559ccd3091124f"
+        "evidence_sha256": "6d7ca2322e08096c9093dadcf6b53eb2a66f5a08bbd07809dd3a7a57ad7c9780"
       },
       {
         "profile": "synthetic_tasks",
         "status": "passed",
         "renderer_features": 23,
-        "observed_seconds": 63.87335510000412,
+        "observed_seconds": 64.64160420000553,
         "backend_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
         "current_app_server_match": true,
         "shell_folders_isolated": true,
@@ -1050,14 +1056,13 @@
         "native_sidebar_mounted": true,
         "owned_job_empty": true,
         "close_status": "closed",
-        "brokered_prompts": "none",
-        "evidence_sha256": "b9161c174d9da038c2be3124ae1195aac4b42a4293d6f595eeb73050a4c69b9c"
+        "evidence_sha256": "5ca35b1fcba30053baa0ca2ba1f2e6fe994d3bfb945960626650b85dae40e4cb"
       },
       {
         "profile": "faithful_projects",
         "status": "passed",
         "renderer_features": 23,
-        "observed_seconds": 67.02062890000525,
+        "observed_seconds": 64.02586700000393,
         "backend_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
         "current_app_server_match": true,
         "shell_folders_isolated": true,
@@ -1065,8 +1070,7 @@
         "native_sidebar_mounted": true,
         "owned_job_empty": true,
         "close_status": "closed",
-        "brokered_prompts": "none",
-        "evidence_sha256": "cb50588a6b1dfeecb3d6c8bf02c26b472e036d5751c63e52d847765f02bb4644"
+        "evidence_sha256": "31dfb8cd8ab8c628eb67945972203040b75ca5f291190e3e3dfec5892a57ebfb"
       }
     ],
     "compat": [
@@ -1074,7 +1078,7 @@
         "profile": "empty",
         "status": "passed",
         "renderer_features": 23,
-        "observed_seconds": 66.3996288000053,
+        "observed_seconds": 66.0955982000014,
         "backend_sha256": "c326173f2bf15780a0c0c2eaf786cd73649849564e6e8adbdfd02222cab68d9a",
         "current_app_server_match": true,
         "shell_folders_isolated": true,
@@ -1082,14 +1086,13 @@
         "native_sidebar_mounted": true,
         "owned_job_empty": true,
         "close_status": "closed",
-        "brokered_prompts": "none",
-        "evidence_sha256": "98bc04b4ad3c6b43cc98fd6df91b45afbee6c81aa3966b050b35232de43c227c"
+        "evidence_sha256": "af4cfd161dcd82230a45e9a5573108d7dcba0599dddcdaf98f198ede398a74de"
       },
       {
         "profile": "synthetic_tasks",
         "status": "passed",
         "renderer_features": 23,
-        "observed_seconds": 65.30166539999482,
+        "observed_seconds": 66.26890110000386,
         "backend_sha256": "c326173f2bf15780a0c0c2eaf786cd73649849564e6e8adbdfd02222cab68d9a",
         "current_app_server_match": true,
         "shell_folders_isolated": true,
@@ -1097,14 +1100,13 @@
         "native_sidebar_mounted": true,
         "owned_job_empty": true,
         "close_status": "closed",
-        "brokered_prompts": "none",
-        "evidence_sha256": "99ed066d5f2d6b19263450a087c2e63d058fc12b31409712b401e64f98f2a9aa"
+        "evidence_sha256": "88d87ef402c64209fbac430f5a6d02ffb39bc5c00f9ff093b28a1293444eb502"
       },
       {
         "profile": "faithful_projects",
         "status": "passed",
         "renderer_features": 23,
-        "observed_seconds": 66.84523050001008,
+        "observed_seconds": 63.189910800007056,
         "backend_sha256": "c326173f2bf15780a0c0c2eaf786cd73649849564e6e8adbdfd02222cab68d9a",
         "current_app_server_match": true,
         "shell_folders_isolated": true,
@@ -1112,11 +1114,54 @@
         "native_sidebar_mounted": true,
         "owned_job_empty": true,
         "close_status": "closed",
-        "brokered_prompts": "none",
-        "evidence_sha256": "b8720a7f007ed5d0f9ed3acc753ace3d7546e9448342dc1fdbf8400ddb94ea24"
+        "evidence_sha256": "0ac4f3cc0983dbf2d1302412bab5787e2051923f48f2417d76de97a99b16094e"
       }
     ]
   },
+  "installed_wheel_runtime": [
+    {
+      "profile": "empty",
+      "status": "passed",
+      "renderer_features": 23,
+      "observed_seconds": 64.9901966000034,
+      "backend_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
+      "current_app_server_match": true,
+      "shell_folders_isolated": true,
+      "runtime_cache_isolated": true,
+      "native_sidebar_mounted": true,
+      "owned_job_empty": true,
+      "close_status": "closed",
+      "evidence_sha256": "934061ca4129330644f0c1e813871ccf47f204ca43f9fef13ce6751ec16f15a4"
+    },
+    {
+      "profile": "synthetic_tasks",
+      "status": "passed",
+      "renderer_features": 23,
+      "observed_seconds": 66.58409229999234,
+      "backend_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
+      "current_app_server_match": true,
+      "shell_folders_isolated": true,
+      "runtime_cache_isolated": true,
+      "native_sidebar_mounted": true,
+      "owned_job_empty": true,
+      "close_status": "closed",
+      "evidence_sha256": "e4f29075913b20a5d015b207c452a885270ebaae7e6444bc3e9e5762277e43c6"
+    },
+    {
+      "profile": "faithful_projects",
+      "status": "passed",
+      "renderer_features": 23,
+      "observed_seconds": 65.96075030000065,
+      "backend_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
+      "current_app_server_match": true,
+      "shell_folders_isolated": true,
+      "runtime_cache_isolated": true,
+      "native_sidebar_mounted": true,
+      "owned_job_empty": true,
+      "close_status": "closed",
+      "evidence_sha256": "474a06ac2d5aaa9217febcc2c7c938bcac32f8b41cbe312375408ffe447a67eb"
+    }
+  ],
   "backend_cases": {
     "http": {
       "status": "passed",
@@ -1155,6 +1200,13 @@
       "normal_exit": true,
       "backend_sha256": "c326173f2bf15780a0c0c2eaf786cd73649849564e6e8adbdfd02222cab68d9a"
     }
+  },
+  "backend_evidence_reuse": {
+    "unchanged_binary_sha256": "c326173f2bf15780a0c0c2eaf786cd73649849564e6e8adbdfd02222cab68d9a",
+    "public_code_commit": "a47c618b5b2b9e4438a8208decdada12935fd78f",
+    "prior_release": "v0.3.6",
+    "migration_manifest_rechecked": true,
+    "communication_tests_rerun": false
   },
   "checks": {
     "native_first_send": "passed",
@@ -1208,46 +1260,37 @@
       "version": "26.928.4866.0"
     }
   ],
-  "regression_unit_tests": {
-    "tests_run": 122,
-    "genuine_skips": [
+  "english_ui": {
+    "status": "passed",
+    "actual_native_component": true,
+    "new_data_default": "en",
+    "existing_preferences_preserved": true,
+    "stages": [
       {
-        "test": "setUpClass (test_profile_26915_4065.ExactProfile4065)",
-        "reason": "Set CODEX_WORKFLOW_TEST_ASAR to a locally built 4065 artifact",
-        "counted_as_passed": false
+        "stage": "published",
+        "text": "New version announced \u00b7 26.1008.9000.0",
+        "description": "The announced version is awaiting adaptation verification.",
+        "icon": "\u25f7"
       },
       {
-        "test": "setUpClass (test_profile_26917_6896.ExactProfile6896)",
-        "reason": "Set CODEX_WORKFLOW_TEST_ASAR_6896 to the exact built artifact",
-        "counted_as_passed": false
+        "stage": "package_available",
+        "text": "Official package available \u00b7 26.1008.9000.0",
+        "description": "Package version verified. Adaptation checks must pass before activation.",
+        "icon": "\u2193"
       },
       {
-        "test": "setUpClass (test_profile_26917_9434.ExactProfile9434)",
-        "reason": "Set CODEX_WORKFLOW_TEST_ASAR_9434 to the exact built artifact",
-        "counted_as_passed": false
-      },
-      {
-        "test": "setUpClass (test_profile_26924_1866.ExactNewProfile)",
-        "reason": "Set the exact new official source and public artifact",
-        "counted_as_passed": false
-      },
-      {
-        "test": "setUpClass (test_profile_26924_2738.ExactNewProfile)",
-        "reason": "Set the exact new official source and public artifact",
-        "counted_as_passed": false
-      },
-      {
-        "test": "setUpClass (test_profile_26928_4866.Exact4866Profile)",
-        "reason": "Exact official MSIX source and independently built public artifact required",
-        "counted_as_passed": false
+        "stage": "adaptation_ready",
+        "text": "Adaptation ready \u00b7 26.1008.9000.0",
+        "description": "Adaptation verified. The launcher will check again after this session exits.",
+        "icon": "\u2713"
       }
     ]
   },
-  "distribution_status": "not_yet_published_final_asset_download_install_pending",
-  "additional_timing_checks": {
-    "status": "passed",
-    "tests_run": 2,
-    "scope": "actual_cold_worker_awake_wait_expression",
-    "test_sha256": "df4b477b6402fec41781373daedc2e75678e300fa850c18d88a4a296eb8d7e4e"
-  }
+  "supervisor_diagnostic": {
+    "original_compat_outer_status": "failed_orphan_descendant",
+    "signed_owned_os_console_auxiliary_stopped": true,
+    "functional_and_closure_reconciliation": "passed",
+    "original_terminal_preserved": true
+  },
+  "distribution_status": "final_asset_download_install_pending"
 }
