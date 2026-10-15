@@ -4,7 +4,7 @@
 
 ## 我的官方版本能安装吗？
 
-当前公开发行 v0.3.5 最高支持 `26.928.4866.0`。其他受支持包号见[发行版支持矩阵](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/COMPATIBILITY.md)。版本和文件身份都须匹配；新官方版本需要对应的新适配发行。
+当前公开发行 v0.3.8 支持精确匹配的官方包 `26.1007.9446.0`，并保留兼容表列明的旧版配置。其他受支持包号见[发行版支持矩阵](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/COMPATIBILITY.md)。版本和文件身份都须匹配；新官方版本需要对应的新适配发行。
 
 ## 只有下载的 MSIX，必须先安装官方版吗？
 

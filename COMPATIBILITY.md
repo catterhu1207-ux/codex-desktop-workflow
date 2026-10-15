@@ -1,12 +1,13 @@
 # Compatibility
 
-This table describes installer **v0.3.6**. Download availability is recorded on the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.6); local-only adaptations are tracked separately.
+This table describes installer **v0.3.8**. Download availability is recorded on the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.8); local-only adaptations are tracked separately.
 
-| Component | Status in v0.3.6 |
+| Component | Status in v0.3.8 |
 |---|---|
 | Windows x64 | Supported |
-| Desktop `26.1007.9446.0` | Official backend by default; optional public-source compatibility backend; both modes passed three installed-wheel profiles, 26 contracts and 23 renderer features |
+| Desktop `26.1007.9446.0` | Official backend by default; optional public-source compatibility backend; both modes passed the source/runtime matrix; the final public download passed three fresh profiles, 26 contracts and 23 renderer features |
 | Desktop `26.928.4866.0` | Official backend by default; optional source-built 0.159.2 compatibility profile; 25 contracts and 22 renderer proofs; three isolated launch profiles |
+| Desktop `26.1002.7124.0` | Retained exact-source profile; its unavailable historical original was not requalified in this run |
 | Complete official x64 MSIX | Accepted by PowerShell `-Source`; exact identity and signature required; no Store installation |
 | Desktop `26.924.2738.0` | Official and opt-in source-built compatibility backend; frontend 2.7.3 start-event ordering; independent profile and build identity |
 | Desktop `26.924.1866.0` | Official and opt-in source-built compatibility backend |
@@ -17,13 +18,13 @@ This table describes installer **v0.3.6**. Download availability is recorded on 
 | Codex desktop `26.908.9136.0`, official ASAR `7a46bd6fe162050afbac27d7d5271d19524e887fa0cdd06c0f2d3fa9b606a31d` | Supported; retained v0.1.0 isolated-renderer acceptance evidence |
 | Any other desktop version or ASAR | Rejected |
 | Official bundled `codex.exe` | Default for all supported releases |
-| `codex-history-compat` backend | Opt-in profiles `desktop-26.928.4866.0-sqlite-v2` (73 migrations across six databases), `desktop-26.924.2738.0-sqlite-v2` (72 migrations across six databases) and `0.158.0-alpha.2` for their respective desktop versions; older desktop profiles remain official-only |
+| `codex-history-compat` backend | Opt-in profile `desktop-26.1007.9446.0-sqlite-v2` (75 migrations across six databases), plus retained profiles `desktop-26.928.4866.0-sqlite-v2` (73 migrations across six databases), `desktop-26.924.2738.0-sqlite-v2` (72 migrations across six databases) and `0.158.0-alpha.2` for their respective desktop versions; older desktop profiles remain official-only |
 | Existing task data | Explicit snapshot import into a new independent directory |
 | Automatic task-data synchronization | Unsupported |
 
 A version number alone is insufficient. `inspect` also checks the complete ASAR, bundled backend, and all required ASAR entry hashes for the selected supported version.
 
 
-## v0.3.6 prerequisites
+## v0.3.8 prerequisites
 
 Python 3.11 or later and Node.js with WebSocket and internal Acorn support are required (Node.js 24.18 tested). Complete signed MSIX and installed-directory sources are accepted. The optional backend profile `desktop-26.1007.9446.0-sqlite-v2` binds public source commit `a47c618b5b2b9e4438a8208decdada12935fd78f`, upstream `740e5af33c71225640e0c1c1555c514c2c93ab74`, Rust 1.95.0 and all 75 migrations across six databases. Old release evidence is retained; missing original samples in this run are skips.
