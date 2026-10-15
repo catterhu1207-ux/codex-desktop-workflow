@@ -1,0 +1,54 @@
+{
+  "status": "passed",
+  "release": "v0.3.8",
+  "release_commit": "aed6b076e0821b80e75a66a1e21aa86d40348bc6",
+  "desktop_version": "26.1007.9446.0",
+  "frontend_artifact": "2.7.21-356c13dc7158",
+  "bundle_sha256": "f0b2b9fb49abffc29c1a494e3c72994dba4d87d12c1817a0259325a5b628b4dd",
+  "installer_sha256": "682cf6b5f7c4c9a55c647680156a67f8036e029768d15a6b8fa56308b39c1df1",
+  "anonymous_download_verified": true,
+  "normal_installation": true,
+  "fresh_installation_directory": true,
+  "source_kind": "verified_official_directory",
+  "complete_msix_input": "four current signed directory/MSIX dry runs; unchanged full extraction path retains v0.3.6 evidence",
+  "source_and_resource_matching": 239,
+  "identity_json_byte_exact": true,
+  "owned_job_empty": true,
+  "closed_log_readback": "passed",
+  "runtime": [
+    {
+      "profile": "empty",
+      "status": "passed",
+      "renderer_features": 23,
+      "observed_seconds": 68.51623510000354,
+      "backend_match": true,
+      "backend_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
+      "native_sidebar_mounted": true,
+      "owned_group_closed": true
+    },
+    {
+      "profile": "synthetic_tasks",
+      "status": "passed",
+      "renderer_features": 23,
+      "observed_seconds": 67.2846811000054,
+      "backend_match": true,
+      "backend_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
+      "native_sidebar_mounted": true,
+      "owned_group_closed": true
+    },
+    {
+      "profile": "faithful_projects",
+      "status": "passed",
+      "renderer_features": 23,
+      "observed_seconds": 68.01069239999924,
+      "backend_match": true,
+      "backend_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
+      "native_sidebar_mounted": true,
+      "owned_group_closed": true
+    }
+  ],
+  "uninstall_retention": "unchanged installer bytes; separately recorded v0.3.6 synthetic retention evidence reused",
+  "encrypted_ssh_transport_tested": false,
+  "real_account_migration_tested": false,
+  "backend_transport_evidence": "unchanged public-source backend; reused v0.3.6 after binary/source/migration readback"
+}

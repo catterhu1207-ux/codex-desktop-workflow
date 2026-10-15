@@ -11,7 +11,7 @@ A stale per-feature identity annotation was caught before publication. The actua
 
 Normal installation from the rebuilt wheel then passed all three profiles again and created its launch command. The installed package ran independently of the source checkout. Across the nine runs, all 26 feature contracts and 23 interface proofs were checked against the exact current artifact.
 
-The compatibility backend is unchanged from the public-source v0.3.6 build. Its recorded transport and migration tests are reused after identity readback; current runtime identity was verified again. External SSH bindings were synthetic; encrypted SSH transport and real-account migration were not tested. All 132 unit/regression tests completed without failure, including six explicitly skipped historical-original inputs. Anonymous release-download installation remains a separate pending distribution gate.
+The compatibility backend is unchanged from the public-source v0.3.6 build. Its recorded transport and migration tests are reused after identity readback; current runtime identity was verified again. External SSH bindings were synthetic; encrypted SSH transport and real-account migration were not tested. All 132 unit/regression tests completed without failure, including six explicitly skipped historical-original inputs. The published assets passed anonymous download and checksum verification. Normal installation from that download passed the three complete profiles again, each with 23 fresh interface proofs, a mounted native sidebar, at least 60 awake seconds, matching backend identity and normal closure. See [the distribution readback](acceptance/v0.3.8-distribution.json).
 
 ## v0.3.7 source and installed-wheel qualification (unpublished draft)
 
