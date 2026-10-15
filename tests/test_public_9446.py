@@ -5,6 +5,19 @@ import hotfix_builder as b,hotfix_profile_261007_9446 as p
 from codex_desktop_workflow import qualification as q,workflow
 
 class Public9446(unittest.TestCase):
+    def test_each_contract_uses_current_artifact_identity(self):
+        # Unit check of the real metadata constructor; native semantics are
+        # qualified separately by the packaged-runtime matrix.
+        import frontend_contract_261007_9446 as contract
+        roles=('entry_path','secondary_entry_path','shared_entry_path','main_entry_path','attestation_protocol_entry_path')
+        entries={role:b'metadata-unit-input' for role in roles}
+        gate={'source_asar_sha256':p.PROFILE['asar_source_sha256'],'portable_asar_sha256':'b'*64,'non_target_inventory_sha256':'c'*64,'live_renderer_probe':{'protocol':'component_contract_v1','artifact_id':b.frontend_attestation_artifact_id(p.PROFILE)}}
+        inspected={'features':{name:{'status':'patchable'}for name in b.frontend_feature_statuses(p.PROFILE)}}
+        with mock.patch.object(contract,'validate_source',return_value=(gate,entries,entries)),mock.patch.object(b,'inspect_archive',return_value=(inspected,None)),mock.patch('frontend_ssh_261007_9446.execute_merge',return_value={'status':'unit-only'}):
+            value=contract.validate(Path('unit-source.asar'),Path('unit-target.asar'))
+        expected=b.frontend_attestation_artifact_id(p.PROFILE)
+        self.assertEqual({c['runtime_attestation']['artifact_id']for c in value['feature_contracts'].values()},{expected})
+
     def test_exact_source_and_portable_main_identities(self):
         self.assertEqual(workflow.SUPPORTED_PACKAGES['26.1007.9446.0'].asar_sha256,p.PROFILE['asar_source_sha256'])
         self.assertEqual(b.frontend_attestation_artifact_id(p.PROFILE),'2.7.21-356c13dc7158')
