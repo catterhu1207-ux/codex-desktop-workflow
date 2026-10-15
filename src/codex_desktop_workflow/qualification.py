@@ -24,6 +24,7 @@ def require_complete(value,manifest):
     if len(runs)!=3 or {r.get('profile') for r in runs}!={'empty','synthetic_tasks','faithful_projects'}:raise ValueError('public_three_profile_matrix_missing')
     if len({r['attestation'].get('owner_run_id') for r in runs})!=3:raise ValueError('public_run_identity_reused')
     for run in runs:
+        if run.get('brokered_prompts',{}).get('status')!='none_for_owned_candidate':raise ValueError('public_external_broker_not_closed')
         proof=run.get('attestation',{})
         if run.get('observed_seconds',0)<60 or run.get('backend_match') is not True or run.get('close',{}).get('close_status')!='closed':raise ValueError('public_observation_or_backend_incomplete')
         if proof.get('status')!='passed' or proof.get('feature_count')!=len(required) or set(proof.get('production_parser',{}).get('features',{}))!=required:raise ValueError('public_renderer_inventory_incomplete')

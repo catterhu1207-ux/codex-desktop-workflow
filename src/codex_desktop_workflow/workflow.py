@@ -706,6 +706,11 @@ def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seco
             if 'windows' in tomllib.loads(isolated_text):raise WorkflowError('unexpected_fixture_windows_sandbox_configuration')
             isolated_config.write_text(isolated_text+'\n[windows]\nsandbox="unelevated"\n',encoding='utf8')
         history.inspect(home)
+        brokered_prompts=None
+        if support.version=='26.1007.9446.0':
+            from .brokered_processes import pending_elevations
+            brokered_prompts=pending_elevations(portable)
+            if brokered_prompts['status']!='none_for_owned_candidate':raise WorkflowError('previous_isolated_elevation_request_still_pending')
         debug_port = _available_loopback_port()
         run = IsolatedRun.start(
             portable / "ChatGPT.exe",
@@ -787,7 +792,15 @@ def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seco
                 sidebar_process.wait(timeout=10)
             close = _normal_codex_stop(run, 30)
             if fixture_server is not None:fixture_server.shutdown();fixture_server.server_close()
+            if support.version=='26.1007.9446.0':
+                try:
+                    brokered_prompts=pending_elevations(portable)
+                    if brokered_prompts['status']!='none_for_owned_candidate' and round_error is None:round_error=WorkflowError('isolated_elevation_request_escaped_job_boundary')
+                except BaseException as error:
+                    brokered_prompts={'status':'inspection_failed','error':str(error)}
+                    if round_error is None:round_error=error
         runtime.append({"run_directory": str(run.run_directory), "codex_home": str(home), "profile": profile_name, "native_sidebar": sidebar, "observed_seconds": observed, "attestation_requested": attestation_requested, "pre_close": latest, "close": close, "attestation": attestation, "backend_expected_sha256": expected_backend_sha256, "backend_match": backend_match,"timing_stage":timing_stage,"route_seen_awake":route_at,"module_seen_awake":module_at,"proof_seen_awake":proof_at})
+        if support.version=='26.1007.9446.0':runtime[-1]['brokered_prompts']=brokered_prompts
         round_passed = round_error is None and proof_at is not None and observed >= observe_seconds and latest.get('status') == 'running' and backend_match and close.get('close_status') == 'closed' and attestation.get('status') == 'passed'
         (run.run_directory/'runtime-round.json').write_text(json.dumps({'status':'passed' if round_passed else 'failed','round':runtime[-1],'error':str(round_error) if round_error else None},indent=2),encoding='utf8')
         if round_error is not None:
