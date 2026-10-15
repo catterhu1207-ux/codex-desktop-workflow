@@ -2,6 +2,18 @@
 
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
+## v0.3.6 source qualification
+
+The Windows x64 Desktop 26.1007.9446.0 source was rebuilt independently with the official backend and the public-source compatibility backend. Both modes passed normal complete-MSIX installation with the installed wheel and three isolated launch profiles: empty data, at least 400 conversations actually created and sent through the backend, and persisted project/settings fixtures. Each profile mounted the native sidebar, produced all 23 same-run interface proofs, observed at least 60 awake seconds, rechecked backend identity and closed its owned process group. Exact-resource checks found no pending sandbox elevation requests.
+
+The 26 contracts cover descending update-time sorting, manual and pinned behavior, native pending questions and approvals, yellow plans, SSH names and routing, Work selection, file drop, paginated history, per-chat models and distinct persistent update states. Local, Work and simulated SSH first sends use the actual native execution and canonical history consumers. External SSH service bindings are synthetic; encrypted SSH transport is not qualified by these checks.
+
+The optional backend was independently built from public commit `a47c618b5b2b9e4438a8208decdada12935fd78f`, with Rust 1.95.0. HTTP, WebSocket, cold model restoration, local and remote compaction, tool-output pairing, notification folding and 75 migration identities across six databases passed. A verified warm-cache build through the public command produced the identical binary.
+
+The unit/regression run completed 122 checks without failure, with six missing-original-sample skips recorded separately. Two additional actual-expression awake-clock checks and both source-qualification checks passed, for 126 checks in total. The final distribution download/install readback is tracked separately. Older runtime acceptance records below remain historical evidence; they are not reruns of this candidate.
+
+Status: final distribution is pending. No installer publication is claimed here yet.
+
 ## v0.3.5 qualification
 
 Desktop 26.928.4866.0 was independently built with both official and compatibility backends. The qualified source record binds the runtime results to the product and acceptance tools. Final distribution and installation from the public download are checked separately.

@@ -1,10 +1,11 @@
 # Compatibility
 
-Current published installer: **v0.3.5**. This table describes published support; source-only or local adaptations are tracked separately.
+This table describes installer **v0.3.6**. Download availability is recorded on the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.6); local-only adaptations are tracked separately.
 
-| Component | Status in v0.3.5 |
+| Component | Status in v0.3.6 |
 |---|---|
 | Windows x64 | Supported |
+| Desktop `26.1007.9446.0` | Official backend by default; optional public-source compatibility backend; both modes passed three installed-wheel profiles, 26 contracts and 23 renderer features |
 | Desktop `26.928.4866.0` | Official backend by default; optional source-built 0.159.2 compatibility profile; 25 contracts and 22 renderer proofs; three isolated launch profiles |
 | Complete official x64 MSIX | Accepted by PowerShell `-Source`; exact identity and signature required; no Store installation |
 | Desktop `26.924.2738.0` | Official and opt-in source-built compatibility backend; frontend 2.7.3 start-event ordering; independent profile and build identity |
@@ -22,3 +23,7 @@ Current published installer: **v0.3.5**. This table describes published support;
 
 A version number alone is insufficient. `inspect` also checks the complete ASAR, bundled backend, and all required ASAR entry hashes for the selected supported version.
 
+
+## v0.3.6 prerequisites
+
+Python 3.11 or later and Node.js with WebSocket and internal Acorn support are required (Node.js 24.18 tested). Complete signed MSIX and installed-directory sources are accepted. The optional backend profile `desktop-26.1007.9446.0-sqlite-v2` binds public source commit `a47c618b5b2b9e4438a8208decdada12935fd78f`, upstream `740e5af33c71225640e0c1c1555c514c2c93ab74`, Rust 1.95.0 and all 75 migrations across six databases. Old release evidence is retained; missing original samples in this run are skips.

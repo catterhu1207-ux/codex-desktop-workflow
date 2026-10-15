@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.3.6
+
+- Add exact Desktop 26.1007.9446.0 and source-built 0.162.0-alpha.17.2 compatibility profile.
+- Use descending update time in current automatic lists, preserving manual and pinned order.
+- Propagate native intermediate question and approval state ahead of the spinner.
+- Distinguish announcement, verified complete package availability and qualified adaptation with separate update icons; hide update-check terminals.
+- Exercise real setting scope, first-send lifecycle, native cold history, SSH and Work routing.
+- Use isolated test scheduling, unelevated fixtures and exact-resource elevation checks.
+- Bind full MSIX installation checks to the installed wheel and both backend modes.
+
 ## v0.3.5
 
 - Add an exact Desktop 26.928.4866.0 profile while retaining earlier profiles.

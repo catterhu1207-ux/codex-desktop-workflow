@@ -1,11 +1,13 @@
-# v0.3.5 - Pending requests and Desktop 26.928.4866.0
+# v0.3.6 — Desktop 26.1007.9446.0
 
-Unanswered questions, choices and approval requests show an orange dot, including when a chat continues working. The dot remains until every outstanding request is resolved. A plan awaiting implementation stays yellow unless another request needs your response. Reading or selecting a chat does not clear its requests or change its order.
+Adds the exact Windows x64 package profile with the official backend by default and an optional compatibility backend built from public source.
 
-Adds Desktop 26.928.4866.0 support and protects a newly opened chat from premature history recovery before its first message creates a saved conversation. Sent messages retain their history and model settings. An unsent blank page is not promised to survive a restart. Existing ordering modes, pinned groups, project names, Work selection, file drop and paginated history are preserved.
+- Native intermediate questions and approval requests keep an orange dot ahead of the loading spinner. Plans awaiting implementation stay yellow.
+- Automatic lists sort by descending update time, preserving manual and pinned order and live updates.
+- Three update icons distinguish announcement, verified complete-package availability and a qualified prepared adaptation. Update checks hide the terminal.
+- Preserves native setting scope, first-send lifecycle, lazy and paginated history, per-chat models, SSH names and routing, Work selection and file drops.
+- Accepts a complete signed MSIX without installing the Store package. Requires Python 3.11 or later and Node.js with WebSocket and Acorn support; Node.js 24.18 was tested.
 
-The installer also accepts a complete official MSIX through `-Source`, so the supported Store version need not be installed first. It checks and extracts the package into a separate cache. The official backend remains the default; compatibility builds remain optional and version-specific.
+Both backend modes passed three normal installed-wheel launch profiles with 23 same-run interface proofs and at least 60 awake seconds of observation each. The compatibility backend passed HTTP, WebSocket, cold model recovery, compaction and all 75 migration identities across six databases. Six older source-sample checks were skipped because the original samples were unavailable. SSH external-service bindings were synthetic; encrypted transport was not tested.
 
-Verification uses awake time for its launch and interface checks. Sleep time does not consume those budgets. Test processes and data are isolated from the daily application.
-
-The bundle contains source wheels, the installer, README and license. Supply your own supported official package or installation. Official application binaries and user data are not included. The published bundle passed anonymous download, checksum verification and normal installation, followed by three complete isolated launches. Both backend modes passed their independent runtime checks. See [the acceptance report](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/ACCEPTANCE.md) for the test scope and results.
+The bundle supplies the installer and source wheels. Supply your own matching official package. Distribution download and installation results are recorded separately in [ACCEPTANCE.md](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/ACCEPTANCE.md).
