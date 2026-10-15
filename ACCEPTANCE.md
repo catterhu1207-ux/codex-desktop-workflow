@@ -12,7 +12,7 @@ The optional backend was independently built from public commit `a47c618b5b2b9e4
 
 The unit/regression run completed 122 checks without failure, with six missing-original-sample skips recorded separately. Two additional actual-expression awake-clock checks and both source-qualification checks passed, for 126 checks in total. The final distribution download/install readback is tracked separately. Older runtime acceptance records below remain historical evidence; they are not reruns of this candidate.
 
-Status: final distribution is pending. No installer publication is claimed here yet.
+The published v0.3.6 assets passed anonymous download and checksum verification. Normal installation from that download into a fresh directory then passed all three profiles with 23 fresh interface proofs, at least 60 awake seconds, matching backend identity, normal application exit and empty owned groups. Removing the isolated application and Python environment preserved all 26 files in its synthetic data-retention fixture. Real account migration was not exercised. See [the distribution readback](acceptance/v0.3.6-distribution.json).
 
 ## v0.3.5 qualification
 

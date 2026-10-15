@@ -1,0 +1,65 @@
+{
+  "status": "passed",
+  "release": "v0.3.6",
+  "release_commit": "5d10593895e6a53810e4c0c2a55b1a2fd1f2b4f2",
+  "desktop_version": "26.1007.9446.0",
+  "bundle_sha256": "b52731d88f16cfa984c4dcd85d2a691ccfa4aac44fb12db0e01ca4497b957e42",
+  "installer_sha256": "682cf6b5f7c4c9a55c647680156a67f8036e029768d15a6b8fa56308b39c1df1",
+  "anonymous_download_verified": true,
+  "source_kind": "verified_official_directory",
+  "complete_msix_input": "separately_qualified_both_backend_modes_before_publication",
+  "normal_installation": true,
+  "fresh_installation_directory": true,
+  "source_and_dependency_code_matching": "all_module_files_matched_normalized_public_source_and_pinned_dependencies",
+  "identity_json_byte_exact": true,
+  "owned_job_empty": true,
+  "closed_log_readback": "passed",
+  "runtime": [
+    {
+      "profile": "empty",
+      "status": "passed",
+      "renderer_features": 23,
+      "observed_seconds": 64.76329889999761,
+      "backend_match": true,
+      "backend_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
+      "close_status": "closed",
+      "brokered_elevations": "none_for_owned_candidate",
+      "native_sidebar": "passed",
+      "synthetic_sent_chats": 6
+    },
+    {
+      "profile": "synthetic_tasks",
+      "status": "passed",
+      "renderer_features": 23,
+      "observed_seconds": 65.86058149999008,
+      "backend_match": true,
+      "backend_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
+      "close_status": "closed",
+      "brokered_elevations": "none_for_owned_candidate",
+      "native_sidebar": "passed",
+      "synthetic_sent_chats": 6
+    },
+    {
+      "profile": "faithful_projects",
+      "status": "passed",
+      "renderer_features": 23,
+      "observed_seconds": 64.81964719999814,
+      "backend_match": true,
+      "backend_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
+      "close_status": "closed",
+      "brokered_elevations": "none_for_owned_candidate",
+      "native_sidebar": "passed",
+      "synthetic_sent_chats": 6
+    }
+  ],
+  "uninstall_retention": {
+    "status": "passed",
+    "scope": "manual_application_and_python_environment_removal_preserves_data",
+    "synthetic_files_unchanged": 26,
+    "real_user_data_used": false,
+    "real_data_migration_tested": false
+  },
+  "encrypted_ssh_transport_tested": false,
+  "official_application_binaries_distributed": false,
+  "accounts_or_real_chats_distributed": false
+}
