@@ -35,7 +35,7 @@ class ReleaseQualification(unittest.TestCase):
         pin=json.loads((PACKAGE/'policies/backend-source-26.1007.9446.0.json').read_text())
         self.assertEqual(e['compat_commit'],pin['commit'])
         self.assertEqual(e['feature_contract_count'],26)
-        self.assertEqual(e['frontend_build'],'2.7.20')
+        self.assertEqual(e['frontend_build'],'2.7.21')
         for mode in ('official','compat'):
             runs=e['runtime'][mode]
             self.assertEqual({r['profile'] for r in runs},{'empty','synthetic_tasks','faithful_projects'})

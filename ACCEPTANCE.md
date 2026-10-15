@@ -3,7 +3,17 @@
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
 
-## v0.3.7 source and installed-wheel qualification
+## v0.3.8 source and installed-wheel qualification
+
+Six isolated native runs passed with artifact 2.7.21: three with the official backend and three with the public-source compatibility backend. Every run mounted the native sidebar, produced 23 same-run interface proofs and observed at least 60 awake seconds. The actual English update component, six-chat cold recovery, 13 production-parser cases and four directory/MSIX dry runs passed.
+
+A stale per-feature identity annotation was caught before publication. The actual producer rebuilt it from the current profile; executable, ASAR, backend and protocol bytes remained identical. The production parser accepted all six unchanged original run logs against the corrected metadata. Original receipts are preserved. This annotation reconciliation does not claim additional runtime runs.
+
+Normal installation from the rebuilt wheel then passed all three profiles again and created its launch command. The installed package ran independently of the source checkout. Across the nine runs, all 26 feature contracts and 23 interface proofs were checked against the exact current artifact.
+
+The compatibility backend is unchanged from the public-source v0.3.6 build. Its recorded transport and migration tests are reused after identity readback; current runtime identity was verified again. External SSH bindings were synthetic; encrypted SSH transport and real-account migration were not tested. All 132 unit/regression tests completed without failure, including six explicitly skipped historical-original inputs. Anonymous release-download installation remains a separate pending distribution gate.
+
+## v0.3.7 source and installed-wheel qualification (unpublished draft)
 
 Desktop 26.1007.9446.0 uses frontend artifact 2.7.20. New independent data defaults to English while existing preferences are preserved. The actual native update component passed announcement, available-package and adaptation-ready cases, including English labels, descriptions, accessibility labels and three distinct collapsed icons.
 

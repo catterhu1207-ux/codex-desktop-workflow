@@ -21,7 +21,7 @@ const fs=require('node:fs'),path=require('node:path'),clock=require(process.env.
   if(capture.exceptionDetails||!capture.result?.objectId)throw Error('Actual native update bindings unavailable');
   await send('Debugger.removeBreakpoint',{breakpointId:breakpoint.breakpointId});await send('Debugger.resume');
   const proofDeadline=clock.now()+120000;let completedProof=false;
-  while(clock.now()<proofDeadline){const raw=fs.readFileSync(process.env.ISOLATED_RUNTIME_LOG,'utf8');if(raw.includes('"artifact_id":"2.7.20-356c13dc7158"')&&raw.includes('"status":"passed"')){completedProof=true;break}await new Promise(r=>clock.setTimeout(r,200))}
+  while(clock.now()<proofDeadline){const raw=fs.readFileSync(process.env.ISOLATED_RUNTIME_LOG,'utf8');if(raw.includes('"artifact_id":"2.7.21-356c13dc7158"')&&raw.includes('"status":"passed"')){completedProof=true;break}await new Promise(r=>clock.setTimeout(r,200))}
   if(!completedProof)throw Error('Fresh actual renderer proof missing');
   const root=path.resolve(process.env.ISOLATED_CODEX_HOME),cache=path.join(root,'.cache','codex-desktop-workflow','official-update-awareness.json');
   const before=fs.existsSync(cache)?fs.readFileSync(cache):null;fs.mkdirSync(path.dirname(cache),{recursive:true});

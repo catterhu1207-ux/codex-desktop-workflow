@@ -1,6 +1,13 @@
 # Changelog
 
-## v0.3.7
+## v0.3.8
+
+- Default new 9446 installations and persistent update notices to English.
+- Preserve running task tools while the native qualification sidebar mounts.
+- Derive every feature record from the current artifact identity.
+- Retain descending update-time sorting, orange unanswered requests, yellow plans, SSH and Work routing, and per-chat models.
+
+## v0.3.7 (unpublished draft)
 
 - Default new 9446 public data and renderer language to English.
 - Translate persistent update status labels and explanations.
