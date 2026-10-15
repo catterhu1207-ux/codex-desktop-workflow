@@ -1,4 +1,4 @@
-﻿function Get-StructuredLogJsonObject {
+function Get-StructuredLogJsonObject {
     param([Parameter(Mandatory = $true)][string]$Value)
     if ($Value.Length -eq 0 -or $Value[0] -ne '{') { return $null }
     $depth = 0
@@ -68,16 +68,16 @@ function Get-PortableFrontendFeatureAttestation {
         $nativeProbe = $QualifiedManifest.frontend_runtime_attestation.live_renderer_probe
         if ($QualifiedManifest.package_full_name -ne 'OpenAI.Codex_26.1007.9446.0_x64__2p2nqsd0c76g0' -or
             $QualifiedManifest.official_source_sha256 -ne '356c13dc715816436fa1cf31e9f77863f62ea7b7cacc465b397313246eb29325' -or
-            $QualifiedManifest.builder_version -ne '2.7.20' -or
+            $QualifiedManifest.builder_version -ne '2.7.21' -or
             $QualifiedManifest.frontend_runtime_attestation.validator_version -ne '2.7.0' -or
-            $nativeProbe.artifact_id -ne '2.7.20-356c13dc7158' -or
+            $nativeProbe.artifact_id -ne '2.7.21-356c13dc7158' -or
             @($QualifiedManifest.feature_contracts.psobject.Properties).Count -ne 26 -or
             @($nativeProbe.feature_ids).Count -ne 23) {
             return [pscustomobject]@{fatal = $true; kind = 'frontend_attestation_contract_failed'; error = 'The qualified manifest does not match the exact new proof contract.'}
         }
         $isNative2314Proof = $true
         $expectedFrontendContractValidatorVersion = '2.7.0'
-        $expectedFrontendAttestationArtifactId = '2.7.20-356c13dc7158'
+        $expectedFrontendAttestationArtifactId = '2.7.21-356c13dc7158'
         $requiredLiveRendererFeatures = @($requiredLiveRendererFeatures | Where-Object { $_ -notin @('user_action_pending_orange','portable_update_awareness') }) + @('user_action_pending_orange','portable_update_awareness')
         if (@($requiredLiveRendererFeatures | Select-Object -Unique).Count -ne 23 -or
             @($requiredLiveRendererFeatures | Where-Object { @($nativeProbe.feature_ids) -notcontains $_ }).Count -ne 0) {
@@ -360,7 +360,7 @@ function Get-PortableFrontendFeatureAttestation {
                     $badQuestion = $proof.native_async_questions.status -ne 'passed' -or @($questionFlags | Where-Object { $proof.native_async_questions.$_ -ne $true }).Count -gt 0
                     if ($isNative2314Proof) { $badQuestion = -not (Test-Native2314RendererProof -Proof $proof) }
                     $badUpdate = $proof.persistent_update.status -ne 'passed' -or @($updateFlags | Where-Object { $proof.persistent_update.$_ -ne $true }).Count -gt 0 -or $proof.persistent_update.stage -notin @('published','package_available','adaptation_ready') -or [string]::IsNullOrWhiteSpace([string]$proof.persistent_update.label)
-                    if ($expectedFrontendAttestationArtifactId -in @('2.7.15-bdff00367912','2.7.16-611d6da979d8','2.7.17-76fe7078248c','2.7.18-c5fdef328cfa','2.7.20-356c13dc7158')) {
+                    if ($expectedFrontendAttestationArtifactId -in @('2.7.15-bdff00367912','2.7.16-611d6da979d8','2.7.17-76fe7078248c','2.7.18-c5fdef328cfa','2.7.21-356c13dc7158')) {
                         $updateIdentityInvalid = $proof.persistent_update.status -ne 'passed' -or @($updateFlags | Where-Object { $proof.persistent_update.$_ -ne $true }).Count -gt 0 -or $proof.persistent_update.actual_bridge_response -ne $true
                         if ($proof.persistent_update.stage -eq 'none') {
                             $badUpdate = $updateIdentityInvalid -or $proof.persistent_update.no_false_current_update -ne $true -or -not [string]::IsNullOrEmpty([string]$proof.persistent_update.label)

@@ -13,7 +13,7 @@ import hotfix_profile_261007_9446 as profile
 class PublicEnglish(unittest.TestCase):
     def test_new_artifact_reaches_production_parser(self):
         with mock.patch('codex_desktop_workflow.renderer_proof.parse_owned_logs',return_value={'status':'blocked','production_parser':{'fatal':True,'kind':'wrong_identity'}}) as parser:
-            value=workflow._attestations(Path('.'),'2.7.20-356c13dc7158',manifest=Path('manifest'),run_directory=Path('run'),process={'pid':123})
+            value=workflow._attestations(Path('.'),'2.7.21-356c13dc7158',manifest=Path('manifest'),run_directory=Path('run'),process={'pid':123})
             parser.assert_called_once()
             with self.assertRaisesRegex(workflow.WorkflowError,'wrong_identity'):
                 workflow._require_nonfatal_frontend_evidence(value)

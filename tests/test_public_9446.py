@@ -7,10 +7,10 @@ from codex_desktop_workflow import qualification as q,workflow
 class Public9446(unittest.TestCase):
     def test_exact_source_and_portable_main_identities(self):
         self.assertEqual(workflow.SUPPORTED_PACKAGES['26.1007.9446.0'].asar_sha256,p.PROFILE['asar_source_sha256'])
-        self.assertEqual(b.frontend_attestation_artifact_id(p.PROFILE),'2.7.20-356c13dc7158')
+        self.assertEqual(b.frontend_attestation_artifact_id(p.PROFILE),'2.7.21-356c13dc7158')
         self.assertEqual(len(b.frontend_feature_statuses(p.PROFILE)),26)
         self.assertEqual(len(b.frontend_attestation_features(p.PROFILE)),23)
-        self.assertIn(b'2.7.20-356c13dc7158',b.renderer_attestation_module(p.PROFILE))
+        self.assertIn(b'2.7.21-356c13dc7158',b.renderer_attestation_module(p.PROFILE))
 
     def test_unverified_new_candidate_cannot_launch_without_metadata(self):
         with tempfile.TemporaryDirectory() as tmp:

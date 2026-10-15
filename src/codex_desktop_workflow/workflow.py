@@ -329,7 +329,7 @@ def _attestation_value(text: str, artifact_id: str) -> dict[str, Any] | None:
 
 
 def _attestations(home: Path, artifact_id: str, log_path: Path | tuple[Path, ...] | None = None, *, manifest: Path | None = None, run_directory: Path | None = None, process: dict | None = None) -> dict[str, Any]:
-    if artifact_id in ("2.7.9-84fe697418b2","2.7.17-76fe7078248c","2.7.19-356c13dc7158","2.7.20-356c13dc7158"):
+    if artifact_id in ("2.7.9-84fe697418b2","2.7.17-76fe7078248c","2.7.19-356c13dc7158","2.7.21-356c13dc7158"):
         if manifest is None or run_directory is None or process is None:
             return {"status": "blocked", "reason": "fresh_process_context_required"}
         from .renderer_proof import parse_owned_logs
