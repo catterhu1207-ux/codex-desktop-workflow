@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import subprocess
 import time
 import socket
@@ -13,6 +14,15 @@ from datetime import datetime, timezone
 from electron_update_safety import lifecycle
 from .awake_clock import seconds
 from .awake_process import run as run_awake
+
+
+def _redirected(path):
+    """Reject symlinks/reparse points using APIs available in Python 3.11."""
+    try:
+        info = path.lstat()
+    except FileNotFoundError:
+        return False
+    return stat.S_ISLNK(info.st_mode) or bool(getattr(info, 'st_file_attributes', 0) & 0x400)
 
 
 def _created(identity):
@@ -86,9 +96,9 @@ class IsolatedRun(lifecycle.IsolatedRun):
         run.mkdir(parents=True, exist_ok=False)
         profile = Path(runs_root).resolve()/'profile-4894' if isolate_shell_folders else Path(os.environ['USERPROFILE'])
         user_data = run/'user-data' if isolate_shell_folders else home/'.electron-user-data'
-        if user_data.is_symlink() or user_data.is_junction(): raise ValueError('redirected_user_data')
+        if _redirected(user_data): raise ValueError('redirected_user_data')
         if isolate_shell_folders:
-            if profile.is_symlink() or profile.is_junction(): raise ValueError('redirected_owned_profile')
+            if _redirected(profile): raise ValueError('redirected_owned_profile')
             profile.mkdir(exist_ok=True)
         user_data.mkdir(exist_ok=True)
         env = {**os.environ, **environment}
