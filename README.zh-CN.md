@@ -95,3 +95,5 @@ irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/do
 ## v0.3.8 的更新提示
 
 侧栏用三个不同图标区分“官方已公布新版”“已核对新原包可下载”和“适配已就绪，等待下次启动”。仅有更新公告不能证明完整下载包已经更换。检查更新时隐藏终端窗口。原生中间提问和批准请求尚未处理时，即使聊天仍在工作，也持续显示橙色提示。
+
+适配维护请参阅[维护技能](docs/maintenance/SKILL.md)及[首条消息与运行监控修复经验](docs/maintenance/firstsend-and-monitor.md)。

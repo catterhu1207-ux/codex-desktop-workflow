@@ -99,3 +99,5 @@ This project is unaffiliated with OpenAI. Release assets contain tools, dependen
 ## Update indicators in v0.3.8
 
 The sidebar distinguishes an announced update, a verified downloadable package, and a qualified adaptation ready for a later launch with three different icons. An announcement alone does not establish that the complete download has changed. Update checks run without a terminal window. Native unanswered questions and approvals keep their orange indicator even while the chat continues working.
+
+For adapter maintenance, see the [maintenance skill](docs/maintenance/SKILL.md) and [first-send and monitor repair lessons](docs/maintenance/firstsend-and-monitor.md).

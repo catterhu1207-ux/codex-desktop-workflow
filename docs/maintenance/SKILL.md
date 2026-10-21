@@ -48,3 +48,5 @@ Identify the actual failed stage before rebuilding. A high handle count in an un
 Trace transformed output before declaring a private dependency: private-manager strings may be original-byte matching templates replaced by a later exact transformation. Verify the complete transformation chain and packaged result.
 
 For an English public release, check installer and launcher prompts, added renderer labels, the actual native language default and mounted controls. Preserve protocol identities, user text and existing language choices. A new artifact identifier must match every producer and production parser before expensive runtime checks. Old release evidence stays historical; record new results under the new identity.
+
+For first-message failures, monitor/launcher disagreement and revision-specific consumers, see [first-send and monitor lessons](firstsend-and-monitor.md).
