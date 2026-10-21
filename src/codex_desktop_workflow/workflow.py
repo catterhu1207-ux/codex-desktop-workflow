@@ -119,6 +119,30 @@ SUPPORTED_PACKAGES['26.1002.7124.0'] = PackageSupport(version='26.1002.7124.0',p
 SUPPORTED_PACKAGES['26.1002.7124.0'] = PackageSupport(version='26.1002.7124.0',package_full_name='OpenAI.Codex_26.1002.7124.0_x64__2p2nqsd0c76g0',asar_sha256='76fe7078248c00e4e03dd2177a4275ec9ce158a9dd43452a4f0427d39a4ed012',backend_sha256='3553cd6e7df5a093d8cb8301cd8088a57e0971aba71ddbe0e67f7f44a15cdf68',backend_policy=_POLICY_ROOT/'official-26.1002.7124.0.json',backend_policy_sha256='e4d0e1ac0df1bbf382fce7a113d53d448369ce2c51a8df7d83c82e93a0bdd60d',entries={'webview/assets/app-initial-25361a10f2bf.js': 'bddf0e4e79918f7157682015c598b97eb833553c036026004555f88fa0cb9d3b', 'webview/assets/app-primary-2b28b2369958.js': '5715eec420d6e5ed076d3dcc533ac70316d516350b8d113e47d93ab6c9735c8b', 'webview/assets/app-shared-40678a67f0e3.js': '35b467c3a05695ec354eb1d0bb4572ad7e9d1480decc1cf0fae3d16b50aa5bd8', 'webview/assets/composer-project-picker-content-9ec8ec549fb9.js': '8920fe7ae368e52e35016860ab1678a71f5fd3b9ec838f87cc07fbe0052bd48a', '.vite/build/main-p91kJShj.js': 'aafd6a750458cb39b6202f9be00231482122d32ac14017b79d544c4ab741e889', '.vite/build/browser-background-switches-CowytfaF.js': '5ea600af76271e06b404f5f710436d418bf6ad6d0850e87de16f0fff1e91e89c'})
 
 SUPPORTED_PACKAGES['26.1007.9446.0']=PackageSupport(version='26.1007.9446.0',package_full_name='OpenAI.Codex_26.1007.9446.0_x64__2p2nqsd0c76g0',asar_sha256='356c13dc715816436fa1cf31e9f77863f62ea7b7cacc465b397313246eb29325',backend_sha256='e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e',backend_policy=_POLICY_ROOT/'official-26.1007.9446.0.json',backend_policy_sha256='9501720b76a8219e1e050b5342bc53f1d8e5c357ea06c2bf5c57b7fa154a3556',entries={'webview/assets/app-initial-102e45562729.js': 'c59b2a0be6c13496b30ebda167925cdccab26799cae350c62d2b37afe3589b57', 'webview/assets/app-primary-cd52df2361eb.js': '9602eea8c6dd07ddfbbc2772eac271e8ec7f765e1f275fe47ef681b996ac056a', 'webview/assets/app-shared-30671c57ec82.js': '392b023063a3569a2efc47a019accb2d1e72295b1bfec2cbb81fc37e1515580a', '.vite/build/main-Bgi5Xaw-.js': 'e8923725ad6357380ac7bb25818f78eb4d97e522ebbde2ddf6ff5a2a93032e54', '.vite/build/browser-background-switches-Zzmx0u5p.js': '86b083490f39350ba981d04b843f790fc2021a5fc278d2cb49c2313a57b097c9'})
+import hotfix_integration_261013_4894 as _public_4894
+# Retain the unpublished recovery profile without advertising it as installable.
+UNQUALIFIED_PACKAGES = {'26.1013.4894.0': PackageSupport(
+    version='26.1013.4894.0', package_full_name=_public_4894.base.PACKAGE_FULL_NAME,
+    asar_sha256=_public_4894.base.SOURCE_ASAR_SHA256,
+    backend_sha256='f6dbf48cb70f62649c645f26c87dc9bf84cc36986202dfad8e12fb5b8ca70312',
+    backend_policy=_POLICY_ROOT/'official-26.1013.4894.0.json',
+    backend_policy_sha256='b8b82fd62607531ca77c4b31de35b4c7d9db752f43edbd0a51354c2a7ecd23ed',
+    entries={_public_4894.PROFILE[k]: _public_4894.PROFILE[h] for k,h in [
+        ('entry_path','entry_source_sha256'),('secondary_entry_path','secondary_entry_source_sha256'),
+        ('shared_entry_path','shared_entry_source_sha256'),('main_entry_path','main_entry_source_sha256'),
+        ('attestation_protocol_entry_path','attestation_protocol_source_sha256')]})}
+import hotfix_integration_261016_6573 as _public_6573
+SUPPORTED_PACKAGES['26.1016.6573.0'] = PackageSupport(
+    version='26.1016.6573.0', package_full_name=_public_6573.base.PACKAGE_FULL_NAME,
+    asar_sha256=_public_6573.base.SOURCE_ASAR_SHA256,
+    backend_sha256='00c0f1e4099246fddcd67ec620ca8ed50827c7d70e113b7224f7a2933cf2d67c',
+    backend_policy=_POLICY_ROOT/'official-26.1016.6573.0.json',
+    backend_policy_sha256='b2ae780e49f1805ec7028679efd194438b7a8a2bde1b1753298ef8555195e108',
+    entries={_public_6573.PROFILE[k]: _public_6573.PROFILE[h] for k,h in [
+        ('entry_path','entry_source_sha256'),('secondary_entry_path','secondary_entry_source_sha256'),
+        ('shared_entry_path','shared_entry_source_sha256'),('main_entry_path','main_entry_source_sha256'),
+        ('attestation_protocol_entry_path','attestation_protocol_source_sha256')]})
+
 SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES,key=lambda value:tuple(map(int,value.split(".")))))
 SUPPORTED_VERSION = max(SUPPORTED_VERSIONS,key=lambda value:tuple(map(int,value.split("."))))
 DATA_FILES = (
@@ -208,6 +232,10 @@ def inspect(source: Path) -> dict[str, Any]:
         problems.append("official_asar_sha256_mismatch")
     if support is None or not backend.is_file() or _sha256(backend) != support.backend_sha256:
         problems.append("official_backend_sha256_mismatch")
+    if version == "26.1016.6573.0" and executable.is_file() and _sha256(executable) != _public_6573.base.SOURCE_EXE_SHA256:
+        problems.append("official_executable_sha256_mismatch")
+    if version == "26.1013.4894.0" and executable.is_file() and _sha256(executable) != _public_4894.base.SOURCE_EXE_SHA256:
+        problems.append("official_executable_sha256_mismatch")
     if version == '26.928.4866.0' and executable.is_file() and _sha256(executable) != 'c11cdd4ed0e0f25eddc1d54035e7b87932f07ac6b011ced04d424e368fedb9a0':
         problems.append('official_executable_sha256_mismatch')
     if not executable.is_file():
@@ -242,7 +270,7 @@ def inspect(source: Path) -> dict[str, Any]:
 
 def build_backend(source: Path, target: Path) -> dict[str, Any]:
     inspected = inspect(source)
-    if inspected['status'] != 'passed' or inspected['supported_version'] not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0'):
+    if inspected['status'] != 'passed' or inspected['supported_version'] not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0','26.1013.4894.0','26.1016.6573.0'):
         raise WorkflowError('compat_backend_source_unsupported')
     return backend.build(Path(inspected['app_directory']), target, inspected['supported_version'])
 
@@ -255,7 +283,7 @@ def build(source: Path, target: Path, backend_mode: str = 'official', backend_ma
     if backend_mode not in ('official', 'compat'):
         raise WorkflowError('unsupported_backend_mode')
     if backend_mode == 'compat':
-        if support.version not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0') or backend_manifest is None:
+        if support.version not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0','26.1013.4894.0','26.1016.6573.0') or backend_manifest is None:
             raise WorkflowError('compatible_backend_manifest_required_for_supported_version')
         backend.validate_manifest(backend_manifest, support.version)
         selected_policy = backend_manifest
@@ -294,7 +322,7 @@ def build(source: Path, target: Path, backend_mode: str = 'official', backend_ma
         selected_policy = copied_policy
     public = {
         "schema_version": 1,
-        "status": "source_bundle_prepared" if support.version == "26.1007.9446.0" else "bundle_qualified",
+        "status": "source_bundle_prepared" if support.version in ("26.1007.9446.0", "26.1013.4894.0", "26.1016.6573.0") else "bundle_qualified",
         "created_at": _now(),
         "package_version": support.version,
         "source_app": str(app),
@@ -329,7 +357,7 @@ def _attestation_value(text: str, artifact_id: str) -> dict[str, Any] | None:
 
 
 def _attestations(home: Path, artifact_id: str, log_path: Path | tuple[Path, ...] | None = None, *, manifest: Path | None = None, run_directory: Path | None = None, process: dict | None = None) -> dict[str, Any]:
-    if artifact_id in ("2.7.9-84fe697418b2","2.7.17-76fe7078248c","2.7.19-356c13dc7158","2.7.21-356c13dc7158"):
+    if artifact_id in ("2.8.1-bbec1d64e135", "2.7.9-84fe697418b2","2.7.17-76fe7078248c","2.7.19-356c13dc7158","2.7.21-356c13dc7158"):
         if manifest is None or run_directory is None or process is None:
             return {"status": "blocked", "reason": "fresh_process_context_required"}
         from .renderer_proof import parse_owned_logs
@@ -614,6 +642,15 @@ def _bind_verification_source(manifest_path: Path, source_asar: Path, runs_root:
 
 
 def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seconds: float = 60.0, launches: int = 2) -> dict[str, Any]:
+    metadata=portable/'codex-desktop-workflow-manifest.json'
+    if metadata.is_file() and json.loads(metadata.read_text()).get('package_version')=='26.1016.6573.0':
+        if launches<2 or observe_seconds<60:raise WorkflowError('two_launches_and_60_seconds_required')
+        from .verification_6573 import verify as verify_6573
+        return verify_6573(source,portable,runs_root,observe_seconds,launches)
+    if metadata.is_file() and json.loads(metadata.read_text()).get('package_version')=='26.1013.4894.0':
+        if launches<2 or observe_seconds<60:raise WorkflowError('two_launches_and_60_seconds_required')
+        from .verification_4894 import verify as verify_4894
+        return verify_4894(source,portable,runs_root,observe_seconds,launches)
     if launches < 2:
         raise WorkflowError("verification_requires_two_launches")
     if observe_seconds < 60:
@@ -893,7 +930,7 @@ def launch(portable: Path, data: Path, runs_root: Path) -> dict[str, Any]:
     if not (portable / "codex-desktop-workflow-manifest.json").is_file():
         raise WorkflowError("verified_portable_manifest_missing")
     manifest_data = json.loads((portable / 'codex-desktop-workflow-manifest.json').read_text(encoding='utf8'))
-    if manifest_data.get('package_version') == '26.1007.9446.0':
+    if manifest_data.get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0'):
         from .qualification import require
         require(portable)
     if not data.is_dir():

@@ -4,7 +4,7 @@
 
 ## Is my official version supported?
 
-Published v0.3.8 supports the exact official package `26.1007.9446.0` and the retained profiles listed in the compatibility matrix. See the [release compatibility matrix](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/COMPATIBILITY.md) for the supported package numbers. Both version and file identity must match; a newer official package needs its own adapted release.
+Published v0.3.9 supports the exact official package `26.1016.6573.0` and the retained profiles listed in the compatibility matrix. See the [release compatibility matrix](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/COMPATIBILITY.md) for the supported package numbers. Both version and file identity must match; a newer official package needs its own adapted release.
 
 ## Must I install my downloaded MSIX first?
 
@@ -20,7 +20,7 @@ Task import excludes authentication, service configuration, plugins and skills. 
 
 ## How long does installation verification take?
 
-Normal installation for the current `26.1007.9446.0` profile runs three isolated launches, each observed for at least 60 seconds of effective awake time. Older profiles use their two-run contracts. Copying, building, startup and validation take additional time, so total installation exceeds the observation periods. Optional compatibility-source compilation usually takes longer and depends on the machine and cache.
+Normal installation for the current `26.1016.6573.0` profile runs two isolated launches, each observed for at least 60 seconds of effective awake time. Older profiles retain their version-specific launch matrices. Copying, building, startup and validation take additional time, so total installation exceeds the observation periods. Optional compatibility-source compilation usually takes longer and depends on the machine and cache.
 
 Each run requires real renderer proof, the matching backend and full observation. Suspension is excluded from the effective runtime deadline. Wait for the installer to report completion before using the generated launcher.
 

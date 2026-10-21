@@ -1,11 +1,11 @@
-# v0.3.8 — English UI and task-tool preservation
+# v0.3.9 — Desktop 26.1016.6573.0 and activity ordering
 
-New Windows installations default to English. Persistent update notices use distinct icons for **New version announced**, **Official package available**, and **Adaptation ready**.
+This release adds an independent adapter for the complete official Windows x64 package **26.1016.6573.0**. Supply a matching signed MSIX or official application directory; a Store installation is not required.
 
-Startup verification preserves the tools used by running tasks. Feature records use the current frontend artifact, `2.7.21-356c13dc7158`.
+Automatic priority and activity lists put recent chat activity first. Merely opening an old chat does not move it ahead after a restart. Manual pin order is preserved. Pending questions and approvals stay orange; plans awaiting implementation stay yellow.
 
-Descending update-time sorting, manual and pinned ordering, orange unanswered questions and approvals, yellow plans awaiting implementation, SSH project identity, Work selection, file drops, paginated history and per-chat models are retained. Existing language choices, chat content and project names are preserved.
+The adapter preserves native first messages, readable SSH projects and routing, Work project selection, file drops, paginated history and per-chat model settings. Update notices follow the interface language and distinguish an announcement, a downloadable official package and a qualified adaptation.
 
-This release targets official x64 Desktop **26.1007.9446.0**. Supply its matching complete MSIX or extracted application directory. The official backend is the default; the optional compatibility backend uses its pinned public source and build recipe.
+The official backend is the default. The optional compatibility backend is built from pinned public source for 0.163.0-alpha.11.1, with Rust 1.95.0 and all 77 database migration checksums. Existing published desktop profiles retain their identities.
 
-See [acceptance results](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/ACCEPTANCE.md) for verification scope and installation results.
+See the [acceptance report](https://github.com/catterhu1207-ux/codex-desktop-workflow/blob/main/ACCEPTANCE.md) for the runtime, installation and download checks.

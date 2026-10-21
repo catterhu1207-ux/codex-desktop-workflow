@@ -32,6 +32,8 @@ import hotfix_profile_26930_6422 as _profile_6422
 import hotfix_profile_26930_7945 as _profile_7945
 import hotfix_profile_261002_7124 as _profile_7124
 import hotfix_profile_261007_9446 as _profile_9446
+import hotfix_integration_261013_4894 as _integration_4894
+import hotfix_integration_261016_6573 as _integration_6573
 
 def _profile_26915(profile):
     return {"26915_3509": _profile_3509, "26915_4065": _profile_4065, "26917_6896": _profile_6896, "26917_8451": _profile_8451, "26917_9434": _profile_9434, "26924_1866": _profile_1866, "26924_2738": _profile_2738, "26924_6891": _profile_6891, "26928_2636": _profile_2636, "26928_3736": _profile_3736, "26928_4866": _profile_4866, "26930_3930": _profile_930, "26930_4958": _profile_4958, "26930_6422": _profile_6422, "26930_7945": _profile_7945, "261002_7124": _profile_7124, "261007_9446": _profile_9446}[profile["profile_spec_id"]]
@@ -137,6 +139,10 @@ FRONTEND_ATTESTATION_FEATURES = (
 
 
 def frontend_builder_version(profile: dict[str, Any] | None = None) -> str:
+    if profile == _integration_6573.PROFILE:
+        return _integration_6573.BUILDER_VERSION
+    if profile == _integration_4894.PROFILE:
+        return _integration_4894.BUILDER_VERSION
     if profile and profile.get("profile_spec_id") in {"261002_7124", "261007_9446"}:
         return frontend_attestation_identity(profile)[1].split("-")[0]
     if is_orange_frontend_profile(profile):
@@ -158,11 +164,19 @@ def frontend_builder_version(profile: dict[str, Any] | None = None) -> str:
 
 
 def is_orange_frontend_profile(profile: dict[str, Any] | None) -> bool:
+    if profile == _integration_6573.PROFILE:
+        return True
+    if profile == _integration_4894.PROFILE:
+        return True
     """New proof inventory belongs only to the complete immutable 4866 profile."""
     return bool(profile and (profile == _profile_4866.PROFILE or profile == _profile_930.PROFILE or profile == _profile_4958.PROFILE or profile == _profile_6422.PROFILE or profile == _profile_7945.PROFILE or profile == _profile_7124.PROFILE or profile == _profile_9446.PROFILE))
 
 
 def frontend_attestation_features(profile: dict[str, Any] | None = None) -> tuple[str, ...]:
+    if profile == _integration_6573.PROFILE:
+        return _integration_6573.features()
+    if profile == _integration_4894.PROFILE:
+        return _integration_4894.features()
     if profile == _profile_9446.PROFILE:
         return FRONTEND_ATTESTATION_FEATURES + ("user_action_pending_orange", "portable_update_awareness")
     elif profile == _profile_7124.PROFILE:
@@ -179,6 +193,10 @@ def frontend_attestation_features(profile: dict[str, Any] | None = None) -> tupl
 
 
 def frontend_feature_statuses(profile: dict[str, Any] | None = None) -> dict[str, set[str]]:
+    if profile == _integration_6573.PROFILE:
+        return {name: {"patched", "official_fixed"} for name in _integration_6573.all_features()}
+    if profile == _integration_4894.PROFILE:
+        return {name: {"patched", "official_fixed"} for name in _integration_4894.all_features()}
     result = {name: set(states) for name, states in FEATURE_STATUSES.items()}
     if is_orange_frontend_profile(profile):
         result["user_action_pending_orange"] = {"patched", "official_fixed"}
@@ -200,6 +218,10 @@ def is_split_frontend_profile(profile: dict[str, Any] | None) -> bool:
 
 
 def renderer_attestation_script(profile: dict[str, Any] | None = None) -> bytes:
+    if profile == _integration_6573.PROFILE:
+        return _integration_6573.HOOK
+    if profile == _integration_4894.PROFILE:
+        return _integration_4894.HOOK
     if profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_9434", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124", '261007_9446'}:
         return _profile_26915(profile).ATTESTATION_SCRIPT
     elif profile and profile.get("profile_spec_id") in {"26915_3509", "26915_4065", "26917_6896", "26917_8451", "26917_9434", "26924_1866", "26924_2738", "26924_6891", "26928_2636", "26928_3736", "26928_4866", "26930_3930", "26930_4958", "26930_6422", "26930_7945", "261002_7124", '261007_9446'}:
@@ -224,6 +246,10 @@ def renderer_attestation_script(profile: dict[str, Any] | None = None) -> bytes:
 
 
 def renderer_attestation_module(profile: dict[str, Any] | None = None) -> bytes:
+    if profile == _integration_6573.PROFILE:
+        return _integration_6573.module_bytes()
+    if profile == _integration_4894.PROFILE:
+        return _integration_4894.module_bytes()
     if profile and profile.get("profile_spec_id") in {"261002_7124", "261007_9446"}:
         return _profile_26915(profile).ATTESTATION_MODULE
     if is_orange_frontend_profile(profile):
@@ -2514,6 +2540,10 @@ def _replacement_set_sha256(
 
 
 def frontend_attestation_identity(profile: dict[str, Any] | None) -> tuple[str, str]:
+    if profile == _integration_6573.PROFILE:
+        return (_integration_6573.VALIDATOR_VERSION, _integration_6573.ARTIFACT_ID)
+    if profile == _integration_4894.PROFILE:
+        return (_integration_4894.VALIDATOR_VERSION, _integration_4894.ARTIFACT_ID)
     """Read immutable profile identity without relabeling historical artifacts."""
     module = renderer_attestation_module(profile)
     version = re.search(rb'validator_version:"([^"]+)"', module)
@@ -4505,6 +4535,10 @@ def inspect_archive(
     expected_frontend_profile: dict[str, str | None] | None = None,
     expected_entry_sha256: str | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
+    if sha256_path(source) in (_integration_6573.base.SOURCE_ASAR_SHA256, _integration_6573.TARGET_ASAR_SHA256):
+        return _integration_6573.inspect(source)
+    if sha256_path(source) in (_integration_4894.base.SOURCE_ASAR_SHA256, _integration_4894.TARGET_ASAR_SHA256):
+        return _integration_4894.inspect(source)
     header_size, serialized_header, header = read_asar(source)
     source_asar_sha256 = sha256_path(source)
     frontend_profile = profile_for_asar(source_asar_sha256)
@@ -5289,6 +5323,10 @@ def build_archive(
     codex_patch_manifest: Path | None = None,
     expected_codex_patch_descriptor_sha256: str | None = None,
 ) -> dict[str, Any]:
+    if package_version == _integration_6573.base.VERSION:
+        return _integration_6573.build(source, target, manifest_path, package_full_name, package_version, final_portable_app, codex_patch_manifest, expected_codex_patch_descriptor_sha256)
+    if package_version == _integration_4894.base.VERSION:
+        return _integration_4894.build(source, target, manifest_path, package_full_name, package_version, final_portable_app, codex_patch_manifest, expected_codex_patch_descriptor_sha256)
     inspection, internal = inspect_archive(source)
     current_profile = bool(internal.get("current_profile"))
     frontend_profile = internal.get("frontend_profile")
@@ -6113,6 +6151,10 @@ def verify_manifest(
     expected_codex_patch_descriptor_sha256: str | None = None,
     codex_patch_manifest: Path | None = None,
 ) -> dict[str, Any]:
+    if json.loads(Path(manifest_path).read_bytes()).get("package_version") == _integration_6573.base.VERSION:
+        return _integration_6573.verify(Path(manifest_path), expected_codex_patch_descriptor_sha256, codex_patch_manifest)
+    if json.loads(Path(manifest_path).read_bytes()).get("package_version") == _integration_4894.base.VERSION:
+        return _integration_4894.verify(Path(manifest_path), expected_codex_patch_descriptor_sha256, codex_patch_manifest)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if manifest.get("schema_version") != 2:
         raise HotfixError("Unsupported manifest schema")
@@ -7085,10 +7127,14 @@ def main() -> int:
 
 
 PUBLIC_SOURCE_VERSIONS={'26.908.9136.0','26.915.3509.0','26.915.4065.0','26.917.6896.0','26.917.9434.0','26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0'}
-FRONTEND_PROFILES=tuple(p for p in FRONTEND_PROFILES if p.get('package_version') in PUBLIC_SOURCE_VERSIONS)
+FRONTEND_PROFILES=tuple(p for p in FRONTEND_PROFILES if p.get('package_version') in PUBLIC_SOURCE_VERSIONS) + (_integration_4894.PROFILE, _integration_6573.PROFILE,)
 
 
 def frontend_validator_version(profile: dict[str, Any] | None = None) -> str:
+    if profile == _integration_6573.PROFILE:
+        return _integration_6573.VALIDATOR_VERSION
+    if profile == _integration_4894.PROFILE:
+        return _integration_4894.VALIDATOR_VERSION
     if profile and profile.get("profile_spec_id") in {"261002_7124", "261007_9446"}:
         return frontend_attestation_identity(profile)[0]
     if is_orange_frontend_profile(profile):
@@ -7108,6 +7154,10 @@ def frontend_validator_version(profile: dict[str, Any] | None = None) -> str:
     return "2.4.6"
 
 def frontend_attestation_artifact_id(profile: dict[str, Any] | None = None) -> str:
+    if profile == _integration_6573.PROFILE:
+        return _integration_6573.ARTIFACT_ID
+    if profile == _integration_4894.PROFILE:
+        return _integration_4894.ARTIFACT_ID
     if profile and profile.get("profile_spec_id") in {"261002_7124", "261007_9446"}:
         return frontend_attestation_identity(profile)[1]
     if profile and profile.get("asar_source_sha256"):

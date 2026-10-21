@@ -6,7 +6,9 @@ from codex_desktop_workflow import renderer_proof
 
 def main():
     portable=Path(sys.argv[1]).resolve();report=json.loads(Path(sys.argv[2]).read_bytes());root=Path(sys.argv[3]).resolve()
-    root.mkdir(parents=True,exist_ok=False)
+    if root.exists():
+        assert root.is_dir() and not root.is_symlink() and not any(root.iterdir()), 'Read back prior proof results before retrying'
+    else:root.mkdir(parents=True,exist_ok=False)
     run=report['runtime'][0];directory=Path(run['run_directory']);record=json.loads((directory/'run.json').read_bytes());pid=record['main']['pid']
     manifest=portable/'codex-desktop-workflow-manifest.json'
     manifest_data=json.loads(manifest.read_text(encoding='utf8'))
@@ -33,9 +35,10 @@ def main():
     changed[-1][1]['run_id']='00000000-0000-4000-8000-000000000000';cases['mixed_run']=changed
     changed=copy.deepcopy(values)
     payload=next(r[1] for r in changed if 'features' in r[1]);payload['features'].pop(next(iter(payload['features'])));cases['missing_feature']=changed
-    for field in ('native_async_questions','persistent_update'):
+    fields=('native_function_bindings','actual_renderer','main_route_mounted','palette') if manifest_data['package_version'] in ('26.1013.4894.0','26.1016.6573.0') else ('native_async_questions','persistent_update')
+    for field in fields:
         changed=copy.deepcopy(values);next(r[1] for r in changed if 'features' in r[1])[field]=None;cases['missing_'+field]=changed
-    parser='renderer_attestation_261007_9446.ps1' if manifest_data['package_version']=='26.1007.9446.0' else 'renderer_attestation_26928_4866.ps1'
+    parser={'26.1016.6573.0':'renderer_attestation_261016_6573.ps1','26.1013.4894.0':'renderer_attestation_261013_4894.ps1','26.1007.9446.0':'renderer_attestation_261007_9446.ps1'}.get(manifest_data['package_version'],'renderer_attestation_26928_4866.ps1')
     base_env=os.environ.copy();base_env.update(PROOF_PARSER=str(Path(renderer_proof.__file__).parent/'data'/parser),PROOF_MANIFEST=str(manifest),PROOF_PID=str(pid),PROOF_START=record['started_at'])
     results={}
     for name,rows in cases.items():

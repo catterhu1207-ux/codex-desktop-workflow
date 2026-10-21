@@ -400,8 +400,8 @@ const SSr={default:(a,f)=>a.sort((x,y)=>f(x)-f(y))},ht=(s,q)=>String(s).toLowerC
         "chatSortMode:'updated_at',projectSortMode:'updated_at'});\n"
         "const localProjectOptions={get projects(){return [local,...remotes]}};\n"
     ) if modern else "") + module_stubs + shared + "\n" + "const fixtureRoute=(()=>{const yv=v=>v;" + route + ";return mJa;})();" + r'''
-const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222','050ce269-9b40-44e3-ac49-b67bb85d0c42','48d6231d-156e-493a-a7e3-d3610a38a080'],names=['project-alpha','project-beta','project-gamma','project-delta'];
-const remotes=ids.map((id,i)=>({projectId:id,groupId:id,projectKind:'remote',hostId:'remote-ssh-discovered:Host',hostDisplayName:'Insolvency',path:'/root/'+names[i],label:names[i],gitRepos:[],threadKeys:['t'+i]})),local={projectId:'local-1',projectKind:'local',label:'Local project',name:'Local project',displayName:'Local project',path:'C:/example',gitRepos:[]};
+const ids=['11111111-1111-4111-8111-111111111111','22222222-2222-4222-8222-222222222222','33333333-3333-4333-8333-333333333333','44444444-4444-4444-8444-444444444444'],names=['project-alpha','project-beta','project-gamma','project-delta'];
+const remotes=ids.map((id,i)=>({projectId:id,groupId:id,projectKind:'remote',hostId:'remote-ssh-discovered:Host',hostDisplayName:'Synthetic Host',path:'/root/'+names[i],label:names[i],gitRepos:[],threadKeys:['t'+i]})),local={projectId:'local-1',projectKind:'local',label:'Local project',name:'Local project',displayName:'Local project',path:'C:/example',gitRepos:[]};
 const originals=JSON.stringify(remotes);
 const wrapper=(()=>{
 ''' + wrapper_stubs + wrappers + r'''

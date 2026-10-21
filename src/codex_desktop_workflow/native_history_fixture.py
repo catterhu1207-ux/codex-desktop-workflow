@@ -2,7 +2,7 @@
 from contextlib import closing
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-import hashlib, json, os, queue, sqlite3, subprocess, threading, time
+import hashlib, json, os, queue, sqlite3, subprocess, threading, time, uuid
 from .awake_clock import seconds
 
 def message(q, deadline):
@@ -25,7 +25,9 @@ class Client:
         env=dict(os.environ,CODEX_HOME=str(home),CODEX_SQLITE_HOME=str(home))
         for key in list(env):
             if key.endswith('_API_KEY'):env.pop(key)
-        self.log=(home/'synthetic-backend-stderr.log').open('w',encoding='utf8')
+        log=home/'synthetic-backend-stderr.log'
+        if log.exists():log=home/('synthetic-backend-'+uuid.uuid4().hex+'.log')
+        self.log=log.open('x',encoding='utf8')
         self.process=subprocess.Popen([str(binary),'app-server'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=self.log,cwd=workspace,env=env,text=True,encoding='utf8',creationflags=subprocess.CREATE_NO_WINDOW)
         self.q=queue.Queue();self.id=0;self.notifications=[]
         threading.Thread(target=self._read,daemon=True).start()

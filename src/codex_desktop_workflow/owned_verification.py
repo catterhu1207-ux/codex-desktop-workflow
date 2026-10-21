@@ -165,7 +165,7 @@ def qualified_auxiliary(image):
 def verify_owned(source, portable, runs_root, observe_seconds, launches):
     metadata=json.loads((Path(portable)/'codex-desktop-workflow-manifest.json').read_text(encoding='utf8'))
     frozen_bindings=None
-    if metadata.get('package_version')=='26.1007.9446.0':
+    if metadata.get('package_version') in ('26.1007.9446.0','26.1013.4894.0'):
         from .qualification import bindings
         frozen_bindings=bindings(portable)
     root=Path(runs_root).resolve()
@@ -184,7 +184,7 @@ def verify_owned(source, portable, runs_root, observe_seconds, launches):
                 env=env,stdin=subprocess.PIPE,stdout=stdout,stderr=stderr,creationflags=0x08000000)
             job.assign(worker)
             worker.stdin.write(TOKEN);worker.stdin.close()
-            per_run_budget=240+120+90+observe_seconds+120+30+300 if metadata.get('package_version')=='26.1007.9446.0' else 420
+            per_run_budget=240+120+90+observe_seconds+120+30+300 if metadata.get('package_version') in ('26.1007.9446.0','26.1013.4894.0') else 420
             deadline=awake_clock.seconds()+max(3,launches)*per_run_budget+300
             while worker.poll() is None:
                 if awake_clock.seconds()>=deadline:raise RuntimeError('owned_verification_awake_budget_exceeded')
@@ -203,14 +203,14 @@ def verify_owned(source, portable, runs_root, observe_seconds, launches):
         value['owned_cleanup']={'owned_job_empty':True,'auxiliary_processes':pending}
         # Read the complete logs after natural exit, including late failures.
         from .renderer_proof import parse_owned_logs
-        if value.get('bundle',{}).get('package_version') in ('26.1002.7124.0','26.1007.9446.0'):
+        if value.get('bundle',{}).get('package_version') in ('26.1002.7124.0','26.1007.9446.0','26.1013.4894.0'):
             manifest=portable/'codex-desktop-workflow-manifest.json'
             for run in value['runtime']:
                 proof=parse_owned_logs(manifest,Path(run['run_directory']),run['pre_close']['main'])
                 if proof.get('status')!='passed':raise RuntimeError('final_closed_renderer_proof_rejected')
                 run['attestation']=proof
             value['closed_log_readback']='passed'
-        if value.get('bundle',{}).get('package_version') == '26.1007.9446.0':
+        if value.get('bundle',{}).get('package_version') in ('26.1007.9446.0','26.1013.4894.0'):
             from .qualification import seal
             seal(portable,value)
             if value['qualification_bindings']!=frozen_bindings:raise RuntimeError('public_qualification_inputs_changed_during_run')

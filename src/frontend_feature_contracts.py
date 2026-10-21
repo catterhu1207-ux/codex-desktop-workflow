@@ -201,9 +201,9 @@ assert(DDt({turns:[{itemsPagination:{hasLoadedOldest:false}}]})===false,`DDt inc
 let idle=bAt({conversationId:`id`,hostId:`local`,createdAt:1,updatedAt:2,title:`t`});
 assert(idle.resumeState===`needs_resume`&&idle.turns.length===0,`bAt idle resume shape failed`);
 
-const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
-let remote=smr([{id:uuid,hostId:`remote-ssh-discovered:Insolvency`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote-ssh-discovered:Insolvency`,displayName:`Insolvency`}],{} )[0];
-assert(remote.label===`project-alpha`&&remote.projectId===uuid&&remote.hostId===`remote-ssh-discovered:Insolvency`,`smr route identity failed`);
+const uuid=`55555555-5555-4555-8555-555555555555`;
+let remote=smr([{id:uuid,hostId:`remote-ssh-discovered:Synthetic Host`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote-ssh-discovered:Synthetic Host`,displayName:`Synthetic Host`}],{} )[0];
+assert(remote.label===`project-alpha`&&remote.projectId===uuid&&remote.hostId===`remote-ssh-discovered:Synthetic Host`,`smr route identity failed`);
 remote=smr([{id:uuid,hostId:`remote`,label:`Saved name`,remotePath:`/root/project-alpha`}],[],{})[0];
 assert(remote.label===`Saved name`,`smr saved label failed`);
 let liveRemote={...remote,label:uuid,threadKeys:[`remote-thread`]};
@@ -412,7 +412,7 @@ assert(color(pIo({statusState:{i:false,p:true,unread:false,unreadCount:0}}))===`
 assert(color(pIo({statusState:{i:false,p:false,unread:true,unreadCount:0}}))===`var(--color-text-info)`,`blue indicator failed`);
 assert(pIo({statusState:{}})===null,`empty indicator failed`);
 
-const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
+const uuid=`55555555-5555-4555-8555-555555555555`;
 let saved=k_i([{id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`}],[{hostId:`remote`,displayName:`Host`}],{})[0];
 assert(saved.label===`project-alpha`&&saved.projectId===uuid,`SSH path fallback failed`);
 let merged=dCi([saved],[{...saved,label:uuid,threadKeys:[`thread`]}],new Map())[0];
@@ -687,7 +687,7 @@ assert(color(oKo({statusState:planState}))===`#eab308`,`yellow must not inherit 
 assert(color(oKo({statusState:unreadState}))===`var(--color-text-info)`,`blue`);
 assert(scalarOnlyState.p===false&&oKo({statusState:scalarOnlyState})===null,`display scalar bypass`);
 assert(oKo({statusState:emptyState})===null,`empty`);
-const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
+const uuid=`55555555-5555-4555-8555-555555555555`;
 let raw={id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`};
 let picker={...raw,label:qZx(raw)};
 assert(picker.label===`project-alpha`&&picker.id===uuid&&picker.hostId===raw.hostId&&picker.remotePath===raw.remotePath,`new chat picker label`);
@@ -969,7 +969,7 @@ assert(color(b$o({statusState:planState}))===`#eab308`,`yellow must not inherit 
 assert(color(b$o({statusState:unreadState}))===`var(--color-text-info)`,`blue`);
 assert(scalarOnlyState.p===false&&b$o({statusState:scalarOnlyState})===null,`display scalar bypass`);
 assert(b$o({statusState:emptyState})===null,`empty`);
-const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
+const uuid=`55555555-5555-4555-8555-555555555555`;
 let raw={id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`};
 let picker={...raw,label:qZx(raw)};
 assert(picker.label===`project-alpha`&&picker.id===uuid&&picker.hostId===raw.hostId&&picker.remotePath===raw.remotePath,`new chat picker label`);
@@ -1170,7 +1170,7 @@ assert(color(xCo({statusState:pinnedPlanState}))===`var(--color-text-danger)`,`r
 assert(color(xCo({statusState:planState}))===`#eab308`,`yellow must not inherit the warning token`);
 assert(color(xCo({statusState:unreadState}))===`var(--color-text-info)`,`blue`);
 assert(scalarOnlyState.p===false&&xCo({statusState:scalarOnlyState})===null,`display scalar bypass`);
-const uuid=`c87575b4-dba0-471e-a647-31ce8575c46b`;
+const uuid=`55555555-5555-4555-8555-555555555555`;
 let raw={id:uuid,hostId:`remote`,label:uuid,remotePath:`/root/project-alpha`};
 let picker={...raw,label:qZx(raw)};
 assert(picker.label===`project-alpha`&&picker.id===uuid&&picker.hostId===raw.hostId&&picker.remotePath===raw.remotePath,`new chat picker label`);
@@ -2130,6 +2130,10 @@ def validate(source_asar: Path, portable_asar: Path, node: str = "node") -> dict
     import hotfix_builder as builder
 
     source_hash = builder.sha256_path(source_asar)
+    if source_hash == builder._integration_6573.base.SOURCE_ASAR_SHA256:
+        return builder._integration_6573.validate(source_asar, portable_asar, node)
+    if source_hash == builder._integration_4894.base.SOURCE_ASAR_SHA256:
+        return builder._integration_4894.validate(source_asar, portable_asar, node)
     profile = builder.profile_for_asar(source_hash)
     if profile == builder._profile_9446.PROFILE:
         from frontend_contract_261007_9446 import validate as validate_4958

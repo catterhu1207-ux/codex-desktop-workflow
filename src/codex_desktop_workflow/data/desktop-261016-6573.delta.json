@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "official_asar_sha256": "6f56542b508eea5b6e4d03e852dcd90afc2578aac7125baa3f25ebe85ebc7e25",
+  "candidate_asar_sha256": "9928bccc3ca070ff255f3bdf3c12e19fff43430a4ef538e203b443e1a6f4d177",
+  "entries": [
+    {
+      "path": "webview/assets/app-initial-2b6b8063022d.js",
+      "source_sha256": "6cb0ab2a8d03a47f95c4df668aa8e5a3004e42614a7d596cb239442344f1a497",
+      "target_sha256": "4d24f235e072cc80db51723abd9f73be17a78ad91f2eb7fad1a7d30b7397fc27",
+      "source_bytes": 14606664,
+      "operations": 120,
+      "inserted_bytes": 12488,
+      "compressed_bytes": 4485,
+      "delta_sha256": "3d7b7f64988cb8347e41821c1b4d613aa1a601cc02cfa9679b3ffe95404c8ba5"
+    },
+    {
+      "path": "webview/assets/app-primary-98d23d806dbd.js",
+      "source_sha256": "9e5403aee57a681b5ae48a2d381761b796f596312107968294b53384102217f5",
+      "target_sha256": "4f981f757a244b06927bafe7040aa0c00ca9107dfed793e26d6c4bf7a13f9739",
+      "source_bytes": 2483271,
+      "operations": 6,
+      "inserted_bytes": 362,
+      "compressed_bytes": 280,
+      "delta_sha256": "da6ab41ea02c2eaafabf5a8b3b60d06b84769adee1f32497a715b0aa6329c976"
+    },
+    {
+      "path": ".vite/build/main-CT5a1yCd.js",
+      "source_sha256": "cdac659a830908ec5202a887e5a37b302074bfc9e9ab0f52fed3e8abbdb9e713",
+      "target_sha256": "5503212460512b9ddfd4f3567dc7268d30e2e9ed209f761c07ac90d5b28e0696",
+      "source_bytes": 4080823,
+      "operations": 8,
+      "inserted_bytes": 552,
+      "compressed_bytes": 161,
+      "delta_sha256": "460ac093d8da44f0ca341752b7dbc2cb8bf0c35e09e3cba27fba043e53620547"
+    },
+    {
+      "path": ".vite/build/browser-background-switches-oSaaOz4s.js",
+      "source_sha256": "e45e03af9526ac3b9ce1221348893174229fd5714be143bac12c6885f234d605",
+      "target_sha256": "236a492df9383ec33150b9389fecc26e48a893cac28c1339d05dc606f83cfe75",
+      "source_bytes": 146435,
+      "operations": 6,
+      "inserted_bytes": 128,
+      "compressed_bytes": 165,
+      "delta_sha256": "40fd97cb95a2de8258480270726046f5254e8279c79acd137adf8f1d413e7d82"
+    }
+  ],
+  "delta_package_sha256": "78de3b28561820cdda89873f19f9366f0673d95bb1304f802fbad38cc08d6200",
+  "delta_package_bytes": 5115,
+  "status": "exact_delta_roundtrip_passed"
+}

@@ -18,7 +18,7 @@ The directory commands below use supported `26.924.2738.0` as an example; use yo
 
 Requirements:
 
-- Python 3.10+
+- Python 3.11+
 - Git
 - Your own supported official Codex application directory
 

@@ -1,1 +1,6 @@
 src/codex_desktop_workflow/policies/*.json -text
+# Versioned sidecars are byte-bound; Windows checkout must not rewrite newlines.
+src/codex_desktop_workflow/data/*261013_4894* -text
+src/codex_desktop_workflow/data/*261016_6573* -text
+src/codex_desktop_workflow/data/desktop-261013-4894* -text
+src/codex_desktop_workflow/data/desktop-261016-6573* -text

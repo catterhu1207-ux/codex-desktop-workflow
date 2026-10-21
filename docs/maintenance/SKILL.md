@@ -50,3 +50,5 @@ Trace transformed output before declaring a private dependency: private-manager 
 For an English public release, check installer and launcher prompts, added renderer labels, the actual native language default and mounted controls. Preserve protocol identities, user text and existing language choices. A new artifact identifier must match every producer and production parser before expensive runtime checks. Old release evidence stays historical; record new results under the new identity.
 
 For first-message failures, monitor/launcher disagreement and revision-specific consumers, see [first-send and monitor lessons](firstsend-and-monitor.md).
+
+For activity time after restart, native SSH identity and Windows resource bytes, see [native activity ordering and acceptance](native-time-and-ui-evidence.md).
