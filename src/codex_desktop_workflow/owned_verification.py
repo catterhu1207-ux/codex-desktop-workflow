@@ -99,6 +99,7 @@ class SpaceJob(OwnedWorkerJob):
             time.sleep(0.05)
         return before
 
+SEALED_VERSIONS=frozenset({'26.1007.9446.0','26.1013.4894.0','26.1016.6573.0'})
 TOKEN=b'release-public-verification-worker\n'
 
 def _owned_process_image(job,pid):
@@ -162,10 +163,28 @@ def qualified_auxiliary(image):
     except ValueError:return False
     return code==0 and value.get('status')=='Valid' and value.get('subject','').startswith('CN="Beijing Sogou Technology Development Co., Ltd.",')
 
+def _seal_closed_runtime(portable,value,version,frozen_bindings):
+    # Select the gate from the original manifest, never a worker-supplied version.
+    if value.get('bundle',{}).get('package_version')!=version:
+        raise RuntimeError('verification_package_version_changed')
+    from .renderer_proof import parse_owned_logs
+    if version in SEALED_VERSIONS | {'26.1002.7124.0'}:
+        manifest=portable/'codex-desktop-workflow-manifest.json'
+        for run in value['runtime']:
+            proof=parse_owned_logs(manifest,Path(run['run_directory']),run['pre_close']['main'])
+            if proof.get('status')!='passed':raise RuntimeError('final_closed_renderer_proof_rejected')
+            run['attestation']=proof
+        value['closed_log_readback']='passed'
+    if version in SEALED_VERSIONS:
+        from .qualification import seal
+        seal(portable,value)
+        if value['qualification_bindings']!=frozen_bindings:
+            raise RuntimeError('public_qualification_inputs_changed_during_run')
+
 def verify_owned(source, portable, runs_root, observe_seconds, launches):
     metadata=json.loads((Path(portable)/'codex-desktop-workflow-manifest.json').read_text(encoding='utf8'))
     frozen_bindings=None
-    if metadata.get('package_version') in ('26.1007.9446.0','26.1013.4894.0'):
+    if metadata.get('package_version') in SEALED_VERSIONS:
         from .qualification import bindings
         frozen_bindings=bindings(portable)
     root=Path(runs_root).resolve()
@@ -184,7 +203,7 @@ def verify_owned(source, portable, runs_root, observe_seconds, launches):
                 env=env,stdin=subprocess.PIPE,stdout=stdout,stderr=stderr,creationflags=0x08000000)
             job.assign(worker)
             worker.stdin.write(TOKEN);worker.stdin.close()
-            per_run_budget=240+120+90+observe_seconds+120+30+300 if metadata.get('package_version') in ('26.1007.9446.0','26.1013.4894.0') else 420
+            per_run_budget=240+120+90+observe_seconds+120+30+300 if metadata.get('package_version') in SEALED_VERSIONS else 420
             deadline=awake_clock.seconds()+max(3,launches)*per_run_budget+300
             while worker.poll() is None:
                 if awake_clock.seconds()>=deadline:raise RuntimeError('owned_verification_awake_budget_exceeded')
@@ -201,19 +220,7 @@ def verify_owned(source, portable, runs_root, observe_seconds, launches):
         if job.pids():raise RuntimeError('owned_descendants_remain')
         value=json.loads(result.read_text(encoding='utf8'))
         value['owned_cleanup']={'owned_job_empty':True,'auxiliary_processes':pending}
-        # Read the complete logs after natural exit, including late failures.
-        from .renderer_proof import parse_owned_logs
-        if value.get('bundle',{}).get('package_version') in ('26.1002.7124.0','26.1007.9446.0','26.1013.4894.0'):
-            manifest=portable/'codex-desktop-workflow-manifest.json'
-            for run in value['runtime']:
-                proof=parse_owned_logs(manifest,Path(run['run_directory']),run['pre_close']['main'])
-                if proof.get('status')!='passed':raise RuntimeError('final_closed_renderer_proof_rejected')
-                run['attestation']=proof
-            value['closed_log_readback']='passed'
-        if value.get('bundle',{}).get('package_version') in ('26.1007.9446.0','26.1013.4894.0'):
-            from .qualification import seal
-            seal(portable,value)
-            if value['qualification_bindings']!=frozen_bindings:raise RuntimeError('public_qualification_inputs_changed_during_run')
+        _seal_closed_runtime(portable,value,metadata.get('package_version'),frozen_bindings)
         result.write_text(json.dumps(value,indent=2),encoding='utf8')
         (portable/'codex-desktop-workflow-verification.json').write_text(json.dumps(value,indent=2),encoding='utf8')
         return value

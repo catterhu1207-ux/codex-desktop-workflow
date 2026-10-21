@@ -19,3 +19,9 @@ Preserve exact renderer-sidecar and delta bytes through Git checkout and wheel i
 After normal exit, copy the completed original logs for the production parser and verify the closed copy. Exercise the target parser's rejection cases as well as the valid log. A changed shutdown-log suffix is a reason to refresh the copy, not to invent another successful run.
 
 Keep candidate runs serial, reuse the existing candidate and fixture slots, and distinguish source qualification, installation, public download verification and genuine daily launch.
+
+## Version dispatch and PowerShell host encoding
+
+Register a new version in both feature producers and installation consumers. Review the installer worker's pre-run input snapshot, post-exit log readback, qualification sealing and ordinary launch requirement together. A version missing from any one dispatcher can pass a low-level test yet fail its next ordinary launch. Test late renderer failure, changed inputs and a worker returning the wrong package version before distribution; the original manifest selects the gate.
+
+Preserve the UTF-8 BOM of Windows PowerShell 5 scripts containing non-ASCII text. A Python copy written as UTF-8 without a BOM can break the native shortcut host's parser even when modern PowerShell accepts it. Parse and exercise staged functions in the actual shortcut host before installing the changes.
