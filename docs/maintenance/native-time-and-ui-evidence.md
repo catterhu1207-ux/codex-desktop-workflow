@@ -29,3 +29,9 @@ Preserve the UTF-8 BOM of Windows PowerShell 5 scripts containing non-ASCII text
 A launcher can recognize a new package at build time but still reject its cached pagination policy on the next start. Review exact-source selection, migration reference selection and cached history-policy dispatch as well as the renderer dispatcher. Execute the actual consumer block with the new policy, the previous policy and deliberately incompatible page-size/drain settings. Keep the original source and older branches unchanged.
 
 Application exit and an empty Windows job are separate facts. Native UI controllers must enter their owned job before starting the candidate. After normal application exit, inspect the remaining job members, handle only verified auxiliary descendants, and record an empty job. Do not derive that claim only from the absence of the main process or app-server.
+
+## Qualify the test environment before retrying
+
+The app can retain hidden Codex and ChatGPT surfaces at the same time. Read the visible mode control, distinguish the outer mode selector from the inner Work button, and wait for the remote reasoning control to mount. Clicking the already-selected mode can open a menu that obscures the next action. Use actual selected values and native input, rather than hidden labels, to set a synthetic task's model and effort.
+
+Plugin caches can contain their own JSONL fixtures. A history check must identify canonical session rollouts and verify their session identity; counting every JSONL file beneath a home directory can reject valid history. After a test-environment failure, preserve the failed receipt and read back completed writes before retrying. If a bounded loopback service expires, restart only that owned fixture and check whether the existing turn finishes without another send.

@@ -3,6 +3,18 @@
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
 
+## v0.3.9 source and runtime qualification
+
+Desktop 26.1016.6573.0 uses the independent frontend 2.9.2. Both the official backend and the newly built compatibility backend passed two serial isolated launches: signed-out onboarding and an authenticated fixture with 400 synthetic chats. Each launch produced all 23 renderer proofs, matched its actual backend, remained running for at least 60 awake seconds, exited normally and left an empty owned process group. All 26 frontend contracts passed.
+
+Native acceptance covered priority/activity ordering, manual pins, unread and pending-input indicators, Work project selection, file drops, paginated history and distinct update notices. Reading an older chat did not promote it after restart; a completed new reply moved it forward. Fourteen actual row states and three negative controls passed. Six first-message scenarios passed with each backend mode, including Codex and Work over real encrypted SSH to an isolated synthetic project. Cold reopening preserved the six chats and their settings; changing local defaults did not overwrite saved local settings. New drafts used the changed default.
+
+The optional backend was compiled from fixed public inputs at `7cf7c00b0b7ce435e2264c04f5b88e0068e41ae2` and upstream `5425d3e625daa58eea3ad1de27c087eb3b2ffbd3`, using Rust 1.95.0. Its 15 compatibility tests and seven runtime groups passed: ordinary requests, real WebSocket, cold setting recovery, local compaction, remote compaction V2, 77 migrations across six database families, and 105-turn pagination. The official binary provided the request and migration controls. Model responses came from synthetic loopback services.
+
+Test interruptions remain in the private audit trail. A pagination check initially counted a plugin's JSONL fixture as a session; the corrected read resumed the existing 105 completed turns without sending them again. A bounded SSH loopback service expired during one UI turn; restoring that same fixture allowed the existing turn to finish, and independent history/UI readback confirmed completion without another send. Neither event changed application code or real chat data.
+
+The complete signed MSIX, three installer dry-run selections, installed-wheel resources, native resource routes, 14 proof-rejection cases and source privacy checks passed. Six unavailable older official samples are explicitly skipped; their configurations and interfaces remain in regression coverage. Source qualification is bound in [the current record](src/codex_desktop_workflow/policies/qualification-26.1016.6573.0.json). Final normal installation and downloaded-asset results are recorded separately below before publication.
+
 ## v0.3.8 source and installed-wheel qualification
 
 Six isolated native runs passed with artifact 2.7.21: three with the official backend and three with the public-source compatibility backend. Every run mounted the native sidebar, produced 23 same-run interface proofs and observed at least 60 awake seconds. The actual English update component, six-chat cold recovery, 13 production-parser cases and four directory/MSIX dry runs passed.
