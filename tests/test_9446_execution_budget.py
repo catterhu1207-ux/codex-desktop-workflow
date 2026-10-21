@@ -15,8 +15,10 @@ class CurrentExecutionBudget(unittest.TestCase):
         tree=ast.parse(inspect.getsource(owned_verification.verify_owned))
         expression=next(n for n in ast.walk(tree) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='per_run_budget' for t in n.targets))
         compiled=compile(ast.fix_missing_locations(ast.Module(body=[expression],type_ignores=[])),'actual-owner-budget','exec')
-        scope={'metadata':{'package_version':'26.1007.9446.0'},'observe_seconds':60};exec(compiled,scope)
-        self.assertEqual(scope['per_run_budget'],240+120+90+60+120+30+300)
-        scope={'metadata':{'package_version':'26.928.4866.0'},'observe_seconds':60};exec(compiled,scope);self.assertEqual(scope['per_run_budget'],420)
+        for version in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0'):
+            with self.subTest(version=version):
+                scope={'metadata':{'package_version':version},'observe_seconds':60,'SEALED_VERSIONS':owned_verification.SEALED_VERSIONS};exec(compiled,scope)
+                self.assertEqual(scope['per_run_budget'],240+120+90+60+120+30+300)
+        scope={'metadata':{'package_version':'26.928.4866.0'},'observe_seconds':60,'SEALED_VERSIONS':owned_verification.SEALED_VERSIONS};exec(compiled,scope);self.assertEqual(scope['per_run_budget'],420)
 
 if __name__=='__main__':unittest.main()
