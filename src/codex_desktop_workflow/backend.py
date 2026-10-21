@@ -37,10 +37,29 @@ def validate_manifest(path, version=None):
         raise ValueError('compat_backend_migration_identity_mismatch')
     return data
 
+def _cache_options():
+    """Forward explicit caches; the pinned recipe revalidates every source byte."""
+    cache=os.environ.get('CODEX_COMPAT_BUILD_CACHE')
+    command=[]
+    if cache:command.append('--reuse-verified-source')
+    cached_source=os.environ.get('CODEX_COMPAT_SOURCE_CACHE')
+    if cached_source:
+        if not cache:raise ValueError('source_cache_requires_verified_build_cache')
+        command.extend(['--source',str(Path(cached_source).resolve(strict=True))])
+    for variable,flag in (
+        ('CODEX_COMPAT_TARGET_CACHE','--target-cache'),
+        ('CODEX_COMPAT_RELEASE_TARGET_CACHE','--release-target-cache'),
+        ('CODEX_COMPAT_TOOLCHAIN_ROOT','--toolchain-root'),
+    ):
+        selected=os.environ.get(variable)
+        if selected:command.extend([flag,str(Path(selected).resolve(strict=True))])
+    return command
+
 def build(source_app,target,version=None):
     p=pin(version);target=target.resolve()
     if sys.version_info < (3,11):raise ValueError('python_3_11_required_for_source_build')
     if target.exists():raise ValueError('backend_target_must_not_exist')
+    options=_cache_options()
     target.mkdir(parents=True)
     repository=target/'repository'
     subprocess.run(['git','clone','--no-checkout',p['repository'],str(repository)],check=True)
@@ -51,8 +70,7 @@ def build(source_app,target,version=None):
     destination=target/'backend'
     cache=os.environ.get('CODEX_COMPAT_BUILD_CACHE')
     build_target=Path(cache).resolve() if cache else destination
-    command=[sys.executable,str(recipe),'--profile',p['profile'],'--target',str(build_target),'--official-backend',str(source_app/'resources/codex.exe')]
-    if cache:command.append('--reuse-verified-source')
+    command=[sys.executable,str(recipe),'--profile',p['profile'],'--target',str(build_target),'--official-backend',str(source_app/'resources/codex.exe'),*options]
     result=subprocess.run(command,capture_output=True,text=True,encoding='utf8',errors='replace')
     log=target/'backend-build.log'
     log.write_text(result.stdout+'\n'+result.stderr,encoding='utf8')

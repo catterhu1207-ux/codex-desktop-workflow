@@ -116,3 +116,6 @@ codex-desktop-workflow stop --run C:\codex-workflow\daily-runs\run-<id>
 - The project does not provide, download, or redistribute official Codex binaries.
 - This is an unofficial experimental community project. It is not endorsed by OpenAI and does not replace official updates or support.
 
+## Reusing verified backend build inputs
+
+The optional `CODEX_COMPAT_BUILD_CACHE` points to an existing build-result directory. `CODEX_COMPAT_SOURCE_CACHE` can select its already patched upstream checkout; it requires the build cache. `CODEX_COMPAT_TARGET_CACHE`, `CODEX_COMPAT_RELEASE_TARGET_CACHE` and `CODEX_COMPAT_TOOLCHAIN_ROOT` select existing test, release and Rust directories. The pinned public recipe checks the upstream commit, permitted modifications, dependency lock, compiler and migration bytes before reuse, and runs its tests and build again. With no cache variables, the installer builds into a new directory using the fixed public revision.

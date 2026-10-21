@@ -116,3 +116,6 @@ codex-desktop-workflow stop --run C:\codex-workflow\daily-runs\run-<id>
 - 项目不提供、不下载、不重新分发官方 Codex 二进制。
 - 本项目是非官方实验性社区工具，不代表 OpenAI，也不替代官方更新和支持。
 
+## 复用已经核验的后端构建输入
+
+可选环境变量 `CODEX_COMPAT_BUILD_CACHE` 指向已有构建结果目录。`CODEX_COMPAT_SOURCE_CACHE` 指向已应用补丁的上游源码目录，必须与构建缓存一起使用。`CODEX_COMPAT_TARGET_CACHE`、`CODEX_COMPAT_RELEASE_TARGET_CACHE` 和 `CODEX_COMPAT_TOOLCHAIN_ROOT` 分别选择已有测试缓存、发行缓存和 Rust 工具链目录。固定的公开构建脚本仍会核对上游提交、允许的修改、依赖锁、编译器和迁移文件字节，并重新执行测试与构建。不设置这些变量时，安装器按固定公开提交在新目录中构建。

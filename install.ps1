@@ -193,6 +193,24 @@ function Get-OfficialSource([string]$RequestedSource) {
     return [pscustomobject]@{ SourceApp = (Resolve-Path -LiteralPath $app).Path; IsMsix = $false; Report = $null }
 }
 
+function Show-BackendPlan {
+    if ($BackendMode -eq 'official' -and $BackendManifest) { throw 'BackendManifest requires BackendMode compat.' }
+    Write-Host "Backend mode: $BackendMode"
+    if ($BackendMode -eq 'compat') {
+        if ($BackendManifest) {
+            if (-not (Test-Path -LiteralPath $BackendManifest -PathType Leaf)) { throw 'Backend manifest does not exist.' }
+            Write-Host "Compatibility backend manifest: $BackendManifest (validated during build)"
+        }
+        else {
+            foreach ($tool in @('git','cargo','rustc','rustup','cl')) {
+                $available = [bool](Get-Command $tool -ErrorAction SilentlyContinue)
+                Write-Host "Source-build prerequisite $tool available: $available"
+            }
+            Write-Host 'Compatibility backend will be built from the pinned source profile. Rust 1.95.0, x64 MSVC and Windows SDK are required.'
+        }
+    }
+}
+
 function Test-CodexProcesses {
     $names = @("ChatGPT", "codex")
     return @(Get-Process -Name $names -ErrorAction SilentlyContinue)
@@ -244,15 +262,14 @@ try {
     }
     $versionInfo = Get-Content -LiteralPath $versionFile -Raw | ConvertFrom-Json
     $packageName = if ($versionInfo.package) { [string]$versionInfo.package } else { "codex-desktop-workflow" }
-    $packageVersion = if ($versionInfo.version) { [string]$versionInfo.version } else { "0.3.3" }
+    $packageVersion = if ($versionInfo.version) { [string]$versionInfo.version } else { "0.3.9" }
     Write-Ok "Bundle prepared for $packageName $packageVersion"
 
     $sourceResolution = Get-OfficialSource $Source
     if ($DryRun -and $sourceResolution.IsMsix) {
         Write-Ok "Official MSIX verified: $($sourceResolution.Report.identity.Version), x64"
         if (-not $sourceResolution.Report.qualified_version) { Stop-WithCode 'This version can be inspected but has not been adapted. Build and activation are blocked.' $ExitPrerequisite }
-        if ($BackendMode -eq 'official' -and $BackendManifest) { throw 'BackendManifest requires BackendMode compat.' }
-        Write-Host "Backend mode: $BackendMode"
+        Show-BackendPlan
         Write-Ok 'Dry run complete. The source package was not extracted, built or installed.'
         exit 0
     }
@@ -263,20 +280,7 @@ try {
 
     if ($BackendMode -eq 'official' -and $BackendManifest) { throw 'BackendManifest requires BackendMode compat.' }
     if ($DryRun) {
-        Write-Host "Backend mode: $BackendMode"
-        if ($BackendMode -eq 'compat') {
-            if ($BackendManifest) {
-                if (-not (Test-Path -LiteralPath $BackendManifest)) { throw 'Backend manifest does not exist.' }
-                Write-Host "Compatibility backend manifest: $BackendManifest (validated during build)"
-            }
-            else {
-                foreach ($tool in @('git','cargo','rustc','rustup','cl')) {
-                    $available = [bool](Get-Command $tool -ErrorAction SilentlyContinue)
-                    Write-Host "Source-build prerequisite $tool available: $available"
-                }
-                Write-Host 'Compatibility backend will be built from the pinned source profile. Rust 1.95.0, x64 MSVC and Windows SDK are required.'
-            }
-        }
+        Show-BackendPlan
         Write-Ok "Dry run complete. No files were built or installed."
         exit 0
     }
