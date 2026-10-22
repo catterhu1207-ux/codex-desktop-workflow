@@ -65,13 +65,13 @@ class IsolatedRun(lifecycle.IsolatedRun):
     def start(cls, executable, runs_root, args=None, environment=None, debug_port=None, isolate_shell_folders=False):
         arguments=list(args or [])
         metadata=Path(executable).parent/'codex-desktop-workflow-manifest.json'
-        if metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0'):
+        if metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0'):
             if not any(value.startswith('--lang=') or value == '--lang' for value in arguments):
                 arguments.append('--lang=en-US')
-        if debug_port is not None and metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0'):
+        if debug_port is not None and metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0'):
             for flag in ('--disable-renderer-backgrounding','--disable-background-timer-throttling','--disable-features=CalculateNativeWinOcclusion'):
                 if flag not in arguments:arguments.append(flag)
-        if metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version') in ('26.1013.4894.0','26.1016.6573.0'):
+        if metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version') in ('26.1013.4894.0','26.1016.6573.0','26.1016.8120.0'):
             environment = dict(environment or {})
             if not environment.get('CODEX_HOME') or not Path(environment['CODEX_HOME']).is_absolute():
                 raise ValueError('explicit_absolute_codex_home_required')
@@ -85,6 +85,8 @@ class IsolatedRun(lifecycle.IsolatedRun):
     def _start_owl(cls, executable, runs_root, home, arguments, environment, debug_port, isolate_shell_folders):
         """Keep Owl known folders readable while owning all application state."""
         executable = Path(executable).resolve(strict=True)
+        from .windows_integrity import check_native_desktop
+        integrity = check_native_desktop(executable)
         if any(a.startswith('--user-data-dir') for a in arguments):
             raise ValueError('user_data_dir_is_managed_by_the_tool')
         for key in ('USERPROFILE', 'LOCALAPPDATA', 'APPDATA'):
@@ -102,6 +104,10 @@ class IsolatedRun(lifecycle.IsolatedRun):
             profile.mkdir(exist_ok=True)
         user_data.mkdir(exist_ok=True)
         env = {**os.environ, **environment}
+        if isolate_shell_folders:
+            for key in list(env):
+                if key.endswith('_API_KEY') and key not in environment:
+                    env.pop(key)
         for key in ('CODEX_APP_TOOLS_PIPE_PATH', 'CODEX_MCP_NODE_PATH', 'CODEX_TECTONIC_PATH'):
             env.pop(key, None)
         temporary = run/'temp'; temporary.mkdir()
@@ -111,6 +117,7 @@ class IsolatedRun(lifecycle.IsolatedRun):
         record = dict(schema_version=1, status='starting', run_id=run.name,
                       started_at=datetime.now(timezone.utc).isoformat(), registered_backends=[],
                       executable_sha256=lifecycle._sha256(executable),
+                      native_integrity=integrity,
                       shell_folders=('owl_explicit_profile_home_known_folders_inherited' if isolate_shell_folders else 'owl_persistent_data_inherited_user_profile'), debug_port=debug_port)
         instance = cls(run); instance._save(record)
         with (run/'stdout.log').open('xb') as stdout, (run/'stderr.log').open('xb') as stderr:

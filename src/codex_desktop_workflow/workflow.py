@@ -142,6 +142,17 @@ SUPPORTED_PACKAGES['26.1016.6573.0'] = PackageSupport(
         ('entry_path','entry_source_sha256'),('secondary_entry_path','secondary_entry_source_sha256'),
         ('shared_entry_path','shared_entry_source_sha256'),('main_entry_path','main_entry_source_sha256'),
         ('attestation_protocol_entry_path','attestation_protocol_source_sha256')]})
+import hotfix_integration_261016_8120 as _public_8120
+SUPPORTED_PACKAGES['26.1016.8120.0'] = PackageSupport(
+    version='26.1016.8120.0', package_full_name=_public_8120.base.PACKAGE_FULL_NAME,
+    asar_sha256=_public_8120.base.SOURCE_ASAR_SHA256,
+    backend_sha256='e757246b4de87359e660647fa9514955a0971ff6a30affdd8c145d1d5ece7b84',
+    backend_policy=_POLICY_ROOT/'official-26.1016.8120.0.json',
+    backend_policy_sha256='044b4ca10c02d23fee51986508b090a0f0779516dfadc50f80dcf31728c10dc5',
+    entries={_public_8120.PROFILE[k]: _public_8120.PROFILE[h] for k,h in [
+        ('entry_path','entry_source_sha256'),('secondary_entry_path','secondary_entry_source_sha256'),
+        ('shared_entry_path','shared_entry_source_sha256'),('main_entry_path','main_entry_source_sha256'),
+        ('attestation_protocol_entry_path','attestation_protocol_source_sha256')]})
 
 SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES,key=lambda value:tuple(map(int,value.split(".")))))
 SUPPORTED_VERSION = max(SUPPORTED_VERSIONS,key=lambda value:tuple(map(int,value.split("."))))
@@ -270,7 +281,7 @@ def inspect(source: Path) -> dict[str, Any]:
 
 def build_backend(source: Path, target: Path) -> dict[str, Any]:
     inspected = inspect(source)
-    if inspected['status'] != 'passed' or inspected['supported_version'] not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0','26.1013.4894.0','26.1016.6573.0'):
+    if inspected['status'] != 'passed' or inspected['supported_version'] not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0'):
         raise WorkflowError('compat_backend_source_unsupported')
     return backend.build(Path(inspected['app_directory']), target, inspected['supported_version'])
 
@@ -283,7 +294,7 @@ def build(source: Path, target: Path, backend_mode: str = 'official', backend_ma
     if backend_mode not in ('official', 'compat'):
         raise WorkflowError('unsupported_backend_mode')
     if backend_mode == 'compat':
-        if support.version not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0','26.1013.4894.0','26.1016.6573.0') or backend_manifest is None:
+        if support.version not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0') or backend_manifest is None:
             raise WorkflowError('compatible_backend_manifest_required_for_supported_version')
         backend.validate_manifest(backend_manifest, support.version)
         selected_policy = backend_manifest
@@ -322,7 +333,7 @@ def build(source: Path, target: Path, backend_mode: str = 'official', backend_ma
         selected_policy = copied_policy
     public = {
         "schema_version": 1,
-        "status": "source_bundle_prepared" if support.version in ("26.1007.9446.0", "26.1013.4894.0", "26.1016.6573.0") else "bundle_qualified",
+        "status": "source_bundle_prepared" if support.version in ("26.1007.9446.0", "26.1013.4894.0", "26.1016.6573.0", "26.1016.8120.0") else "bundle_qualified",
         "created_at": _now(),
         "package_version": support.version,
         "source_app": str(app),
@@ -643,6 +654,10 @@ def _bind_verification_source(manifest_path: Path, source_asar: Path, runs_root:
 
 def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seconds: float = 60.0, launches: int = 2) -> dict[str, Any]:
     metadata=portable/'codex-desktop-workflow-manifest.json'
+    if metadata.is_file() and json.loads(metadata.read_text()).get('package_version')=='26.1016.8120.0':
+        if launches<2 or observe_seconds<60:raise WorkflowError('two_launches_and_60_seconds_required')
+        from .verification_8120 import verify as verify_8120
+        return verify_8120(source,portable,runs_root,observe_seconds,launches)
     if metadata.is_file() and json.loads(metadata.read_text()).get('package_version')=='26.1016.6573.0':
         if launches<2 or observe_seconds<60:raise WorkflowError('two_launches_and_60_seconds_required')
         from .verification_6573 import verify as verify_6573
@@ -930,7 +945,7 @@ def launch(portable: Path, data: Path, runs_root: Path) -> dict[str, Any]:
     if not (portable / "codex-desktop-workflow-manifest.json").is_file():
         raise WorkflowError("verified_portable_manifest_missing")
     manifest_data = json.loads((portable / 'codex-desktop-workflow-manifest.json').read_text(encoding='utf8'))
-    if manifest_data.get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0'):
+    if manifest_data.get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0'):
         from .qualification import require
         require(portable)
     if not data.is_dir():

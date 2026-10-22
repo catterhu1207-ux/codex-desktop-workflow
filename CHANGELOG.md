@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.3.10
+
+- Add an independent Desktop 26.1016.8120.0 profile with frontend 2.10.1. Earlier profiles retain their source and build identities.
+- Preserve activity ordering, pending attention, remote routes, Work selection, file drop and per-chat settings across the updated interface.
+- Deliver completed renderer proofs again when a minimized window is restored, while still requiring the actual visible primary renderer.
+- Check Windows executable integrity before launch and report a blocked candidate without changing system security settings.
+- Pin the optional compatibility build to Rust 1.99.1 and its exact public source. Installer dry-run shows the matching toolchain and rejects a backend from a different official package.
+
+
 ## v0.3.9
 
 - Add an independent Desktop 26.1016.6573.0 profile and frontend identity 2.9.2.

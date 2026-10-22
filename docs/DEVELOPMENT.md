@@ -10,7 +10,7 @@ The official backend is the installation default. To select history-request comp
 .\install.ps1 -BackendMode compat
 ```
 
-Source builds require Python 3.11 or later, Git, Rust 1.95.0, x64 MSVC and the Windows SDK. Run from the x64 developer environment. Use `-BackendManifest` for an existing matched build or `-DryRun` to inspect mode selection and prerequisites. Supported source profiles are documented in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat).
+Source builds require Python 3.11 or later, Git, Rust 1.99.1 for Desktop 26.1016.8120.0 (Rust 1.95.0 for the retained earlier profiles), x64 MSVC and the Windows SDK. Run from the x64 developer environment. Use `-BackendManifest` for an existing matched build or `-DryRun` to inspect mode selection and prerequisites. Supported source profiles are documented in [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat).
 
 The directory commands below use supported `26.924.2738.0` as an example; use your actual supported source.
 
@@ -118,4 +118,10 @@ codex-desktop-workflow stop --run C:\codex-workflow\daily-runs\run-<id>
 
 ## Reusing verified backend build inputs
 
-The optional `CODEX_COMPAT_BUILD_CACHE` points to an existing build-result directory. `CODEX_COMPAT_SOURCE_CACHE` can select its already patched upstream checkout; it requires the build cache. `CODEX_COMPAT_TARGET_CACHE`, `CODEX_COMPAT_RELEASE_TARGET_CACHE` and `CODEX_COMPAT_TOOLCHAIN_ROOT` select existing test, release and Rust directories. The pinned public recipe checks the upstream commit, permitted modifications, dependency lock, compiler and migration bytes before reuse, and runs its tests and build again. With no cache variables, the installer builds into a new directory using the fixed public revision.
+The optional `CODEX_COMPAT_BUILD_CACHE` points to an existing build-result directory. `CODEX_COMPAT_SOURCE_CACHE` can select its already patched upstream checkout; it requires the build cache. `CODEX_COMPAT_TARGET_CACHE`, `CODEX_COMPAT_RELEASE_TARGET_CACHE` and `CODEX_COMPAT_TOOLCHAIN_ROOT` select existing test, release and Rust directories. The pinned public recipe checks the upstream commit, permitted modifications, dependency lock, compiler and migration bytes before reuse. The 8120 recipe can reuse completed module tests only when the full input binding and test-log digest still match; release compilation remains a separate stage. With no cache variables, the installer builds into a new directory using the fixed public revision.
+
+## Run the complete Windows checks
+
+Set `CODEX_WORKFLOW_TEST_SOURCE_8120` to the verified official `resources/app.asar` and `CODEX_WORKFLOW_TEST_APP_8120` to the independent candidate's app directory, then run `python tools/run_tests.py`. The four current native-source checks fail if either input is missing. Supply the corresponding `6573` variables to exercise the preceding profile as well. Historical samples that are unavailable are reported as skips.
+
+GitHub uses `python tools/run_tests.py --source-only` to run unit tests and verify the sealed native acceptance record without redistributing official application binaries. That CI selection does not perform fresh native launches. A release also requires the full Windows run, both backend modes, the final installer and downloaded-asset checks.

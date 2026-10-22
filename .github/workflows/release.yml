@@ -21,8 +21,8 @@ jobs:
       - name: Install test dependencies
         run: |
           python -m pip install -e .
-      - name: Run tests
-        run: python -m unittest discover -s tests -v
+      - name: Unit tests and sealed native acceptance
+        run: python tools/run_tests.py --source-only
       - name: Build all wheels
         run: python -m pip wheel . --wheel-dir dist\wheels
       - name: Assemble bundle

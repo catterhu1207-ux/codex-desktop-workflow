@@ -1,6 +1,6 @@
 # Codex Desktop Workflow
 
-The public 6573 installation defaults to English, including the persistent update notices. Existing language preferences and user content are preserved.
+The public installation defaults to English, including the persistent update notices. Existing language preferences and user content are preserved.
 
 **See which Codex chat is waiting for your answer while you work on several chats at once.**
 
@@ -33,15 +33,16 @@ Opening or reading a chat keeps its pending requests. Answering, approving, reje
 
 *The demo shows lists, plan states and remote projects using fictional tasks. Orange is explained in the legend above.*
 
-For Desktop 26.1016.6573.0, automatic lists sort by most recent chat activity first. Opening an older chat does not move it ahead after a restart. Manual order and pinned groups remain available. Older profiles retain their own documented contracts.
+For Desktop 26.1016.8120.0, automatic lists sort by most recent chat activity first. Opening an older chat does not move it ahead after a restart. Manual order and pinned groups remain available. Older profiles retain their own documented contracts.
 
 ## Check compatibility first
 
-**This guide covers installer v0.3.9 and official package 26.1016.6573.0. Check the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.9) for downloadable assets.**
+**This guide covers installer v0.3.10 and official package 26.1016.8120.0. Check the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.10) for downloadable assets.**
 
 | Your environment | Installation status |
 |---|---|
-| Windows x64 with official package `26.1016.6573.0` | Official backend by default |
+| Windows x64 with official package `26.1016.8120.0` | Official backend by default |
+| Official package `26.1016.6573.0` | Retained with its v0.3.9 profile and build identity |
 | Official package `26.1007.9446.0` | Retained with its qualified v0.3.8 profile |
 | Official package `26.928.4866.0` | Supported by v0.3.5 and retained in the new source |
 | Official package `26.924.2738.0` or `26.924.1866.0` | Supported |
@@ -66,7 +67,7 @@ Run in PowerShell:
 irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/download/install.ps1 | iex
 ```
 
-The official backend is the default. The installer discovers and verifies your official package, then creates the independent copy. Normal installation for `26.1016.6573.0` includes two isolated launches, each observed for at least 60 seconds of effective awake time. Startup, copying and validation add to that time. The empty-home check verifies the sign-in screen; no login is copied. The populated check uses 400 synthetic chats.
+The official backend is the default. The installer discovers and verifies your official package, then creates the independent copy. Normal installation for `26.1016.8120.0` includes two isolated launches, each observed for at least 60 seconds of effective awake time. Startup, copying and validation add to that time. The empty-home check verifies the sign-in screen; no login is copied. The populated check uses 400 synthetic chats.
 
 ### With a complete official package that is not installed
 
@@ -97,8 +98,8 @@ Use [Issues](https://github.com/catterhu1207-ux/codex-desktop-workflow/issues); 
 
 This project is unaffiliated with OpenAI. Release assets contain tools, dependencies and documentation; you supply the official application binaries.
 
-## Update indicators in v0.3.9
+## Update indicators in v0.3.10
 
-The sidebar distinguishes an announced update, a verified downloadable package, and a qualified adaptation ready for a later launch with three different icons. An announcement alone does not establish that the complete download has changed. Update checks run without a terminal window. Native unanswered questions and approvals keep their orange indicator even while the chat continues working.
+The sidebar distinguishes an announced update, a verified downloadable package, and a qualified adaptation ready for a later launch with three different icons. The package's internal version determines whether the complete download has changed. Update checks run without a terminal window. Native unanswered questions and approvals keep their orange indicator even while the chat continues working.
 
 For adapter maintenance, see the [maintenance skill](docs/maintenance/SKILL.md) and [first-send and monitor repair lessons](docs/maintenance/firstsend-and-monitor.md).

@@ -5,7 +5,7 @@ import codex_desktop_workflow
 PACKAGE=Path(codex_desktop_workflow.__file__).parent
 SOURCE=PACKAGE.parent
 ROOT=Path(__file__).resolve().parents[1]
-CURRENT='qualification-26.1016.6573.0.json'
+CURRENT='qualification-26.1016.8120.0.json'
 
 def digest(p):
     raw=p.read_bytes()
@@ -17,7 +17,7 @@ class ReleaseQualification(unittest.TestCase):
         self.assertTrue(path.is_file(),'Current release qualification is incomplete')
         e=json.loads(path.read_text())
         self.assertEqual(e['status'],'passed')
-        self.assertEqual(e['desktop_version'],'26.1016.6573.0')
+        self.assertEqual(e['desktop_version'],'26.1016.8120.0')
         # Bind evidence to the source actually built, not an invented earlier
         # version string or a later documentation-only commit.
         self.assertEqual(e['package_version'],codex_desktop_workflow.__version__)
@@ -32,7 +32,7 @@ class ReleaseQualification(unittest.TestCase):
             amended=dict(artifact['source_inputs'])
             for change in e.get('source_amendments',[]):
                 self.assertEqual(change['scope'],'installation_fixture_only')
-                self.assertEqual(change['path'],'codex_desktop_workflow/verification_6573.py')
+                self.assertEqual(change['path'],'codex_desktop_workflow/verification_8120.py')
                 self.assertEqual(amended[change['path']],change['before_sha256'])
                 self.assertEqual(change['regression']['status'],'passed')
                 self.assertEqual(change['regression']['tests'],4)
@@ -45,13 +45,17 @@ class ReleaseQualification(unittest.TestCase):
         self.assertEqual(set(e['source_inputs']),actual)
         for name,value in e['source_inputs'].items():self.assertEqual(digest(SOURCE/name),value,name)
         tools={str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'tools').rglob('*') if p.is_file() and p.suffix in ('.py','.js','.cjs','.json','.ps1')}
+        tools.update(str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'acceptance_tests').glob('*.py'))
         tools.update({'install.ps1','msix_source.py','tests/test_release_qualification.py','tests/test_awake_probes.py'})
         self.assertEqual(set(e['acceptance_tools']),tools)
         for name,value in e['acceptance_tools'].items():self.assertEqual(digest(ROOT/name),value,name)
-        pin=json.loads((PACKAGE/'policies/backend-source-26.1016.6573.0.json').read_text())
+        pin=json.loads((PACKAGE/'policies/backend-source-26.1016.8120.0.json').read_text())
         self.assertEqual(e['compat_commit'],pin['commit'])
         self.assertEqual(e['feature_contract_count'],26)
-        self.assertEqual(e['frontend_build'],'2.9.2')
+        self.assertEqual(e['frontend_build'],'2.10.1')
+        self.assertEqual(e['native_source_checks']['status'],'passed')
+        self.assertEqual(e['native_source_checks']['tests'],4)
+        self.assertFalse(e['native_source_checks']['skipped'])
         for mode in ('official','compat'):
             runs=e['runtime'][mode]
             self.assertEqual({r['profile'] for r in runs},{'empty','synthetic_tasks'})
@@ -73,7 +77,7 @@ class ReleaseQualification(unittest.TestCase):
         for case in e['backend_cases'].values():self.assertEqual(case['status'],'passed')
         self.assertEqual(e['backend_cases']['migrations']['migration_count'],77)
         self.assertEqual(e['backend_cases']['migrations']['database_count'],6)
-        for flag in ('native_first_send','native_cold_reopen','proof_rejections','msix_installer','installed_wheel','previous_profile_regression','process_ancestry_regression','sensitive_content_scan'):self.assertEqual(e['checks'][flag],'passed')
+        for flag in ('native_first_send','native_cold_reopen','proof_rejections','official_source_and_installer','installed_wheel','previous_profile_regression','process_ancestry_regression','sensitive_content_scan'):self.assertEqual(e['checks'][flag],'passed')
         self.assertEqual(e['new_chat']['synthetic_sent_chats'],6)
         self.assertTrue(e['new_chat']['encrypted_ssh_transport_tested'])
         self.assertTrue(e['native_sort']['read_only_cold_chat_not_promoted'])

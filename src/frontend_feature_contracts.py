@@ -2130,6 +2130,8 @@ def validate(source_asar: Path, portable_asar: Path, node: str = "node") -> dict
     import hotfix_builder as builder
 
     source_hash = builder.sha256_path(source_asar)
+    if source_hash == builder._integration_8120.base.SOURCE_ASAR_SHA256:
+        return builder._integration_8120.validate(source_asar, portable_asar, node)
     if source_hash == builder._integration_6573.base.SOURCE_ASAR_SHA256:
         return builder._integration_6573.validate(source_asar, portable_asar, node)
     if source_hash == builder._integration_4894.base.SOURCE_ASAR_SHA256:

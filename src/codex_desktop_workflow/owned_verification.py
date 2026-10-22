@@ -99,7 +99,7 @@ class SpaceJob(OwnedWorkerJob):
             time.sleep(0.05)
         return before
 
-SEALED_VERSIONS=frozenset({'26.1007.9446.0','26.1013.4894.0','26.1016.6573.0'})
+SEALED_VERSIONS=frozenset({'26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0'})
 TOKEN=b'release-public-verification-worker\n'
 
 def _owned_process_image(job,pid):

@@ -193,9 +193,23 @@ function Get-OfficialSource([string]$RequestedSource) {
     return [pscustomobject]@{ SourceApp = (Resolve-Path -LiteralPath $app).Path; IsMsix = $false; Report = $null }
 }
 
+function Get-MatchingSourceVersion {
+    param([Parameter(Mandatory = $true)][string]$App, [Parameter(Mandatory = $true)][string]$AsarHash)
+    if (-not $versionInfo.PSObject.Properties['source_contracts']) { return $null }
+    $sourceMatches = @($versionInfo.source_contracts.PSObject.Properties | Where-Object { $_.Value.asar_sha256 -eq $AsarHash })
+    if ($sourceMatches.Count -ne 1) { throw 'The official source does not match one supported package in this bundle.' }
+    $backend = Join-Path $App 'resources\codex.exe'
+    if (-not (Test-Path -LiteralPath $backend -PathType Leaf) -or (Get-Sha256 $backend) -ne $sourceMatches[0].Value.backend_sha256) {
+        throw 'The official backend does not match the selected source package.'
+    }
+    return [string]$sourceMatches[0].Name
+}
+
 function Show-BackendPlan {
+    param([string]$SourceVersion)
     if ($BackendMode -eq 'official' -and $BackendManifest) { throw 'BackendManifest requires BackendMode compat.' }
     Write-Host "Backend mode: $BackendMode"
+    if ($SourceVersion) { Write-Host "Official package: $SourceVersion" }
     if ($BackendMode -eq 'compat') {
         if ($BackendManifest) {
             if (-not (Test-Path -LiteralPath $BackendManifest -PathType Leaf)) { throw 'Backend manifest does not exist.' }
@@ -206,7 +220,8 @@ function Show-BackendPlan {
                 $available = [bool](Get-Command $tool -ErrorAction SilentlyContinue)
                 Write-Host "Source-build prerequisite $tool available: $available"
             }
-            Write-Host 'Compatibility backend will be built from the pinned source profile. Rust 1.95.0, x64 MSVC and Windows SDK are required.'
+            $rustRequirement = if ($SourceVersion -eq '26.1016.8120.0') { 'Rust 1.99.1' } elseif ($SourceVersion) { 'Rust 1.95.0' } else { 'The selected profile''s exact Rust toolchain' }
+            Write-Host "Compatibility backend will be built from the pinned source profile. $rustRequirement, x64 MSVC and Windows SDK are required."
         }
     }
 }
@@ -262,25 +277,26 @@ try {
     }
     $versionInfo = Get-Content -LiteralPath $versionFile -Raw | ConvertFrom-Json
     $packageName = if ($versionInfo.package) { [string]$versionInfo.package } else { "codex-desktop-workflow" }
-    $packageVersion = if ($versionInfo.version) { [string]$versionInfo.version } else { "0.3.9" }
+    $packageVersion = if ($versionInfo.version) { [string]$versionInfo.version } else { "0.3.10" }
     Write-Ok "Bundle prepared for $packageName $packageVersion"
 
     $sourceResolution = Get-OfficialSource $Source
     if ($DryRun -and $sourceResolution.IsMsix) {
         Write-Ok "Official MSIX verified: $($sourceResolution.Report.identity.Version), x64"
         if (-not $sourceResolution.Report.qualified_version) { Stop-WithCode 'This version can be inspected but has not been adapted. Build and activation are blocked.' $ExitPrerequisite }
-        Show-BackendPlan
+        Show-BackendPlan -SourceVersion ([string]$sourceResolution.Report.identity.Version)
         Write-Ok 'Dry run complete. The source package was not extracted, built or installed.'
         exit 0
     }
     $officialSource = $sourceResolution.SourceApp
     $sourceAsar = Join-Path $officialSource "resources\app.asar"
     $sourceHashBefore = Get-Sha256 $sourceAsar
+    $sourceVersion = Get-MatchingSourceVersion -App $officialSource -AsarHash $sourceHashBefore
     Write-Ok "Official source detected: $officialSource"
 
     if ($BackendMode -eq 'official' -and $BackendManifest) { throw 'BackendManifest requires BackendMode compat.' }
     if ($DryRun) {
-        Show-BackendPlan
+        Show-BackendPlan -SourceVersion $sourceVersion
         Write-Ok "Dry run complete. No files were built or installed."
         exit 0
     }

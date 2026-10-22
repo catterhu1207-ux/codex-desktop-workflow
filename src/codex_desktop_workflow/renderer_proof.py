@@ -54,9 +54,10 @@ def parse_owned_logs(manifest: Path, run_directory: Path, process: dict, *, read
             target.write_bytes(data)
         if hashlib.sha256(target.read_bytes()).digest() != hashlib.sha256(data).digest():
             raise RuntimeError("proof_log_copy_changed")
-    parser = Path(__file__).parent / ('data/renderer_attestation_261016_6573.ps1' if value.get('package_version') == '26.1016.6573.0' else 'data/renderer_attestation_261013_4894.ps1' if value.get('package_version') == '26.1013.4894.0' else 'data/renderer_attestation_261007_9446.ps1' if value.get('package_version') == '26.1007.9446.0' else 'data/renderer_attestation_26928_4866.ps1')
+    parser = Path(__file__).parent / ('data/renderer_attestation_261016_8120.ps1' if value.get('package_version') == '26.1016.8120.0' else 'data/renderer_attestation_261016_6573.ps1' if value.get('package_version') == '26.1016.6573.0' else 'data/renderer_attestation_261013_4894.ps1' if value.get('package_version') == '26.1013.4894.0' else 'data/renderer_attestation_261007_9446.ps1' if value.get('package_version') == '26.1007.9446.0' else 'data/renderer_attestation_26928_4866.ps1')
     script = r'''
 $ErrorActionPreference='Stop'
+[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new($false)
 . $env:PROOF_PARSER
 $expectedFrontendAttestationMarker='[CF9]'
 $expectedFrontendAttestationSchemaVersion=6
@@ -71,7 +72,10 @@ Get-PortableFrontendFeatureAttestation -LogsRoot $env:PROOF_LOGS -TargetProcessI
     env.update(PROOF_PARSER=str(parser), PROOF_MANIFEST=str(manifest.resolve()),
                PROOF_LOGS=str(inputs), PROOF_PID=str(expected["pid"]),
                PROOF_START=record["started_at"])
-    response = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script],
+    # Match the authorized foreground launcher host. This process-scoped switch
+    # already forms part of that launch contract; no persistent policy is changed.
+    host = Path(os.environ.get('WINDIR', r'C:\Windows')) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+    response = subprocess.run([str(host), "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", script],
                               env=env, capture_output=True, text=True, encoding="utf-8",
                               errors="replace", timeout=30, creationflags=0x08000000)
     if response.returncode:

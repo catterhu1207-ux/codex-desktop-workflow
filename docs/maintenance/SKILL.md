@@ -52,3 +52,13 @@ For an English public release, check installer and launcher prompts, added rende
 For first-message failures, monitor/launcher disagreement and revision-specific consumers, see [first-send and monitor lessons](firstsend-and-monitor.md).
 
 For activity time after restart, native SSH identity and Windows resource bytes, see [native activity ordering and acceptance](native-time-and-ui-evidence.md).
+
+## Minimized windows and independent build phases
+
+Require fresh proof from the actual primary renderer. When feature checks finish while a window is hidden, preserve the terminal result and publish it again after visibility or focus is restored, together with its original module identity. A retained failure stays a failure. Test hiding and restoring the native application; do not treat a background page or a fabricated visible flag as equivalent.
+
+Before starting a native executable, check its actual Windows integrity label and its inherited launch environment. An executable blocked before JavaScript starts requires a location or launch-context diagnosis. Move only the owned candidate to a verified ordinary application directory when authorized; retain exact bytes and do not weaken machine security or close unrelated applications.
+
+Budget debug tests, incremental outputs and release compilation separately. Preserve a module-test checkpoint only after the complete test summary and a second source-input check. Bind it to source, patch, recipe, lockfile, toolchain, environment and test-log digest. A supervisor exit code alone is insufficient. Reuse a checkpoint only while those bindings still match. Retire completed debug dependencies only after their job is empty and the next phase does not require them; keep per-volume reserves.
+
+Cold-reopen checks bind a chat's canonical ID and host before comparing display text. A native UI may show a cleaned message marker while storage retains its attachment preamble. Normalize only a recognized Windows extended-path prefix, then prove containment and the same file identity. Keep raw history bytes unchanged and retain path-escape rejection.
