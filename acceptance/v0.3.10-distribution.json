@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "release": "v0.3.10",
+  "release_commit": "f911282ae1964a4a41251ba12aeaa5b35505bef4",
+  "desktop_version": "26.1016.8120.0",
+  "frontend_artifact": "2.10.1-760eae730e57",
+  "frontend_contracts": 26,
+  "normal_official_source_installation": true,
+  "source_kind": "verified_installed_official_package",
+  "asset_sha256": {
+    "codex-desktop-workflow-bundle.zip": "45df994fd5edd44e5ede5a9d8225e662ed0d53877626c5f057e913de714d6770",
+    "install.ps1": "db36404dc27837a74cb309684e04b2f4abcd78be3190ee4fb74df9144f973d34"
+  },
+  "packaged_files_checked": 310,
+  "source_and_dependency_resources_match": true,
+  "sensitive_content_scan": "passed",
+  "installer_dry_run_modes": [
+    "official",
+    "compat_source",
+    "compat_manifest"
+  ],
+  "modes": {
+    "official": {
+      "status": "passed",
+      "runtime": [
+        {
+          "profile": "empty",
+          "observed_seconds": 62.064805099973455,
+          "backend_match": true,
+          "status": "passed",
+          "renderer_features": 23,
+          "normal_close": true,
+          "no_pending_elevation": true
+        },
+        {
+          "profile": "synthetic_tasks",
+          "observed_seconds": 62.05148480006028,
+          "backend_match": true,
+          "status": "passed",
+          "renderer_features": 23,
+          "normal_close": true,
+          "no_pending_elevation": true,
+          "synthetic_chats": 400,
+          "cold_history_unchanged": true
+        }
+      ],
+      "backend_sha256": "e757246b4de87359e660647fa9514955a0971ff6a30affdd8c145d1d5ece7b84",
+      "qualification_read_back_with_installed_runtime": true,
+      "owned_job_empty": true,
+      "closed_log_readback": "passed",
+      "normal_source_installer": true,
+      "source_repository_transport": null,
+      "resumed_installer_stages": null
+    },
+    "compat_source": {
+      "status": "passed",
+      "runtime": [
+        {
+          "profile": "empty",
+          "observed_seconds": 64.51955800002906,
+          "backend_match": true,
+          "status": "passed",
+          "renderer_features": 23,
+          "normal_close": true,
+          "no_pending_elevation": true
+        },
+        {
+          "profile": "synthetic_tasks",
+          "observed_seconds": 64.24575159989763,
+          "backend_match": true,
+          "status": "passed",
+          "renderer_features": 23,
+          "normal_close": true,
+          "no_pending_elevation": true,
+          "synthetic_chats": 400,
+          "cold_history_unchanged": true
+        }
+      ],
+      "backend_sha256": "ff7f7c78c982f79ff22f33538e6c8a4ddfdcd61a164010715408a46db60f7ea5",
+      "qualification_read_back_with_installed_runtime": true,
+      "owned_job_empty": true,
+      "closed_log_readback": "passed",
+      "normal_source_installer": true,
+      "source_repository_transport": "verified_published_local_git_cache",
+      "resumed_installer_stages": {
+        "status": "same_downloaded_installer_verify_and_finalize_resumed",
+        "completed_build_preserved": true,
+        "source_rebuilt": false
+      }
+    }
+  },
+  "anonymous_download_verified": true,
+  "latest_installer_verified": true,
+  "pages_current": true,
+  "prior_failed_attempts_counted_as_passed": false
+}

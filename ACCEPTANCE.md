@@ -17,7 +17,7 @@ Closed logs were read back through the production receiver. Earlier live log cop
 
 The complete Windows suite ran 181 tests with no failures. Six unavailable older official samples were explicitly skipped; all four required current-version source checks and all four available previous-version source checks passed.
 
-Downloaded installation and anonymous public-download acceptance are recorded separately after the draft assets have passed.
+The exact downloaded v0.3.10 bundle passed normal installation with the official backend and the optional backend built from pinned public source. Each installation passed separate empty and 400-chat launches, all 23 same-run renderer proofs, at least 60 awake seconds of observation, current backend identity and normal closure. The compatibility installation used a byte-verified published Git cache during an HTTPS outage; after its source build completed, the unchanged installer verification and finalization stages resumed following a space-guard stop. Three downloaded-installer dry runs, asset checksums, anonymous downloads, the Latest entry and the project page passed. See [the distribution readback](acceptance/v0.3.10-distribution.json).
 
 ## v0.3.9 source and runtime qualification
 
