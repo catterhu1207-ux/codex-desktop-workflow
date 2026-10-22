@@ -39,3 +39,11 @@ Retain failed regression output. A version assertion can be stale, but a source-
 Reusing a populated fixture adds synthetic chats. Preserve an explicit supplement inventory; do not reset its database blindly to restore an old exact-count assertion. Retire only closed, proven regenerable caches; preserve compact evidence and all current launch/build dependencies.
 
 Source publication, a tagged installable release, genuine local launch and cleanup are distinct deliverables. A sanitized maintenance guide or source profile can be published with an explicit support boundary; it does not qualify a new installer. A required public build or runtime failure blocks that installer release, not unrelated qualified source publication or cleanup.
+
+## Cold history and visible-page observations
+
+Pinned upstreams can append a `thread_settings_applied` checkpoint when a chat resumes even if no new turn starts. Check the exact upstream branch before treating a changed whole-file digest as history corruption. Preserve the original failed observation. Require every original history byte to remain an identical prefix, and independently verify the appended records, owning thread, saved model, provider and reasoning effort. Reject altered prefixes, foreign checkpoints, global-default replacement and unexpected messages. Never rewrite history to satisfy a test.
+
+A cold-open check must distinguish saved settings from the defaults for a new draft. Test both in a fresh renderer. Merely reopening a chat must preserve activity order; a completed new reply must change recency, including after another restart. Keep manual pin order independent of activity grouping.
+
+Native interfaces can keep hidden pages mounted. Scope active-row and composer observations to the visible page and exact routing identity. A hidden duplicate is not a second active chat. Before testing project-list pagination, leave activity view through its native control, then reach the oldest known synthetic chat with actual Show more clicks. Record the starting view and transitions so a stale test precondition cannot become a claimed application failure.

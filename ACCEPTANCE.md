@@ -3,6 +3,22 @@
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
 
+## v0.3.10 source and runtime qualification
+
+Desktop 26.1016.8120.0 uses independent frontend 2.10.1. The official backend and the new public-source compatibility backend each passed signed-out onboarding and an authenticated 400-chat fixture in separate launches. All four qualified launches produced 23 same-run renderer proofs, passed 26 frontend contracts, matched the current app-server path and ancestry, remained running for at least 60 awake seconds, closed normally and left no owned processes.
+
+Six actual first-message scenarios passed with each backend: two local projects, a projectless chat, a Work file drop, SSH and Work over SSH. Cold reopening restored all six replies and their saved model, provider and reasoning settings; changed global defaults applied to a new draft. Priority/activity ordering, reply recency across restart and manual pin order passed. Native acceptance also covered 400-chat pagination, fourteen row states with computed styles and negative controls, twelve update-component cases and recovery of all 23 proofs after hiding and restoring the actual window.
+
+The compatibility backend passed 15 Rust module tests, 28 profile/packaging tests and all seven runtime groups. The same seven groups passed against the official backend: HTTP, real WebSocket, cold settings, local and remote V2 compaction, all 77 migration identities across six databases and 105-turn pagination. Tests used synthetic data and loopback model services. SSH interface checks used an isolated synthetic project over encrypted transport.
+
+One initial cold-open checker rejected an upstream settings checkpoint because it compared the entire append-only file. Diagnosis verified the original history bytes and exact pinned upstream resume branch. The corrected check preserves every original byte, validates each appended checkpoint's owner and saved settings, and rejects altered prefixes, foreign owners, changed models and unrequested messages. A fresh cold run passed. The initial failure remains outside the qualified launch matrix. A separate receiver check was corrected to exclude hidden mounted pages from the current visible selection.
+
+Closed logs were read back through the production receiver. Earlier live log copies were retained before the closed snapshots were refreshed; the original logs were unchanged. Fourteen parser cases accepted only the valid same-run proof and rejected thirteen invalid variants. The prequalification wheel preserved all 279 packaged runtime resources and passed actual packaged native-function checks. Three installer dry runs passed.
+
+The complete Windows suite ran 181 tests with no failures. Six unavailable older official samples were explicitly skipped; all four required current-version source checks and all four available previous-version source checks passed.
+
+Downloaded installation and anonymous public-download acceptance are recorded separately after the draft assets have passed.
+
 ## v0.3.9 source and runtime qualification
 
 Desktop 26.1016.6573.0 uses the independent frontend 2.9.2. Both the official backend and the newly built compatibility backend passed two serial isolated launches: signed-out onboarding and an authenticated fixture with 400 synthetic chats. Each launch produced all 23 renderer proofs, matched its actual backend, remained running for at least 60 awake seconds, exited normally and left an empty owned process group. All 26 frontend contracts passed.
