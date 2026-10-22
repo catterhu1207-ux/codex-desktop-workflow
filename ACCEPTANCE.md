@@ -15,6 +15,12 @@ Test interruptions remain in the private audit trail. A pagination check initial
 
 The complete signed MSIX, three installer dry-run selections, installed-wheel resources, native resource routes, 14 proof-rejection cases and source privacy checks passed. Six unavailable older official samples are explicitly skipped; their configurations and interfaces remain in regression coverage. Source qualification is bound in [the current record](src/codex_desktop_workflow/policies/qualification-26.1016.6573.0.json). Final normal installation and downloaded-asset results are recorded separately below before publication.
 
+## v0.3.9 normal installation
+
+Normal installation from the complete signed MSIX passed separately with the default official backend and the explicit public-source compatibility backend. Each installed package completed an empty-home run and a 400-chat synthetic run, with 23 fresh renderer proofs, at least 60 awake seconds, matching backend identity, normal exit and no pending elevation request. Native cold history remained byte-identical. The public compatibility build entry validated its fixed inputs and reused the qualified warm build cache. All 164 unit/regression checks completed without failure; six unavailable historical source samples remain explicit skips.
+
+The initial installer fixture omitted the upstream unelevated setting and left a system setup request. That failed attempt remains in the audit trail. The correction is confined to disposable test homes and separately bound in the source qualification; original native artifact evidence is preserved. Fresh normal installations passed after the correction. See [the local installation record](acceptance/v0.3.9-local-install.json). Downloaded draft assets must pass the separate distribution check before publication.
+
 ## v0.3.8 source and installed-wheel qualification
 
 Six isolated native runs passed with artifact 2.7.21: three with the official backend and three with the public-source compatibility backend. Every run mounted the native sidebar, produced 23 same-run interface proofs and observed at least 60 awake seconds. The actual English update component, six-chat cold recovery, 13 production-parser cases and four directory/MSIX dry runs passed.

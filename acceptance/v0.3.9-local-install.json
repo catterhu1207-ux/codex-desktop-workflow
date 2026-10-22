@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "release": "v0.3.9",
+  "desktop_version": "26.1016.6573.0",
+  "qualified_source_commit": "d2e664467e2071a2e6f23954573e87612e9369ae",
+  "normal_complete_msix_installation": true,
+  "official_msix_sha256": "ace6a186a30c7b8a399c8498ee33238f2e30a54f9e12665ad7998a9f9d20f5b0",
+  "installer_sha256": "65b1f3ba0fc8d98e2cc8c44c1c9ae9d34c98278765d664cfe8417775b38fc111",
+  "local_wheel_sha256": "86914fb7f7020020e13f389fbc66414ffdaf58dd28f1bd87015dfc782e2951cc",
+  "frontend_contracts": 26,
+  "modes": {
+    "official": {
+      "status": "passed",
+      "runtime": [
+        {
+          "profile": "empty",
+          "status": "passed",
+          "observed_seconds": 65.12515690003056,
+          "backend_match": true,
+          "renderer_features": 23,
+          "normal_close": true,
+          "no_pending_elevation": true
+        },
+        {
+          "profile": "synthetic_tasks",
+          "status": "passed",
+          "observed_seconds": 63.258718699915335,
+          "backend_match": true,
+          "renderer_features": 23,
+          "normal_close": true,
+          "no_pending_elevation": true,
+          "synthetic_chats": 400,
+          "cold_history_unchanged": true
+        }
+      ],
+      "owned_job_empty": true,
+      "closed_log_readback": "passed",
+      "actual_backend_sha256": "00c0f1e4099246fddcd67ec620ca8ed50827c7d70e113b7224f7a2933cf2d67c"
+    },
+    "compat_source": {
+      "status": "passed",
+      "runtime": [
+        {
+          "profile": "empty",
+          "status": "passed",
+          "observed_seconds": 60.812363100005314,
+          "backend_match": true,
+          "renderer_features": 23,
+          "normal_close": true,
+          "no_pending_elevation": true
+        },
+        {
+          "profile": "synthetic_tasks",
+          "status": "passed",
+          "observed_seconds": 63.170727199991234,
+          "backend_match": true,
+          "renderer_features": 23,
+          "normal_close": true,
+          "no_pending_elevation": true,
+          "synthetic_chats": 400,
+          "cold_history_unchanged": true
+        }
+      ],
+      "owned_job_empty": true,
+      "closed_log_readback": "passed",
+      "actual_backend_sha256": "091404d1cfa3f11131ee024da2dc974ea9db0aa38f115cf340ba1b46b2f2150d",
+      "public_source_commit": "7cf7c00b0b7ce435e2264c04f5b88e0068e41ae2",
+      "build_cache": "Validated fixed source, recipe, toolchain and migrations; public build entry exercised with the qualified warm cache."
+    }
+  },
+  "unit_tests": {
+    "total": 164,
+    "failed": 0,
+    "skipped_missing_older_sources": 6
+  },
+  "downloaded_distribution": "Requires separate draft-asset installation and anonymous download readback.",
+  "fixture_correction": "The first populated installer run left a Windows setup request. Its failure is retained. Fresh disposable homes now use upstream unelevated mode; both revised installations passed exact-resource closure checks."
+}
