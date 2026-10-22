@@ -3,7 +3,7 @@
 This gate never copies login files. It checks the installed bytes, fresh renderer
 contracts and native synthetic history under both an empty and populated home.
 """
-import hashlib,json,os,time
+import hashlib,json,os,time,tomllib
 from pathlib import Path
 from . import awake_clock,backend,history
 from .isolated_run import IsolatedRun
@@ -12,6 +12,24 @@ from .brokered_processes import pending_elevations
 from .native_history_fixture import generate,Client
 from .native_checks_6573 import verify as native_checks
 from .native_row_6573 import verify as native_row
+
+def _configure_fixture_sandbox(home):
+    """Keep the disposable smoke test from requesting machine-wide setup.
+
+    This is the upstream supported restricted-token mode, confined to the
+    newly created test home. Never replace an existing Windows configuration.
+    """
+    home=Path(home)
+    config=home/'config.toml'
+    if home.is_symlink() or config.is_symlink():
+        raise ValueError('fixture_configuration_link_not_allowed')
+    raw=config.read_bytes() if config.exists() else b''
+    if 'windows' in tomllib.loads(raw.decode('utf8')):
+        raise ValueError('unexpected_fixture_windows_sandbox_configuration')
+    with config.open('r+b' if config.exists() else 'xb') as stream:
+        if raw and stream.read()!=raw:raise ValueError('fixture_configuration_changed')
+        stream.write(b'\n[windows]\nsandbox="unelevated"\n')
+    return {'scope':'disposable_home_only','windows_sandbox':'unelevated'}
 
 def release_policy():
     path=Path(__file__).parent/'policies/qualification-26.1016.6573.0.json'
@@ -51,10 +69,11 @@ def verify(source,portable,runs_root,observe_seconds,launches):
         home=runs_root/('install-home-'+os.urandom(8).hex());home.mkdir()
         profile='synthetic_tasks' if index else 'empty'
         fixture=generate(home,portable/'resources/codex.exe',400) if index else None
+        sandbox=_configure_fixture_sandbox(home)
         history.inspect(home)
         if pending_elevations(portable)['status']!='none_for_owned_candidate':raise ValueError('owned_candidate_elevation_pending')
         run=IsolatedRun.start(portable/'ChatGPT.exe',runs_root,environment=w._portable_environment(portable,home),debug_port=w._available_loopback_port(),isolate_shell_folders=True)
-        item={'profile':profile,'run_directory':str(run.run_directory),'codex_home':str(home),'status':'running','synthetic_threads':400 if index else 0,'authentication_copied':False}
+        item={'profile':profile,'run_directory':str(run.run_directory),'codex_home':str(home),'status':'running','synthetic_threads':400 if index else 0,'authentication_copied':False,'fixture_sandbox':sandbox}
         error=None
         try:
             deadline=awake_clock.seconds()+240;proof=None

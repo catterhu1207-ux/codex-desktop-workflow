@@ -170,7 +170,7 @@
     "codex_desktop_workflow/renderer_proof.py": "16d478686e72e836df1520cfdfb7c438e88a35efcd4363344fa2c862595771b2",
     "codex_desktop_workflow/update_awareness.py": "c3645c3e2a2550447ec4cbb31cce6c6c63d278d94e4a6ced8d01d47b1ed17363",
     "codex_desktop_workflow/verification_4894.py": "232d815ceb70f47b2a9edc58e1c2c189ebf917bae57526ad48c07e68f38de5f9",
-    "codex_desktop_workflow/verification_6573.py": "a80d475021a3f40e84ce99fd157303378d4ff4063afdfd72ee329c7849dc1063",
+    "codex_desktop_workflow/verification_6573.py": "2a8e592c39f9e3bf9133c6f83290ef64eb838172236b9080431845a42ced3295",
     "codex_desktop_workflow/workflow.py": "4910fb7b8ec66c31c2702b9a881ab9541fc623876681a2ae49d47c825731d256",
     "composer_selector_contract.py": "bc32beef947b98f70f3a9d46afb3d8d353a08b15897aa0389cd2b0f3face7c85",
     "frontend_bindings_261002_7124.py": "fbd7a7a0e6a1cc8074c33001deb806684dbb9467f80feb3f2b8d9ffdf30974d6",
@@ -276,7 +276,7 @@
     "install.ps1": "23b7a4daaa5bc1304b19158c4ad08a505298535954cb7694d9b5ad619c9cb386",
     "msix_source.py": "61b87e57e7883610d61a3f6ffcccfa0e15ad65b5a57236bcabd4cbd236463e5d",
     "tests/test_awake_probes.py": "9830df6776dc20dd53394750c992fece18adf0262ec08a7eee09b093ecc88883",
-    "tests/test_release_qualification.py": "b50421348788cb020534af653e003c66e1f9828b9ca29af489e7f2c9c061c5db",
+    "tests/test_release_qualification.py": "280e852c8ecf082c3dd78370e2c2d4d50ab3a23e8d5b38b727896589e4c35d08",
     "tools/backend/awake_io.py": "24c55eed9911bbfcc736e2b533285e6eacb2cea448507f0b6e4f2e03baa747f4",
     "tools/backend/cold_resume.py": "37e0210e31a713b10a701f74b075f8aae832318ca063b0d755f3df4e8efe8ca9",
     "tools/backend/local_replay.py": "f92cba350954d7ca169872750aae3fd53cc0e427590c8f3239fcc5981de27464",
@@ -1412,6 +1412,23 @@
       "status": "skipped",
       "reason": "official_source_unavailable",
       "counted_as_passed": false
+    }
+  ],
+  "source_amendments": [
+    {
+      "scope": "installation_fixture_only",
+      "path": "codex_desktop_workflow/verification_6573.py",
+      "before_sha256": "a80d475021a3f40e84ce99fd157303378d4ff4063afdfd72ee329c7849dc1063",
+      "after_sha256": "2a8e592c39f9e3bf9133c6f83290ef64eb838172236b9080431845a42ced3295",
+      "previous_qualification_sha256": "c399df4d9e28c5959ba31629c7758802a6a859be17e7ca8297d750aa1a94f1d9",
+      "native_application_bytes_unchanged": true,
+      "reason": "Use the upstream restricted-token sandbox in disposable installer homes; preserve exact-resource broker checks.",
+      "regression": {
+        "status": "passed",
+        "tests": 4,
+        "test_source_sha256": "10fb02d4d570d0394ec99b30401c692284035bf5873f70b0daf61c3042402aff"
+      },
+      "distribution_scope": "Fresh installation runtime on both backends remains required before publication."
     }
   ]
 }

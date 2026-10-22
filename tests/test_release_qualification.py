@@ -26,7 +26,21 @@ class ReleaseQualification(unittest.TestCase):
         for artifact in artifacts.values():
             self.assertRegex(artifact['source_commit'],r'^[0-9a-f]{40}$')
             self.assertRegex(artifact['artifact_sha256'],r'^[0-9a-f]{64}$')
-            self.assertEqual(artifact['source_inputs'],e['source_inputs'])
+            # Keep original artifact evidence intact. A narrowly scoped
+            # installer-fixture amendment has its own regression evidence;
+            # final installation runtime remains a separate release gate.
+            amended=dict(artifact['source_inputs'])
+            for change in e.get('source_amendments',[]):
+                self.assertEqual(change['scope'],'installation_fixture_only')
+                self.assertEqual(change['path'],'codex_desktop_workflow/verification_6573.py')
+                self.assertEqual(amended[change['path']],change['before_sha256'])
+                self.assertEqual(change['regression']['status'],'passed')
+                self.assertEqual(change['regression']['tests'],4)
+                self.assertEqual(change['regression']['test_source_sha256'],digest(ROOT/'tests/test_installer_fixture_sandbox.py'))
+                self.assertTrue(change['native_application_bytes_unchanged'])
+                self.assertRegex(change['previous_qualification_sha256'],r'^[0-9a-f]{64}$')
+                amended[change['path']]=change['after_sha256']
+            self.assertEqual(amended,e['source_inputs'])
         actual={str(p.relative_to(SOURCE)).replace('\\','/') for p in SOURCE.rglob('*') if p.is_file() and p.suffix in ('.py','.js','.cjs','.mjs','.bin','.json','.ps1') and p.name!=CURRENT}
         self.assertEqual(set(e['source_inputs']),actual)
         for name,value in e['source_inputs'].items():self.assertEqual(digest(SOURCE/name),value,name)

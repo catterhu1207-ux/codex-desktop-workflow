@@ -7,6 +7,7 @@
 - Carry pending questions, approvals and implementation plans through the full native row pipeline.
 - Preserve native first-send, real SSH project routing, Work selection, file drops, paginated history and per-chat settings.
 - Bind optional compatibility builds to upstream 0.163.0-alpha.11, a fixed public source revision and all 77 migrations.
+- Run installation smoke tests with the supported unelevated sandbox in disposable homes, avoiding system setup prompts.
 - Keep prior published profiles and exact source identities. The unpublished 4894 recovery profile remains unavailable to the installer.
 
 ## v0.3.8
