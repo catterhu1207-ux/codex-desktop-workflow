@@ -18,6 +18,8 @@ Debugger-paused diagnostic attempts timed out while later unpaused native UI sen
 
 An application can remain open even when the runtime monitor exits before its first heartbeat. Diagnose the monitor's own stderr, native host, path policy and process identity separately from application startup. An open window does not retroactively complete the failed launch transaction.
 
+For isolated acceptance, run the actual monitor against the owned app PID and registered artifact, with a separate manager-state directory. Check the first heartbeat within the launcher's real startup budget, a fresh sample before closing, and normal final classification. Use the producer's actual sample interval and the consumer's bounded wait for the next sample. A test must not impose a shorter tick and misclassify the interval between valid samples as a failure.
+
 The monitor must recognize the registered external artifact root. When advancing the next-launch pointer, retain a validated immutable registration for the still-running prior artifact. Check exact path, revision, executable and archive identity; do not accept arbitrary adjacent manifests or broadly allow an entire drive. Test tampered prior registrations and modified executables.
 
 Repair a monitor in place only within authorized ownership and preserve the running app. Record the original failed transaction, fresh monitor heartbeat and observation separately. Do not synthesize a successful genuine launch from repaired infrastructure alone.
