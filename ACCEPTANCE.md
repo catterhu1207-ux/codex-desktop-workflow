@@ -21,6 +21,14 @@ Normal installation from the complete signed MSIX passed separately with the def
 
 The initial installer fixture omitted the upstream unelevated setting and left a system setup request. That failed attempt remains in the audit trail. The correction is confined to disposable test homes and separately bound in the source qualification; original native artifact evidence is preserved. Fresh normal installations passed after the correction. See [the local installation record](acceptance/v0.3.9-local-install.json). Downloaded draft assets must pass the separate distribution check before publication.
 
+## v0.3.9 downloaded distribution
+
+The actual GitHub draft bundle passed both normal installation paths before publication: default official backend and explicit compatibility backend built from the pinned public source. Each mode passed a signed-out onboarding run and a 400-chat synthetic run with all 23 fresh renderer proofs, at least 60 awake seconds, matching backend identity, normal exit and no pending elevation request. The installed runtime independently read back its qualification, and cold synthetic history remained unchanged.
+
+The compatibility installation continued in two phases: its public-source build completed, then the disk guard paused the application copy before any runtime test. After verified disposable copies were removed, the same installation resumed using its own completed, identity-checked build manifest. Both subsequent runtime checks were fresh; the interrupted copy is not counted as a successful installation.
+
+All three downloaded-installer dry runs passed. The bundle's 295 packaged files, dependency resources, checksums and sensitive-content scan passed. After publication, anonymous downloads of the bundle, installer and checksum file matched the accepted draft, Latest resolved to v0.3.9, and the project page displayed the current version and installer link. The backend v0.2.5 release passed its separate anonymous readback. See [the distribution record](acceptance/v0.3.9-distribution.json).
+
 ## v0.3.8 source and installed-wheel qualification
 
 Six isolated native runs passed with artifact 2.7.21: three with the official backend and three with the public-source compatibility backend. Every run mounted the native sidebar, produced 23 same-run interface proofs and observed at least 60 awake seconds. The actual English update component, six-chat cold recovery, 13 production-parser cases and four directory/MSIX dry runs passed.

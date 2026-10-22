@@ -1,0 +1,119 @@
+{
+  "status": "passed",
+  "scope": "downloaded_release_installation_and_public_readback",
+  "release": "v0.3.9",
+  "release_commit": "1f635d9a2cbc5d95ca3e53af43439458849926a2",
+  "desktop_version": "26.1016.6573.0",
+  "frontend_artifact": "2.9.2-6f56542b508e",
+  "frontend_contracts": 26,
+  "normal_complete_msix_installation": true,
+  "asset_sha256": {
+    "codex-desktop-workflow-bundle.zip": "c0282e3278f449301d9091306f5c883ac16dfd91aa964d83a5f79adb1d0080fe",
+    "install.ps1": "65b1f3ba0fc8d98e2cc8c44c1c9ae9d34c98278765d664cfe8417775b38fc111"
+  },
+  "packaged_files_checked": 295,
+  "source_and_dependency_resources_match": true,
+  "sensitive_content_scan": "passed",
+  "installer_dry_run_modes": [
+    "official",
+    "compat_source",
+    "compat_manifest"
+  ],
+  "modes": {
+    "official": {
+      "status": "passed",
+      "runtime": [
+        {
+          "profile": "empty",
+          "observed_seconds": 60.9602466999786,
+          "backend_match": true,
+          "status": "passed",
+          "renderer_features": 23,
+          "normal_close": true,
+          "no_pending_elevation": true
+        },
+        {
+          "profile": "synthetic_tasks",
+          "observed_seconds": 61.643711599987,
+          "backend_match": true,
+          "status": "passed",
+          "renderer_features": 23,
+          "normal_close": true,
+          "no_pending_elevation": true,
+          "synthetic_chats": 400,
+          "cold_history_unchanged": true
+        }
+      ],
+      "backend_sha256": "00c0f1e4099246fddcd67ec620ca8ed50827c7d70e113b7224f7a2933cf2d67c",
+      "qualification_read_back_with_installed_runtime": true,
+      "owned_job_empty": true,
+      "closed_log_readback": "passed"
+    },
+    "compat_source": {
+      "status": "passed",
+      "runtime": [
+        {
+          "profile": "empty",
+          "observed_seconds": 63.648278899956495,
+          "backend_match": true,
+          "status": "passed",
+          "renderer_features": 23,
+          "normal_close": true,
+          "no_pending_elevation": true
+        },
+        {
+          "profile": "synthetic_tasks",
+          "observed_seconds": 61.68809850001708,
+          "backend_match": true,
+          "status": "passed",
+          "renderer_features": 23,
+          "normal_close": true,
+          "no_pending_elevation": true,
+          "synthetic_chats": 400,
+          "cold_history_unchanged": true
+        }
+      ],
+      "backend_sha256": "091404d1cfa3f11131ee024da2dc974ea9db0aa38f115cf340ba1b46b2f2150d",
+      "qualification_read_back_with_installed_runtime": true,
+      "owned_job_empty": true,
+      "closed_log_readback": "passed",
+      "installation_continuation": {
+        "reason": "space_guard_before_first_runtime",
+        "source_build_reused_from_same_installation": true,
+        "public_source_commit": "7cf7c00b0b7ce435e2264c04f5b88e0068e41ae2",
+        "manifest_sha256": "72a0bd68184bbd937917d22787ceceb785abb78ec0662bac4c62ca6d97ed07fb"
+      }
+    }
+  },
+  "anonymous_download_verified": true,
+  "schema_version": 1,
+  "latest_points_to_tag": true,
+  "release_url": "https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.9",
+  "public_assets": {
+    "codex-desktop-workflow-bundle.zip": {
+      "sha256": "c0282e3278f449301d9091306f5c883ac16dfd91aa964d83a5f79adb1d0080fe",
+      "bytes": 1042211
+    },
+    "install.ps1": {
+      "sha256": "65b1f3ba0fc8d98e2cc8c44c1c9ae9d34c98278765d664cfe8417775b38fc111",
+      "bytes": 18754
+    },
+    "SHA256SUMS.txt": {
+      "sha256": "f49fac002751a46035ae78e4b990ba10bbdff96b76e3bc2f6bb52dfd9fb7d4fe",
+      "bytes": 180
+    }
+  },
+  "pages": {
+    "url": "https://catterhu1207-ux.github.io/codex-desktop-workflow/",
+    "current_version_visible": true,
+    "latest_installer_link_present": true,
+    "sha256": "8f9717d0299dd356cc84d82c5635186a5cb4a99413f12335bf68f3beb391a3f4"
+  },
+  "backend_release": {
+    "tag": "v0.2.5",
+    "url": "https://github.com/catterhu1207-ux/codex-history-compat/releases/tag/v0.2.5",
+    "anonymous_download_verified": true
+  },
+  "real_task_data_used": false,
+  "real_user_environment_modified": false
+}
