@@ -33,15 +33,16 @@ Opening or reading a chat keeps its pending requests. Answering, approving, reje
 
 *The demo shows lists, plan states and remote projects using fictional tasks. Orange is explained in the legend above.*
 
-For Desktop 26.1016.8120.0, automatic lists sort by most recent chat activity first. Opening an older chat does not move it ahead after a restart. Manual order and pinned groups remain available. Older profiles retain their own documented contracts.
+For Desktop 26.1016.8622.0, automatic lists sort by most recent chat activity first. Opening an older chat does not move it ahead after a restart. Manual order and pinned groups remain available. Older profiles retain their own documented contracts.
 
 ## Check compatibility first
 
-**This guide covers installer v0.3.10 and official package 26.1016.8120.0. Check the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.10) for downloadable assets.**
+**This guide covers installer v0.3.11 and official package 26.1016.8622.0. Check the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.11) for downloadable assets.**
 
 | Your environment | Installation status |
 |---|---|
-| Windows x64 with official package `26.1016.8120.0` | Official backend by default |
+| Windows x64 with official package `26.1016.8622.0` | Official backend by default |
+| Official package `26.1016.8120.0` | Retained with its v0.3.10 profile and build identity |
 | Official package `26.1016.6573.0` | Retained with its v0.3.9 profile and build identity |
 | Official package `26.1007.9446.0` | Retained with its qualified v0.3.8 profile |
 | Official package `26.928.4866.0` | Supported by v0.3.5 and retained in the new source |
@@ -55,7 +56,7 @@ Find your version in Codex's version information or Windows Installed apps. Inst
 
 1. **Your official app stays in place.** The workflow creates an independent app copy.
 2. **Chat data is independent.** Continuing existing chats requires explicit data copying and signing in again. The two apps then keep separate data, without automatic synchronization.
-3. **Installation includes checks.** Have Python 3.11 or later and Node.js 22 or later (tested with Node.js 24.18) and available disk space. Allow copying and isolated startup checks to finish. Compiler tools are needed only when you choose the optional compatibility-backend mode.
+3. **Installation includes checks.** Have Python 3.11 or later and Node.js 22 or later (tested with Node.js 24.18) and available disk space. Allow copying and isolated startup checks to finish. Compiler tools are needed only when you choose the optional compatibility-backend mode; its first complete source build can take hours.
 
 ## Install and start using it
 
@@ -67,7 +68,7 @@ Run in PowerShell:
 irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/download/install.ps1 | iex
 ```
 
-The official backend is the default. The installer discovers and verifies your official package, then creates the independent copy. Normal installation for `26.1016.8120.0` includes two isolated launches, each observed for at least 60 seconds of effective awake time. Startup, copying and validation add to that time. The empty-home check verifies the sign-in screen; no login is copied. The populated check uses 400 synthetic chats.
+The official backend is the default. The installer discovers and verifies your official package, then creates the independent copy. Normal installation for `26.1016.8622.0` includes two isolated launches, each observed for at least 60 seconds of effective awake time. Startup, copying and validation add to that time. The empty-home check verifies the sign-in screen; no login is copied. The populated check uses 400 synthetic chats.
 
 ### With a complete official package that is not installed
 
@@ -98,7 +99,7 @@ Use [Issues](https://github.com/catterhu1207-ux/codex-desktop-workflow/issues); 
 
 This project is unaffiliated with OpenAI. Release assets contain tools, dependencies and documentation; you supply the official application binaries.
 
-## Update indicators in v0.3.10
+## Update indicators in v0.3.11
 
 The sidebar distinguishes an announced update, a verified downloadable package, and a qualified adaptation ready for a later launch with three different icons. The package's internal version determines whether the complete download has changed. Update checks run without a terminal window. Native unanswered questions and approvals keep their orange indicator even while the chat continues working.
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.11
+
+- Add the independent Desktop 26.1016.8622.0 / frontend 2.11.0 profile and adapt its dynamic resource map while preserving existing behavior and older identities.
+- Retain activity ordering, manual pins, pending-state colors, project/SSH/Work routes, file drops, history pagination and per-chat settings; qualify both backend modes with current native cases.
+- Pin the optional 0.163.0-alpha.11.2.1 source build to Rust 1.99.1, real-type module tests, the full CLI build and all 77 official migration identities.
+- Preserve hash-bound resource bytes for current and future Windows checkouts, and deploy project Pages only from a published stable release.
+
+
 ## v0.3.10
 
 - Add an independent Desktop 26.1016.8120.0 profile with frontend 2.10.1. Earlier profiles retain their source and build identities.

@@ -3,6 +3,16 @@
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
 
+## v0.3.11 source and runtime qualification
+
+Desktop 26.1016.8622.0 uses independent frontend 2.11.0. Both the official and newly built compatibility backend passed separate signed-out onboarding and authenticated 400-chat fixture launches. Each qualified launch produced all 23 same-run renderer proofs, matched its actual backend path and ancestry, ran for at least 60 awake seconds, closed normally and left no owned processes. All 26 frontend contracts passed.
+
+Each backend passed six native first-message scenarios, cold reopening with saved task settings, activity ordering and manual pins, 400-chat pagination, fourteen row states with computed-style checks, twelve update-component cases and proof recovery after actual window hiding/restoration. Invalid proof and state variants were rejected. Model-service requests used synthetic loopback fixtures; SSH cases used an isolated synthetic project over encrypted transport.
+
+The compatibility backend passed all 15 unchanged module tests against real upstream types, the complete CLI build and seven runtime groups. The same seven groups passed against the official backend: HTTP, real WebSocket, cold settings, local and remote V2 compaction, 77 migration identities across six database families and 105-turn pagination. Persistent synthetic histories and per-chat settings were preserved.
+
+The current prequalification wheel passed 293 runtime-resource byte checks, all 26 contracts and fourteen packaged row cases. A clean-source reproduction preserved the exact previously accepted official-mode application bytes and retained the original run lineage. Windows checkout tests cover raw resource preservation for current and future versions. The complete Windows suite ran 189 tests without failure; all four mandatory current-source checks and the four available 6573 source checks passed. 7 unavailable historical source samples were reported as skips. Three installer dry-run selections passed. Final downloaded assets and normal installation are verified separately before publication.
+
 ## v0.3.10 source and runtime qualification
 
 Desktop 26.1016.8120.0 uses independent frontend 2.10.1. The official backend and the new public-source compatibility backend each passed signed-out onboarding and an authenticated 400-chat fixture in separate launches. All four qualified launches produced 23 same-run renderer proofs, passed 26 frontend contracts, matched the current app-server path and ancestry, remained running for at least 60 awake seconds, closed normally and left no owned processes.
