@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "repository": "https://github.com/catterhu1207-ux/codex-history-compat.git",
-  "commit": "93c8fff9fdc3ebd5f7245a8f21d30a983a65b3db",
+  "commit": "e68529d44e809b50f23ac6c542b46354a874ed0b",
   "profile": "desktop-26.1016.8622.0-sqlite-v2",
   "upstream_commit": "51f97c6bca5500edbb986f6d9fe64fa2e63cbdd4",
   "profile_sha256": "5097116c9d1b73f0586a2d75ff4e34120a22b2a1bde920d7ca76a457534d5aaf",
-  "build_recipe_sha256": "ed90371beb7781786043abf0957ab3bf30ddd30ddb94d74f81792b28241092a6",
+  "build_recipe_sha256": "aafef140506236e2c0cbf801822c5c5488e3123e9ca5cc8c3d5c653d4d04e060",
   "patch_files": {
     "deepseek_notice_batch.json": "70f97e6903f72f0011b5da54baf0208721cf664deca4aae4ea58ef229af38e21",
     "integration.patch": "03b0257af9d88ce9d6e606ea1dab7d6cc3dc15b44cc5e025af89537cd40f5ebc",

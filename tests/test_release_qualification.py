@@ -52,7 +52,7 @@ class ReleaseQualification(unittest.TestCase):
         pin=json.loads((PACKAGE/'policies/backend-source-26.1016.8622.0.json').read_text())
         self.assertEqual(e['compat_commit'],pin['commit'])
         self.assertEqual(e['feature_contract_count'],26)
-        self.assertEqual(e['frontend_build'],'2.10.1')
+        self.assertEqual(e['frontend_build'],'2.11.0')
         self.assertEqual(e['native_source_checks']['status'],'passed')
         self.assertEqual(e['native_source_checks']['tests'],4)
         self.assertFalse(e['native_source_checks']['skipped'])
