@@ -28,8 +28,55 @@ PROTECTED_ENV = frozenset({RESOURCE_OVERRIDE, 'CODEX_ELECTRON_BUNDLED_PLUGINS_FO
 REGISTRY_ROOT = r'Software\Google\Chrome\NativeMessagingHosts'
 
 
+def _io_path(path):
+    """Use extended Windows I/O without changing recorded paths or following links."""
+    path = Path(path)
+    if os.name != 'nt':
+        return path
+    text = str(path).replace('/', '\\')
+    if (not path.is_absolute() or text.startswith(('\\\\?\\', '\\\\.\\'))
+            or '\0' in text or any(part in ('.', '..') for part in text.split('\\'))):
+        raise ValueError('browser_isolation_noncanonical_io_path')
+    if re.match(r'^[A-Za-z]:\\', text):
+        parts = text[3:].split('\\')
+        extended = '\\\\?\\' + text
+    elif re.match(r'^\\\\[^\\/:*?"<>|]+\\[^\\/:*?"<>|]+(?:\\|$)', text):
+        parts = text[2:].split('\\')
+        extended = '\\\\?\\UNC\\' + text[2:]
+    else:
+        raise ValueError('browser_isolation_noncanonical_io_path')
+    if any(part and (part.endswith(('.', ' ')) or ':' in part) for part in parts):
+        raise ValueError('browser_isolation_noncanonical_io_path')
+    return Path(extended)
+
+
+def _children(path):
+    # scandir returns extended names when given an extended root. Reconstruct
+    # ordinary paths so manifests, scope comparisons and external apps keep the
+    # original identity. lstat checks still reject every reparse point.
+    with os.scandir(_io_path(path)) as entries:
+        names = sorted(entry.name for entry in entries)
+    return [Path(path) / name for name in names]
+
+
+def _resource_files(root):
+    result, pending = set(), [Path(root)]
+    while pending:
+        directory = pending.pop()
+        _plain(directory)
+        for path in _children(directory):
+            info = _plain(path)
+            if stat.S_ISDIR(info.st_mode):
+                pending.append(path)
+            elif stat.S_ISREG(info.st_mode):
+                result.add(path)
+            else:
+                raise ValueError('browser_isolation_unsupported_file_type')
+    return result
+
+
 def _plain(path):
-    info = Path(path).lstat()
+    info = _io_path(path).lstat()
     if stat.S_ISLNK(info.st_mode) or getattr(info, 'st_file_attributes', 0) & 0x400:
         raise ValueError('browser_isolation_redirected_path:' + str(path))
     return info
@@ -44,7 +91,7 @@ def _digest(path):
     if not stat.S_ISREG(before.st_mode):
         raise ValueError('browser_isolation_not_regular_file')
     digest = hashlib.sha256()
-    with Path(path).open('rb') as stream:
+    with _io_path(path).open('rb') as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b''):
             digest.update(chunk)
     if _identity(before) != _identity(_plain(path)):
@@ -55,19 +102,19 @@ def _digest(path):
 def _write(path, value):
     path = Path(path)
     temporary = path.with_name(path.name + '.writing')
-    temporary.write_text(json.dumps(value, indent=2), encoding='utf8')
-    os.replace(temporary, path)
+    _io_path(temporary).write_text(json.dumps(value, indent=2), encoding='utf8')
+    os.replace(_io_path(temporary), _io_path(path))
 
 
 def _copy_tree(source, destination, entries):
     info = _plain(source)
     if stat.S_ISDIR(info.st_mode):
-        destination.mkdir()
-        for child in sorted(source.iterdir()):
+        _io_path(destination).mkdir()
+        for child in _children(source):
             _copy_tree(child, destination / child.name, entries)
     elif stat.S_ISREG(info.st_mode):
         digest = hashlib.sha256()
-        with source.open('rb') as src, destination.open('xb') as dst:
+        with _io_path(source).open('rb') as src, _io_path(destination).open('xb') as dst:
             for chunk in iter(lambda: src.read(1024 * 1024), b''):
                 digest.update(chunk)
                 dst.write(chunk)
@@ -87,18 +134,18 @@ def _reject_used_home(home):
     # callbacks even when Chrome is absent from the new resource catalog.
     for relative in ('plugins', '.tmp/bundled-marketplaces', '.browser-isolation-used.json',
                      'chrome-native-hosts-v2.json'):
-        if (home / relative).exists() or (home / relative).is_symlink():
+        if _io_path(home / relative).exists() or _io_path(home / relative).is_symlink():
             raise ValueError('browser_isolation_home_not_fresh:' + relative)
     config = home / 'config.toml'
-    if config.exists():
+    if _io_path(config).exists():
         _plain(config)
-        parsed = tomllib.loads(config.read_text(encoding='utf8'))
+        parsed = tomllib.loads(_io_path(config).read_text(encoding='utf8'))
         if parsed.get('plugins') or parsed.get('marketplaces'):
             raise ValueError('browser_isolation_existing_plugin_configuration')
     state = home / '.codex-global-state.json'
-    if state.exists():
+    if _io_path(state).exists():
         _plain(state)
-        if json.loads(state.read_text(encoding='utf8')).get('electron-chrome-extension-sync-managed-plugin-ids'):
+        if json.loads(_io_path(state).read_text(encoding='utf8')).get('electron-chrome-extension-sync-managed-plugin-ids'):
             raise ValueError('browser_isolation_existing_chrome_sync_state')
 
 
@@ -106,7 +153,7 @@ def resource_capability(resources):
     """Read only the bounded ASAR header and actual main entry, never the blob."""
     asar = Path(resources) / 'app.asar'
     initial = _plain(asar)
-    with asar.open('rb') as stream:
+    with _io_path(asar).open('rb') as stream:
         lead = stream.read(16)
         if len(lead) != 16:
             raise ValueError('browser_isolation_invalid_asar')
@@ -183,13 +230,13 @@ def prepare_resources(executable, home, run, environment, inherited=None):
     capability = resource_capability(resources)
     catalogs = [resources / 'plugins/openai-bundled',
                 resources / 'app.asar.unpacked/plugins/openai-bundled']
-    present = [p for p in catalogs if (p / '.agents/plugins/marketplace.json').is_file()]
+    present = [p for p in catalogs if _io_path(p / '.agents/plugins/marketplace.json').is_file()]
     if not present and not capability['chrome_lifecycle_present']:
         receipt = {'schema_version': 1, 'status': 'not_applicable',
             'scope': 'disposable_verification_only', 'reason': 'legacy_without_bundled_chrome',
             'capability': capability, 'preserved_plugins': [], 'excluded_plugins': [],
             'resources': str(resources)}
-        with (home / '.browser-isolation-used.json').open('x', encoding='utf8') as claim:
+        with _io_path(home / '.browser-isolation-used.json').open('x', encoding='utf8') as claim:
             json.dump({'run': str(run)}, claim)
         _write(run / 'browser-resource-isolation.json', receipt)
         return {}, receipt
@@ -202,7 +249,7 @@ def prepare_resources(executable, home, run, environment, inherited=None):
         _plain(part)
     manifest = source / '.agents/plugins/marketplace.json'
     source_digest = _digest(manifest)
-    catalog = json.loads(manifest.read_text(encoding='utf8'))
+    catalog = json.loads(_io_path(manifest).read_text(encoding='utf8'))
     if catalog.get('name') != 'openai-bundled' or not isinstance(catalog.get('plugins'), list):
         raise ValueError('browser_isolation_invalid_catalog')
     names = [p.get('name') for p in catalog['plugins']]
@@ -212,9 +259,9 @@ def prepare_resources(executable, home, run, environment, inherited=None):
     if not selected:
         raise ValueError('browser_isolation_unrecognized_bundled_catalog')
     root = run / 'browser-isolated-resources'
-    root.mkdir()
+    _io_path(root).mkdir()
     destination = root / 'plugins/openai-bundled'
-    (destination / '.agents/plugins').mkdir(parents=True)
+    _io_path(destination / '.agents/plugins').mkdir(parents=True)
     entries = []
     for plugin in selected:
         local = plugin.get('source', {})
@@ -223,7 +270,7 @@ def prepare_resources(executable, home, run, environment, inherited=None):
             raise ValueError('browser_isolation_plugin_path_escape')
         origin = source / relative
         target = destination / relative
-        if not origin.resolve().is_relative_to(source.resolve()) or not target.resolve().is_relative_to(destination.resolve()):
+        if not origin.is_relative_to(source) or not target.is_relative_to(destination):
             raise ValueError('browser_isolation_plugin_path_escape')
         # Check intermediate directories as well as recursively copied children.
         for ancestor in origin.parents:
@@ -233,13 +280,13 @@ def prepare_resources(executable, home, run, environment, inherited=None):
         plugin_manifest = origin / '.codex-plugin/plugin.json'
         _plain(origin / '.codex-plugin')
         _digest(plugin_manifest)
-        if json.loads(plugin_manifest.read_text(encoding='utf8')).get('name') != plugin['name']:
+        if json.loads(_io_path(plugin_manifest).read_text(encoding='utf8')).get('name') != plugin['name']:
             raise ValueError('browser_isolation_plugin_name_mismatch')
-        target.parent.mkdir(parents=True, exist_ok=True)
+        _io_path(target.parent).mkdir(parents=True, exist_ok=True)
         _copy_tree(origin, target, entries)
     filtered = {**catalog, 'plugins': selected}
     filtered_manifest = destination / '.agents/plugins/marketplace.json'
-    filtered_manifest.write_text(json.dumps(filtered, indent=2) + '\n', encoding='utf8')
+    _io_path(filtered_manifest).write_text(json.dumps(filtered, indent=2) + '\n', encoding='utf8')
     # This override is also used by upstream browser runtime resolution.
     # Preserve the complete runtime instead of silently losing node/node-repl.
     runtime = resources / 'cua_node'
@@ -257,7 +304,7 @@ def prepare_resources(executable, home, run, environment, inherited=None):
         'excluded_plugins': sorted(set(names) & CHROME_PLUGINS),
         'preserved_plugins': [p['name'] for p in selected], 'files': entries,
         'backend': str(backend), 'backend_sha256': _digest(backend)}
-    with (home / '.browser-isolation-used.json').open('x', encoding='utf8') as claim:
+    with _io_path(home / '.browser-isolation-used.json').open('x', encoding='utf8') as claim:
         json.dump({'run': str(run), 'resources': str(root)}, claim)
     _write(run / 'browser-resource-isolation.json', receipt)
     return {RESOURCE_OVERRIDE: str(root)}, receipt
@@ -266,7 +313,7 @@ def prepare_resources(executable, home, run, environment, inherited=None):
 def validate_resources(run):
     """Read back the prepared bytes after application exit before acceptance."""
     run = Path(run)
-    receipt = json.loads((run / 'browser-resource-isolation.json').read_text(encoding='utf8'))
+    receipt = json.loads(_io_path(run / 'browser-resource-isolation.json').read_text(encoding='utf8'))
     if receipt.get('status') == 'not_applicable':
         if receipt.get('reason') != 'legacy_without_bundled_chrome' or resource_capability(Path(receipt['resources'])) != receipt['capability']:
             raise RuntimeError('browser_isolation_legacy_capability_changed')
@@ -279,7 +326,7 @@ def validate_resources(run):
     expected = set()
     for entry in receipt['files']:
         path = Path(entry['copy'])
-        if not path.is_relative_to(root) or not path.resolve().is_relative_to(root.resolve()):
+        if not path.is_relative_to(root) or '..' in path.parts:
             raise RuntimeError('browser_isolation_prepared_path_escape')
         for ancestor in path.parents:
             if ancestor == root.parent:
@@ -292,11 +339,7 @@ def validate_resources(run):
     if _digest(manifest) != receipt['filtered_catalog_sha256']:
         raise RuntimeError('browser_isolation_filtered_catalog_changed')
     expected.add(manifest)
-    actual = set()
-    for current, directories, files in os.walk(root, followlinks=False):
-        for name in directories:
-            _plain(Path(current) / name)
-        actual.update(Path(current) / name for name in files)
+    actual = _resource_files(root)
     if actual != expected or _digest(Path(receipt['backend'])) != receipt['backend_sha256']:
         raise RuntimeError('browser_isolation_resource_inventory_changed')
     return {'status': 'passed', 'preserved_plugins': receipt['preserved_plugins'],

@@ -2,6 +2,7 @@ import copy
 import json
 import os
 from pathlib import Path
+import shutil
 import struct
 import tempfile
 import time
@@ -91,6 +92,45 @@ class BrowserResourceIsolation(unittest.TestCase):
         self.assertEqual(self.manifest.read_bytes(), self.original_manifest)
         self.assertEqual((self.home / 'synthetic-history.jsonl').read_bytes(), b'preserved-history')
         self.assertEqual(b.validate_resources(self.run)['status'], 'passed')
+
+    @unittest.skipUnless(os.name == 'nt', 'Windows extended filesystem paths')
+    def test_actual_deep_windows_payload_and_receipt_copy_and_readback(self):
+        # Exercise real mkdir/open/scandir/stat/replace beyond MAX_PATH, even
+        # when Windows long-path policy is disabled. No application is started.
+        self.addCleanup(shutil.rmtree, b._io_path(self.root))
+        nested = Path(*['nested-node-dependency-' + str(index) + '-' + 'x' * 18 for index in range(7)])
+        source = self.resources / 'cua_node/bin/node_modules' / nested / 'payload.js'
+        b._io_path(source.parent).mkdir(parents=True)
+        b._io_path(source).write_bytes(b'actual-deep-runtime-payload')
+        self.run = self.root / Path(*['deep-owned-run-' + str(index) + '-' + 'y' * 20 for index in range(7)])
+        b._io_path(self.run).mkdir(parents=True)
+        self.assertGreater(len(str(source)), 260)
+        self.assertGreater(len(str(self.run)), 260)
+        environment, receipt = self.prepare()
+        selected = next(entry for entry in receipt['files'] if entry['source'] == str(source))
+        destination = Path(selected['copy'])
+        self.assertGreater(len(str(destination)), 260)
+        self.assertEqual(b._io_path(destination).read_bytes(), b._io_path(source).read_bytes())
+        self.assertNotEqual(b._plain(source).st_ino, b._plain(destination).st_ino)
+        self.assertFalse(environment[b.RESOURCE_OVERRIDE].startswith('\\\\?\\'))
+        for entry in receipt['files']:
+            self.assertFalse(entry['source'].startswith('\\\\?\\'))
+            self.assertFalse(entry['copy'].startswith('\\\\?\\'))
+        self.assertEqual(b.validate_resources(self.run)['status'], 'passed')
+        b._write(self.run / 'readonly-guard.json', {'status': 'synthetic'})
+        self.assertEqual(json.loads(b._io_path(self.run / 'readonly-guard.json').read_text()), {'status': 'synthetic'})
+        b._io_path(destination).write_bytes(b'changed-deep-payload')
+        with self.assertRaisesRegex(RuntimeError, 'prepared_bytes_changed'):
+            b.validate_resources(self.run)
+
+    @unittest.skipUnless(os.name == 'nt', 'Windows path syntax')
+    def test_only_normal_absolute_drive_or_unc_paths_are_extended(self):
+        self.assertEqual(str(b._io_path(Path('C:/owned/file'))), '\\\\?\\C:\\owned\\file')
+        self.assertEqual(str(b._io_path(Path('//server/share/owned/file'))), '\\\\?\\UNC\\server\\share\\owned\\file')
+        for path in ('relative/file', 'C:relative', 'C:/owned/../escape', 'C:/owned/file:stream',
+                     'C:/owned/trailing.', 'C:/owned/trailing ', '//?/C:/owned', '//./C:/owned'):
+            with self.subTest(path=path), self.assertRaisesRegex(ValueError, 'noncanonical_io_path'):
+                b._io_path(Path(path))
 
     def test_used_fixture_cannot_be_relaunched(self):
         self.prepare()
