@@ -1,11 +1,11 @@
 # Compatibility
 
-This table describes development installer **v0.3.12**. Browser integration isolation and downloaded-installer validation are pending. The [latest published release](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest) remains v0.3.10.
+This table describes installer **v0.3.12**. Both backend modes passed four isolated source launches with Chrome registration preserved. Check the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases) for downloadable-installer results and availability.
 
 | Component | Status in v0.3.12 |
 |---|---|
-| Windows x64 | Development target; release validation pending |
-| Desktop `26.1016.8622.0` | Browser isolation and downloaded-installer validation pending; independent frontend 2.11.0; official backend by default; optional pinned source-built 0.163.0-alpha.11.2.1; 26 contracts and 23 renderer checks |
+| Windows x64 | Supported platform |
+| Desktop `26.1016.8622.0` | Independent frontend 2.11.0; official backend by default; optional pinned source-built 0.163.0-alpha.11.2.1; 26 contracts and 23 renderer checks |
 | Desktop `26.1016.8120.0` | Independent frontend 2.10.1; official backend by default; optional source-built 0.163.0-alpha.11.1.1; 26 contracts and 23 renderer checks |
 | Desktop `26.1016.6573.0` | Independent frontend 2.9.2; official backend by default; optional pinned compatibility source for 0.163.0-alpha.11.1; 26 contracts and 23 renderer checks |
 | Desktop `26.1007.9446.0` | Official backend by default; optional public-source compatibility backend; both modes passed the source/runtime matrix; the final public download passed three fresh profiles, 26 contracts and 23 renderer features |

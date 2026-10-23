@@ -33,7 +33,7 @@ Windows x64 · 非官方社区工具 · 从你提供的官方包生成独立应�
 
 ## 先看你的版本能否安装
 
-**开发版本 v0.3.12 面向官方包 26.1016.8622.0，浏览器集成隔离和下载版安装验收尚未完成。[最新公开发行](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest)仍为 v0.3.10。**
+**v0.3.12 面向官方包 26.1016.8622.0。两种后端共通过四次独立源码启动检查，Chrome 注册状态保持不变。安装包验收结果和可用下载见[发行页](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases)。**
 
 | 你的环境 | 安装条件 |
 |---|---|

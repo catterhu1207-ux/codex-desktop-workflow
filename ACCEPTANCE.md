@@ -3,11 +3,13 @@
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
 
-## v0.3.12 validation status
+## v0.3.12 source and browser isolation qualification
 
 The new release keeps the existing Desktop 26.1016.8622.0 frontend and backend identities. The prior 26-contract and 23-feature results remain feature evidence for those unchanged application bytes.
 
-Browser integration isolation is pending. Downloaded installation must pass separately in both backend modes, with signed-out onboarding and 400 synthetic chats, while preserving the signed-in user's browser registration and profiles. Release publication remains pending until these checks pass.
+Both backend modes passed new empty-home and 400-chat synthetic launches, four independent source runs in total. Each run produced 23 renderer proofs, preserved the shared Chrome registration throughout startup, observation and closure, ran for at least 60 awake seconds and closed normally. The 26 frontend contracts passed. Empty-home checks covered signed-out onboarding; populated checks covered synthetic history. Existing native first-message, SSH, Work, ordering and settings results remain attributed to the unchanged application bytes tested for the unpublished v0.3.11 draft.
+
+Installation results for the downloadable assets are recorded in the [v0.3.12 release notes](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.12).
 
 ## v0.3.11 unpublished draft: retained feature evidence
 

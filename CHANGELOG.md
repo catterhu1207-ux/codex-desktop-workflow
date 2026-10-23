@@ -1,8 +1,8 @@
 # Changelog
 
-## v0.3.12 (unreleased)
+## v0.3.12
 
-- Address isolated launch checks changing the signed-in user's Chrome integration registration. Browser isolation and downloaded-installer acceptance are required before publication.
+- Isolate installation checks from the signed-in user's Chrome registration. Four source launches passed in fresh test profiles; regular app launches retain browser integration.
 - Retain the 26.1016.8622.0 / frontend 2.11.0 adapter, fixed compatibility-backend source and all earlier profiles.
 - Keep v0.3.11 as an unpublished draft with its original tag and evidence.
 

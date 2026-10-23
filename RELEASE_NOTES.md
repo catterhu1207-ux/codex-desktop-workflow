@@ -1,6 +1,6 @@
 # v0.3.12 — Desktop 26.1016.8622.0
 
-Release validation is pending for browser integration isolation and both downloaded installation paths. The latest published stable release remains v0.3.10.
+Both backend modes passed four new isolated source launches with Chrome registration preserved. Native frontend behavior retains the earlier results for identical application bytes; the original v0.3.11 tag and unpublished draft remain intact.
 
 This version retains the independent adapter for the complete official Windows x64 package **26.1016.8622.0**, frontend 2.11.0 and its existing behavior: recent-activity ordering, stable cold opens, manual pins, local and SSH project routes, Work selection, file drops, paginated history and saved chat settings.
 

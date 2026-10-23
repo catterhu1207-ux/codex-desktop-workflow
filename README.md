@@ -37,7 +37,7 @@ For Desktop 26.1016.8622.0, automatic lists sort by most recent chat activity fi
 
 ## Check compatibility first
 
-**Development version v0.3.12 targets official package 26.1016.8622.0. Browser integration isolation and downloaded-installer validation are pending. The [latest published release](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest) remains v0.3.10.**
+**v0.3.12 targets official package 26.1016.8622.0. Both backend modes passed four isolated source launches with Chrome registration preserved. See the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases) for installer validation and available downloads.**
 
 | Your environment | Installation status |
 |---|---|
