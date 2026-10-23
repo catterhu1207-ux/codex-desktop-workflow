@@ -1,6 +1,12 @@
 # Changelog
 
-## v0.3.11
+## v0.3.12 (unreleased)
+
+- Address isolated launch checks changing the signed-in user's Chrome integration registration. Browser isolation and downloaded-installer acceptance are required before publication.
+- Retain the 26.1016.8622.0 / frontend 2.11.0 adapter, fixed compatibility-backend source and all earlier profiles.
+- Keep v0.3.11 as an unpublished draft with its original tag and evidence.
+
+## v0.3.11 (unpublished draft)
 
 - Add the independent Desktop 26.1016.8622.0 / frontend 2.11.0 profile and adapt its dynamic resource map while preserving existing behavior and older identities.
 - Retain activity ordering, manual pins, pending-state colors, project/SSH/Work routes, file drops, history pagination and per-chat settings; qualify both backend modes with current native cases.

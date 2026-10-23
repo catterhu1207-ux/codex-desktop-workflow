@@ -16,11 +16,24 @@ def bindings(portable):
     files=('ChatGPT.exe','resources/app.asar','resources/codex.exe','resources/x.js','resources/u.cjs','codex-desktop-workflow-manifest.json','codex-desktop-workflow.json')
     return {'code':code,'candidate':{name:digest(portable/name) for name in files}}
 
+
+def require_browser_isolation(value):
+    """Require the observed shared-browser boundary, never a repaired baseline."""
+    browser=value.get('browser_isolation',{})
+    samples=browser.get('samples')
+    if (browser.get('status')!='passed' or browser.get('before_during_after_unchanged') is not True
+            or type(samples) is not int or samples<=0 or browser.get('automatic_restore') is not False
+            or browser.get('registry_views')!=['32','64']):
+        raise ValueError('public_browser_isolation_not_complete')
+
+
 def require_complete(value,manifest):
     if value.get('status')!='passed' or value.get('closed_log_readback')!='passed' or value.get('owned_cleanup',{}).get('owned_job_empty') is not True:
         raise ValueError('public_owned_runtime_not_complete')
     if manifest.get('package_version') in ('26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0'):
         if manifest['package_version']=='26.1016.8622.0':
+            from . import __version__
+            if tuple(map(int,__version__.split('.'))) >= (0,3,12):require_browser_isolation(value)
             from .verification_8622 import release_policy
         elif manifest['package_version']=='26.1016.8120.0':
             from .verification_8120 import release_policy

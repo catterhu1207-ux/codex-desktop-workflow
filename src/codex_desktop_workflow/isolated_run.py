@@ -96,12 +96,12 @@ class IsolatedRun(lifecycle.IsolatedRun):
             arguments = [*arguments, '--remote-debugging-address=127.0.0.1', f'--remote-debugging-port={debug_port}']
         run = Path(runs_root).resolve() / ('run-'+uuid.uuid4().hex)
         run.mkdir(parents=True, exist_ok=False)
-        profile = Path(runs_root).resolve()/'profile-4894' if isolate_shell_folders else Path(os.environ['USERPROFILE'])
+        profile = run/'profile' if isolate_shell_folders else Path(os.environ['USERPROFILE'])
         user_data = run/'user-data' if isolate_shell_folders else home/'.electron-user-data'
         if _redirected(user_data): raise ValueError('redirected_user_data')
         if isolate_shell_folders:
             if _redirected(profile): raise ValueError('redirected_owned_profile')
-            profile.mkdir(exist_ok=True)
+            profile.mkdir(exist_ok=False)
         user_data.mkdir(exist_ok=True)
         env = {**os.environ, **environment}
         if isolate_shell_folders:
@@ -114,22 +114,42 @@ class IsolatedRun(lifecycle.IsolatedRun):
         env.update(TEMP=str(temporary), TMP=str(temporary), USERPROFILE=str(profile), CODEX_HOME=str(home), CODEX_SQLITE_HOME=str(home),
                    CODEX_ELECTRON_USER_DATA_PATH=str(user_data),
                    CODEX_CLI_PATH=str(executable.parent/'resources/codex.exe'))
+        browser_resources = None
+        if isolate_shell_folders:
+            from .browser_isolation import prepare_resources
+            isolated_environment, browser_resources = prepare_resources(executable, home, run, environment)
+            env.update(isolated_environment)
         record = dict(schema_version=1, status='starting', run_id=run.name,
                       started_at=datetime.now(timezone.utc).isoformat(), registered_backends=[],
                       executable_sha256=lifecycle._sha256(executable),
                       native_integrity=integrity,
-                      shell_folders=('owl_explicit_profile_home_known_folders_inherited' if isolate_shell_folders else 'owl_persistent_data_inherited_user_profile'), debug_port=debug_port)
+                      shell_folders=('owl_fresh_profile_browser_integration_isolated' if isolate_shell_folders else 'owl_persistent_data_inherited_user_profile'), debug_port=debug_port)
+        if browser_resources is not None:
+            record['browser_resource_isolation'] = {
+                'status': browser_resources['status'], 'scope': browser_resources['scope'],
+                'preserved_plugins': browser_resources['preserved_plugins'],
+                'excluded_plugins': browser_resources['excluded_plugins']}
         instance = cls(run); instance._save(record)
-        with (run/'stdout.log').open('xb') as stdout, (run/'stderr.log').open('xb') as stderr:
-            process = subprocess.Popen([str(executable), *arguments, f'--user-data-dir={user_data}'],
-                cwd=executable.parent, env=env, stdout=stdout, stderr=stderr,
-                creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+        if isolate_shell_folders:
+            from .browser_isolation import SharedBrowserGuard
+            instance._browser_guard = SharedBrowserGuard(run/'browser-shared-state.json').start()
+        try:
+            with (run/'stdout.log').open('xb') as stdout, (run/'stderr.log').open('xb') as stderr:
+                process = subprocess.Popen([str(executable), *arguments, f'--user-data-dir={user_data}'],
+                    cwd=executable.parent, env=env, stdout=stdout, stderr=stderr,
+                    creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+        except BaseException:
+            if getattr(instance, '_browser_guard', None) is not None:
+                instance._browser_guard.close()
+            raise
         instance._process = process
         time.sleep(.2)
         current = next((p for p in lifecycle._processes() if p.pid == process.pid), None)
         if current is None:
             record.update(status='failed_before_identity_capture', exit_code=process.poll(), pid=process.pid)
             instance._save(record)
+            if getattr(instance, '_browser_guard', None) is not None:
+                instance._browser_guard.close()
             raise RuntimeError('main_exited_before_identity_capture:'+str(run))
         record.update(status='started', main=asdict(current)); instance._save(record)
         return instance
@@ -160,6 +180,9 @@ class IsolatedRun(lifecycle.IsolatedRun):
         raise RuntimeError('process_snapshot_failed_after_three_reads') from last_error
 
     def status(self, backend_name=None):
+        guard = getattr(self, '_browser_guard', None)
+        if guard is not None:
+            guard.check()
         self._reap_started_process()
         record = self._load()
         rows = self._snapshot()
@@ -179,6 +202,12 @@ class IsolatedRun(lifecycle.IsolatedRun):
             state = 'running_without_backend'
         if not main_alive and alive:
             state = 'backend_orphaned'
+        if state == 'exited' and guard is not None:
+            from .browser_isolation import validate_resources
+            record['browser_resource_isolation'] = validate_resources(self.run_directory)
+            record['browser_shared_state'] = guard.close()
+            self._browser_guard = None
+            self._save(record)
         return {**record, 'status': state, 'main_identity_match': main_alive, 'alive_backends': alive,
                 'process_tree_validation': 'visited_identity_and_creation_order'}
 

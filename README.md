@@ -37,7 +37,7 @@ For Desktop 26.1016.8622.0, automatic lists sort by most recent chat activity fi
 
 ## Check compatibility first
 
-**This guide covers installer v0.3.11 and official package 26.1016.8622.0. Check the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.11) for downloadable assets.**
+**Development version v0.3.12 targets official package 26.1016.8622.0. Browser integration isolation and downloaded-installer validation are pending. The [latest published release](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest) remains v0.3.10.**
 
 | Your environment | Installation status |
 |---|---|
@@ -99,7 +99,7 @@ Use [Issues](https://github.com/catterhu1207-ux/codex-desktop-workflow/issues); 
 
 This project is unaffiliated with OpenAI. Release assets contain tools, dependencies and documentation; you supply the official application binaries.
 
-## Update indicators in v0.3.11
+## Update indicators in v0.3.12
 
 The sidebar distinguishes an announced update, a verified downloadable package, and a qualified adaptation ready for a later launch with three different icons. The package's internal version determines whether the complete download has changed. Update checks run without a terminal window. Native unanswered questions and approvals keep their orange indicator even while the chat continues working.
 

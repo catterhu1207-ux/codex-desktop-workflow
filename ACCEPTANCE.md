@@ -3,7 +3,15 @@
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
 
-## v0.3.11 source and runtime qualification
+## v0.3.12 validation status
+
+The new release keeps the existing Desktop 26.1016.8622.0 frontend and backend identities. The prior 26-contract and 23-feature results remain feature evidence for those unchanged application bytes.
+
+Browser integration isolation is pending. Downloaded installation must pass separately in both backend modes, with signed-out onboarding and 400 synthetic chats, while preserving the signed-in user's browser registration and profiles. Release publication remains pending until these checks pass.
+
+## v0.3.11 unpublished draft: retained feature evidence
+
+The original tag and draft assets are retained. A later installation check found that an isolated Codex launch could change the signed-in user's Chrome native-host registration. The results below record feature behavior; v0.3.11 did not complete isolated-installation acceptance and was not published.
 
 Desktop 26.1016.8622.0 uses independent frontend 2.11.0. Both the official and newly built compatibility backend passed separate signed-out onboarding and authenticated 400-chat fixture launches. Each qualified launch produced all 23 same-run renderer proofs, matched its actual backend path and ancestry, ran for at least 60 awake seconds, closed normally and left no owned processes. All 26 frontend contracts passed.
 
@@ -11,7 +19,7 @@ Each backend passed six native first-message scenarios, cold reopening with save
 
 The compatibility backend passed all 15 unchanged module tests against real upstream types, the complete CLI build and seven runtime groups. The same seven groups passed against the official backend: HTTP, real WebSocket, cold settings, local and remote V2 compaction, 77 migration identities across six database families and 105-turn pagination. Persistent synthetic histories and per-chat settings were preserved.
 
-The current prequalification wheel passed 293 runtime-resource byte checks, all 26 contracts and fourteen packaged row cases. A clean-source reproduction preserved the exact previously accepted official-mode application bytes and retained the original run lineage. Windows checkout tests cover raw resource preservation for current and future versions. The complete Windows suite ran 189 tests without failure; all four mandatory current-source checks and the four available 6573 source checks passed. 7 unavailable historical source samples were reported as skips. Three installer dry-run selections passed. Final downloaded assets and normal installation are verified separately before publication.
+The v0.3.11 prequalification wheel passed 293 runtime-resource byte checks, all 26 contracts and fourteen packaged row cases. A clean-source reproduction preserved the exact previously accepted official-mode application bytes and retained the original run lineage. Windows checkout tests cover raw resource preservation for current and future versions. The complete Windows suite ran 189 tests without failure; all four mandatory current-source checks and the four available 6573 source checks passed. 7 unavailable historical source samples were reported as skips. Three installer dry-run selections passed. Final downloaded assets and normal installation are verified separately before publication.
 
 ## v0.3.10 source and runtime qualification
 

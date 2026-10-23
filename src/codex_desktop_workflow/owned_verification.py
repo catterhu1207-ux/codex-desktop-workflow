@@ -197,7 +197,13 @@ def verify_owned(source, portable, runs_root, observe_seconds, launches):
     result=owner/'result.json';job=SpaceJob();worker=None
     env=os.environ.copy()
     env['PYTHONPATH']=str(Path(__file__).resolve().parent.parent)+os.pathsep+env.get('PYTHONPATH','')
+    from .browser_isolation import SharedBrowserGuard
+    browser_guard=SharedBrowserGuard(owner/'browser-isolation.json')
+    browser_guard_closed=False
+    browser_guard_started=False
     try:
+        browser_guard.start()
+        browser_guard_started=True
         with (owner/'stdout.log').open('wb') as stdout,(owner/'stderr.log').open('wb') as stderr:
             worker=subprocess.Popen([sys.executable,'-X','utf8','-m',__name__,str(request)],
                 env=env,stdin=subprocess.PIPE,stdout=stdout,stderr=stderr,creationflags=0x08000000)
@@ -206,8 +212,10 @@ def verify_owned(source, portable, runs_root, observe_seconds, launches):
             per_run_budget=240+120+90+observe_seconds+120+30+300 if metadata.get('package_version') in SEALED_VERSIONS else 420
             deadline=awake_clock.seconds()+max(3,launches)*per_run_budget+300
             while worker.poll() is None:
+                browser_guard.check()
                 if awake_clock.seconds()>=deadline:raise RuntimeError('owned_verification_awake_budget_exceeded')
                 time.sleep(.25)
+            browser_guard.check()
         if worker.returncode:
             raise RuntimeError('owned_verification_failed: '+(owner/'stderr.log').read_text(encoding='utf8',errors='replace')[-2400:])
         pending=[]
@@ -218,7 +226,10 @@ def verify_owned(source, portable, runs_root, observe_seconds, launches):
             pending.append({'pid':pid,'image':image})
         if pending:job.stop_and_wait()
         if job.pids():raise RuntimeError('owned_descendants_remain')
+        browser_state=browser_guard.close()
+        browser_guard_closed=True
         value=json.loads(result.read_text(encoding='utf8'))
+        value['browser_isolation']=browser_state
         value['owned_cleanup']={'owned_job_empty':True,'auxiliary_processes':pending}
         _seal_closed_runtime(portable,value,metadata.get('package_version'),frozen_bindings)
         result.write_text(json.dumps(value,indent=2),encoding='utf8')
@@ -227,6 +238,8 @@ def verify_owned(source, portable, runs_root, observe_seconds, launches):
     finally:
         job.close()
         if worker is not None and worker.poll() is None:worker.terminate();worker.wait(timeout=15)
+        if browser_guard_started and not browser_guard_closed:
+            browser_guard.close()
 
 if __name__=='__main__':
     if sys.stdin.buffer.readline()!=TOKEN:raise RuntimeError('worker_not_released')

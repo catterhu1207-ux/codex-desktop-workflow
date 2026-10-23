@@ -33,7 +33,7 @@ Windows x64 · 非官方社区工具 · 从你提供的官方包生成独立应�
 
 ## 先看你的版本能否安装
 
-**本说明对应 v0.3.11，支持官方包 26.1016.8622.0。可下载的安装包以[发行页面](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.11)为准。**
+**开发版本 v0.3.12 面向官方包 26.1016.8622.0，浏览器集成隔离和下载版安装验收尚未完成。[最新公开发行](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest)仍为 v0.3.10。**
 
 | 你的环境 | 安装条件 |
 |---|---|
@@ -95,7 +95,7 @@ irm https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/latest/do
 
 本项目与 OpenAI 无隶属关系。发行资产包含工具、依赖与文档，官方应用二进制由用户自行提供。
 
-## v0.3.11 的更新提示
+## v0.3.12 的更新提示
 
 侧栏用三个不同图标区分“官方已公布新版”“已核对新原包可下载”和“适配已就绪，等待下次启动”。下载包是否已更换，以包内版本核验为准。检查更新时隐藏终端窗口。原生中间提问和批准请求尚未处理时，即使聊天仍在工作，也持续显示橙色提示。
 

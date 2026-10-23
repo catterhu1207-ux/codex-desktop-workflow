@@ -21,6 +21,13 @@ class ReleaseQualification(unittest.TestCase):
         # Bind evidence to the source actually built, not an invented earlier
         # version string or a later documentation-only commit.
         self.assertEqual(e['package_version'],codex_desktop_workflow.__version__)
+        self.assertEqual(e['browser_isolation']['status'],'passed')
+        self.assertEqual(e['browser_isolation']['native_runs'],4)
+        self.assertTrue(e['browser_isolation']['before_during_after_unchanged'])
+        self.assertFalse(e['browser_isolation']['automatic_restore'])
+        self.assertEqual(e['prior_feature_evidence']['release'],'v0.3.11')
+        self.assertEqual(e['prior_feature_evidence']['release_state'],'unpublished_draft')
+        self.assertTrue(e['prior_feature_evidence']['application_bytes_unchanged'])
         artifacts=e['tested_artifacts']
         self.assertEqual(set(artifacts),{'official','compat','installed_wheel'})
         for artifact in artifacts.values():
@@ -46,7 +53,7 @@ class ReleaseQualification(unittest.TestCase):
         for name,value in e['source_inputs'].items():self.assertEqual(digest(SOURCE/name),value,name)
         tools={str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'tools').rglob('*') if p.is_file() and p.suffix in ('.py','.js','.cjs','.json','.ps1')}
         tools.update(str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'acceptance_tests').glob('*.py'))
-        tools.update({'install.ps1','msix_source.py','tests/test_release_qualification.py','tests/test_awake_probes.py'})
+        tools.update({'install.ps1','msix_source.py','tests/test_release_qualification.py','tests/test_awake_probes.py','tests/test_browser_isolation.py','tests/test_owned_browser_guard.py','tests/test_qualification_browser_gate.py'})
         self.assertEqual(set(e['acceptance_tools']),tools)
         for name,value in e['acceptance_tools'].items():self.assertEqual(digest(ROOT/name),value,name)
         pin=json.loads((PACKAGE/'policies/backend-source-26.1016.8622.0.json').read_text())
@@ -68,8 +75,11 @@ class ReleaseQualification(unittest.TestCase):
                     self.assertEqual(run['acceptance_scope'],'signed_out_onboarding')
                     self.assertTrue(run['onboarding_visible'])
                 else:
-                    self.assertTrue(run['native_sidebar_mounted'])
+                    self.assertEqual(run['acceptance_scope'],'synthetic_native_history_and_renderer')
+                    self.assertTrue(run['native_cold_history_unchanged'])
                     self.assertGreaterEqual(run['synthetic_threads'],400)
+                self.assertEqual(run['browser_resource_isolation'],'passed')
+                self.assertEqual(run['browser_shared_state'],'passed')
                 self.assertEqual(run['close_status'],'closed')
                 self.assertEqual(run['status'],'passed')
                 if mode=='official':self.assertEqual(run['backend_sha256'],pin['official_backend_sha256'])
