@@ -7,6 +7,8 @@ on:
     paths:
       - "docs/**"
       - ".github/workflows/pages.yml"
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:
@@ -25,7 +27,22 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Select the latest published stable release
+        id: published
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          tag=$(gh api "repos/$GH_REPO/releases/latest" --jq 'select(.draft == false and .prerelease == false) | .tag_name')
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Latest stable release did not supply a supported tag."
+            exit 1
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.published.outputs.tag }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
