@@ -216,6 +216,29 @@ def resource_capability(resources):
                 ('chrome-native-host', 'chrome_native_host', 'Chrome native host', 'syncInstallStateWithChromeExtension'))}
 
 
+def _plain_catalog_inputs(resources):
+    """Reject redirected catalog parents before any resource discovery or copy."""
+    resources = Path(resources)
+    # Checking only the catalog leaf misses a junction in plugins or in the
+    # unpacked layout. Inspect each component without resolving its target.
+    for directory in reversed((resources, *resources.parents)):
+        if not stat.S_ISDIR(_plain(directory).st_mode):
+            raise ValueError('browser_isolation_catalog_parent_not_directory')
+    for relative in ('plugins/openai-bundled/.agents/plugins/marketplace.json',
+                     'app.asar.unpacked/plugins/openai-bundled/.agents/plugins/marketplace.json'):
+        parts = Path(relative).parts
+        path = resources
+        for index, part in enumerate(parts):
+            path = path / part
+            try:
+                info = _plain(path)
+            except FileNotFoundError:
+                break  # An optional layout may be absent; never follow links.
+            expected = stat.S_ISREG if index == len(parts) - 1 else stat.S_ISDIR
+            if not expected(info.st_mode):
+                raise ValueError('browser_isolation_catalog_component_type')
+
+
 def prepare_resources(executable, home, run, environment, inherited=None):
     """Prepare a separate catalog; never edit or link the installed resources."""
     inherited = os.environ if inherited is None else inherited
@@ -227,6 +250,7 @@ def prepare_resources(executable, home, run, environment, inherited=None):
     _plain(run)
     resources = Path(executable).parent / 'resources'
     _plain(resources)
+    _plain_catalog_inputs(resources)
     capability = resource_capability(resources)
     catalogs = [resources / 'plugins/openai-bundled',
                 resources / 'app.asar.unpacked/plugins/openai-bundled']

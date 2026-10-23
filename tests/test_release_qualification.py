@@ -30,7 +30,7 @@ class ReleaseQualification(unittest.TestCase):
         self.assertTrue(e['prior_feature_evidence']['application_bytes_unchanged'])
         artifacts=e['tested_artifacts']
         self.assertEqual(set(artifacts),{'official','compat','installed_wheel'})
-        for artifact in artifacts.values():
+        for artifact_name,artifact in artifacts.items():
             self.assertRegex(artifact['source_commit'],r'^[0-9a-f]{40}$')
             self.assertRegex(artifact['artifact_sha256'],r'^[0-9a-f]{64}$')
             # Keep original artifact evidence intact. A narrowly scoped
@@ -38,13 +38,55 @@ class ReleaseQualification(unittest.TestCase):
             # final installation runtime remains a separate release gate.
             amended=dict(artifact['source_inputs'])
             for change in e.get('source_amendments',[]):
-                self.assertEqual(change['scope'],'installation_fixture_only')
-                self.assertEqual(change['path'],'codex_desktop_workflow/verification_8622.py')
+                if change['scope']=='isolated_resource_preflight_only':
+                    self.assertEqual(len(e['source_amendments']),1)
+                    self.assertEqual(change['path'],'codex_desktop_workflow/browser_isolation.py')
+                    self.assertEqual(change['applies_to'],['official','compat'])
+                    self.assertEqual(change['original_source_commit'],'38658558655d1409e9177852385a558f3d5c9d4e')
+                    self.assertEqual(change['before_sha256'],'886684099368ba9aa0e5ed247b5459e78ed58b4f6ccec7901f6e3c4a133fa19a')
+                    self.assertEqual(change['after_sha256'],digest(SOURCE/change['path']))
+                    self.assertFalse(change['wheel_amendment_allowed'])
+                    exact=change['exact_change']
+                    self.assertEqual(exact['status'],'passed')
+                    self.assertEqual(exact['added_function'],'_plain_catalog_inputs')
+                    self.assertEqual(exact['added_call'],'_plain_catalog_inputs(resources)')
+                    self.assertTrue(exact['remaining_module_text_unchanged'])
+                    self.assertTrue(exact['remaining_module_ast_unchanged'])
+                    self.assertRegex(exact['patch_sha256'],r'^[0-9a-f]{64}$')
+                    regression=change['regression']
+                    self.assertEqual(regression['status'],'passed')
+                    self.assertEqual(regression['tests'],2)
+                    for key in ('failures','errors','skipped'):self.assertEqual(regression[key],0)
+                    self.assertTrue(regression['both_layouts_actual_windows_junctions_rejected'])
+                    self.assertTrue(regression['plain_resources_and_environment_unchanged'])
+                    self.assertFalse(regression['application_started'])
+                    self.assertFalse(regression['shared_registry_written'])
+                    self.assertEqual(regression['test_source_sha256'],digest(ROOT/'tests/test_browser_preflight_amendment.py'))
+                    readback=change['current_path_readback']
+                    self.assertEqual(readback['status'],'passed')
+                    self.assertEqual(readback['runs'],4)
+                    self.assertEqual(readback['source_commit'],change['original_source_commit'])
+                    self.assertEqual(readback['directory_identity_scope'],'current_readback_only')
+                    self.assertFalse(readback['historical_directory_identity_invented'])
+                    for key in ('original_receipts_unchanged','source_file_bytes_match_original','retained_overlays_unchanged'):
+                        self.assertTrue(readback[key])
+                    self.assertEqual(set(readback['run_receipt_sha256']),{'official/empty','official/synthetic_tasks','compat/empty','compat/synthetic_tasks'})
+                    for value in readback['run_receipt_sha256'].values():self.assertRegex(value,r'^[0-9a-f]{64}$')
+                    self.assertTrue(change['native_application_bytes_unchanged'])
+                    if artifact_name not in change['applies_to']:
+                        self.assertEqual(artifact_name,'installed_wheel')
+                        self.assertNotEqual(artifact['source_commit'],change['original_source_commit'])
+                        self.assertEqual(amended[change['path']],change['after_sha256'])
+                        continue  # The wheel must really contain the new source.
+                    self.assertEqual(artifact['source_commit'],change['original_source_commit'])
+                else:
+                    self.assertEqual(change['scope'],'installation_fixture_only')
+                    self.assertEqual(change['path'],'codex_desktop_workflow/verification_8622.py')
+                    self.assertEqual(change['regression']['status'],'passed')
+                    self.assertEqual(change['regression']['tests'],4)
+                    self.assertEqual(change['regression']['test_source_sha256'],digest(ROOT/'tests/test_installer_fixture_sandbox.py'))
+                    self.assertTrue(change['native_application_bytes_unchanged'])
                 self.assertEqual(amended[change['path']],change['before_sha256'])
-                self.assertEqual(change['regression']['status'],'passed')
-                self.assertEqual(change['regression']['tests'],4)
-                self.assertEqual(change['regression']['test_source_sha256'],digest(ROOT/'tests/test_installer_fixture_sandbox.py'))
-                self.assertTrue(change['native_application_bytes_unchanged'])
                 self.assertRegex(change['previous_qualification_sha256'],r'^[0-9a-f]{64}$')
                 amended[change['path']]=change['after_sha256']
             self.assertEqual(amended,e['source_inputs'])
@@ -53,7 +95,7 @@ class ReleaseQualification(unittest.TestCase):
         for name,value in e['source_inputs'].items():self.assertEqual(digest(SOURCE/name),value,name)
         tools={str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'tools').rglob('*') if p.is_file() and p.suffix in ('.py','.js','.cjs','.json','.ps1')}
         tools.update(str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'acceptance_tests').glob('*.py'))
-        tools.update({'install.ps1','msix_source.py','tests/test_release_qualification.py','tests/test_awake_probes.py','tests/test_browser_isolation.py','tests/test_owned_browser_guard.py','tests/test_qualification_browser_gate.py'})
+        tools.update({'install.ps1','msix_source.py','tests/test_release_qualification.py','tests/test_awake_probes.py','tests/test_browser_isolation.py','tests/test_owned_browser_guard.py','tests/test_qualification_browser_gate.py','tests/test_browser_preflight_amendment.py'})
         self.assertEqual(set(e['acceptance_tools']),tools)
         for name,value in e['acceptance_tools'].items():self.assertEqual(digest(ROOT/name),value,name)
         pin=json.loads((PACKAGE/'policies/backend-source-26.1016.8622.0.json').read_text())
