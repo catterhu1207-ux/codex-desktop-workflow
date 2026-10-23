@@ -19,8 +19,10 @@ def bindings(portable):
 def require_complete(value,manifest):
     if value.get('status')!='passed' or value.get('closed_log_readback')!='passed' or value.get('owned_cleanup',{}).get('owned_job_empty') is not True:
         raise ValueError('public_owned_runtime_not_complete')
-    if manifest.get('package_version') in ('26.1013.4894.0','26.1016.6573.0','26.1016.8120.0'):
-        if manifest['package_version']=='26.1016.8120.0':
+    if manifest.get('package_version') in ('26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0'):
+        if manifest['package_version']=='26.1016.8622.0':
+            from .verification_8622 import release_policy
+        elif manifest['package_version']=='26.1016.8120.0':
             from .verification_8120 import release_policy
         elif manifest['package_version']=='26.1016.6573.0':
             from .verification_6573 import release_policy
@@ -39,7 +41,7 @@ def require_complete(value,manifest):
             if proof.get('process_id')!=run['pre_close']['main']['pid']:raise ValueError('public_main_identity_mismatch')
             if run['profile']=='synthetic_tasks' and run.get('native_cold_history',{}).get('status')!='passed':raise ValueError('native_cold_history_missing')
         if value.get('native_nonrenderer',{}).get('status')!='passed':raise ValueError('public_packaged_native_checks_missing')
-        if manifest['package_version'] in ('26.1016.6573.0','26.1016.8120.0') and value.get('native_nonrenderer',{}).get('complete_row_pipeline',{}).get('status')!='passed':raise ValueError('public_complete_row_pipeline_missing')
+        if manifest['package_version'] in ('26.1016.6573.0','26.1016.8120.0','26.1016.8622.0') and value.get('native_nonrenderer',{}).get('complete_row_pipeline',{}).get('status')!='passed':raise ValueError('public_complete_row_pipeline_missing')
         return
     required=set(manifest['frontend_runtime_attestation']['live_renderer_probe']['feature_ids'])
     runs=value.get('runtime',[])

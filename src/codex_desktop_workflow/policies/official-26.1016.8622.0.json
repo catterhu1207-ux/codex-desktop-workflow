@@ -1,0 +1,23 @@
+{
+  "schema_version": 2,
+  "mode": "official",
+  "patch_id": "official-package-v1",
+  "generated_from_official_package": true,
+  "official": {
+    "size": 336134960,
+    "sha256": "c81ed464e5e7cafd09a5fa26af390c480bed8e9fab2a87a54b285fbd56e7122a",
+    "pe_machine": "amd64"
+  },
+  "compatibility": {
+    "packages": [
+      {
+        "package_full_name": "OpenAI.Codex_26.1016.8622.0_x64__2p2nqsd0c76g0",
+        "package_version": "26.1016.8622.0"
+      }
+    ]
+  },
+  "provenance": {
+    "source": "user_supplied_official_package",
+    "source_change": "Copy the official matching backend unchanged."
+  }
+}

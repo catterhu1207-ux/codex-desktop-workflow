@@ -10,7 +10,10 @@ class Exact8120Source(unittest.TestCase):
         source=os.environ.get('CODEX_WORKFLOW_TEST_SOURCE_8120')
         portable=os.environ.get('CODEX_WORKFLOW_TEST_APP_8120')
         if not source or not portable:
-            raise AssertionError('8120 required acceptance inputs missing; current-version checks may not skip')
+            from codex_desktop_workflow.workflow import SUPPORTED_VERSION
+            if SUPPORTED_VERSION == p.base.VERSION:
+                raise AssertionError('8120 required acceptance inputs missing; current-version checks may not skip')
+            raise unittest.SkipTest('Historical 8120 official source is not retained; current 8622 checks remain mandatory')
         cls.source=Path(source);cls.app=Path(portable)
 
     def test_all_26_contracts_and_four_length_preserving_entries(self):

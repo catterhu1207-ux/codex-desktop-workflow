@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [string]$Source,
     [string]$Target,
@@ -220,7 +220,7 @@ function Show-BackendPlan {
                 $available = [bool](Get-Command $tool -ErrorAction SilentlyContinue)
                 Write-Host "Source-build prerequisite $tool available: $available"
             }
-            $rustRequirement = if ($SourceVersion -eq '26.1016.8120.0') { 'Rust 1.99.1' } elseif ($SourceVersion) { 'Rust 1.95.0' } else { 'The selected profile''s exact Rust toolchain' }
+            $rustRequirement = if ($SourceVersion -in @('26.1016.8120.0','26.1016.8622.0')) { 'Rust 1.99.1' } elseif ($SourceVersion) { 'Rust 1.95.0' } else { 'The selected profile''s exact Rust toolchain' }
             Write-Host "Compatibility backend will be built from the pinned source profile. $rustRequirement, x64 MSVC and Windows SDK are required."
         }
     }
@@ -277,7 +277,7 @@ try {
     }
     $versionInfo = Get-Content -LiteralPath $versionFile -Raw | ConvertFrom-Json
     $packageName = if ($versionInfo.package) { [string]$versionInfo.package } else { "codex-desktop-workflow" }
-    $packageVersion = if ($versionInfo.version) { [string]$versionInfo.version } else { "0.3.10" }
+    $packageVersion = if ($versionInfo.version) { [string]$versionInfo.version } else { "0.3.11" }
     Write-Ok "Bundle prepared for $packageName $packageVersion"
 
     $sourceResolution = Get-OfficialSource $Source

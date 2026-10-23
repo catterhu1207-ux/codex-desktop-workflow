@@ -5,7 +5,7 @@ import codex_desktop_workflow
 PACKAGE=Path(codex_desktop_workflow.__file__).parent
 SOURCE=PACKAGE.parent
 ROOT=Path(__file__).resolve().parents[1]
-CURRENT='qualification-26.1016.8120.0.json'
+CURRENT='qualification-26.1016.8622.0.json'
 
 def digest(p):
     raw=p.read_bytes()
@@ -17,7 +17,7 @@ class ReleaseQualification(unittest.TestCase):
         self.assertTrue(path.is_file(),'Current release qualification is incomplete')
         e=json.loads(path.read_text())
         self.assertEqual(e['status'],'passed')
-        self.assertEqual(e['desktop_version'],'26.1016.8120.0')
+        self.assertEqual(e['desktop_version'],'26.1016.8622.0')
         # Bind evidence to the source actually built, not an invented earlier
         # version string or a later documentation-only commit.
         self.assertEqual(e['package_version'],codex_desktop_workflow.__version__)
@@ -32,7 +32,7 @@ class ReleaseQualification(unittest.TestCase):
             amended=dict(artifact['source_inputs'])
             for change in e.get('source_amendments',[]):
                 self.assertEqual(change['scope'],'installation_fixture_only')
-                self.assertEqual(change['path'],'codex_desktop_workflow/verification_8120.py')
+                self.assertEqual(change['path'],'codex_desktop_workflow/verification_8622.py')
                 self.assertEqual(amended[change['path']],change['before_sha256'])
                 self.assertEqual(change['regression']['status'],'passed')
                 self.assertEqual(change['regression']['tests'],4)
@@ -49,7 +49,7 @@ class ReleaseQualification(unittest.TestCase):
         tools.update({'install.ps1','msix_source.py','tests/test_release_qualification.py','tests/test_awake_probes.py'})
         self.assertEqual(set(e['acceptance_tools']),tools)
         for name,value in e['acceptance_tools'].items():self.assertEqual(digest(ROOT/name),value,name)
-        pin=json.loads((PACKAGE/'policies/backend-source-26.1016.8120.0.json').read_text())
+        pin=json.loads((PACKAGE/'policies/backend-source-26.1016.8622.0.json').read_text())
         self.assertEqual(e['compat_commit'],pin['commit'])
         self.assertEqual(e['feature_contract_count'],26)
         self.assertEqual(e['frontend_build'],'2.10.1')

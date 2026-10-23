@@ -43,10 +43,10 @@ def main():
     changed[-1][1]['run_id']='00000000-0000-4000-8000-000000000000';cases['mixed_run']=changed
     changed=copy.deepcopy(values)
     payload=next(r[1] for r in changed if 'features' in r[1]);payload['features'].pop(next(iter(payload['features'])));cases['missing_feature']=changed
-    fields=('native_function_bindings','actual_renderer','main_route_mounted','palette') if manifest_data['package_version'] in ('26.1013.4894.0','26.1016.6573.0','26.1016.8120.0') else ('native_async_questions','persistent_update')
+    fields=('native_function_bindings','actual_renderer','main_route_mounted','palette') if manifest_data['package_version'] in ('26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0') else ('native_async_questions','persistent_update')
     for field in fields:
         changed=copy.deepcopy(values);next(r[1] for r in changed if 'features' in r[1])[field]=None;cases['missing_'+field]=changed
-    parser={'26.1016.8120.0':'renderer_attestation_261016_8120.ps1','26.1016.6573.0':'renderer_attestation_261016_6573.ps1','26.1013.4894.0':'renderer_attestation_261013_4894.ps1','26.1007.9446.0':'renderer_attestation_261007_9446.ps1'}.get(manifest_data['package_version'],'renderer_attestation_26928_4866.ps1')
+    parser={'26.1016.8622.0':'renderer_attestation_261016_8622.ps1','26.1016.8120.0':'renderer_attestation_261016_8120.ps1','26.1016.6573.0':'renderer_attestation_261016_6573.ps1','26.1013.4894.0':'renderer_attestation_261013_4894.ps1','26.1007.9446.0':'renderer_attestation_261007_9446.ps1'}.get(manifest_data['package_version'],'renderer_attestation_26928_4866.ps1')
     base_env=os.environ.copy();base_env.update(PROOF_PARSER=str(Path(renderer_proof.__file__).parent/'data'/parser),PROOF_MANIFEST=str(manifest),PROOF_PID=str(pid),PROOF_START=record['started_at'])
     results={}
     host=Path(os.environ.get('WINDIR',r'C:\Windows'))/'System32/WindowsPowerShell/v1.0/powershell.exe'
