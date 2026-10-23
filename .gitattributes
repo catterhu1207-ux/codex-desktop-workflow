@@ -6,3 +6,5 @@ src/codex_desktop_workflow/data/desktop-261013-4894* -text
 src/codex_desktop_workflow/data/desktop-261016-6573* -text
 src/codex_desktop_workflow/data/*261016_8120* -text
 src/codex_desktop_workflow/data/desktop-261016-8120* -text
+# All packaged runtime resources are byte-bound, including future versions.
+src/codex_desktop_workflow/data/* -text
