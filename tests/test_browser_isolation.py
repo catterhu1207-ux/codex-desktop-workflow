@@ -245,7 +245,20 @@ class BrowserResourceIsolation(unittest.TestCase):
         self.assertEqual(Path(first_env['USERPROFILE']), first.run_directory / 'profile')
         self.assertEqual(Path(second_env['USERPROFILE']), second.run_directory / 'profile')
         self.assertIn(b.RESOURCE_OVERRIDE, first_env)
-        self.assertEqual(first_env['CODEX_CLI_PATH'], str(self.resources / 'codex.exe'))
+        # Windows may resolve a TEMP 8.3 spelling to its long path. Compare
+        # the actual selected file, rather than two spellings of its name.
+        self.assertTrue(Path(first_env['CODEX_CLI_PATH']).samefile(self.resources / 'codex.exe'))
+
+    def test_backend_identity_accepts_alias_but_rejects_same_byte_copy(self):
+        backend = self.resources / 'codex.exe'
+        alias = self.resources / 'same-backend-alias.exe'
+        other = self.resources / 'same-bytes-different-backend.exe'
+        os.link(backend, alias)
+        other.write_bytes(backend.read_bytes())
+        self.assertTrue(backend.resolve().samefile(backend))
+        self.assertTrue(alias.samefile(backend))
+        self.assertNotEqual(str(alias), str(backend))
+        self.assertFalse(other.samefile(backend))
 
     def test_normal_production_launch_does_not_create_test_resources_or_guard(self):
         from codex_desktop_workflow.isolated_run import IsolatedRun

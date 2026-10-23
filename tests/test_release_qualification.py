@@ -1,17 +1,55 @@
 """Require current-source evidence; historical release proof stays immutable."""
-import hashlib,json,unittest
+import ast,hashlib,json,unittest
 from pathlib import Path
 import codex_desktop_workflow
 PACKAGE=Path(codex_desktop_workflow.__file__).parent
 SOURCE=PACKAGE.parent
 ROOT=Path(__file__).resolve().parents[1]
 CURRENT='qualification-26.1016.8622.0.json'
+METADATA_BEFORE=b'"""Public Codex desktop workflow adaptation entry point."""\n\n__version__ = "0.3.12"\n\n'
+
+def release_metadata_only_proof(before,after):
+    """Only the exact retained release constant may differ from its old bytes."""
+    before=before.replace(b'\r\n',b'\n');after=after.replace(b'\r\n',b'\n')
+    if before!=METADATA_BEFORE or after!=before.replace(b'__version__ = "0.3.12"',b'__version__ = "0.3.13"',1):
+        raise ValueError('unexpected_release_metadata_source_change')
+    old_tree,new_tree=ast.parse(before),ast.parse(after)
+    old_assignments=[node for node in old_tree.body if isinstance(node,ast.Assign)]
+    new_assignments=[node for node in new_tree.body if isinstance(node,ast.Assign)]
+    if len(old_assignments)!=1 or len(new_assignments)!=1:
+        raise ValueError('unexpected_release_metadata_ast')
+    old,new=old_assignments[0],new_assignments[0]
+    if (len(new.targets)!=1 or not isinstance(new.targets[0],ast.Name) or new.targets[0].id!='__version__'
+            or not isinstance(old.value,ast.Constant) or not isinstance(new.value,ast.Constant)
+            or old.value.value!='0.3.12' or new.value.value!='0.3.13'):
+        raise ValueError('unexpected_release_metadata_ast')
+    new.value.value='0.3.12'
+    if ast.dump(old_tree,include_attributes=False)!=ast.dump(new_tree,include_attributes=False):
+        raise ValueError('release_metadata_other_ast_changed')
+    return {'status':'passed','path':'codex_desktop_workflow/__init__.py','constant':'__version__',
+        'before_version':'0.3.12','after_version':'0.3.13','before_sha256':hashlib.sha256(before).hexdigest(),
+        'after_sha256':hashlib.sha256(after).hexdigest(),'remaining_bytes_unchanged':True,'remaining_ast_unchanged':True}
 
 def digest(p):
     raw=p.read_bytes()
     return hashlib.sha256(raw if p.suffix=='.bin' else raw.replace(b"\r\n",b"\n")).hexdigest()
 
 class ReleaseQualification(unittest.TestCase):
+    def test_release_metadata_only_accepts_exact_version_constant(self):
+        after=METADATA_BEFORE.replace(b'0.3.12',b'0.3.13')
+        proof=release_metadata_only_proof(METADATA_BEFORE,after)
+        self.assertTrue(proof['remaining_bytes_unchanged'])
+        self.assertTrue(proof['remaining_ast_unchanged'])
+
+    def test_release_metadata_only_rejects_other_source_changes(self):
+        after=METADATA_BEFORE.replace(b'0.3.12',b'0.3.13')
+        for invalid in (after+b'EXTRA=True\n',after.replace(b'entry point',b'changed entry'),
+                        after.replace(b'0.3.13',b'0.3.14'),after.replace(b'__version__',b'other_name'),
+                        after.replace(b' = ',b'='),METADATA_BEFORE):
+            with self.subTest(invalid=invalid),self.assertRaises(ValueError):
+                release_metadata_only_proof(METADATA_BEFORE,invalid)
+        with self.assertRaises(ValueError):release_metadata_only_proof(METADATA_BEFORE+b'# changed\n',after)
+
     def test_current_source_has_complete_public_runtime_acceptance(self):
         path=PACKAGE/'policies'/CURRENT
         self.assertTrue(path.is_file(),'Current release qualification is incomplete')
@@ -30,6 +68,8 @@ class ReleaseQualification(unittest.TestCase):
         self.assertTrue(e['prior_feature_evidence']['application_bytes_unchanged'])
         artifacts=e['tested_artifacts']
         self.assertEqual(set(artifacts),{'official','compat','installed_wheel'})
+        self.assertEqual([change['scope'] for change in e['source_amendments']],
+                         ['isolated_resource_preflight_only','release_metadata_only'])
         for artifact_name,artifact in artifacts.items():
             self.assertRegex(artifact['source_commit'],r'^[0-9a-f]{40}$')
             self.assertRegex(artifact['artifact_sha256'],r'^[0-9a-f]{64}$')
@@ -39,7 +79,7 @@ class ReleaseQualification(unittest.TestCase):
             amended=dict(artifact['source_inputs'])
             for change in e.get('source_amendments',[]):
                 if change['scope']=='isolated_resource_preflight_only':
-                    self.assertEqual(len(e['source_amendments']),1)
+                    self.assertEqual(len(e['source_amendments']),2)
                     self.assertEqual(change['path'],'codex_desktop_workflow/browser_isolation.py')
                     self.assertEqual(change['applies_to'],['official','compat'])
                     self.assertEqual(change['original_source_commit'],'38658558655d1409e9177852385a558f3d5c9d4e')
@@ -78,6 +118,32 @@ class ReleaseQualification(unittest.TestCase):
                         self.assertNotEqual(artifact['source_commit'],change['original_source_commit'])
                         self.assertEqual(amended[change['path']],change['after_sha256'])
                         continue  # The wheel must really contain the new source.
+                    self.assertEqual(artifact['source_commit'],change['original_source_commit'])
+                elif change['scope']=='release_metadata_only':
+                    self.assertEqual(change['path'],'codex_desktop_workflow/__init__.py')
+                    self.assertEqual(change['applies_to'],['official','compat'])
+                    self.assertFalse(change['wheel_amendment_allowed'])
+                    self.assertEqual(change['baseline_release_commit'],'015ffa9b799b2e8763ea15cf621f108dd55f0b15')
+                    self.assertEqual(change['original_source_commit'],'38658558655d1409e9177852385a558f3d5c9d4e')
+                    exact=release_metadata_only_proof(METADATA_BEFORE,(SOURCE/change['path']).read_bytes())
+                    self.assertEqual(change['exact_change'],exact)
+                    self.assertEqual(change['before_sha256'],exact['before_sha256'])
+                    self.assertEqual(change['after_sha256'],exact['after_sha256'])
+                    self.assertTrue(change['native_application_bytes_unchanged'])
+                    regression=change['regression']
+                    self.assertEqual(regression['status'],'passed')
+                    self.assertEqual(regression['tests'],4)
+                    for key in ('failures','errors','skipped'):self.assertEqual(regression[key],0)
+                    self.assertTrue(regression['same_file_alias_accepted'])
+                    self.assertTrue(regression['same_byte_distinct_file_rejected'])
+                    self.assertFalse(regression['application_started'])
+                    self.assertEqual(regression['test_sha256']['tests/test_browser_isolation.py'],digest(ROOT/'tests/test_browser_isolation.py'))
+                    self.assertEqual(regression['test_sha256']['tests/test_release_qualification.py'],digest(ROOT/'tests/test_release_qualification.py'))
+                    if artifact_name not in change['applies_to']:
+                        self.assertEqual(artifact_name,'installed_wheel')
+                        self.assertNotIn(artifact['source_commit'],(change['original_source_commit'],change['baseline_release_commit']))
+                        self.assertEqual(amended[change['path']],change['after_sha256'])
+                        continue
                     self.assertEqual(artifact['source_commit'],change['original_source_commit'])
                 else:
                     self.assertEqual(change['scope'],'installation_fixture_only')
