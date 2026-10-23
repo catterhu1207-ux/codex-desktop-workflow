@@ -4,7 +4,7 @@
 
 ## Is my official version supported?
 
-v0.3.12 targets the exact official package 26.1016.8622.0 and retains the profiles in the compatibility matrix. The [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases) lists available downloads and their installation results. Both version and file identity must match; a newer official package needs its own adapted release.
+v0.3.13 targets the exact official package 26.1016.8622.0 and retains the profiles in the compatibility matrix. The [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases) lists available downloads and their installation results. Both version and file identity must match; a newer official package needs its own adapted release.
 
 ## Must I install my downloaded MSIX first?
 

@@ -1,6 +1,12 @@
 # Changelog
 
-## v0.3.12
+## v0.3.13
+
+- Correct a Windows CI test to compare the backend's file identity when temporary paths use short names. Application behavior and the existing browser isolation remain unchanged.
+- Retain the four qualified v0.3.12 source launches and validate the v0.3.13 wheel separately.
+- Keep the v0.3.12 tag, whose CI failed before release assets were built, and the unpublished v0.3.11 draft.
+
+## v0.3.12 (CI failed before release assets)
 
 - Isolate installation checks from the signed-in user's Chrome registration. Four source launches passed in fresh test profiles; regular app launches retain browser integration.
 - Retain the 26.1016.8622.0 / frontend 2.11.0 adapter, fixed compatibility-backend source and all earlier profiles.

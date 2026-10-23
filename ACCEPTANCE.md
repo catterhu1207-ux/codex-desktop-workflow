@@ -3,13 +3,19 @@
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
 
+## v0.3.13 release qualification
+
+v0.3.13 corrects the Windows CI test's comparison of short and long paths and updates package version metadata. The application files and browser isolation behavior retain the four qualified v0.3.12 source launches described below. The new v0.3.13 installed wheel passed its separate resource and contract checks.
+
+Validation of the downloadable v0.3.13 installer is pending. Results will be recorded in the [release notes](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.13).
+
 ## v0.3.12 source and browser isolation qualification
 
-The new release keeps the existing Desktop 26.1016.8622.0 frontend and backend identities. The prior 26-contract and 23-feature results remain feature evidence for those unchanged application bytes.
+The v0.3.12 source revision keeps the existing Desktop 26.1016.8622.0 frontend and backend identities. The prior 26-contract and 23-feature results remain feature evidence for those unchanged application bytes.
 
 Both backend modes passed new empty-home and 400-chat synthetic launches, four independent source runs in total. Each run produced 23 renderer proofs, preserved the shared Chrome registration throughout startup, observation and closure, ran for at least 60 awake seconds and closed normally. The 26 frontend contracts passed. Empty-home checks covered signed-out onboarding; populated checks covered synthetic history. Existing native first-message, SSH, Work, ordering and settings results remain attributed to the unchanged application bytes tested for the unpublished v0.3.11 draft.
 
-Installation results for the downloadable assets are recorded in the [v0.3.12 release notes](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.12).
+The v0.3.12 tag is retained. Its three required CI runs failed on a test comparing equivalent Windows short and long paths as strings; packaging and asset upload did not run. No v0.3.12 release assets were created.
 
 ## v0.3.11 unpublished draft: retained feature evidence
 

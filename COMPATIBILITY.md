@@ -1,8 +1,8 @@
 # Compatibility
 
-This table describes installer **v0.3.12**. Both backend modes passed four isolated source launches with Chrome registration preserved. Check the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases) for downloadable-installer results and availability.
+This table describes installer **v0.3.13**. It retains the four browser-isolated source launches recorded for v0.3.12 and the same application bytes. Check the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases) for downloadable-installer results and availability.
 
-| Component | Status in v0.3.12 |
+| Component | Status in v0.3.13 |
 |---|---|
 | Windows x64 | Supported platform |
 | Desktop `26.1016.8622.0` | Independent frontend 2.11.0; official backend by default; optional pinned source-built 0.163.0-alpha.11.2.1; 26 contracts and 23 renderer checks |
@@ -29,6 +29,6 @@ This table describes installer **v0.3.12**. Both backend modes passed four isola
 A version number alone is insufficient. `inspect` also checks the complete ASAR, bundled backend, and all required ASAR entry hashes for the selected supported version.
 
 
-## v0.3.12 prerequisites
+## v0.3.13 prerequisites
 
 Python 3.11 or later and Node.js with WebSocket and internal Acorn support are required (Node.js 24.18 tested). Complete signed MSIX and installed-directory sources are accepted. The optional backend profile `desktop-26.1016.8622.0-sqlite-v2` binds public source commit `ad057a0ade9a99eb84161a23c8462ac0f68e8f1a`, upstream `51f97c6bca5500edbb986f6d9fe64fa2e63cbdd4`, Rust 1.99.1 and all 77 migrations across six databases. Old release evidence is retained; missing original samples in this run are skips.
