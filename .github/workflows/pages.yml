@@ -13,15 +13,38 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
 
 jobs:
+  request-main-deployment:
+    if: >-
+      github.repository == 'catterhu1207-ux/codex-desktop-workflow' &&
+      github.event_name == 'release' &&
+      github.event.release.draft == false &&
+      github.event.release.prerelease == false
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Request deployment from the protected main branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh api --method POST
+          repos/catterhu1207-ux/codex-desktop-workflow/actions/workflows/pages.yml/dispatches
+          -f ref=main
+
   deploy:
+    if: >-
+      github.repository == 'catterhu1207-ux/codex-desktop-workflow' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: true
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

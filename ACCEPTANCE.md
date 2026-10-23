@@ -7,7 +7,16 @@ This public report is a redacted summary of the maintainer-side Windows acceptan
 
 v0.3.13 corrects the Windows CI test's comparison of short and long paths and updates package version metadata. The application files and browser isolation behavior retain the four qualified v0.3.12 source launches described below. The new v0.3.13 installed wheel passed its separate resource and contract checks.
 
-Validation of the downloadable v0.3.13 installer is pending. Results will be recorded in the [release notes](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases/tag/v0.3.13).
+The complete Windows suite passed 223 tests, including all four current 8622 checks and four checks using the retained official 6573 sample. Seven historical sample groups were skipped because their required inputs were unavailable: 26.915.4065.0, 26.917.6896.0, 26.917.9434.0, 26.924.1866.0, 26.924.2738.0, 26.928.4866.0 and 26.1016.8120.0. The CI-style source-only suite separately passed 215 tests with seven sample-dependent groups skipped; the complete suite supplied the 6573 checks omitted by that selection. The privacy scan covered 464 tracked files and found no issues.
+
+The exact downloaded v0.3.13 bundle passed normal installation with the official backend and the optional backend built from pinned public source. Each mode passed independent empty-home and 400-chat synthetic launches: four new installation runs with 23 renderer proofs, at least 60 awake seconds of observation, the expected backend and normal closure. Shared Chrome registration remained unchanged throughout all four runs. Three installer dry-run selections and downloaded asset checksums passed.
+
+
+### Project-page publication
+
+The initial Pages job was rejected because release events use a tag reference while the deployment environment permits the main branch. A manual main-branch dispatch then deployed the published v0.3.13 site successfully. Anonymous downloads, checksums, Latest and the project page passed readback.
+
+The website workflow now routes stable-release notifications to a main-branch dispatch. Only that branch's deployment job uses the protected environment; it still selects the latest published stable tag for the site content. The published application tag and installation assets remain unchanged.
 
 ## v0.3.12 source and browser isolation qualification
 
