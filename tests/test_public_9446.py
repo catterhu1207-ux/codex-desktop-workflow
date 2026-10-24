@@ -52,5 +52,6 @@ class Public9446(unittest.TestCase):
             root=Path(tmp)
             for name in ('ChatGPT.exe','resources/app.asar','resources/codex.exe','resources/x.js','resources/u.cjs','codex-desktop-workflow-manifest.json','codex-desktop-workflow.json'):
                 file=root/name;file.parent.mkdir(parents=True,exist_ok=True);file.write_bytes(b'synthetic')
+            root.joinpath('codex-desktop-workflow-manifest.json').write_text(json.dumps({'package_version':'26.1007.9446.0'}))
             previous=q.bindings(root);root.joinpath('resources/x.js').write_bytes(b'changed')
             self.assertNotEqual(previous,q.bindings(root))

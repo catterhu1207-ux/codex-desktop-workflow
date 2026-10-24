@@ -37,14 +37,8 @@ def release_policy():
     value=json.loads(path.read_text(encoding='utf8'))
     if value.get('status')!='passed' or value.get('desktop_version')!='26.1016.8120.0':
         raise ValueError('8120_public_release_acceptance_not_complete')
-    source=Path(__file__).parent.parent
-    for name,expected in value['source_inputs'].items():
-        file=(source/name).resolve()
-        if not file.is_relative_to(source.resolve()) or not file.is_file():raise ValueError('release_source_missing')
-        raw=file.read_bytes()
-        if file.suffix!='.bin':raw=raw.replace(b'\r\n',b'\n')
-        if hashlib.sha256(raw).hexdigest()!=expected:raise ValueError('release_source_changed:'+name)
-    return {'status':'passed','sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+    from .release_sources import validate
+    return validate(path,value)
 
 def verify(source,portable,runs_root,observe_seconds,launches):
     from . import workflow as w

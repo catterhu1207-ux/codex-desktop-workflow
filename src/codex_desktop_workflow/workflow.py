@@ -165,6 +165,23 @@ SUPPORTED_PACKAGES['26.1016.8622.0'] = PackageSupport(
         ('shared_entry_path','shared_entry_source_sha256'),('main_entry_path','main_entry_source_sha256'),
         ('attestation_protocol_entry_path','attestation_protocol_source_sha256')]})
 
+import hotfix_integration_261021_3705 as _public_3705
+SUPPORTED_PACKAGES['26.1021.3705.0'] = PackageSupport(
+    version='26.1021.3705.0', package_full_name=_public_3705.base.PACKAGE_FULL_NAME,
+    asar_sha256=_public_3705.base.SOURCE_ASAR_SHA256,
+    backend_sha256='1103e9e09c71fa2cd0afd6d8f3b9a2d63174fe8efd7cb5bd09f1cb14ef58a098',
+    backend_policy=_POLICY_ROOT/'official-26.1021.3705.0.json',
+    backend_policy_sha256='048195f38c675ba250c6abcb741d5f7891b3fda562c98bf1f49576be7f30e89c',
+    entries={_public_3705.PROFILE[k]: _public_3705.PROFILE[h] for k,h in [
+        ('entry_path','entry_source_sha256'),('secondary_entry_path','secondary_entry_source_sha256'),
+        ('shared_entry_path','shared_entry_source_sha256'),('main_entry_path','main_entry_source_sha256'),
+        ('attestation_protocol_entry_path','attestation_protocol_source_sha256')]})
+SUPPORTED_PACKAGES['26.1021.3705.0'].entries.update({
+    '.vite/build/src-Dl21kCYQ.js': 'a42052ee3309565865f2d20fc45dee297935cbb50d1fc1a404b90c18d824b93c',
+    '.vite/build/bootstrap-BYjpvKBK.js': '3081dd9f7fdf0eba02d8caf99becb6f891e7bd9a3b1f7345537eb10165e16ff1',
+    'webview/assets/composer-project-picker-content-8f3a31c15b9e.js': '0d4faf8fa9bd18b4ee4bf44d508fdfdacc172d30c7885ebf6fc143e9c3205c89',
+})
+
 SUPPORTED_VERSIONS = tuple(sorted(SUPPORTED_PACKAGES,key=lambda value:tuple(map(int,value.split(".")))))
 SUPPORTED_VERSION = max(SUPPORTED_VERSIONS,key=lambda value:tuple(map(int,value.split("."))))
 DATA_FILES = (
@@ -266,6 +283,8 @@ def inspect(source: Path) -> dict[str, Any]:
         problems.append('official_desktop_executable_sha256_mismatch')
     elif version == '26.924.1866.0' and _sha256(executable) != '5263bb43c717fc317655ae3aa8dfb7bb5d2b344832fa6ec449fa55dbe77d56b8':
         problems.append('official_desktop_executable_sha256_mismatch')
+    elif version == '26.1021.3705.0' and _sha256(executable) != _public_3705.base.SOURCE_EXE_SHA256:
+        problems.append('official_desktop_executable_sha256_mismatch')
     entry_results: dict[str, str] = {}
     if support is not None and (not problems or problems == ["windows_required"]):
         header_size, _, header = hotfix_builder.read_asar(asar)
@@ -292,7 +311,7 @@ def inspect(source: Path) -> dict[str, Any]:
 
 def build_backend(source: Path, target: Path) -> dict[str, Any]:
     inspected = inspect(source)
-    if inspected['status'] != 'passed' or inspected['supported_version'] not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0'):
+    if inspected['status'] != 'passed' or inspected['supported_version'] not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0','26.1021.3705.0'):
         raise WorkflowError('compat_backend_source_unsupported')
     return backend.build(Path(inspected['app_directory']), target, inspected['supported_version'])
 
@@ -305,7 +324,7 @@ def build(source: Path, target: Path, backend_mode: str = 'official', backend_ma
     if backend_mode not in ('official', 'compat'):
         raise WorkflowError('unsupported_backend_mode')
     if backend_mode == 'compat':
-        if support.version not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0') or backend_manifest is None:
+        if support.version not in ('26.924.1866.0','26.924.2738.0','26.928.4866.0','26.1002.7124.0','26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0','26.1021.3705.0') or backend_manifest is None:
             raise WorkflowError('compatible_backend_manifest_required_for_supported_version')
         backend.validate_manifest(backend_manifest, support.version)
         selected_policy = backend_manifest
@@ -344,7 +363,7 @@ def build(source: Path, target: Path, backend_mode: str = 'official', backend_ma
         selected_policy = copied_policy
     public = {
         "schema_version": 1,
-        "status": "source_bundle_prepared" if support.version in ("26.1007.9446.0", "26.1013.4894.0", "26.1016.6573.0", "26.1016.8120.0", "26.1016.8622.0") else "bundle_qualified",
+        "status": "source_bundle_prepared" if support.version in ("26.1007.9446.0", "26.1013.4894.0", "26.1016.6573.0", "26.1016.8120.0", "26.1016.8622.0","26.1021.3705.0") else "bundle_qualified",
         "created_at": _now(),
         "package_version": support.version,
         "source_app": str(app),
@@ -665,6 +684,10 @@ def _bind_verification_source(manifest_path: Path, source_asar: Path, runs_root:
 
 def _verify_isolated(source: Path, portable: Path, runs_root: Path, observe_seconds: float = 60.0, launches: int = 2) -> dict[str, Any]:
     metadata=portable/'codex-desktop-workflow-manifest.json'
+    if metadata.is_file() and json.loads(metadata.read_text()).get('package_version')=='26.1021.3705.0':
+        if launches<2 or observe_seconds<60:raise WorkflowError('two_launches_and_60_seconds_required')
+        from .verification_3705 import verify as verify_3705
+        return verify_3705(source,portable,runs_root,observe_seconds,launches)
     if metadata.is_file() and json.loads(metadata.read_text()).get('package_version')=='26.1016.8622.0':
         if launches<2 or observe_seconds<60:raise WorkflowError('two_launches_and_60_seconds_required')
         from .verification_8622 import verify as verify_8622
@@ -913,6 +936,16 @@ def import_data(source: Path, target: Path) -> dict[str, Any]:
     active = _running_codex_processes()
     if active:
         raise WorkflowError("codex_processes_must_exit_before_import")
+    return _copy_data_checked(source, target)
+
+
+def _copy_data_checked(source: Path, target: Path) -> dict[str, Any]:
+    """Copy bytes and remap history after the caller proves source ownership."""
+    source, target = source.resolve(), target.resolve()
+    if not source.is_dir():raise WorkflowError('data_source_not_found')
+    if target.exists():raise WorkflowError('data_target_must_not_exist')
+    if _inside(target, source) or _inside(source, target):
+        raise WorkflowError('data_source_target_must_not_be_nested')
     for name in (*DATA_FILES, *DATA_DIRECTORIES):
         candidate = source / name
         if candidate.exists():
@@ -960,7 +993,7 @@ def launch(portable: Path, data: Path, runs_root: Path) -> dict[str, Any]:
     if not (portable / "codex-desktop-workflow-manifest.json").is_file():
         raise WorkflowError("verified_portable_manifest_missing")
     manifest_data = json.loads((portable / 'codex-desktop-workflow-manifest.json').read_text(encoding='utf8'))
-    if manifest_data.get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0'):
+    if manifest_data.get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0','26.1021.3705.0'):
         from .qualification import require
         require(portable)
     if not data.is_dir():

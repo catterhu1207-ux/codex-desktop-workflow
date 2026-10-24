@@ -3,6 +3,8 @@ from contextlib import closing
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import hashlib, json, os, queue, sqlite3, subprocess, threading, time, uuid
+import shutil,tomllib
+from urllib.parse import urlsplit
 from .awake_clock import seconds
 
 def message(q, deadline):
@@ -51,7 +53,8 @@ class Client:
         if self.process.poll() is None:self.process.terminate();self.process.wait(timeout=10)
         self.log.close()
 
-def generate(home:Path,binary:Path,count:int=400):
+def generate(home:Path,binary:Path,count:int=400,*,windows_sandbox=None):
+    if windows_sandbox not in (None,'unelevated'):raise ValueError('unsupported_fixture_windows_sandbox')
     home=home.resolve()
     if (home/'state_5.sqlite').exists() or (home/'sessions').exists():raise ValueError('native_history_target_must_be_fresh')
     workspace=home/'synthetic-workspaces';workspace.mkdir()
@@ -60,6 +63,8 @@ def generate(home:Path,binary:Path,count:int=400):
     config=home/'config.toml'
     if config.exists():raise ValueError('synthetic_config_must_not_replace_existing')
     config.write_text(f'model_provider="fixture"\nmodel="fixture-model"\nmodel_reasoning_effort="medium"\n[model_providers.fixture]\nname="Synthetic loopback"\nbase_url="http://127.0.0.1:{server.server_port}/v1"\nwire_api="responses"\nrequires_openai_auth=false\n',encoding='utf8')
+    if windows_sandbox:
+        with config.open('ab') as stream:stream.write(b'\n[windows]\nsandbox="unelevated"\n')
     c=Client(binary,home,workspace);ids=[];reads=[]
     try:
         for index in range(count):
@@ -93,3 +98,53 @@ def generate(home:Path,binary:Path,count:int=400):
     (home/'qualified-synthetic-files.json').write_text(json.dumps(inventory,indent=2),encoding='utf8')
     (home/'native-history-fixture.json').write_text(json.dumps(report,indent=2),encoding='utf8')
     return report
+
+
+def clone_ended(source:Path,target:Path,source_run:Path):
+    """Clone a proved synthetic fixture while leaving the real desktop alone.
+
+    The normal data-import command retains its global process guard. This
+    narrower test-only entry proves the source belongs to an exited isolated
+    run, has an original synthetic catalog, and uses only a local model server.
+    """
+    from .isolated_run import IsolatedRun
+    from . import workflow
+    source,target,source_run=(Path(p).resolve() for p in (source,target,source_run))
+    if source.parent!=target.parent or source.parent!=source_run.parent or source==target:
+        raise ValueError('synthetic_clone_requires_same_owned_runs_root')
+    if not source_run.name.startswith('run-') or IsolatedRun(source_run).status('codex.exe')['status']!='exited':
+        raise ValueError('synthetic_clone_source_owner_not_exited')
+    marker=source/'.browser-isolation-used.json'
+    if not marker.is_file() or marker.is_symlink() or json.loads(marker.read_bytes()).get('run')!=str(source_run):
+        raise ValueError('synthetic_clone_source_ownership_missing')
+    fixture=json.loads((source/'native-history-fixture.json').read_bytes())
+    config=tomllib.loads((source/'config.toml').read_text(encoding='utf8'))
+    provider=config.get('model_providers',{}).get('fixture',{})
+    endpoint=urlsplit(provider.get('base_url',''))
+    if (fixture.get('all_created_and_sent_by_actual_backend') is not True or fixture.get('count')!=len(fixture.get('ids',[]))
+            or fixture.get('user_data_copied') is not False or config.get('model_provider')!='fixture'
+            or endpoint.scheme!='http' or endpoint.hostname!='127.0.0.1' or endpoint.username or endpoint.password
+            or provider.get('requires_openai_auth') is not False):
+        raise ValueError('synthetic_clone_requires_native_loopback_fixture')
+    with closing(sqlite3.connect((source/'state_5.sqlite').as_uri()+'?mode=ro',uri=True)) as database:
+        ids={row[0] for row in database.execute('select id from threads')}
+    if ids!=set(fixture['ids']) or len(ids)!=fixture['count']:raise ValueError('synthetic_clone_catalog_changed')
+    # A desktop run adds plugins, marketplaces, notification hooks and MCP
+    # entries. They are install state, even when no plugin directory is copied.
+    # Reconstruct only the original loopback fixture configuration.
+    model=config.get('model');effort=config.get('model_reasoning_effort')
+    if not isinstance(model,str) or not isinstance(effort,str):raise ValueError('synthetic_clone_model_settings_missing')
+    sandbox=config.get('windows',{}).get('sandbox')
+    if sandbox not in (None,'unelevated'):raise ValueError('synthetic_clone_windows_sandbox_unexpected')
+    text='model_provider="fixture"\nmodel='+json.dumps(model)+'\nmodel_reasoning_effort='+json.dumps(effort)+'\n'
+    text+='[model_providers.fixture]\nname="Synthetic loopback"\nbase_url='+json.dumps(provider['base_url'])+'\nwire_api="responses"\nrequires_openai_auth=false\n'
+    if sandbox:text+='\n[windows]\nsandbox="unelevated"\n'
+    copied=workflow._copy_data_checked(source,target)
+    for name in ('native-history-fixture.json','qualified-synthetic-files.json'):
+        path=source/name
+        if path.is_file() and not path.is_symlink():shutil.copy2(path,target/name)
+    (target/'config.toml').write_text(text,encoding='utf8')
+    if (target/'auth.json').exists() or (target/'plugins').exists():raise ValueError('synthetic_clone_copied_private_install_state')
+    return {'status':'synthetic_fixture_copied','count':fixture['count'],'history_import':copied,
+            'source_owner_exited':True,'real_desktop_stopped':False,'auth_copied':False,'plugin_state_copied':False,
+            'config_scope':'loopback_model_settings_only'}

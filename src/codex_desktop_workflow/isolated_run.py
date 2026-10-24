@@ -62,27 +62,33 @@ def descendants(rows, expected_main):
 
 class IsolatedRun(lifecycle.IsolatedRun):
     @classmethod
-    def start(cls, executable, runs_root, args=None, environment=None, debug_port=None, isolate_shell_folders=False):
+    def start(cls, executable, runs_root, args=None, environment=None, debug_port=None, isolate_shell_folders=False, runtime_cache_from=None, ssh_config_from=None):
         arguments=list(args or [])
         metadata=Path(executable).parent/'codex-desktop-workflow-manifest.json'
-        if metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0'):
+        if (runtime_cache_from is not None or ssh_config_from is not None) and (not isolate_shell_folders or not metadata.is_file()
+                or json.loads(metadata.read_text(encoding='utf8')).get('package_version')!='26.1021.3705.0'):
+            raise ValueError('runtime_cache_transfer_requires_current_disposable_verification')
+        if metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0','26.1021.3705.0'):
             if not any(value.startswith('--lang=') or value == '--lang' for value in arguments):
                 arguments.append('--lang=en-US')
-        if debug_port is not None and metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0'):
+        if debug_port is not None and metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version') in ('26.1007.9446.0','26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0','26.1021.3705.0'):
             for flag in ('--disable-renderer-backgrounding','--disable-background-timer-throttling','--disable-features=CalculateNativeWinOcclusion'):
                 if flag not in arguments:arguments.append(flag)
-        if metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version') in ('26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0'):
+        if metadata.is_file() and json.loads(metadata.read_text(encoding='utf8')).get('package_version') in ('26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0','26.1021.3705.0'):
             environment = dict(environment or {})
             if not environment.get('CODEX_HOME') or not Path(environment['CODEX_HOME']).is_absolute():
                 raise ValueError('explicit_absolute_codex_home_required')
             home = Path(environment['CODEX_HOME']).resolve()
             if isolate_shell_folders and (not home.is_relative_to(Path(runs_root).resolve()) or home == Path(runs_root).resolve()):
                 raise ValueError('4894_acceptance_home_must_be_inside_owned_runs_root')
-            return cls._start_owl(executable, runs_root, home, arguments, environment, debug_port, isolate_shell_folders)
+            positional=(executable,runs_root,home,arguments,environment,debug_port,isolate_shell_folders)
+            if ssh_config_from is not None:return cls._start_owl(*positional,runtime_cache_from,ssh_config_from)
+            if runtime_cache_from is not None:return cls._start_owl(*positional,runtime_cache_from)
+            return cls._start_owl(*positional)
         return super().start(executable,runs_root,args=arguments,environment=environment,debug_port=debug_port,isolate_shell_folders=isolate_shell_folders)
 
     @classmethod
-    def _start_owl(cls, executable, runs_root, home, arguments, environment, debug_port, isolate_shell_folders):
+    def _start_owl(cls, executable, runs_root, home, arguments, environment, debug_port, isolate_shell_folders, runtime_cache_from=None, ssh_config_from=None):
         """Keep Owl known folders readable while owning all application state."""
         executable = Path(executable).resolve(strict=True)
         from .windows_integrity import check_native_desktop
@@ -91,6 +97,11 @@ class IsolatedRun(lifecycle.IsolatedRun):
             raise ValueError('user_data_dir_is_managed_by_the_tool')
         for key in ('USERPROFILE', 'LOCALAPPDATA', 'APPDATA'):
             if key in environment: raise ValueError('protected_environment_override:'+key)
+        if isolate_shell_folders:
+            # Reject reused install configuration before moving an ended
+            # run's cache. A rejected fixture must not consume its donor.
+            from .browser_isolation import _reject_used_home
+            _reject_used_home(home)
         if debug_port is not None:
             with socket.socket() as probe: probe.bind(('127.0.0.1', debug_port))
             arguments = [*arguments, '--remote-debugging-address=127.0.0.1', f'--remote-debugging-port={debug_port}']
@@ -102,6 +113,14 @@ class IsolatedRun(lifecycle.IsolatedRun):
         if isolate_shell_folders:
             if _redirected(profile): raise ValueError('redirected_owned_profile')
             profile.mkdir(exist_ok=False)
+            if ssh_config_from is not None:
+                from .runtime_cache_transfer import copy_ended_ssh_config
+                previous=cls(Path(ssh_config_from))
+                copy_ended_ssh_config(Path(ssh_config_from),run,previous.status('codex.exe'))
+            if runtime_cache_from is not None:
+                from .runtime_cache_transfer import transfer
+                previous=cls(Path(runtime_cache_from))
+                transfer(Path(runtime_cache_from),run,previous.status('codex.exe'))
         user_data.mkdir(exist_ok=True)
         env = {**os.environ, **environment}
         if isolate_shell_folders:

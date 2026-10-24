@@ -1,10 +1,11 @@
 # Compatibility
 
-This table describes installer **v0.3.13**. It retains the four browser-isolated source launches recorded for v0.3.12 and the same application bytes. Check the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases) for downloadable-installer results and availability.
+Installer **v0.3.14** supports the independent Desktop 26.1021.3705.0 adapter. Both backend modes passed empty-home and populated synthetic runtime checks, with native first sends and cold restoration. Download availability and installation results are recorded on the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases).
 
-| Component | Status in v0.3.13 |
+| Component | Status in v0.3.14 |
 |---|---|
 | Windows x64 | Supported platform |
+| Desktop `26.1021.3705.0` | Independent frontend 2.12.1; official backend by default; optional source-built 0.164.0-alpha.11.1.1; 26 contracts and 23 renderer features |
 | Desktop `26.1016.8622.0` | Independent frontend 2.11.0; official backend by default; optional pinned source-built 0.163.0-alpha.11.2.1; 26 contracts and 23 renderer checks |
 | Desktop `26.1016.8120.0` | Independent frontend 2.10.1; official backend by default; optional source-built 0.163.0-alpha.11.1.1; 26 contracts and 23 renderer checks |
 | Desktop `26.1016.6573.0` | Independent frontend 2.9.2; official backend by default; optional pinned compatibility source for 0.163.0-alpha.11.1; 26 contracts and 23 renderer checks |
@@ -22,13 +23,13 @@ This table describes installer **v0.3.13**. It retains the four browser-isolated
 | Desktop `26.1013.4894.0` | Unpublished recovery profile retained as source; unavailable to this installer |
 | Any other desktop version or ASAR | Rejected |
 | Official bundled `codex.exe` | Default for all supported releases |
-| `codex-history-compat` backend | Opt-in profile `desktop-26.1016.8622.0-sqlite-v2` (77 migrations across six databases), plus retained `desktop-26.1016.8120.0-sqlite-v2` (77 migrations across six databases), plus retained `desktop-26.1016.6573.0-sqlite-v2` (77 migrations across six databases), plus retained `desktop-26.1007.9446.0-sqlite-v2` (75 migrations across six databases), plus retained profiles `desktop-26.928.4866.0-sqlite-v2` (73 migrations across six databases), `desktop-26.924.2738.0-sqlite-v2` (72 migrations across six databases) and `0.158.0-alpha.2` for their respective desktop versions; older desktop profiles remain official-only |
+| `codex-history-compat` backend | Opt-in profile `desktop-26.1021.3705.0-sqlite-v2` (77 migrations), plus retained `desktop-26.1016.8622.0-sqlite-v2` (77 migrations across six databases), plus retained `desktop-26.1016.8120.0-sqlite-v2` (77 migrations across six databases), plus retained `desktop-26.1016.6573.0-sqlite-v2` (77 migrations across six databases), plus retained `desktop-26.1007.9446.0-sqlite-v2` (75 migrations across six databases), plus retained profiles `desktop-26.928.4866.0-sqlite-v2` (73 migrations across six databases), `desktop-26.924.2738.0-sqlite-v2` (72 migrations across six databases) and `0.158.0-alpha.2` for their respective desktop versions; older desktop profiles remain official-only |
 | Existing task data | Explicit snapshot import into a new independent directory |
 | Automatic task-data synchronization | Unsupported |
 
 A version number alone is insufficient. `inspect` also checks the complete ASAR, bundled backend, and all required ASAR entry hashes for the selected supported version.
 
 
-## v0.3.13 prerequisites
+## v0.3.14 prerequisites
 
-Python 3.11 or later and Node.js with WebSocket and internal Acorn support are required (Node.js 24.18 tested). Complete signed MSIX and installed-directory sources are accepted. The optional backend profile `desktop-26.1016.8622.0-sqlite-v2` binds public source commit `ad057a0ade9a99eb84161a23c8462ac0f68e8f1a`, upstream `51f97c6bca5500edbb986f6d9fe64fa2e63cbdd4`, Rust 1.99.1 and all 77 migrations across six databases. Old release evidence is retained; missing original samples in this run are skips.
+Python 3.11 or later and Node.js with WebSocket and internal Acorn support are required (Node.js 24.18 tested). Complete signed MSIX and installed-directory sources are accepted. The optional backend profile `desktop-26.1021.3705.0-sqlite-v2` binds public source commit `fabd73f0370b279be6e57c74a14ec53cd6c3c945`, upstream `6905ecede7816e91373e9eabda3f6b0368fc747b`, Rust 1.99.1 and all 77 migrations across six databases. Old release evidence is retained; missing original samples in this run are skips.

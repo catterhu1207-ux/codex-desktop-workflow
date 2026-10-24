@@ -54,7 +54,7 @@ def parse_owned_logs(manifest: Path, run_directory: Path, process: dict, *, read
             target.write_bytes(data)
         if hashlib.sha256(target.read_bytes()).digest() != hashlib.sha256(data).digest():
             raise RuntimeError("proof_log_copy_changed")
-    parser = Path(__file__).parent / ('data/renderer_attestation_261016_8622.ps1' if value.get('package_version') == '26.1016.8622.0' else 'data/renderer_attestation_261016_8120.ps1' if value.get('package_version') == '26.1016.8120.0' else 'data/renderer_attestation_261016_6573.ps1' if value.get('package_version') == '26.1016.6573.0' else 'data/renderer_attestation_261013_4894.ps1' if value.get('package_version') == '26.1013.4894.0' else 'data/renderer_attestation_261007_9446.ps1' if value.get('package_version') == '26.1007.9446.0' else 'data/renderer_attestation_26928_4866.ps1')
+    parser = Path(__file__).parent / ('data/renderer_attestation_261021_3705.ps1' if value.get('package_version') == '26.1021.3705.0' else 'data/renderer_attestation_261016_8622.ps1' if value.get('package_version') == '26.1016.8622.0' else 'data/renderer_attestation_261016_8120.ps1' if value.get('package_version') == '26.1016.8120.0' else 'data/renderer_attestation_261016_6573.ps1' if value.get('package_version') == '26.1016.6573.0' else 'data/renderer_attestation_261013_4894.ps1' if value.get('package_version') == '26.1013.4894.0' else 'data/renderer_attestation_261007_9446.ps1' if value.get('package_version') == '26.1007.9446.0' else 'data/renderer_attestation_26928_4866.ps1')
     script = r'''
 $ErrorActionPreference='Stop'
 [Console]::OutputEncoding=[System.Text.UTF8Encoding]::new($false)

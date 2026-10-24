@@ -13,7 +13,7 @@ class Exact8120Source(unittest.TestCase):
             from codex_desktop_workflow.workflow import SUPPORTED_VERSION
             if SUPPORTED_VERSION == p.base.VERSION:
                 raise AssertionError('8120 required acceptance inputs missing; current-version checks may not skip')
-            raise unittest.SkipTest('Historical 8120 official source is not retained; current 8622 checks remain mandatory')
+            raise unittest.SkipTest('Historical 8120 official source is not retained; current 3705 checks remain mandatory')
         cls.source=Path(source);cls.app=Path(portable)
 
     def test_all_26_contracts_and_four_length_preserving_entries(self):

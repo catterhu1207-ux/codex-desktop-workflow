@@ -14,6 +14,8 @@ def bindings(portable):
         root=Path(module.__file__).resolve().parent
         code.update({'dependency/'+module.__name__+'/'+p.relative_to(root).as_posix():digest(p) for p in root.rglob('*.py')})
     files=('ChatGPT.exe','resources/app.asar','resources/codex.exe','resources/x.js','resources/u.cjs','codex-desktop-workflow-manifest.json','codex-desktop-workflow.json')
+    manifest=json.loads((portable/'codex-desktop-workflow-manifest.json').read_text(encoding='utf8'))
+    if manifest.get('package_version')=='26.1021.3705.0':files=(*files,'resources/g.cjs')
     return {'code':code,'candidate':{name:digest(portable/name) for name in files}}
 
 
@@ -30,8 +32,11 @@ def require_browser_isolation(value):
 def require_complete(value,manifest):
     if value.get('status')!='passed' or value.get('closed_log_readback')!='passed' or value.get('owned_cleanup',{}).get('owned_job_empty') is not True:
         raise ValueError('public_owned_runtime_not_complete')
-    if manifest.get('package_version') in ('26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0'):
-        if manifest['package_version']=='26.1016.8622.0':
+    if manifest.get('package_version') in ('26.1013.4894.0','26.1016.6573.0','26.1016.8120.0','26.1016.8622.0','26.1021.3705.0'):
+        if manifest['package_version']=='26.1021.3705.0':
+            require_browser_isolation(value)
+            from .verification_3705 import release_policy
+        elif manifest['package_version']=='26.1016.8622.0':
             from . import __version__
             if tuple(map(int,__version__.split('.'))) >= (0,3,12):require_browser_isolation(value)
             from .verification_8622 import release_policy
@@ -54,7 +59,8 @@ def require_complete(value,manifest):
             if proof.get('process_id')!=run['pre_close']['main']['pid']:raise ValueError('public_main_identity_mismatch')
             if run['profile']=='synthetic_tasks' and run.get('native_cold_history',{}).get('status')!='passed':raise ValueError('native_cold_history_missing')
         if value.get('native_nonrenderer',{}).get('status')!='passed':raise ValueError('public_packaged_native_checks_missing')
-        if manifest['package_version'] in ('26.1016.6573.0','26.1016.8120.0','26.1016.8622.0') and value.get('native_nonrenderer',{}).get('complete_row_pipeline',{}).get('status')!='passed':raise ValueError('public_complete_row_pipeline_missing')
+        if manifest['package_version']=='26.1021.3705.0' and value.get('native_nonrenderer',{}).get('background_history_budget',{}).get('status')!='passed':raise ValueError('public_background_history_budget_missing')
+        if manifest['package_version'] in ('26.1016.6573.0','26.1016.8120.0','26.1016.8622.0','26.1021.3705.0') and value.get('native_nonrenderer',{}).get('complete_row_pipeline',{}).get('status')!='passed':raise ValueError('public_complete_row_pipeline_missing')
         return
     required=set(manifest['frontend_runtime_attestation']['live_renderer_probe']['feature_ids'])
     runs=value.get('runtime',[])

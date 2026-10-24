@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "official_asar_sha256": "04862a659c6a90fc50514d8c0b8016709d97dece58839726c57495ed72f1d9f0",
+  "candidate_asar_sha256": "148fc5ffcaec60511fff6f214fb93de49798efeebc1172e9ab2913451b7d2db2",
+  "candidate_asar_bytes": 640129977,
+  "candidate_header_json_sha256": "55a9111811fd3086d49a1ddfaef9359150eb97aa3c3d47772966cf837c421c55",
+  "entries": [
+    {
+      "path": "webview/assets/app-initial-438d1df57f70.js",
+      "source_sha256": "d7b10b8bc54277eb3cb3a7a742c5b4c054a640530bbb7c1878e17097c0fc6d01",
+      "target_sha256": "f2bbe1b0d85198a45a60e3fbdd388612780dc662000a98756da4d39008cb4c5e",
+      "source_bytes": 10315225,
+      "target_bytes": 10318077,
+      "operations": 82,
+      "inserted_bytes": 5467,
+      "compressed_bytes": 2928,
+      "delta_sha256": "a7b98f32ae48e3856a8dc55caf3e0d9f1f0596e38ba92283c4a9faad320d7ad4"
+    },
+    {
+      "path": "webview/assets/app-primary-844e405f2b90.js",
+      "source_sha256": "298f4c7bafe278563aa82ef8d8d4c1afe3f581d54915917849065085f7f621d2",
+      "target_sha256": "a5cd847b12ba2470a0c1bb80f769eb9603d51adeae9d32ee9e26858fbf9ee31f",
+      "source_bytes": 5060009,
+      "target_bytes": 5057752,
+      "operations": 32,
+      "inserted_bytes": 7372,
+      "compressed_bytes": 2132,
+      "delta_sha256": "074cfa9677d8ad9f0824bf1c8760eb1b233a900eab47f4472c3e3985863a6a0c"
+    },
+    {
+      "path": ".vite/build/main-BPBEjAxi.js",
+      "source_sha256": "2327d031e32c8d80c0dbf9bd81144466a90f8e49d3bc64e6604c23fbab900d7f",
+      "target_sha256": "1cb0c02412553f602a3379ddb3543fa584b6f4481701a4c45cfae63e35d93158",
+      "source_bytes": 5082185,
+      "target_bytes": 5081907,
+      "operations": 9,
+      "inserted_bytes": 334,
+      "compressed_bytes": 298,
+      "delta_sha256": "aa52a1c2afb8cb810b866670f3ffc43d9e468a8f48a2acf31296232af5346f7c"
+    },
+    {
+      "path": ".vite/build/src-Dl21kCYQ.js",
+      "source_sha256": "a42052ee3309565865f2d20fc45dee297935cbb50d1fc1a404b90c18d824b93c",
+      "target_sha256": "3a29e7dd5865d94e65cce146a202a730e2330db18dd511e96fa6c48078233112",
+      "source_bytes": 811082,
+      "target_bytes": 811290,
+      "operations": 5,
+      "inserted_bytes": 121,
+      "compressed_bytes": 145,
+      "delta_sha256": "8bc4fcfeb212607968b843041c9c62b1d7bad6d043b03a5d325b67079eccc083"
+    },
+    {
+      "path": ".vite/build/browser-background-switches-IQUsnzYP.js",
+      "source_sha256": "e5b858ceb674070e0033b76ecec0d27a3379a770cc82da5bf579e35243b2c929",
+      "target_sha256": "46d670c5d6dbf4f1a289e2db7447041a9a58e140c1ed4c869b526282c5ffcb04",
+      "source_bytes": 146511,
+      "target_bytes": 146575,
+      "operations": 5,
+      "inserted_bytes": 130,
+      "compressed_bytes": 161,
+      "delta_sha256": "eba8f750556fcc42e809a53d3032e2e989bcfec7899585ecdfda92f1ca3e34b5"
+    }
+  ],
+  "delta_package_sha256": "20dc6617ab8077a681aeb979b68af825dd0292b29da0ab576ecfe73ae28183ad",
+  "delta_package_bytes": 5692,
+  "status": "exact_delta_roundtrip_passed"
+}

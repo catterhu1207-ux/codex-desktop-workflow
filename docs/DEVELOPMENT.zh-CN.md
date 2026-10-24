@@ -10,7 +10,7 @@
 .\install.ps1 -BackendMode compat
 ```
 
-源码构建需要 Python 3.11 以上、Git、Rust 1.99.1（用于 26.1016.8120.0 和 26.1016.8622.0；保留的较早配置使用 Rust 1.95.0）、x64 MSVC 和 Windows SDK，请在 x64 开发者环境中运行。已有匹配构建可通过 `-BackendManifest` 指定；`-DryRun` 可查看模式选择和前置条件。具体受支持配置见 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat)。
+源码构建需要 Python 3.11 以上、Git、Rust 1.99.1（用于 26.1016.8120.0、26.1016.8622.0 和 26.1021.3705.0；保留的较早配置使用 Rust 1.95.0）、x64 MSVC 和 Windows SDK，请在 x64 开发者环境中运行。已有匹配构建可通过 `-BackendManifest` 指定；`-DryRun` 可查看模式选择和前置条件。具体受支持配置见 [codex-history-compat](https://github.com/catterhu1207-ux/codex-history-compat)。
 
 以下目录命令以受支持的 `26.924.2738.0` 为示例，使用时对应你实际取得的受支持来源。
 
@@ -118,12 +118,12 @@ codex-desktop-workflow stop --run C:\codex-workflow\daily-runs\run-<id>
 
 ## 复用已经核验的后端构建输入
 
-可选环境变量 `CODEX_COMPAT_BUILD_CACHE` 指向已有构建结果目录。`CODEX_COMPAT_SOURCE_CACHE` 指向已应用补丁的上游源码目录，必须与构建缓存一起使用。`CODEX_COMPAT_TARGET_CACHE`、`CODEX_COMPAT_RELEASE_TARGET_CACHE` 和 `CODEX_COMPAT_TOOLCHAIN_ROOT` 分别选择已有测试缓存、发行缓存和 Rust 工具链目录。固定的公开构建脚本仍会核对上游提交、允许的修改、依赖锁、编译器和迁移文件字节。8120 和 8622 构建脚本仅在完整输入绑定和测试日志摘要仍一致时复用已完成的模块测试；发行编译单独执行。不设置这些变量时，安装器按固定公开提交在新目录中构建。
+可选环境变量 `CODEX_COMPAT_BUILD_CACHE` 指向已有构建结果目录。`CODEX_COMPAT_SOURCE_CACHE` 指向已应用补丁的上游源码目录，必须与构建缓存一起使用。`CODEX_COMPAT_TARGET_CACHE`、`CODEX_COMPAT_RELEASE_TARGET_CACHE` 和 `CODEX_COMPAT_TOOLCHAIN_ROOT` 分别选择已有测试缓存、发行缓存和 Rust 工具链目录。固定的公开构建脚本仍会核对上游提交、允许的修改、依赖锁、编译器和迁移文件字节。8120、8622 和 3705 构建脚本仅在完整输入绑定和测试日志摘要仍一致时复用已完成的模块测试；发行编译单独执行。不设置这些变量时，安装器按固定公开提交在新目录中构建。
 
 ## 运行完整 Windows 检查
 
-将 `CODEX_WORKFLOW_TEST_SOURCE_8622` 指向已核验官方包的 `resources/app.asar`，将 `CODEX_WORKFLOW_TEST_APP_8622` 指向独立候选应用目录，再运行 `python tools/run_tests.py`。当前版本的四项原生源码检查在缺少输入时会失败。提供对应的 `6573` 环境变量可同时检查保留的旧版；无法取得样本的历史版本会明确记为跳过。
+将 `CODEX_WORKFLOW_TEST_SOURCE_3705` 指向已核验官方包的 `resources/app.asar`，将 `CODEX_WORKFLOW_TEST_APP_3705` 指向独立候选应用目录，再运行 `python tools/run_tests.py`。当前版本的五项原生源码检查在缺少输入时会失败。提供对应的 `6573` 环境变量可同时检查保留的旧版；无法取得样本的历史版本会明确记为跳过。
 
 GitHub 使用 `python tools/run_tests.py --source-only` 执行单元测试并核对已封存的原生验收记录，无须分发官方应用二进制。该项 CI 不进行新的原生启动。发布还需要完整 Windows 检查、两种后端、最终安装器及实际下载资产的验收。
 
-针对 8622，Windows 构建使用真实上游类型和固定依赖执行未改写的兼容模块全部测试；完整 CLI 编译和运行回放分别验收。Linux CI 保留完整 core 测试入口。项目页面从 Latest 已公开稳定标签部署，草稿发行不会提前改变下载指引。首次完整 CLI 编译可能耗时数小时；复用缓存前核对源码、补丁、依赖锁、工具链和编译参数，运行验收仍单独进行。
+针对 3705，Windows 构建使用真实上游类型和固定依赖执行未改写的兼容模块全部测试；完整 CLI 编译和运行回放分别验收。Linux CI 保留完整 core 测试入口。项目页面从 Latest 已公开稳定标签部署，草稿发行不会提前改变下载指引。首次完整 CLI 编译可能耗时数小时；复用缓存前核对源码、补丁、依赖锁、工具链和编译参数，运行验收仍单独进行。
