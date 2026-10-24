@@ -200,7 +200,7 @@
     "codex_desktop_workflow/renderer_proof.py": "59c5d67ffb3cee7fef4b35c8717b08cc628fda87d0eac8cb61866b34984fde38",
     "codex_desktop_workflow/runtime_cache_transfer.py": "d36cf73efa2353cf7034b36dad42e22dfcc3eea86d1dfde0f5dbb58e7c39cfc1",
     "codex_desktop_workflow/update_awareness.py": "c3645c3e2a2550447ec4cbb31cce6c6c63d278d94e4a6ced8d01d47b1ed17363",
-    "codex_desktop_workflow/verification_3705.py": "f2031eb68301f6ef650d57b8f997a7fe2095fb855225dd5fb9b551088bdbd8b0",
+    "codex_desktop_workflow/verification_3705.py": "f9c2e0616783591eac79be370c197f2e741ff8a0a4f2e5baa35a5e59de1d250c",
     "codex_desktop_workflow/verification_4894.py": "232d815ceb70f47b2a9edc58e1c2c189ebf917bae57526ad48c07e68f38de5f9",
     "codex_desktop_workflow/verification_6573.py": "e0939495bc943958dacad3fdcfb7db6c980f35a3baf3042032cb973697b05074",
     "codex_desktop_workflow/verification_8120.py": "a14ecfc8b8b53a397e4cea1412e5b8bc7d445f2ae404675b5b6d8e8e14791e72",
@@ -484,5 +484,10 @@
   "empty_profile_scope": "user_approved_healthy_sign_in_and_onboarding",
   "authenticated_feature_scope": "synthetic_tasks_only",
   "production_instance_modified": false,
-  "real_history_or_credentials_in_public_records": false
+  "real_history_or_credentials_in_public_records": false,
+  "distribution_preflight_correction": {
+    "change": "Reuse only completed optional runtime caches after an onboarding launch",
+    "application_bytes_changed": false,
+    "actual_missing_cache_negative_passed": true
+  }
 }

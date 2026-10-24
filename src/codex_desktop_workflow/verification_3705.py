@@ -119,7 +119,9 @@ def verify(source,portable,runs_root,observe_seconds,launches):
             result['runtime'].append(item)
             (run.run_directory/'installation-verification.json').write_text(json.dumps(item,indent=2))
         if item['status']!='passed':raise ValueError('3705_installation_runtime_failed:'+str(run.run_directory)) from error
-        previous_run=run.run_directory
+        # A healthy onboarding window can close before the optional dependency
+        # download finishes. Only a completed public cache is reusable.
+        previous_run=_ended_runtime_cache(runs_root,portable/'ChatGPT.exe')
         if fixture:
             client=Client(portable/'resources/codex.exe',home,home/'synthetic-workspaces')
             try:
