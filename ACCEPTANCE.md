@@ -2,6 +2,18 @@
 
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
+## v0.3.14 source and runtime qualification
+
+Desktop 26.1021.3705.0 uses the independent frontend 2.12.1. Both the official backend and the newly built compatibility backend passed signed-out onboarding and an authenticated fixture with 400 synthetic chats. The four qualified launches produced all 23 same-run renderer proofs, passed all 26 frontend contracts, matched the actual backend path and ancestry, remained under observation for at least 60 awake seconds, and closed normally. Shared browser registration stayed unchanged.
+
+Each backend passed six native first-message scenarios and six cold reopens, including local projects, projectless chats, Work file drops, SSH and Work over SSH. Native Priority membership and descending activity order, read-versus-reply recency, manual pins, 400-chat pagination, fourteen row states and proof recovery after window restoration passed. Existing chat settings and original history bytes were preserved.
+
+The optional local background-history budget was checked against the actual packaged metadata reader and both complete native callers. Boundary and negative cases passed. Native paginated compaction replays with 64 MiB and 512 MiB synthetic histories passed on both backends, including cold recovery, temporary forks, saved settings and normal exit. These results address the unnecessary background-copy path; the recovery screen can also report other failures.
+
+The compatibility backend passed all 15 module tests and seven runtime groups: ordinary requests, real WebSocket, cold settings, local compaction, remote compaction V2, 77 migration identities across six database families, and 105-turn pagination. The official backend passed the same runtime groups as a control. Independent CI compiled the complete core test target and passed the 15 module tests. Model responses came from synthetic loopback services.
+
+The installed prequalification wheel preserved all 315 packaged runtime resources and passed the current native-function checks. Three installer dry-run selections passed. An installation retry exposed an incomplete optional dependency cache after onboarding; the corrected verifier skips incomplete donors, and the missing-cache negative case passed. Interrupted attempts remain outside the successful launch matrix. Final distribution checks are recorded separately from source qualification.
+
 
 ## v0.3.13 release qualification
 
