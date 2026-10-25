@@ -8,6 +8,10 @@ The fixture writer now canonicalizes temporary directories before writing its ow
 
 The complete Windows suite passed 246 tests with nine historical-sample skips; all five mandatory 3705 checks ran and passed. The separately installed v0.3.15 prequalification wheel preserved all 316 packaged resources and passed the native-function checks. Its bundle, three installer dry-run selections and decompressed patch contents passed integrity and privacy checks. The unchanged application retains the original v0.3.14 launch evidence; those runs are not reported as fresh v0.3.15 launches. Downloaded draft assets require separate readback before publication.
 
+### Published asset readback
+
+The published v0.3.15 bundle and installer passed anonymous downloads and checksum verification. The installed downloaded wheel preserved all 317 packaged resources, matched the tagged source and retained dependency resources, and passed the native-function checks. All three downloaded installer dry-run selections passed. Latest and the project page point to v0.3.15. The unchanged application retains the four qualified normal-installer launches attributed to v0.3.14; the distribution amendment does not relabel them as fresh launches. Only source, patches and installation materials are distributed. The optional backend source release v0.2.9 also passed anonymous asset and checksum readback.
+
 ## v0.3.14 source and runtime qualification
 
 Desktop 26.1021.3705.0 uses the independent frontend 2.12.1. Both the official backend and the newly built compatibility backend passed signed-out onboarding and an authenticated fixture with 400 synthetic chats. The four qualified launches produced all 23 same-run renderer proofs, passed all 26 frontend contracts, matched the actual backend path and ancestry, remained under observation for at least 60 awake seconds, and closed normally. Shared browser registration stayed unchanged.

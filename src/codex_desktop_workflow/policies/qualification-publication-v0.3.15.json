@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "package_version": "0.3.15",
+  "desktop_version": "26.1021.3705.0",
+  "release_commit": "60def8d0e2b595fef661dc111b8df8c8ee816e55",
+  "frontend_artifact": "2.12.1-04862a659c6a",
+  "backend_release": "v0.2.9",
+  "backend_release_commit": "b39dff62d6473e2e69734fecf6207da94fd706c8",
+  "backend_source_pin": "fabd73f0370b279be6e57c74a14ec53cd6c3c945",
+  "windows_tests": 246,
+  "historical_sample_skips": 9,
+  "mandatory_current_cases": 5,
+  "frontend_contracts": 26,
+  "renderer_features": 23,
+  "downloaded_installed_resources": 317,
+  "dry_run_modes": [
+    "official",
+    "compat_manifest",
+    "compat_source"
+  ],
+  "native_installation_evidence_origin": "0.3.14",
+  "metadata_amendment_fresh_launches_claimed": false,
+  "application_and_backend_bytes_unchanged_in_metadata_amendment": true,
+  "anonymous_download": "passed",
+  "latest": "passed",
+  "pages": "passed",
+  "asset_sha256": {
+    "codex-desktop-workflow-bundle.zip": "cf1c412fe10601eee828f4bf63fc5f1b9f0b8c5419626a2e954863f4bc3272e5",
+    "install.ps1": "3681e42b86c2c08ec65913fea83e50cb80e1e7258863a9e78331903330ac4390",
+    "SHA256SUMS.txt": "744416cd318e18c3a1f04d66e27e436ce0d70e2fda61ab79b22a0bcc5121132a"
+  },
+  "compiled_official_app_or_backend_distributed": false,
+  "private_material_or_credentials_distributed": false
+}
