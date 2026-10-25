@@ -14,6 +14,8 @@ The compatibility backend passed all 15 module tests and seven runtime groups: o
 
 The installed prequalification wheel preserved all 315 packaged runtime resources and passed the current native-function checks. Three installer dry-run selections passed. An installation retry exposed an incomplete optional dependency cache after onboarding; the corrected verifier skips incomplete donors, and the missing-cache negative case passed. Interrupted attempts remain outside the successful launch matrix. Final distribution checks are recorded separately from source qualification.
 
+The complete Windows suite ran 245 tests with no failures or errors. Nine historical-sample checks were explicitly skipped; all five mandatory 3705 checks executed and passed. Local distribution qualification covered the official-backend installation and the compatibility backend built from pinned public source. Both selections completed independent empty and synthetic-400 profiles, all 23 renderer proofs, at least 60 awake seconds, actual backend identity, closed-log readback and normal application exit. The compatibility verification retained an independently rechecked, completed empty profile after a space-guard interruption and ran a fresh synthetic profile using the unchanged per-profile verifier. Its stopped profiles were excluded. Source, wheel, bundle, three dry-run selections and decompressed patch contents passed privacy and integrity checks. Downloaded GitHub draft assets require separate readback before publication.
+
 
 ## v0.3.13 release qualification
 
