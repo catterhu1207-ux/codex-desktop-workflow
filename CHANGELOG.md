@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.15
+
+Correct the Windows CI fixture writer to record canonical owner paths. The Desktop 26.1021.3705.0 application, frontend 2.12.1 and compatibility backend retain their qualified bytes; package metadata and distribution checks advance independently. The occupied v0.3.14 tag remains unchanged.
+
+
 ## v0.3.14
 
 Adds the independent Desktop **26.1021.3705.0** adapter, frontend 2.12.1 and optional source-built compatibility backend 0.164.0-alpha.11.1.1. The default remains the official backend.

@@ -2,10 +2,10 @@
   "schema_version": 3,
   "status": "passed",
   "desktop_version": "26.1021.3705.0",
-  "package_version": "0.3.14",
+  "package_version": "0.3.15",
   "frontend_version": "2.12.1",
   "source_inputs": {
-    "codex_desktop_workflow/__init__.py": "79537e539d3ea7f06d804881ad9fabb423237281e5d926101ca0cbea311aa5d2",
+    "codex_desktop_workflow/__init__.py": "81902b0e75ebe746cdb7505800322f0c0d9be79e0bb81ddf0a76f54966a7cf5d",
     "codex_desktop_workflow/asar_repack.py": "395f3cd66bf143e12a7593f74329d3605538d56883a57e989987037505c915e2",
     "codex_desktop_workflow/awake_clock.py": "b83a62e1fbc7bcb3f8c91ccb084940dc1742634b7e726850f3c88b7e95c16281",
     "codex_desktop_workflow/awake_process.py": "89bee89c94f944cfe07f737dabf4d13f1e17a059ac941ce274395bb9d882a579",
@@ -489,5 +489,16 @@
     "change": "Reuse only completed optional runtime caches after an onboarding launch",
     "application_bytes_changed": false,
     "actual_missing_cache_negative_passed": true
+  },
+  "release_metadata_amendment": {
+    "scope": "package_version_constant_only",
+    "previous_package_version": "0.3.14",
+    "previous_record_sha256": "13deccbcee3f0d91b8f4abbcafa45a4d79fc09012714eb597c16631fd57be039",
+    "changed_product_source": "codex_desktop_workflow/__init__.py",
+    "before_sha256": "79537e539d3ea7f06d804881ad9fabb423237281e5d926101ca0cbea311aa5d2",
+    "after_sha256": "81902b0e75ebe746cdb7505800322f0c0d9be79e0bb81ddf0a76f54966a7cf5d",
+    "application_and_backend_bytes_unchanged": true,
+    "native_runtime_evidence_reexecuted": false,
+    "reason": "Correct canonical temporary paths in Windows CI test fixture generation; retain the existing occupied tag."
   }
 }

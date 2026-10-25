@@ -1,8 +1,8 @@
 # Compatibility
 
-Installer **v0.3.14** supports the independent Desktop 26.1021.3705.0 adapter. Both backend modes passed empty-home and populated synthetic runtime checks, with native first sends and cold restoration. Download availability and installation results are recorded on the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases).
+Installer **v0.3.15** supports the independent Desktop 26.1021.3705.0 adapter. Both backend modes passed empty-home and populated synthetic runtime checks, with native first sends and cold restoration. Download availability and installation results are recorded on the [release page](https://github.com/catterhu1207-ux/codex-desktop-workflow/releases).
 
-| Component | Status in v0.3.14 |
+| Component | Status in v0.3.15 |
 |---|---|
 | Windows x64 | Supported platform |
 | Desktop `26.1021.3705.0` | Independent frontend 2.12.1; official backend by default; optional source-built 0.164.0-alpha.11.1.1; 26 contracts and 23 renderer features |
@@ -30,6 +30,6 @@ Installer **v0.3.14** supports the independent Desktop 26.1021.3705.0 adapter. B
 A version number alone is insufficient. `inspect` also checks the complete ASAR, bundled backend, and all required ASAR entry hashes for the selected supported version.
 
 
-## v0.3.14 prerequisites
+## v0.3.15 prerequisites
 
 Python 3.11 or later and Node.js with WebSocket and internal Acorn support are required (Node.js 24.18 tested). Complete signed MSIX and installed-directory sources are accepted. The optional backend profile `desktop-26.1021.3705.0-sqlite-v2` binds public source commit `fabd73f0370b279be6e57c74a14ec53cd6c3c945`, upstream `6905ecede7816e91373e9eabda3f6b0368fc747b`, Rust 1.99.1 and all 77 migrations across six databases. Old release evidence is retained; missing original samples in this run are skips.

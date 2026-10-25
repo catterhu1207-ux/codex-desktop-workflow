@@ -6,6 +6,7 @@ from codex_desktop_workflow import native_history_fixture as fixture,workflow
 from codex_desktop_workflow.isolated_run import IsolatedRun
 
 def prepare(directory):
+    directory=Path(directory).resolve()
     source=Path(directory)/'fixture-source';source.mkdir()
     target=Path(directory)/'fixture-target';run=Path(directory)/('run-'+'a'*32);run.mkdir()
     (source/'.browser-isolation-used.json').write_text(json.dumps({'run':str(run)}))
@@ -21,6 +22,17 @@ def prepare(directory):
     return source,target,run
 
 class EndedFixtureClone(unittest.TestCase):
+    def test_fixture_writer_records_canonical_owner_for_an_alias_path(self):
+        with tempfile.TemporaryDirectory() as directory:
+            alias=Path(directory)/'existing-parent';alias.mkdir()
+            source,target,run=prepare(alias/'..')
+            self.assertEqual(source.parent,Path(directory).resolve())
+            self.assertEqual(json.loads((source/'.browser-isolation-used.json').read_bytes())['run'],str(run.resolve()))
+            with mock.patch.object(IsolatedRun,'status',return_value={'status':'exited'}):
+                result=fixture.clone_ended(source,target,run)
+            self.assertEqual(result['count'],1)
+            self.assertTrue((target/'sessions/fixture.jsonl').is_file())
+
     def test_fixture_clone_preserves_sources_and_excludes_login_and_install_state(self):
         with tempfile.TemporaryDirectory() as directory:
             source,target,run=prepare(directory)

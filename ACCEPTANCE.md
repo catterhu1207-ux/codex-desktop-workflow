@@ -2,6 +2,10 @@
 
 This public report is a redacted summary of the maintainer-side Windows acceptance run. Local paths, process identifiers, ports, logs, credentials, and task data are excluded.
 
+## v0.3.15 distribution amendment
+
+The fixture writer now canonicalizes temporary directories before writing its ownership marker. A real parent-path alias reproduced the CI failure; the correction passed the five fixture-clone cases while retaining ownership, active-process and provider guards. The only packaged Python change is the release version constant. Application, backend, frontend and original v0.3.14 native runtime evidence remain unchanged. The new wheel and downloaded assets require separate qualification before publication.
+
 ## v0.3.14 source and runtime qualification
 
 Desktop 26.1021.3705.0 uses the independent frontend 2.12.1. Both the official backend and the newly built compatibility backend passed signed-out onboarding and an authenticated fixture with 400 synthetic chats. The four qualified launches produced all 23 same-run renderer proofs, passed all 26 frontend contracts, matched the actual backend path and ancestry, remained under observation for at least 60 awake seconds, and closed normally. Shared browser registration stayed unchanged.
