@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "package_version": "0.3.15",
+  "desktop_version": "26.1021.3705.0",
+  "frontend_artifact": "2.12.1-04862a659c6a",
+  "frontend_contracts": 26,
+  "installed_wheel": {
+    "status": "passed",
+    "scope": "316 business-code/resources before adding this separate distribution record",
+    "packaged_files": 316,
+    "wheel_sha256": "40f6d770b149d4941a3a40521c557acc7eaea4218a44e2061311c046a34e4f23",
+    "receipt_sha256": "3f94abc20b4b56009b71bbd9378b890427438891c85ec3cee6a8fc838bd8217d"
+  },
+  "source_bundle": {
+    "status": "passed",
+    "member_sha256": {
+      "codex_desktop_workflow-0.3.15-py3-none-any.whl": "40f6d770b149d4941a3a40521c557acc7eaea4218a44e2061311c046a34e4f23",
+      "desktop_adaptation_lab-0.1.0-py3-none-any.whl": "cd7b6a5abc187e08527b246ea3b1d38f58a1e61507cdff8e5cce84d4e80978ea",
+      "electron_update_safety-0.1.3-py3-none-any.whl": "55c71b62e4b04ff88c69b7dd54a12d832a79d16ff2c3077f4d56dccb7fb45287",
+      "install.ps1": "3681e42b86c2c08ec65913fea83e50cb80e1e7258863a9e78331903330ac4390",
+      "LICENSE": "9792e2016cd002ae61ae54ba670c84a673cc4af11fe71db10351ad46fdc679af",
+      "msix_source.py": "03e52ef0d9f3a2274c7d55960e9f57df4892fa0627f1a9313db2c9c06ebef8c6",
+      "README.md": "cf14519f98c884867c2e90f0fdc0a470f85298076e9abce9b449e1f60882de0e",
+      "version.json": "0a3389f80f82934910109acd156806febbc5904d08c4d3bde23bfa03c7611e7a"
+    },
+    "business_wheel_matches_installed_check": true
+  },
+  "installer_dry_runs": {
+    "official": {
+      "status": "passed",
+      "compiled_or_started": false,
+      "install_root_created": false,
+      "receipt_sha256": "82e248a4ea78dac2f557b16d6530aca65e787c0c98003adcc6563eb557568daf"
+    },
+    "compat_manifest": {
+      "status": "passed",
+      "compiled_or_started": false,
+      "install_root_created": false,
+      "receipt_sha256": "c8254b6f5d36f9caac51a48276ada5f22794f1dbff5dd6b6603c67bd609de6ca"
+    },
+    "compat_source": {
+      "status": "passed",
+      "compiled_or_started": false,
+      "install_root_created": false,
+      "receipt_sha256": "04f38d7b9fae4792f8ee0ea95fcddce81ec57771257c886519a1e319f9346676"
+    }
+  },
+  "privacy_scan": {
+    "status": "passed",
+    "files": 346,
+    "source_index_files": 492,
+    "compressed_delta_contents_scanned": true,
+    "receipt_sha256": "f1a3748286b33da8fec32551217f254f49558e9b2fc48b23678bddef1a2ba9e4"
+  },
+  "normal_installation_modes": {
+    "official": {
+      "status": "passed",
+      "runtime": [
+        {
+          "profile": "empty",
+          "status": "passed",
+          "observed_awake_seconds": 62.93003819999285,
+          "renderer_features": 23,
+          "backend_match": true,
+          "normal_exit": true,
+          "authentication_copied": false
+        },
+        {
+          "profile": "synthetic_tasks",
+          "status": "passed",
+          "observed_awake_seconds": 63.86090089997742,
+          "renderer_features": 23,
+          "backend_match": true,
+          "normal_exit": true,
+          "authentication_copied": false,
+          "synthetic_chats": 400,
+          "cold_history_unchanged": true
+        }
+      ],
+      "backend_sha256": "1103e9e09c71fa2cd0afd6d8f3b9a2d63174fe8efd7cb5bd09f1cb14ef58a098",
+      "installed_runtime_readback": true,
+      "owned_job_empty": true,
+      "browser_unchanged": true,
+      "continuation": "Source/build stages completed first. The exact completed empty-profile receipt was independently rechecked; a fresh synthetic profile used the unchanged per-profile verifier and normal installer finalization. Interrupted profiles are excluded.",
+      "receipt_sha256": "2d825ffeca8396978efc01d3222369a41fa725d158d0d2a3dba566f1303a0668"
+    },
+    "compat_source": {
+      "status": "passed",
+      "runtime": [
+        {
+          "profile": "empty",
+          "status": "passed",
+          "observed_awake_seconds": 62.32953759992961,
+          "renderer_features": 23,
+          "backend_match": true,
+          "normal_exit": true,
+          "authentication_copied": false
+        },
+        {
+          "profile": "synthetic_tasks",
+          "status": "passed",
+          "observed_awake_seconds": 60.715995000093244,
+          "renderer_features": 23,
+          "backend_match": true,
+          "normal_exit": true,
+          "authentication_copied": false,
+          "synthetic_chats": 400,
+          "cold_history_unchanged": true
+        }
+      ],
+      "backend_sha256": "56f72169f92dc250f6295b4915e03146d7a9126663bf740f4126e96984e8ae02",
+      "installed_runtime_readback": true,
+      "owned_job_empty": true,
+      "browser_unchanged": true,
+      "continuation": "Source/build stages completed first. The exact completed empty-profile receipt was independently rechecked; a fresh synthetic profile used the unchanged per-profile verifier and normal installer finalization. Interrupted profiles are excluded.",
+      "receipt_sha256": "42ee56eb691c6c829c8c871649f4d16b7d7afd951d03ea7bdd96224ed29b9b0a"
+    }
+  },
+  "source_kind": "signature-verified full official x64 MSIX",
+  "published_download_acceptance": "Separate draft-asset readback is required before publishing; this record qualifies local distribution inputs, not future network downloads.",
+  "native_evidence_origin": {
+    "package_version": "0.3.14",
+    "application_and_backend_bytes_unchanged": true,
+    "product_source_change": "codex_desktop_workflow/__init__.py version constant only",
+    "native_scenarios_reexecuted_for_0_3_15": false,
+    "metadata_amendment_receipt_sha256": "4044232b4681fb8ea9ce818063e24638e11b34090fa20163341ece2e6daeed5b"
+  }
+}

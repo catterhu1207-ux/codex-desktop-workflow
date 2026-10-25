@@ -4,7 +4,9 @@ This public report is a redacted summary of the maintainer-side Windows acceptan
 
 ## v0.3.15 distribution amendment
 
-The fixture writer now canonicalizes temporary directories before writing its ownership marker. A real parent-path alias reproduced the CI failure; the correction passed the five fixture-clone cases while retaining ownership, active-process and provider guards. The only packaged Python change is the release version constant. Application, backend, frontend and original v0.3.14 native runtime evidence remain unchanged. The new wheel and downloaded assets require separate qualification before publication.
+The fixture writer now canonicalizes temporary directories before writing its ownership marker. A real parent-path alias reproduced the CI failure; the correction passed the five fixture-clone cases while retaining ownership, active-process and provider guards. The only packaged Python change is the release version constant. Application, backend, frontend and original v0.3.14 native runtime evidence remain unchanged.
+
+The complete Windows suite passed 246 tests with nine historical-sample skips; all five mandatory 3705 checks ran and passed. The separately installed v0.3.15 prequalification wheel preserved all 316 packaged resources and passed the native-function checks. Its bundle, three installer dry-run selections and decompressed patch contents passed integrity and privacy checks. The unchanged application retains the original v0.3.14 launch evidence; those runs are not reported as fresh v0.3.15 launches. Downloaded draft assets require separate readback before publication.
 
 ## v0.3.14 source and runtime qualification
 
