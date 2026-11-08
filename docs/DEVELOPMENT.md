@@ -71,6 +71,12 @@ Isolated acceptance does not copy authentication. In the signed-out environment,
 
 See the redacted two-run result in [ACCEPTANCE.md](../ACCEPTANCE.md).
 
+### Measuring startup changes
+
+Start the app through the normal launch entry point. Record the time to the first usable window and to completed verification. Time package checks, the file scan, history and parent checks, and renderer observation separately.
+
+When changing a verification cache, compare an initial run, an unchanged restart, and a run with an edited test history. Record cache reuse and any files modified during the scan. Bind cached task results to the file bytes, applicable validators and backend, and history boundaries. With the same decoder, a full hash of the compressed bytes can identify a previously verified decoded digest.
+
 ## Import your own task copy
 
 Exit every Codex / ChatGPT desktop and backend process first, then create a separate task-data copy:
