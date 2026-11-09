@@ -77,6 +77,14 @@ Start the app through the normal launch entry point. Record the time to the firs
 
 When changing a verification cache, compare an initial run, an unchanged restart, and a run with an edited test history. Record cache reuse and any files modified during the scan. Bind cached task results to the file bytes, applicable validators and backend, and history boundaries. With the same decoder, a full hash of the compressed bytes can identify a previously verified decoded digest.
 
+### Verifying recovery after a local backend exit
+
+Open a synthetic chat in an isolated app copy. Record the main window and its local backend, then stop the verified backend of that test run. Check that a replacement backend connects, the same main window still accepts input, and the chat can be reopened. Keep the app under observation for at least 60 seconds after reconnect and close the test copy normally.
+
+Test account-dependent capability checks while the replacement connection is restoring its account state, and repeat them after that state is ready. A background request should handle a temporarily unavailable host during component mounting as well as an asynchronous request failure.
+
+On Windows, match any system resource-exhaustion event to the backend exit by time and process identity. Record committed memory and the commit limit alongside the interface outcome.
+
 ## Import your own task copy
 
 Exit every Codex / ChatGPT desktop and backend process first, then create a separate task-data copy:
