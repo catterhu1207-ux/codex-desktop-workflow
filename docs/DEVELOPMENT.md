@@ -85,6 +85,12 @@ Test account-dependent capability checks while the replacement connection is res
 
 On Windows, match any system resource-exhaustion event to the backend exit by time and process identity. Record committed memory and the commit limit alongside the interface outcome.
 
+### Verify startup with staging inputs unavailable
+
+Keep the launcher's required backend files and verification records with the installed version. Run the installed launcher's package checks in an isolated environment where previous build directories are unavailable. Include a case that attempts to read a previous build directory and confirm that the check identifies the missing dependency.
+
+Before cleaning a build directory, recheck the registered application, its verified source, and the rollback paths. Record the result of the package check and the result of an actual restart separately.
+
 ## Import your own task copy
 
 Exit every Codex / ChatGPT desktop and backend process first, then create a separate task-data copy:
