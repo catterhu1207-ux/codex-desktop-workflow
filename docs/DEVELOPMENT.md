@@ -77,6 +77,8 @@ Start the app through the normal launch entry point. Record the time to the firs
 
 When changing a verification cache, compare an initial run, an unchanged restart, and a run with an edited test history. Record cache reuse and any files modified during the scan. Bind cached task results to the file bytes, applicable validators and backend, and history boundaries. With the same decoder, a full hash of the compressed bytes can identify a previously verified decoded digest.
 
+Measure background preparation separately from a launch through the installed shortcut. A read-only worker can prepare history results ahead of launch and yield when the user starts the app. During launch, check current file bytes, database projection cursors and history ancestry before reusing results. Cover edits that preserve file size and timestamps, changes to a projection cursor, and corrupt cache entries. Recheck each history whose cached result fails validation.
+
 ### Verifying recovery after a local backend exit
 
 Open a synthetic chat in an isolated app copy. Record the main window and its local backend, then stop the verified backend of that test run. Check that a replacement backend connects, the same main window still accepts input, and the chat can be reopened. Keep the app under observation for at least 60 seconds after reconnect and close the test copy normally.
