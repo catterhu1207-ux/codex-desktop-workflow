@@ -2,6 +2,12 @@
 
 [Back to installation](../README.md)
 
+## Desktop 26.1111.2228.0 source checkpoint
+
+The [backend source profile](https://github.com/catterhu1207-ux/codex-history-compat/tree/8c83569a670c1a022afab226ea5032e26cc1eddd/profiles/desktop-26.1111.2228.0-sqlite-v2) is pinned to upstream commit `226fa88979b1a9d76dc36f339ee9c5fbdb2c8e7f`. The public build recipe passes patch-application and workspace-version checks, and its 78 migration files match the official backend.
+
+The local adaptation has passed isolated renderer and backend-reconnect checks and its first normal launch. A later independent restart and qualification of the public build and installer remain pending; installation support for this version has not been released.
+
 ## Optional compatibility backend
 
 The official backend is the installation default. To select history-request compatibility, download the releases `install.ps1` and run:
