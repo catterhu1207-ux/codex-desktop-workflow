@@ -6,6 +6,8 @@
 
 The [backend source profile](https://github.com/catterhu1207-ux/codex-history-compat/tree/8c83569a670c1a022afab226ea5032e26cc1eddd/profiles/desktop-26.1111.2228.0-sqlite-v2) is pinned to upstream commit `226fa88979b1a9d76dc36f339ee9c5fbdb2c8e7f`. The public build recipe passes patch-application and workspace-version checks, and its 78 migration files match the official backend.
 
+The history reader now follows a fork through successive history files in the active and archived folders. It checks the conversation identity and the boundary between each pair of files. Import tests cover a direct fork spanning 257 files and an inherited fork spanning 1,025. [Source changes and tests](https://github.com/catterhu1207-ux/codex-desktop-workflow/commit/f1805414e37b4b0bc331f83f8e73aea8fb131e66)
+
 The local adaptation has passed isolated renderer and backend-reconnect checks and its first normal launch. A later independent restart and qualification of the public build and installer remain pending; installation support for this version has not been released.
 
 ## Optional compatibility backend

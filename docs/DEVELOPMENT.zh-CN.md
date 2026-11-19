@@ -6,6 +6,8 @@
 
 [后端源码配置](https://github.com/catterhu1207-ux/codex-history-compat/tree/8c83569a670c1a022afab226ea5032e26cc1eddd/profiles/desktop-26.1111.2228.0-sqlite-v2) 固定使用上游提交 `226fa88979b1a9d76dc36f339ee9c5fbdb2c8e7f`。公开构建脚本的补丁应用和工作区版本检查已通过，78 个迁移文件与官方后端相符。
 
+历史读取器可以跨当前目录和归档目录追溯分支，逐段核对会话归属和记录衔接。导入测试覆盖了跨 257 段的直接分支和跨 1,025 段的继承分支。[源码与测试](https://github.com/catterhu1207-ux/codex-desktop-workflow/commit/f1805414e37b4b0bc331f83f8e73aea8fb131e66)
+
 本机适配已通过隔离环境中的界面、后端重连检查和首次日常启动。后续独立重启、公开构建及安装器验收仍待完成，因此尚未发布该版本的安装支持。
 
 ## 可选兼容后端
