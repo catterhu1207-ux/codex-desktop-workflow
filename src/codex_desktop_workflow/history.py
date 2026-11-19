@@ -1,6 +1,7 @@
 """Read-only paginated-history lineage checks for independent data copies."""
 from pathlib import Path
 from contextlib import closing
+import hashlib
 import json,sqlite3
 from . import paginated_history_base as base
 
@@ -44,7 +45,7 @@ def inspect(home):
             path=normalized_path(value)
             if not any(path.is_relative_to(root) for root in roots):raise HistoryError('rollout_path_outside_independent_home')
             entry=base.HistoryInventoryEntry(path,bool(archived),mode)
-            inventory['registered::'+tid]=entry;inventory[tid]=entry
+            inventory['registered::'+tid]=entry
             registered.append((tid,entry))
     for root in roots:
         if root.exists():
@@ -52,9 +53,8 @@ def inspect(home):
                 rollout_id=base.rollout_id_from_path(path)
                 if rollout_id:
                     existing=inventory.get(rollout_id)
-                    if existing and existing.path!=path and not rollout_id.startswith('registered::'):
-                        # The registered current segment wins; base lookup still detects ambiguity.
-                        continue
+                    if existing and existing.path != path:
+                        raise HistoryError(f'duplicate_physical_rollout_id: {rollout_id}')
                     inventory.setdefault(rollout_id,base.HistoryInventoryEntry(path,root.name=='archived_sessions','paginated'))
     if projection.is_file():
         with closing(readonly(projection)) as connection:
@@ -62,21 +62,27 @@ def inspect(home):
             if 'thread_history_projection_state' in tables:
                 cursors={tid:(offset,ordinal) for tid,offset,ordinal in connection.execute('SELECT thread_id,next_rollout_byte_offset,next_rollout_ordinal FROM thread_history_projection_state')}
     hashes={};deferred=0;proofs=[]
+    def bind_source(path, digest):
+        if hashes.setdefault(path, digest) != digest:
+            raise HistoryError('history_dependency_changed_during_validation')
+
     for tid,entry in registered:
         if not entry.path.is_file():
             if entry.archived:deferred+=1;continue
             raise HistoryError('active_rollout_missing')
-        raw=entry.path.read_bytes();hashes[entry.path]=base.sha256_path(entry.path)
+        raw=entry.path.read_bytes()
+        bind_source(entry.path, hashlib.sha256(raw).hexdigest())
         if not raw.endswith(b'\n'):raise HistoryError('incomplete_rollout_record')
         records=[json.loads(line) for line in raw.splitlines()]
         first=records[0]
         if first.get('type')!='session_meta' or first.get('payload',{}).get('id')!=tid:
             raise HistoryError('rollout_owner_identity_mismatch')
-        proof=base.validate_paginated_start(tid,first,cursors.get(tid),len(raw),inventory,roots,HistoryError,entry.path)
+        physical_id = base.rollout_id_from_path(entry.path) or tid
+        cursor = cursors.get(physical_id)
+        proof=base.validate_paginated_start(tid,first,cursor,len(raw),inventory,roots,HistoryError,entry.path)
         for index,record in enumerate(records):
             if type(record.get('ordinal')) is not int or record['ordinal']!=proof.start_ordinal+index:
                 raise HistoryError('rollout_ordinal_discontinuity')
-        cursor=cursors.get(tid)
         if cursor:
             offset=0;boundaries={0:proof.start_ordinal}
             for index,line in enumerate(raw.splitlines(keepends=True)):
@@ -84,8 +90,10 @@ def inspect(home):
             if boundaries.get(cursor[0])!=cursor[1]:raise HistoryError('projection_cursor_not_exact_record_boundary')
         if proof.kind=='projection_continuation':
             base.validate_projection_continuation(tid,records,base.rollout_id_from_path(entry.path),projection,cursor,proof,HistoryError)
-        for path,digest in proof.lineage_parent_sha256:hashes[path]=digest
-        if proof.parent_path:hashes[proof.parent_path]=proof.parent_sha256
+        for path,digest in proof.lineage_parent_sha256:
+            bind_source(path, digest)
+        if proof.parent_path:
+            bind_source(proof.parent_path, proof.parent_sha256)
         proofs.append(proof.kind)
     for path,digest in hashes.items():
         if base.sha256_path(path)!=digest:raise HistoryError('history_dependency_changed_during_validation')

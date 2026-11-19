@@ -58,6 +58,54 @@ class HistoryImport(unittest.TestCase):
         fixture.write(fixture.b)
         with self.assertRaises(history.HistoryError):history.inspect(fixture.root)
 
+    def roll_parent(self, fixture, owner, count):
+        current_id = owner
+        paths = [fixture.paths[owner]]
+        start = fixture.records[owner][-1]['ordinal'] + 1
+        with closing(sqlite3.connect(fixture.root / 'thread_history_1.sqlite')) as db, db:
+            for index in range(count):
+                segment = f'66666666-6666-4666-8666-{index:012x}'
+                directory = fixture.archived if index % 2 else fixture.sessions
+                path = directory / f'rollout-{owner}_{segment}.jsonl'
+                ordinal = start + index
+                data = fixtures.encode([{'ordinal': ordinal, 'type': 'session_meta', 'payload': {
+                    'id': owner, 'history_mode': 'paginated', 'history_base': {
+                        'thread_id': current_id, 'end_ordinal_exclusive': ordinal,
+                        'end_byte_offset': paths[-1].stat().st_size,
+                    },
+                }}])
+                path.write_bytes(data)
+                db.execute('INSERT INTO thread_history_projection_state VALUES (?,?,?)',
+                           (segment, len(data), ordinal + 1))
+                paths.append(path)
+                current_id = segment
+        with closing(sqlite3.connect(fixture.root / 'state_5.sqlite')) as db, db:
+            db.execute('UPDATE threads SET rollout_path=? WHERE id=?', (str(paths[-1]), owner))
+        return paths
+
+    def test_direct_fork_accepts_257_segments_and_rejects_an_old_broken_link(self):
+        fixture = self.fixture()
+        fixture.records[fixture.c][0]['payload']['forked_from_id'] = fixture.a
+        fixture.write(fixture.c)
+        paths = self.roll_parent(fixture, fixture.a, 256)
+        before = {p: p.read_bytes() for p in paths}
+        self.assertEqual(history.inspect(fixture.root)['status'], 'passed')
+        self.assertEqual(before, {p: p.read_bytes() for p in paths})
+        row = json.loads(paths[1].read_bytes())
+        row['payload']['history_base']['end_byte_offset'] -= 1
+        paths[1].write_bytes(fixtures.encode([row]))
+        with self.assertRaisesRegex(history.HistoryError, 'ordinal boundary'):
+            history.inspect(fixture.root)
+
+    def test_inherited_fork_preserves_long_archived_lineage_and_rejects_ambiguity(self):
+        fixture = self.fixture()
+        paths = self.roll_parent(fixture, fixture.b, 1023)
+        self.assertEqual(history.inspect(fixture.root)['status'], 'passed')
+        duplicate = fixture.archived / ('copy-' + paths[1].name)
+        duplicate.write_bytes(paths[1].read_bytes())
+        with self.assertRaisesRegex(history.HistoryError, 'duplicate_physical_rollout_id'):
+            history.inspect(fixture.root)
+
     def test_dependency_change_during_inspection_blocks_commit(self):
         fixture=self.fixture();original=history.base.validate_paginated_start
         def change(*args,**kwargs):

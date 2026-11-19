@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 
-PROOF_VERSION = "1.2.2"
+PROOF_VERSION = "1.2.3"
 
 ROLLOUT_ID_PATTERN = re.compile(
     r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
@@ -235,9 +235,7 @@ def validate_projection_continuation(
 
 def is_within(path: Path, root: Path) -> bool:
     try:
-        return str(path.resolve()).casefold().startswith(
-            str(root.resolve()).rstrip("\\/").casefold() + "\\"
-        ) or str(path.resolve()).casefold() == str(root.resolve()).casefold()
+        return path.resolve().is_relative_to(root.resolve())
     except OSError:
         return False
 
@@ -248,27 +246,59 @@ def rollout_id_from_path(path: Path) -> str | None:
     return matches[-1].lower() if matches else None
 
 
-def find_rollout_path_by_id(
-    rollout_id: str,
+def rollout_owner_id_from_path(path: Path) -> str | None:
+    """Return the stable owner in an original or rolled-over filename."""
+    ids = list(ROLLOUT_ID_PATTERN.finditer(path.name))
+    if len(ids) == 1 or (len(ids) == 2 and path.name[ids[0].end():ids[1].start()] == "_"):
+        return ids[0].group().lower()
+    return None
+
+
+def _lineage_sources(
     allowed_roots: tuple[Path, ...],
     current_path: Path,
-    error_type: type[Exception],
-) -> Path:
-    candidates: list[Path] = []
+    wanted: set[str] | None = None,
+) -> dict[str, list[Path]]:
+    """Index physical filenames without reading any unrelated conversation."""
+    pattern = "*.jsonl*"
+    if wanted is not None and len(wanted) == 1:
+        pattern = f"*{next(iter(wanted))}*.jsonl*"
+    sources: dict[str, list[Path]] = {}
     for root in allowed_roots:
-        if not root.is_dir():
-            continue
-        for candidate in root.rglob(f"*{rollout_id}*.jsonl*"):
-            if candidate == current_path or not candidate.is_file():
+        for candidate in root.rglob(pattern):
+            key = rollout_id_from_path(candidate)
+            if key is None or (wanted is not None and key not in wanted):
                 continue
-            if rollout_id_from_path(candidate) == rollout_id.lower():
-                candidates.append(candidate)
-    unique = sorted({candidate.resolve() for candidate in candidates})
+            # Keep the same filename match as *<physical-id>*.jsonl*. A UUID in a backup suffix is not a source ID.
+            if candidate != current_path and key in candidate.name.lower().rpartition(".jsonl")[0]:
+                sources.setdefault(key, []).append(candidate)
+    return sources
+
+
+def _unique_rollout_source(
+    rollout_id: str, sources: dict[str, list[Path]], error_type: type[Exception],
+) -> Path:
+    unique = {p.resolve() for p in sources.get(rollout_id, ()) if p.is_file()}
     if len(unique) != 1:
         raise error_type(
             f"Paginated history base {rollout_id} has {len(unique)} source rollouts"
         )
-    return unique[0]
+    return unique.pop()
+
+
+def find_rollout_path_by_id(
+    rollout_id: str, allowed_roots: tuple[Path, ...], current_path: Path, error_type: type[Exception],
+) -> Path:
+    key = rollout_id.lower()
+    return _unique_rollout_source(key, _lineage_sources(allowed_roots, current_path, {key}), error_type)
+
+
+def _lineage_file_stamp(path: Path, error_type: type[Exception]) -> tuple[int, ...]:
+    try:
+        stat = path.stat()
+    except OSError as error:
+        raise error_type(f"Fork lineage source changed during inspection: {path}") from error
+    return stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns
 
 
 def validate_parent_boundary(
@@ -353,68 +383,83 @@ def _prove_inherited_fork_lineage(
     registered = inventory.get(f"registered::{logical_parent}")
     if registered is None:
         raise error_type(f"Inherited fork logical parent is not registered for {thread_id}")
-    path = registered.path
+    return _prove_fork_lineage(
+        thread_id, logical_parent, ordinal, base_thread_id, base_offset, parent_path,
+        registered, allowed_roots, current_path, error_type,
+    )
+
+
+def _prove_fork_lineage(
+    thread_id: str,
+    logical_parent: str,
+    ordinal: int,
+    base_thread_id: str,
+    base_offset: int,
+    parent_path: Path,
+    registered: HistoryInventoryEntry,
+    allowed_roots: tuple[Path, ...],
+    current_path: Path,
+    error_type: type[Exception],
+    *,
+    require_same_owner: bool = False,
+) -> tuple[tuple[Path, str], ...]:
+    """Follow proven physical segments back to the source of a fork."""
+    label = "Registered parent rollover" if require_same_owner else "Inherited fork"
     if registered.history_mode != "paginated":
-        raise error_type(f"Inherited fork logical parent mode is invalid for {thread_id}")
-    seen: set[str] = {rollout_id_from_path(current_path)}
+        raise error_type(f"{label} logical parent mode is invalid for {thread_id}")
+    start = registered.path
+    child = current_path.resolve()
+    if not start.is_file() or not any(is_within(start, root) for root in allowed_roots) or start.resolve() == child:
+        raise error_type(f"{label} lineage path is invalid for {thread_id}")
+    sources = _lineage_sources(allowed_roots, current_path)
+    visited: dict[str, tuple[Path, tuple[int, ...]]] = {}
+    child_id = rollout_id_from_path(current_path)
+    rollout_id = rollout_id_from_path(start)
     dependencies: list[tuple[Path, str]] = []
     inherited_end: tuple[int, int] | None = None
-    for depth in range(256):
-        if (
-            not path.is_file()
-            or not any(is_within(path, root) for root in allowed_roots)
-            or path.resolve() == current_path.resolve()
-        ):
-            raise error_type(f"Inherited fork lineage path is invalid for {thread_id}")
-        rollout_id = rollout_id_from_path(path)
-        if rollout_id is None or rollout_id in seen:
-            raise error_type(f"Inherited fork lineage is cyclic or noncanonical for {thread_id}")
-        seen.add(rollout_id)
-        unique_path = find_rollout_path_by_id(
-            rollout_id, allowed_roots, current_path, error_type
-        )
-        if unique_path.resolve() != path.resolve():
-            raise error_type(f"Inherited fork lineage registration is ambiguous for {thread_id}")
-        content = path.read_bytes()
+    # Each step consumes a different physical ID from this finite inventory.
+    while True:
+        if rollout_id is None or rollout_id == child_id or rollout_id in visited:
+            raise error_type(f"{label} lineage is cyclic or noncanonical for {thread_id}")
+        path = _unique_rollout_source(rollout_id, sources, error_type)
+        if path == child or not any(is_within(path, root) for root in allowed_roots):
+            raise error_type(f"{label} lineage path is invalid for {thread_id}")
+        if rollout_id_from_path(path) != rollout_id or (inherited_end is None and path != start.resolve()):
+            raise error_type(f"{label} lineage registration is ambiguous for {thread_id}")
+        visited[rollout_id] = (path, _lineage_file_stamp(path, error_type))
+        source_digest = hashlib.sha256()
         first: dict[str, Any] | None = None
         next_ordinal: int | None = None
-        for line_number, raw_line in enumerate(content.splitlines(), start=1):
-            try:
-                record = json.loads(raw_line)
-            except (UnicodeDecodeError, json.JSONDecodeError) as error:
-                raise error_type(f"Invalid inherited fork lineage JSON for {thread_id}") from error
-            if not isinstance(record, dict) or type(record.get("ordinal")) is not int:
-                raise error_type(f"Invalid inherited fork lineage record for {thread_id}")
-            if first is None:
-                first = record
-                next_ordinal = record["ordinal"]
-            if record["ordinal"] != next_ordinal or record["ordinal"] < 0:
-                raise error_type(f"Non-contiguous inherited fork lineage ordinal for {thread_id}")
-            next_ordinal += 1
+        with path.open("rb") as stream:
+            for raw_line in stream:
+                source_digest.update(raw_line)
+                try:
+                    record = json.loads(raw_line)
+                except (UnicodeDecodeError, json.JSONDecodeError) as error:
+                    raise error_type(f"Invalid {label.lower()} lineage JSON for {thread_id}") from error
+                if not isinstance(record, dict) or type(record.get("ordinal")) is not int:
+                    raise error_type(f"Invalid {label.lower()} lineage record for {thread_id}")
+                if first is None:
+                    first = record
+                    next_ordinal = record["ordinal"]
+                if record["ordinal"] != next_ordinal or record["ordinal"] < 0:
+                    raise error_type(f"Non-contiguous {label.lower()} lineage ordinal for {thread_id}")
+                next_ordinal += 1
         meta = first.get("payload") if first is not None else None
         # The official filename identifies both the stable owner and physical
         # segment: <owner>.jsonl or <owner>_<rollout>.jsonl.  Checking only a
         # UUID-shaped metadata owner would allow a forged intermediate owner.
-        filename_ids = list(ROLLOUT_ID_PATTERN.finditer(path.name))
-        filename_owner = None
-        if len(filename_ids) == 1:
-            filename_owner = filename_ids[0].group().lower()
-        elif (
-            len(filename_ids) == 2
-            and path.name[filename_ids[0].end():filename_ids[1].start()] == "_"
-        ):
-            filename_owner = filename_ids[0].group().lower()
         if (
             not isinstance(meta, dict)
             or first.get("type") != "session_meta"
             or meta.get("history_mode") != "paginated"
             or not isinstance(meta.get("id"), str)
             or ROLLOUT_ID_PATTERN.fullmatch(meta["id"]) is None
-            or meta["id"].lower() != filename_owner
-            or (depth == 0 and meta["id"] != logical_parent)
+            or meta["id"].lower() != rollout_owner_id_from_path(path)
+            or ((inherited_end is None or require_same_owner) and meta["id"] != logical_parent)
         ):
-            raise error_type(f"Inherited fork lineage identity is not proven for {thread_id}")
-        dependencies.append((path, hashlib.sha256(content).hexdigest()))
+            raise error_type(f"{label} lineage identity is not proven for {thread_id}")
+        dependencies.append((path, source_digest.hexdigest()))
         if inherited_end is not None:
             end_ordinal, end_offset = inherited_end
             validate_parent_boundary(thread_id, path, end_offset, end_ordinal, error_type)
@@ -425,8 +470,8 @@ def _prove_inherited_fork_lineage(
                 or ordinal > inherited_end[0]
                 or base_offset > inherited_end[1]
             ):
-                raise error_type(f"Inherited fork boundary exceeds parent history for {thread_id}")
-            return tuple(dependencies)
+                raise error_type(f"{label} boundary exceeds parent history for {thread_id}")
+            break
         history_base = meta.get("history_base")
         if (
             not isinstance(history_base, dict)
@@ -437,15 +482,21 @@ def _prove_inherited_fork_lineage(
             or type(history_base.get("end_byte_offset")) is not int
             or history_base["end_byte_offset"] <= 0
         ):
-            raise error_type(f"Inherited fork history base lineage is not proven for {thread_id}")
+            raise error_type(f"{label} history base lineage is not proven for {thread_id}")
         # A prefix ending before this segment begins cannot inherit its base.
         if inherited_end is not None and inherited_end[0] <= first["ordinal"]:
-            raise error_type(f"Inherited fork lineage cutoff precedes segment for {thread_id}")
+            raise error_type(f"{label} lineage cutoff precedes segment for {thread_id}")
         inherited_end = (first["ordinal"], history_base["end_byte_offset"])
-        path = find_rollout_path_by_id(
-            history_base["thread_id"], allowed_roots, current_path, error_type
-        )
-    raise error_type(f"Inherited fork lineage exceeds proof depth for {thread_id}")
+        rollout_id = history_base["thread_id"].lower()
+
+    # Catch a moved, replaced or newly duplicated source during a long walk.
+    # Other conversations may be appended or archived independently.
+    current = _lineage_sources(allowed_roots, current_path, set(visited))
+    for source_id, (path, stamp) in visited.items():
+        actual = _unique_rollout_source(source_id, current, error_type)
+        if actual != path or _lineage_file_stamp(actual, error_type) != stamp:
+            raise error_type(f"{label} lineage changed during inspection for {thread_id}")
+    return tuple(dependencies)
 
 
 def validate_paginated_start(
@@ -525,6 +576,7 @@ def validate_paginated_start(
             parent_path = find_rollout_path_by_id(
                 base_thread_id, allowed_roots, current_path, error_type
             )
+        base_stamp = _lineage_file_stamp(parent_path, error_type)
         parent_identity = validate_parent_boundary(
             thread_id, parent_path, base_offset, ordinal, error_type
         )
@@ -542,55 +594,31 @@ def validate_paginated_start(
             raise error_type(
                 f"Fork history base parent is not a registered session rollout for {thread_id}"
             )
+        lineage_dependencies: dict[Path, str] = {}
         if registered_parent.path != parent_path:
-            # A registered parent may have rolled over after this fork was made.
-            # Accept only an exact, directly linked prior segment, with both byte
-            # boundaries and the stable parent identity independently proven.
-            registered_path = registered_parent.path
-            if (
-                registered_parent.history_mode != "paginated"
-                or not registered_path.is_file()
-                or not any(is_within(registered_path, root) for root in allowed_roots)
-            ):
-                raise error_type(f"Registered parent rollover path is invalid for {thread_id}")
-            try:
-                with registered_path.open("rb") as stream:
-                    registered_first = json.loads(stream.readline())
-                registered_payload = registered_first.get("payload", {})
-                registered_base = registered_payload.get("history_base", {})
-                registered_ordinal = registered_first.get("ordinal")
-                registered_offset = registered_base.get("end_byte_offset")
-                valid_registration = (
-                    registered_first.get("type") == "session_meta"
-                    and registered_payload.get("id") == parent_identity
-                    and registered_payload.get("history_mode") == "paginated"
-                    and registered_base.get("thread_id") == rollout_id_from_path(parent_path)
-                    and type(registered_ordinal) is int
-                    and registered_ordinal >= ordinal
-                    and registered_base.get("end_ordinal_exclusive") == registered_ordinal
-                    and type(registered_offset) is int
-                    and registered_offset >= base_offset
-                )
-            except (OSError, ValueError, AttributeError, TypeError) as error:
-                raise error_type(f"Registered parent rollover metadata is invalid for {thread_id}") from error
-            if not valid_registration or validate_parent_boundary(
-                thread_id, parent_path, registered_offset, registered_ordinal, error_type
-            ) != parent_identity:
-                raise error_type(f"Registered parent rollover lineage is not proven for {thread_id}")
-        lineage_dependencies: tuple[tuple[Path, str], ...] = ()
+            lineage_dependencies.update(_prove_fork_lineage(
+                thread_id, parent_identity, ordinal, base_thread_id, base_offset,
+                parent_path, registered_parent, allowed_roots, current_path, error_type,
+                require_same_owner=True,
+            ))
         if payload.get("forked_from_id") not in {base_thread_id, parent_identity}:
-            lineage_dependencies = _prove_inherited_fork_lineage(
+            inherited_dependencies = _prove_inherited_fork_lineage(
                 thread_id, payload, ordinal, base_thread_id, base_offset,
                 parent_path, inventory, allowed_roots, current_path, error_type,
             )
+            for path, digest in inherited_dependencies:
+                if lineage_dependencies.setdefault(path, digest) != digest:
+                    raise error_type(f"Fork history lineage changed during inspection for {thread_id}")
+        if lineage_dependencies and _lineage_file_stamp(parent_path, error_type) != base_stamp:
+            raise error_type(f"Fork history lineage changed during inspection for {thread_id}")
         return HistoryBaseProof(
             ordinal,
             base_offset,
             "fork",
             base_thread_id,
             parent_path,
-            sha256_path(parent_path),
-            lineage_parent_sha256=lineage_dependencies,
+            lineage_dependencies.get(parent_path) or sha256_path(parent_path),
+            lineage_parent_sha256=tuple(lineage_dependencies.items()),
         )
 
     # Compatibility path for older fixtures. Production callers always supply
