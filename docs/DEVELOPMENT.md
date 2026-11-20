@@ -2,6 +2,10 @@
 
 [Back to installation](../README.md)
 
+## Desktop 26.1111.9664.0 source checkpoint
+
+The [backend source profile](https://github.com/catterhu1207-ux/codex-history-compat/tree/2d0a787e654c06d13e510830b3169b0d23da7e69/profiles/desktop-26.1111.9664.0-sqlite-v2) pins upstream commit `c376cf7396eff83ce4c6ac61b9553df142e7a0be`. The build recipe passed patch and dependency checks. The 78 database migrations match the official backend. Installer support for this version is pending public qualification.
+
 ## Desktop 26.1111.2228.0 source checkpoint
 
 The [backend source profile](https://github.com/catterhu1207-ux/codex-history-compat/tree/8c83569a670c1a022afab226ea5032e26cc1eddd/profiles/desktop-26.1111.2228.0-sqlite-v2) is pinned to upstream commit `226fa88979b1a9d76dc36f339ee9c5fbdb2c8e7f`. The public build recipe passes patch-application and workspace-version checks, and its 78 migration files match the official backend.

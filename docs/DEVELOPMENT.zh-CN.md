@@ -2,6 +2,10 @@
 
 [返回安装首页](../README.zh-CN.md)
 
+## Desktop 26.1111.9664.0 源码检查点
+
+[后端源码配置](https://github.com/catterhu1207-ux/codex-history-compat/tree/2d0a787e654c06d13e510830b3169b0d23da7e69/profiles/desktop-26.1111.9664.0-sqlite-v2) 使用上游提交 `c376cf7396eff83ce4c6ac61b9553df142e7a0be`。补丁和锁定依赖已核对，78 个数据库迁移与官方后端一致。这个版本的公开安装器仍待验收。
+
 ## Desktop 26.1111.2228.0 源码检查点
 
 [后端源码配置](https://github.com/catterhu1207-ux/codex-history-compat/tree/8c83569a670c1a022afab226ea5032e26cc1eddd/profiles/desktop-26.1111.2228.0-sqlite-v2) 固定使用上游提交 `226fa88979b1a9d76dc36f339ee9c5fbdb2c8e7f`。公开构建脚本的补丁应用和工作区版本检查已通过，78 个迁移文件与官方后端相符。
